@@ -12,6 +12,6 @@ class DarkShrineBuilder:
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
             if not self.ai.structures(unit.DARKSHRINE).exists \
                     and not self.ai.already_pending(unit.DARKSHRINE):
-                pylon = self.ai.get_proper_pylon()
+                pylon = self.ai.get_pylon_with_least_neighbours()
                 await self.ai.build(unit.DARKSHRINE,near=pylon.position,
                                     random_alternative=True,placement_step=3)

@@ -10,6 +10,9 @@ from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
 from strategy.stalker_proxy import StalkerProxy
+from strategy.macro import Macro
+from strategy.manager import Strategy
+from bot.builder import Builder
 
 
 class OctopusEvo(sc2.BotAI):
@@ -23,9 +26,12 @@ class OctopusEvo(sc2.BotAI):
     enemy_main_base_down = False
     leader_tag = None
     destination = None
+    psi_storm_wait = 0
+    nova_wait = 0
 
     def __init__(self, genome):
         super().__init__()
+        self.builder = Builder(self)
         self.spot_validator = BuildingSpotValidator(self)
         self.chronobooster = Chronobooster(self)
         self.attack = False
@@ -36,12 +42,12 @@ class OctopusEvo(sc2.BotAI):
         self.army = None
         self.observer_scouting_index = 0
         self.observer_scouting_points = []
-        self.strategy = None
+        self.strategy: Strategy = None
         self.genome = genome
         self.chromosome_index = 0
 
     async def on_start(self):
-        self.strategy = StalkerProxy(self)
+        self.strategy = Macro(self)
 
     async def on_step(self, iteration: int):
         # get genome row (chromosome) for this time
@@ -56,7 +62,7 @@ class OctopusEvo(sc2.BotAI):
 
         await self.distribute_workers()
         await self.build_pylons()
-        await self.build_gateway(total_count=4)
+        await self.build_gateway()
         await self.build_cybernetics()
         await self.warp_units()
         await self.morph_gates()
@@ -65,6 +71,20 @@ class OctopusEvo(sc2.BotAI):
         self.train_units()
         self.upgrade_warpgate()
         self.build_assimilators()
+        await self.strategy.forge_build()
+        await self.strategy.robotics_build()
+        await self.strategy.robotics_bay_build()
+        await self.strategy.templar_archives_build()
+        await self.strategy.pylon_first_build()
+        await self.strategy.twilight_build()
+        await self.strategy.dark_shrine_build()
+        self.strategy.robotics_train()
+        await self.strategy.templar_archives_upgrades()
+        self.strategy.forge_upgrades()
+        await self.strategy.expand()
+        await self.strategy.transformation()
+        await self.morph_Archons()
+        await self.strategy.twilight_upgrades()
 
         # attack
         if (not self.attack) and (not self.strategy.retreat_condition()) and (
@@ -96,103 +116,74 @@ class OctopusEvo(sc2.BotAI):
             await self.chat_send('on_step error 9 -> micro_units')
             raise ex
 
-    async def build_gateway(self, total_count):
-        gates_count = self.structures(unit.GATEWAY).amount
-        gates_count += self.structures(unit.WARPGATE).amount
-        pylon = self.spot_validator.get_proper_pylon()
-        if gates_count < total_count and self.can_afford(unit.GATEWAY) and pylon and \
-                self.already_pending(unit.GATEWAY) < 1:
-            await self.spot_validator.build(unit.GATEWAY, near=pylon, placement_step=3, max_distance=12,
-                                            random_alternative=True)
+    async def build_gateway(self):
+        await self.strategy.gate_build()
 
     async def build_pylons(self):
-        if self.supply_cap < 200:
-            # pylons = self.ai.structures(unit.PYLON)
-            if self.supply_cap < 100:
-                pos = self.start_location.position.towards(self.main_base_ramp.top_center, 5)
-                max_d = 23
-                pending = 2 if self.time > 180 else 1
-                left = 5
-                step = 7
-            else:
-                pos = self.structures(unit.NEXUS).ready.random.position
-                max_d = 27
-                pending = 3
-                left = 9
-                step = 5
-            if self.supply_left < left:  # or (pylons.amount < 1 and self.ai.structures(unit.GATEWAY).exists):
-                if self.already_pending(unit.PYLON) < pending:
-                    result = await self.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
-                    i = 0
-                    while not result and i < 12:
-                        i += 1
-                        pos = pos.random_on_distance(2)
-                        result = await self.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
+        await self.strategy.pylon_next_build()
 
     async def build_cybernetics(self):
-        if self.structures(unit.CYBERNETICSCORE).amount < 1 and not self.already_pending(unit.CYBERNETICSCORE) and \
-                self.structures(unit.GATEWAY).ready.exists:
-            cybernetics_position = self.spot_validator.get_proper_pylon()
-            if cybernetics_position:
-                await self.build(unit.CYBERNETICSCORE, near=cybernetics_position, placement_step=3,
-                                 random_alternative=True, max_distance=20)
+        await self.strategy.cybernetics_build()
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
-        return await self.spot_validator.build(building=building, near=near, max_distance=max_distance, block=block,
+        return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                build_worker=build_worker, random_alternative=random_alternative)
 
     def train_probes(self):
-        workers = self.workers.amount
-        nex = self.structures(unit.NEXUS).amount
-        if not self.structures(unit.PYLON).exists and workers == 14:
-            return
-        if workers < 20 * nex and workers < 55:
-            for nexus in self.structures(unit.NEXUS).ready:
-                if nexus.is_idle and self.can_afford(unit.PROBE):
-                    self.do(nexus.train(unit.PROBE))
-        elif 54 < workers < 74:
-            if self.can_afford(unit.PROBE) and not self.already_pending(unit.PROBE):
-                if self.structures(unit.NEXUS).idle.amount < nex:
-                    return
-                nexus = self.structures(unit.NEXUS).ready.idle.random
-                self.do(nexus.train(unit.PROBE))
+        self.strategy.nexus_train()
+        # workers = self.workers.amount
+        # nex = self.structures(unit.NEXUS).amount
+        # if not self.structures(unit.PYLON).exists and workers == 14:
+        #     return
+        # if workers < 20 * nex and workers < 55:
+        #     for nexus in self.structures(unit.NEXUS).ready:
+        #         if nexus.is_idle and self.can_afford(unit.PROBE):
+        #             self.do(nexus.train(unit.PROBE))
+        # elif 54 < workers < 74:
+        #     if self.can_afford(unit.PROBE) and not self.already_pending(unit.PROBE):
+        #         if self.structures(unit.NEXUS).idle.amount < nex:
+        #             return
+        #         nexus = self.structures(unit.NEXUS).ready.idle.random
+        #         self.do(nexus.train(unit.PROBE))
 
     def train_units(self):
-        if self.structures(unit.CYBERNETICSCORE).ready.exists:
-            gateways = self.structures(unit.GATEWAY).ready.idle
-            for gateway in gateways:
-                if self.can_afford(unit.STALKER):
-                    self.do(gateway.train(unit.STALKER))
+        self.strategy.gate_train()
+        # if self.structures(unit.CYBERNETICSCORE).ready.exists:
+        #     gateways = self.structures(unit.GATEWAY).ready.idle
+        #     for gateway in gateways:
+        #         if self.can_afford(unit.STALKER):
+        #             self.do(gateway.train(unit.STALKER))
 
     async def warp_units(self):
-        warpgates = self.structures(unit.WARPGATE).ready.idle
-        if warpgates.exists:
-            if self.attack:
-                prisms = self.units(unit.WARPPRISMPHASING)
-                if prisms.exists:
-                    pos = prisms.furthest_to(self.start_location).position
-                else:
-                    furthest_pylon = self.structures(unit.PYLON).ready.furthest_to(self.start_location.position)
-                    pos = furthest_pylon.position
-            else:
-                pos = self.structures(unit.PYLON).ready.closer_than(35, self.start_location).furthest_to(
-                    self.start_location).position
-            placement = None
-            i = 0
-            while placement is None:
-                i += 1
-                placement = await self.find_placement(AbilityId.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                      max_distance=5, placement_step=2, random_alternative=False)
-                if i > 5:
-                    print("can't find position for warpin.")
-                    return
-            for warpgate in warpgates:
-                abilities = await self.get_available_abilities(warpgate)
-                if AbilityId.WARPGATETRAIN_ZEALOT in abilities:
-                    if self.can_afford(unit.STALKER):
-                        self.do(warpgate.warp_in(unit.STALKER, placement))
+        await self.strategy.warpgate_train()
+        # warpgates = self.structures(unit.WARPGATE).ready.idle
+        # if warpgates.exists:
+        #     if self.attack:
+        #         prisms = self.units(unit.WARPPRISMPHASING)
+        #         if prisms.exists:
+        #             pos = prisms.furthest_to(self.start_location).position
+        #         else:
+        #             furthest_pylon = self.structures(unit.PYLON).ready.furthest_to(self.start_location.position)
+        #             pos = furthest_pylon.position
+        #     else:
+        #         pos = self.structures(unit.PYLON).ready.closer_than(35, self.start_location).furthest_to(
+        #             self.start_location).position
+        #     placement = None
+        #     i = 0
+        #     while placement is None:
+        #         i += 1
+        #         placement = await self.find_placement(AbilityId.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
+        #                                               max_distance=5, placement_step=2, random_alternative=False)
+        #         if i > 5:
+        #             print("can't find position for warpin.")
+        #             return
+        #     for warpgate in warpgates:
+        #         abilities = await self.get_available_abilities(warpgate)
+        #         if AbilityId.WARPGATETRAIN_ZEALOT in abilities:
+        #             if self.can_afford(unit.STALKER):
+        #                 self.do(warpgate.warp_in(unit.STALKER, placement))
 
     async def morph_gates(self):
         for gateway in self.structures(unit.GATEWAY).ready:
@@ -234,7 +225,7 @@ class OctopusEvo(sc2.BotAI):
                             self.do(worker.move(worker.position.random_on_distance(1), queue=True))
 
     async def chronoboost(self):
-        await self.chronobooster.stalker_proxy()
+        await self.strategy.chronoboost()
 
     async def defend(self):
         enemy = self.enemy_units()
@@ -321,7 +312,88 @@ class OctopusEvo(sc2.BotAI):
                     self.observer_scouting_index = 0
 
     def attack_condition(self):
-        return self.time > 100
+        return self.strategy.attack_condition()
+
+    def get_pylon_with_least_neighbours(self):
+        return self.spot_validator.get_pylon_with_least_neighbours()
+
+    def forge_upg_priority(self):
+        if self.structures(unit.TWILIGHTCOUNCIL).ready.exists:
+            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL2,
+                     upgrade.PROTOSSSHIELDSLEVEL1]
+        else:
+            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL1,
+                     upgrade.PROTOSSSHIELDSLEVEL1]
+        done = True
+        for u in upgds:
+            if u not in self.state.upgrades:
+                done = False
+                break
+        if not done:
+            if self.structures(unit.FORGE).ready.idle.exists:
+                return True
+        return False
+
+    def get_super_pylon(self):
+        pylons = self.structures(unit.PYLON).ready
+        if pylons.exists:
+            pylons = pylons.closer_than(45, self.start_location)
+            if pylons.exists:
+                pylons = pylons.sorted_by_distance_to(self.enemy_start_locations[0])
+                warps = self.structures().filter(lambda x: x.type_id in [unit.WARPGATE, unit.NEXUS] and x.is_ready)
+                if warps.exists:
+                    for pylon in pylons:
+                        if warps.closer_than(6.5, pylon).exists:
+                            return pylon
+                return pylons[-1]
+
+    async def blink(self, stalker, target):
+        if stalker.type_id == unit.STALKER:
+            abilities = await self.get_available_abilities(stalker)
+            if AbilityId.EFFECT_BLINK_STALKER in abilities:
+                self.do(stalker(AbilityId.EFFECT_BLINK_STALKER, target))
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    async def morph_Archons(self):
+        if upgrade.PSISTORMTECH is self.state.upgrades or self.already_pending_upgrade(upgrade.PSISTORMTECH):
+            archons = self.army(unit.ARCHON)
+            ht_amount = int(archons.amount / 2)
+            ht_thresh = ht_amount + 1
+        else:
+            ht_thresh = 1
+        if self.units(unit.HIGHTEMPLAR).amount > ht_thresh:
+            hts = self.units(unit.HIGHTEMPLAR).sorted(lambda u: u.energy)
+            ht2 = hts[0]
+            ht1 = hts[1]
+            if ht2 and ht1:
+                for ht in self.army(unit.HIGHTEMPLAR):
+                    if ht.tag == ht1.tag or ht.tag == ht2.tag:
+                        self.army.remove(ht)
+                if ht1.distance_to(ht2) > 4:
+                    if ht1.distance_to(self.main_base_ramp.bottom_center) > 30:
+                        self.do(ht1.move(ht2))
+                        self.do(ht2.move(ht1))
+                    else:
+                        self.do(ht1.move(self.main_base_ramp.bottom_center))
+                        self.do(ht2.move(self.main_base_ramp.bottom_center))
+                else:
+                    # print('morphing!')
+                    from s2clientprotocol import raw_pb2 as raw_pb
+                    from s2clientprotocol import sc2api_pb2 as sc_pb
+                    command = raw_pb.ActionRawUnitCommand(
+                        ability_id=AbilityId.MORPH_ARCHON.value,
+                        unit_tags=[ht1.tag, ht2.tag],
+                        queue_command=False
+                    )
+                    action = raw_pb.ActionRaw(unit_command=command)
+                    await self._client._execute(action=sc_pb.RequestAction(
+                        actions=[sc_pb.Action(action_raw=action)]
+                    ))
+
 
 
 def test(real_time=0, n=1):
@@ -365,6 +437,6 @@ def botVsComputer(real_time):
 if __name__ == '__main__':
     import time
     start = time.time()
-    test(real_time=0, n=1)
+    test(real_time=1, n=1)
     stop = time.time()
     print('\n\ntime elapsed: {} s\n\n'.format(int(stop - start)))

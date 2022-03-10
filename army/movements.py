@@ -202,7 +202,7 @@ class Movements:
                         self.ai.do(man.attack(enemy.closest_to(h.closest_to(man))))
             elif man.type_id != unit.ZEALOT:   # away. join army
                 self.ai.do(man.attack(pos))
-        if len(nearest) > len(self.ai.army) * 0.55:
+        if len(nearest) > len(self.ai.army) * 0.35:
             if enemy and enemy.closer_than(11, leader).exists:
                 return
             for man in army:

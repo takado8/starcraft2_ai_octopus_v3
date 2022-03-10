@@ -18,11 +18,11 @@ class StargateBuilder:
             amount = 1
 
         if not beacon.exists and stargates.ready.exists:
-            await self.ai.build(unit.FLEETBEACON,near=self.ai.get_proper_pylon())
+            await self.ai.build(unit.FLEETBEACON, near=self.ai.get_pylon_with_least_neighbours())
         elif self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
                 and self.ai.can_afford(unit.STARGATE) and self.ai.already_pending(unit.STARGATE) < 1 and \
                 stargates.amount < amount:
-            await self.ai.build(unit.STARGATE,near=self.ai.get_proper_pylon())
+            await self.ai.build(unit.STARGATE, near=self.ai.get_pylon_with_least_neighbours())
 
     async def proxy(self):
         pylons = self.ai.structures(unit.PYLON).ready

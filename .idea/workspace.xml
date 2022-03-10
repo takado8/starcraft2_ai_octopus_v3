@@ -1,7 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="" />
+    <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bot/builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/cybernetics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/cybernetics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/dark_shrine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/dark_shrine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/forge_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/forge_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/gate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/gate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_bay_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_bay_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/stargate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/stargate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/templar_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/templar_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/twilight_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/twilight_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/cybernetics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/cybernetics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/dark_shrine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/dark_shrine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/forge_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/forge_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/gate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/gate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_bay_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_bay_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/stargate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/stargate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/templar_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/templar_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/twilight_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/twilight_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/cybernetics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/cybernetics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/dark_shrine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/dark_shrine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/forge_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/forge_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/gate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/gate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_bay_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_bay_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/stargate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/stargate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/templar_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/templar_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/twilight_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/twilight_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/cybernetics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/cybernetics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/dark_shrine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/dark_shrine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/forge_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/forge_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/gate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/gate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_bay_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_bay_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/stargate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/stargate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/templar_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/templar_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/twilight_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/twilight_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/movements.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/movements.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/building_spot_validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/building_spot_validator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/cybernetics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/cybernetics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/dark_shrine.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/dark_shrine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/forge_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/forge_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/gate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/gate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/robotics_bay_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/robotics_bay_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/robotics_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/stargate_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/stargate_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/templar_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/templar_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/twilight_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/twilight_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evolution/evolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/evo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evolution/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evolution/subject.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/subject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/macro.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/macro.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,34 +66,34 @@
     <session id="448674061">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.17" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="30" />
+          <entry key="py" value="46" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="30" />
+          <entry key="Python" value="46" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="9" />
-          <entry key="py" value="3151" />
+          <entry key="py" value="4529" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="3151" />
+          <entry key="Python" value="4529" />
         </counts>
       </usages-collector>
     </session>
@@ -47,10 +101,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/strategy/manager.py">
+        <entry file="file://$PROJECT_DIR$/bot/trainers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="42" selection-start-line="42" selection-end-line="42" />
+            <state relative-caret-position="97">
+              <caret line="514" column="8" selection-start-line="514" selection-start-column="8" selection-end-line="514" selection-end-column="8" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,79 +115,70 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="97" column="41" selection-start-line="97" selection-start-column="41" selection-end-line="97" selection-end-column="41" />
+            <state relative-caret-position="160">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bot/conditions.py">
+        <entry file="file://$PROJECT_DIR$/army/micro.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+            <state relative-caret-position="87">
+              <caret line="134" selection-start-line="134" selection-end-line="134" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evolution/main.py">
+        <entry file="file://$PROJECT_DIR$/army/movements.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="369" column="37" selection-start-line="369" selection-start-column="37" selection-end-line="369" selection-end-column="37" />
+            <state relative-caret-position="251">
+              <caret line="204" selection-start-line="204" selection-end-line="204" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/strategy/macro.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1220">
+              <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/builders/robotics_builder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="79">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="712" lean-forward="true" selection-start-line="677" selection-start-column="4" selection-end-line="712" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#543#787#0" />
-                <element signature="e#788#997#0" />
-                <element signature="e#412#950#0" />
-                <element signature="e#1103#2219#0" />
-                <element signature="e#2357#2811#0" />
-                <element signature="e#3105#3132#0" />
-                <element signature="e#3383#4138#0" />
-                <element signature="e#4164#4438#0" />
-                <element signature="e#4492#5916#0" />
-                <element signature="e#6033#6305#0" />
-                <element signature="e#6387#6775#0" />
-                <element signature="e#6890#8283#0" />
-                <element signature="e#8792#8826#0" />
-                <element signature="e#10224#12287#0" />
-                <element signature="e#12335#13258#0" />
-                <element signature="e#13369#15145#0" />
-                <marker date="1646255749268" expanded="true" signature="1740:1745" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/evolution/evolution.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-40">
-              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-                <marker date="1646261622231" expanded="true" signature="131:755" ph="..." />
-                <marker date="1646261622231" expanded="true" signature="404:755" ph="..." />
-                <marker date="1646261622231" expanded="true" signature="1340:1847" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/random.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="755" column="18" lean-forward="true" selection-start-line="755" selection-start-column="18" selection-end-line="755" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evolution/subject.py">
+        <entry file="file://$PROJECT_DIR$/evolution/evo.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="20">
-              <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+              <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+                <marker date="1646877415060" expanded="true" signature="176:794" ph="..." />
+                <marker date="1646877415060" expanded="true" signature="443:794" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -151,19 +199,32 @@
       <find>get_prop</find>
       <find>build</find>
       <find>is_valid_location</find>
+      <find>forge_upg_priority</find>
+      <find>nova</find>
+      <find>super_py</find>
+      <find>blink</find>
+      <find>morp</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/bot/BuildingSpotValidator.py" />
-        <option value="$PROJECT_DIR$/bot/building_spot_validator.py" />
         <option value="$PROJECT_DIR$/bot/chronobooster.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/evolution.py" />
-        <option value="$PROJECT_DIR$/evolution/subject.py" />
+        <option value="$PROJECT_DIR$/bot/builder.py" />
+        <option value="$PROJECT_DIR$/bot/building_spot_validator.py" />
+        <option value="$PROJECT_DIR$/army/movements.py" />
+        <option value="$PROJECT_DIR$/strategy/macro.py" />
+        <option value="$PROJECT_DIR$/builders/robotics_builder.py" />
         <option value="$PROJECT_DIR$/evolution/main.py" />
         <option value="$PROJECT_DIR$/evolution/evolution.py" />
+        <option value="$PROJECT_DIR$/evolution/subject.py" />
+        <option value="$PROJECT_DIR$/evolution/evo.py" />
       </list>
     </option>
   </component>
@@ -189,11 +250,15 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -210,7 +275,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -233,7 +297,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Evo">
+  <component name="RunManager" selected="Python.evo">
     <configuration name="Evo" type="PythonConfigurationType" factoryName="Python">
       <module name="starcraft2_ai_octopus_v3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -247,6 +311,48 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\Users\korne\Desktop\starcraft2_ai_octopus_v3\evolution\main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="evo" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="starcraft2_ai_octopus_v3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evolution" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evolution/evo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="evolution" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="starcraft2_ai_octopus_v3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evolution" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\korne\Desktop\starcraft2_ai_octopus_v3\evolution\evo.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -279,7 +385,15 @@
     <list>
       <item itemvalue="Python.main" />
       <item itemvalue="Python.Evo" />
+      <item itemvalue="Python.evolution" />
+      <item itemvalue="Python.evo" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.evo" />
+        <item itemvalue="Python.evolution" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -298,12 +412,12 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15341812" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16534181" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.72953737" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.8060498" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -342,34 +456,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/macro.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="634">
-          <caret line="114" column="40" selection-start-line="114" selection-start-column="40" selection-end-line="114" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/position.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
           <caret line="329" column="6" selection-start-line="329" selection-start-column="6" selection-end-line="329" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/gate_builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="174" column="60" selection-start-line="167" selection-start-column="8" selection-end-line="174" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/trainers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2799">
-          <caret line="140" column="77" lean-forward="true" selection-start-line="114" selection-start-column="4" selection-end-line="140" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -408,17 +498,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/building_spot_validator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="23" selection-end-line="1" />
-          <folding>
-            <marker date="1646247964664" expanded="true" signature="231:232" ph="..." />
-            <marker date="1646247964664" expanded="true" signature="231:240" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1000">
@@ -426,94 +505,150 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/manager.py">
+    <entry file="file://$PROJECT_DIR$/bot/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/building_spot_validator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        <state>
+          <caret column="50" lean-forward="true" selection-start-column="50" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
+    <entry file="file://$PROJECT_DIR$/bot/builder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="97" column="41" selection-start-line="97" selection-start-column="41" selection-end-line="97" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3380">
-          <caret line="39" column="77" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="39" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micro.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evolution/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="369" column="37" selection-start-line="369" selection-start-column="37" selection-end-line="369" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#543#787#0" />
-            <element signature="e#788#997#0" />
-            <element signature="e#412#950#0" />
-            <element signature="e#1103#2219#0" />
-            <element signature="e#2357#2811#0" />
-            <element signature="e#3105#3132#0" />
-            <element signature="e#3383#4138#0" />
-            <element signature="e#4164#4438#0" />
-            <element signature="e#4492#5916#0" />
-            <element signature="e#6033#6305#0" />
-            <element signature="e#6387#6775#0" />
-            <element signature="e#6890#8283#0" />
-            <element signature="e#8792#8826#0" />
-            <element signature="e#10224#12287#0" />
-            <element signature="e#12335#13258#0" />
-            <element signature="e#13369#15145#0" />
-            <marker date="1646255749268" expanded="true" signature="1740:1745" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evolution/subject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        <state relative-caret-position="540">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
-          <caret line="755" column="18" lean-forward="true" selection-start-line="755" selection-start-column="18" selection-end-line="755" selection-end-column="18" />
+          <caret line="755" column="18" selection-start-line="755" selection-start-column="18" selection-end-line="755" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evolution/evolution.py">
+    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-40">
+        <state relative-caret-position="200">
+          <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/gate_builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1336">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="126" column="8" selection-start-line="126" selection-start-column="8" selection-end-line="126" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micro.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="134" selection-start-line="134" selection-end-line="134" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/trainers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="514" column="8" selection-start-line="514" selection-start-column="8" selection-end-line="514" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2358">
+          <caret line="244" selection-start-line="244" selection-end-line="244" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolution/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3880">
+          <caret line="429" column="26" lean-forward="true" selection-start-line="429" selection-start-column="26" selection-end-line="429" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#4576#4607#0" />
+            <element signature="e#5299#5355#0" />
+            <element signature="e#5603#5658#0" />
+            <element signature="e#7775#9115#0" />
+            <element signature="e#9236#11299#0" />
+            <element signature="e#11347#11892#0" />
+            <element signature="e#11922#13700#0" />
+            <element signature="e#14725#15351#0" />
+            <marker date="1646873569598" expanded="true" signature="1924:1929" ph="..." />
+            <marker date="1646873569598" expanded="true" signature="4579:4632" ph="..." />
+            <marker date="1646873569598" expanded="true" signature="6050:6094" ph="..." />
+            <marker date="1646873569598" expanded="true" signature="6399:6453" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolution/subject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/movements.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="204" selection-start-line="204" selection-end-line="204" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/macro.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1220">
+          <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/robotics_builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
           <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="712" lean-forward="true" selection-start-line="677" selection-start-column="4" selection-end-line="712" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolution/evo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
-            <marker date="1646261622231" expanded="true" signature="131:755" ph="..." />
-            <marker date="1646261622231" expanded="true" signature="404:755" ph="..." />
-            <marker date="1646261622231" expanded="true" signature="1340:1847" ph="..." />
+            <marker date="1646877415060" expanded="true" signature="176:794" ph="..." />
+            <marker date="1646877415060" expanded="true" signature="443:794" ph="..." />
           </folding>
         </state>
       </provider>

@@ -11,4 +11,4 @@ class TemplarArchivesBuilder:
     async def standard(self):
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and not self.ai.structures(unit.TEMPLARARCHIVE).exists\
             and self.ai.can_afford(unit.TEMPLARARCHIVE) and not self.ai.already_pending(unit.TEMPLARARCHIVE):
-                await self.ai.build(unit.TEMPLARARCHIVE, near=self.ai.get_proper_pylon())
+                await self.ai.build(unit.TEMPLARARCHIVE, near=self.ai.get_pylon_with_least_neighbours())

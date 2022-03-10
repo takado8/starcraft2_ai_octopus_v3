@@ -25,7 +25,7 @@ class CyberneticsBuilder:
     async def standard(self):
         if self.ai.structures(unit.CYBERNETICSCORE).amount < 1 and not self.ai.already_pending(unit.CYBERNETICSCORE) and \
                 self.ai.structures(unit.GATEWAY).ready.exists:
-            cybernetics_position = self.ai.get_proper_pylon()
+            cybernetics_position = self.ai.get_pylon_with_least_neighbours()
             if cybernetics_position:
                 await self.ai.build(unit.CYBERNETICSCORE, near=cybernetics_position, placement_step=3,
                                  random_alternative=True, max_distance=20)

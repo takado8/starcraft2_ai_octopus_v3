@@ -40,7 +40,7 @@ class Macro(Strategy):
         await self._cybernetics_builder.standard()
 
     async def robotics_build(self):
-        await self._robotics_builder.double()
+        await self._robotics_builder.macro()
 
     async def robotics_bay_build(self):
         await self._robotics_bay_builder.standard()

@@ -13,13 +13,13 @@ class ForgeBuilder:
             if self.ai.structures(unit.FORGE).amount < 1 and not self.ai.already_pending(unit.FORGE) and self.ai.can_afford(
                     unit.FORGE):
                 if self.ai.structures(unit.PYLON).ready.exists:
-                    placement = self.ai.get_proper_pylon()
+                    placement = self.ai.get_pylon_with_least_neighbours()
                     if placement:
                         await self.ai.build(unit.FORGE,near=placement,placement_step=3)
             elif self.ai.structures(unit.FORGE).ready.exists:
                 if self.ai.time > 480 and self.ai.structures(unit.FORGE).amount < 2 and not self.ai.already_pending(
                         unit.FORGE) and self.ai.can_afford(unit.FORGE):
-                    placement = self.ai.get_proper_pylon()
+                    placement = self.ai.get_pylon_with_least_neighbours()
                     if placement:
                         await self.ai.build(unit.FORGE,near=placement,placement_step=3)
 
@@ -29,7 +29,7 @@ class ForgeBuilder:
                     unit.FORGE) and self.ai.can_afford(
                     unit.FORGE):
                 if self.ai.structures(unit.PYLON).ready.exists:
-                    placement = self.ai.get_proper_pylon()
+                    placement = self.ai.get_pylon_with_least_neighbours()
                     if placement:
                         await self.ai.build(unit.FORGE,near=placement,placement_step=3)
 
@@ -41,6 +41,6 @@ class ForgeBuilder:
                 am = 1
             if self.ai.structures(unit.FORGE).amount < am and not self.ai.already_pending(unit.FORGE):
                 if self.ai.structures(unit.PYLON).ready.exists:
-                    placement = self.ai.get_proper_pylon()
+                    placement = self.ai.get_pylon_with_least_neighbours()
                     if placement:
                         await self.ai.build(unit.FORGE,near=placement,placement_step=3)

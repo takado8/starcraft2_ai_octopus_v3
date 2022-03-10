@@ -6,11 +6,10 @@ MUTATION_RATE = 0.05
 
 
 class Evolution:
-    def __init__(self):
-        self.population_count = 100
+    def __init__(self, population_count=100, reproduction_rate=0.6):
+        self.population_count = population_count
         self.population = []
-        self.reproduction_rate = 0.6
-        self.generations_nb = 10
+        self.reproduction_rate = reproduction_rate
         self.generate_random_population()
 
     def evolve(self):
@@ -34,8 +33,8 @@ class Evolution:
     @staticmethod
     def cross_over(parents):
         def mutate(gene):
-            if random.uniform(0,1) < MUTATION_RATE:
-                gene = gene - (1 if gene > 0 and random.uniform(0,1) < 0.5 else -1)
+            if random.uniform(0, 1) < MUTATION_RATE:
+                gene = gene - (1 if gene > 0 and random.uniform(0, 1) < 0.5 else -1)
             return gene
 
         new_subject = Subject()
@@ -52,7 +51,7 @@ class Evolution:
 
     def select_to_reproduction(self):
         selected = []
-        n = int(self.population_count * self.reproduction_rate)
+        n = int(len(self.population) * self.reproduction_rate)
         while len(selected) < n:
             subjects = random.sample(self.population, 2)
             selected.append(subjects[0] if subjects[0].fitness > subjects[1].fitness else subjects[1])
@@ -60,7 +59,7 @@ class Evolution:
 
     def delete_subjects(self):
         selected = []
-        n = 1 - int(self.population_count * self.reproduction_rate)
+        n = int(len(self.population) * self.reproduction_rate)
         while len(selected) < n:
             subjects = random.sample(self.population, 2)
             selected.append(subjects[0] if subjects[0].fitness > subjects[1].fitness else subjects[1])
@@ -83,3 +82,24 @@ class Evolution:
             chromosome = [gates_count, stalkers_count, zealots_count, attack]
             genome.append(chromosome)
         return genome
+
+
+if __name__ == '__main__':
+    evo = Evolution(population_count=10, reproduction_rate=0.6)
+    target = 23
+    generations_nb = 500
+    for i in range(generations_nb):
+        evo.evolve()
+        for subject in evo.population:
+            total = sum(subject.genome[0])
+            fitness = 100 - abs(target - total)
+            if fitness <= 0:
+                fitness = 1
+            subject.fitness = fitness
+        print('i: {} avg fit: {} best fit: {}'.format(i, round(
+            sum([s.fitness for s in evo.population]) / len(evo.population), 4),
+                                                      round(max([s.fitness for s in evo.population]), 4)))
+
+    for s in evo.population:
+        print(s.genome)
+        print('sum: {} fit: {}'.format(sum(s.genome[0]), s.fitness))

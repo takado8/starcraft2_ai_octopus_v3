@@ -60,7 +60,7 @@ class GateBuilder:
         if gates_count < gc\
                 and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(unit.PYLON).ready.exists and \
                 self.ai.already_pending(unit.GATEWAY) < 2:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is not None:
                 await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3,max_distance=20,
                                     random_alternative=True)
@@ -79,7 +79,7 @@ class GateBuilder:
         if gates_count < gc\
                 and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(unit.PYLON).ready.exists and \
                 self.ai.already_pending(unit.GATEWAY) < 2:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is not None:
                 await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3,max_distance=20,
                                     random_alternative=True)
@@ -100,7 +100,7 @@ class GateBuilder:
         if gates_count < gc\
                 and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(unit.PYLON).ready.exists and \
                 self.ai.already_pending(unit.GATEWAY) < 2:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is not None:
                 await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3,max_distance=20,
                                     random_alternative=True)
@@ -117,7 +117,7 @@ class GateBuilder:
                 placement = self.ai.main_base_ramp.protoss_wall_buildings[1]
             elif 1 < gates_count < 4 and self.ai.structures(unit.CYBERNETICSCORE).exists and \
                     self.ai.already_pending(unit.GATEWAY) < 2:
-                p = self.ai.get_proper_pylon()
+                p = self.ai.get_pylon_with_least_neighbours()
                 if p:
                     await self.ai.build(unit.GATEWAY,near=p,placement_step=3,max_distance=22,
                                         random_alternative=True)
@@ -138,7 +138,7 @@ class GateBuilder:
                 placement = self.ai.main_base_ramp.protoss_wall_buildings[1]
             elif 1 < gates_count < 3 and self.ai.structures(unit.CYBERNETICSCORE).exists and \
                     self.ai.already_pending(unit.GATEWAY) < 2:
-                p = self.ai.get_proper_pylon()
+                p = self.ai.get_pylon_with_least_neighbours()
                 if p:
                     await self.ai.build(unit.GATEWAY,near=p,placement_step=3,max_distance=22,
                                         random_alternative=True)
@@ -195,14 +195,14 @@ class GateBuilder:
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=0,max_distance=0,random_alternative=False)
         elif 1 < gates_count < 4 and self.ai.can_afford(unit.GATEWAY) and self.ai.time > 180 and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3)
         elif 3 < gates_count < (9 if self.ai.minerals > 400 else 6) and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(
                 unit.NEXUS).ready.amount > 1 and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3)
@@ -214,20 +214,20 @@ class GateBuilder:
         if gates_count < gc \
                 and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(unit.PYLON).ready.exists and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is not None:
                 await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3,max_distance=20,
                                     random_alternative=True)
         elif 1 < gates_count < 4 and self.ai.can_afford(unit.GATEWAY) and self.ai.time > 180 and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3)
         elif 3 < gates_count < (12 if self.ai.minerals > 400 else 6) and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(
                 unit.NEXUS).ready.amount > 1 and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3)
@@ -239,20 +239,20 @@ class GateBuilder:
         if gates_count < gc \
                 and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(unit.PYLON).ready.exists and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is not None:
                 await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3,max_distance=20,
                                     random_alternative=True)
         elif 1 < gates_count < 4 and self.ai.can_afford(unit.GATEWAY) and self.ai.time > 280 and \
                 self.ai.already_pending(unit.GATEWAY) < 1 and self.ai.structures(unit.ROBOTICSFACILITY).exists:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3)
         elif 3 < gates_count < (12 if self.ai.minerals > 400 else 7) and self.ai.can_afford(unit.GATEWAY) and self.ai.structures(
                 unit.NEXUS).ready.amount > 1 and \
                 self.ai.already_pending(unit.GATEWAY) < 1:
-            pylon = self.ai.get_proper_pylon()
+            pylon = self.ai.get_pylon_with_least_neighbours()
             if pylon is None:
                 return
             await self.ai.build(unit.GATEWAY,near=pylon,placement_step=3, max_distance=40)
