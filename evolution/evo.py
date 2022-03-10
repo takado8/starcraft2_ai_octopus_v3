@@ -59,7 +59,7 @@ class Evolution:
 
     def delete_subjects(self):
         selected = []
-        n = int(len(self.population) * self.reproduction_rate)
+        n = int(len(self.population) * (1 - self.reproduction_rate))
         while len(selected) < n:
             subjects = random.sample(self.population, 2)
             selected.append(subjects[0] if subjects[0].fitness > subjects[1].fitness else subjects[1])
@@ -85,9 +85,9 @@ class Evolution:
 
 
 if __name__ == '__main__':
-    evo = Evolution(population_count=10, reproduction_rate=0.6)
+    evo = Evolution(population_count=100, reproduction_rate=0.6)
     target = 23
-    generations_nb = 500
+    generations_nb = 20
     for i in range(generations_nb):
         evo.evolve()
         for subject in evo.population:
