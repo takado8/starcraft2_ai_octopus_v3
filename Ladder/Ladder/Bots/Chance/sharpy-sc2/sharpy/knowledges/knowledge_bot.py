@@ -137,7 +137,7 @@ class KnowledgeBot(BotAI):
 
     async def on_end(self, game_result: Result):
         if self.knowledge.ai is not None:
-            await self.knowledge.on_end(game_result)
+            await self.knowledge.on_end()
 
     def _log_start(self):
         def log(message):

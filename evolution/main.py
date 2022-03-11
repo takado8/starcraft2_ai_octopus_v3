@@ -1,6 +1,6 @@
 import random
 import sc2
-from sc2 import run_game, maps, Race, Difficulty, AIBuild, AbilityId
+from sc2 import run_game, maps, Race, Difficulty, AIBuild, AbilityId, Result
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
@@ -9,9 +9,7 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
-from strategy.stalker_proxy import StalkerProxy
-from strategy.macro import Macro
-from strategy.manager import Strategy
+from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
 
 
@@ -23,11 +21,14 @@ class OctopusEvo(sc2.BotAI):
                  unit.ORBITALCOMMANDFLYING,
                  unit.PLANETARYFORTRESS, unit.HIVE, unit.HATCHERY, unit.LAIR]
     units_to_ignore = [unit.LARVA, unit.EGG, unit.INTERCEPTOR]
+    workers_ids = [unit.SCV, unit.PROBE, unit.DRONE, unit.MULE]
     enemy_main_base_down = False
     leader_tag = None
     destination = None
     psi_storm_wait = 0
     nova_wait = 0
+    lost_cost = 0
+    killed_cost = 0
 
     def __init__(self, genome):
         super().__init__()
@@ -42,14 +43,15 @@ class OctopusEvo(sc2.BotAI):
         self.army = None
         self.observer_scouting_index = 0
         self.observer_scouting_points = []
-        self.strategy: Strategy = None
+        self.strategy: EvolutionStrategy = None
         self.genome = genome
         self.chromosome_index = 0
 
     async def on_start(self):
-        self.strategy = Macro(self)
+        self.strategy = EvolutionStrategy(self)
 
     async def on_step(self, iteration: int):
+        self.save_stats()
         # get genome row (chromosome) for this time
         time_frame = int(self.time / 30)
         if time_frame > self.chromosome_index:
@@ -57,20 +59,25 @@ class OctopusEvo(sc2.BotAI):
             print('time: {}'.format(self.time))
             print('chromosome index: {}'.format(self.chromosome_index))
 
-        self.assign_defend_position()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
-
+        self.assign_defend_position()
         await self.distribute_workers()
         await self.build_pylons()
-        await self.build_gateway()
-        await self.build_cybernetics()
-        await self.warp_units()
         await self.morph_gates()
         await self.chronoboost()
         self.train_probes()
-        self.train_units()
-        self.upgrade_warpgate()
+        self.cybernetics_upgrade()
+        await self.warp_prism()
         self.build_assimilators()
+        self.strategy.forge_upgrades()
+        await self.morph_Archons()
+        await self.strategy.twilight_upgrades()
+        # await self.strategy.transformation()
+
+        await self.strategy.build_gateway()
+        await self.strategy.build_cybernetics()
+        await self.strategy.warp_units(max_archons=0, max_sentry=0, max_stalkers=0, max_adepts=0, max_zealots=0)
+        self.strategy.gate_train()
         await self.strategy.forge_build()
         await self.strategy.robotics_build()
         await self.strategy.robotics_bay_build()
@@ -80,11 +87,7 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.dark_shrine_build()
         self.strategy.robotics_train()
         await self.strategy.templar_archives_upgrades()
-        self.strategy.forge_upgrades()
         await self.strategy.expand()
-        await self.strategy.transformation()
-        await self.morph_Archons()
-        await self.strategy.twilight_upgrades()
 
         # attack
         if (not self.attack) and (not self.strategy.retreat_condition()) and (
@@ -120,7 +123,7 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.gate_build()
 
     async def build_pylons(self):
-        await self.strategy.pylon_next_build()
+        await self.strategy.build_pylons()
 
     async def build_cybernetics(self):
         await self.strategy.cybernetics_build()
@@ -133,57 +136,12 @@ class OctopusEvo(sc2.BotAI):
 
     def train_probes(self):
         self.strategy.nexus_train()
-        # workers = self.workers.amount
-        # nex = self.structures(unit.NEXUS).amount
-        # if not self.structures(unit.PYLON).exists and workers == 14:
-        #     return
-        # if workers < 20 * nex and workers < 55:
-        #     for nexus in self.structures(unit.NEXUS).ready:
-        #         if nexus.is_idle and self.can_afford(unit.PROBE):
-        #             self.do(nexus.train(unit.PROBE))
-        # elif 54 < workers < 74:
-        #     if self.can_afford(unit.PROBE) and not self.already_pending(unit.PROBE):
-        #         if self.structures(unit.NEXUS).idle.amount < nex:
-        #             return
-        #         nexus = self.structures(unit.NEXUS).ready.idle.random
-        #         self.do(nexus.train(unit.PROBE))
 
     def train_units(self):
         self.strategy.gate_train()
-        # if self.structures(unit.CYBERNETICSCORE).ready.exists:
-        #     gateways = self.structures(unit.GATEWAY).ready.idle
-        #     for gateway in gateways:
-        #         if self.can_afford(unit.STALKER):
-        #             self.do(gateway.train(unit.STALKER))
 
     async def warp_units(self):
         await self.strategy.warpgate_train()
-        # warpgates = self.structures(unit.WARPGATE).ready.idle
-        # if warpgates.exists:
-        #     if self.attack:
-        #         prisms = self.units(unit.WARPPRISMPHASING)
-        #         if prisms.exists:
-        #             pos = prisms.furthest_to(self.start_location).position
-        #         else:
-        #             furthest_pylon = self.structures(unit.PYLON).ready.furthest_to(self.start_location.position)
-        #             pos = furthest_pylon.position
-        #     else:
-        #         pos = self.structures(unit.PYLON).ready.closer_than(35, self.start_location).furthest_to(
-        #             self.start_location).position
-        #     placement = None
-        #     i = 0
-        #     while placement is None:
-        #         i += 1
-        #         placement = await self.find_placement(AbilityId.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-        #                                               max_distance=5, placement_step=2, random_alternative=False)
-        #         if i > 5:
-        #             print("can't find position for warpin.")
-        #             return
-        #     for warpgate in warpgates:
-        #         abilities = await self.get_available_abilities(warpgate)
-        #         if AbilityId.WARPGATETRAIN_ZEALOT in abilities:
-        #             if self.can_afford(unit.STALKER):
-        #                 self.do(warpgate.warp_in(unit.STALKER, placement))
 
     async def morph_gates(self):
         for gateway in self.structures(unit.GATEWAY).ready:
@@ -191,38 +149,11 @@ class OctopusEvo(sc2.BotAI):
             if AbilityId.MORPH_WARPGATE in abilities and self.can_afford(AbilityId.MORPH_WARPGATE):
                 self.do(gateway(AbilityId.MORPH_WARPGATE))
 
-    def upgrade_warpgate(self):
-        cyber = self.structures(unit.CYBERNETICSCORE).ready.idle
-        if cyber.exists:
-            if upgrade.WARPGATERESEARCH not in self.state.upgrades and \
-                    not self.already_pending_upgrade(upgrade.WARPGATERESEARCH) and \
-                    self.can_afford(upgrade.WARPGATERESEARCH):
-                self.do(cyber.random.research(upgrade.WARPGATERESEARCH))
+    def cybernetics_upgrade(self):
+        self.strategy.cybernetics_upgrades()
 
     def build_assimilators(self):
-        if self.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \
-                (self.structures(unit.NEXUS).ready.amount > 1 and self.vespene > self.minerals):
-            return
-        if not self.can_afford(unit.ASSIMILATOR):
-            return
-        nexuses = self.structures(unit.NEXUS)
-        if nexuses.amount < 4:
-            nexuses = nexuses.ready
-        probes = self.units(unit.PROBE)
-        if probes.exists:
-            for nexus in nexuses:
-                vespenes = self.vespene_geyser.closer_than(9, nexus)
-                workers = probes.closer_than(12, nexus)
-                if workers.amount > 14 or nexuses.amount > 3:
-                    for vespene in vespenes:
-                        if (not self.already_pending(unit.ASSIMILATOR)) and\
-                                (not self.structures(unit.ASSIMILATOR).exists or not
-                                         self.structures(unit.ASSIMILATOR).closer_than(3, vespene).exists):
-                            worker = self.select_build_worker(vespene.position)
-                            if worker is None:
-                                break
-                            self.do(worker.build(unit.ASSIMILATOR, vespene))
-                            self.do(worker.move(worker.position.random_on_distance(1), queue=True))
+        self.strategy.assimilator_build()
 
     async def chronoboost(self):
         await self.strategy.chronoboost()
@@ -394,23 +325,32 @@ class OctopusEvo(sc2.BotAI):
                         actions=[sc_pb.Action(action_raw=action)]
                     ))
 
+    async def warp_prism(self):
+        if self.attack:
+            dist = self.enemy_start_locations[0].distance_to(self.game_info.map_center) * 0.8
+            for warp in self.units(unit.WARPPRISM):
+                if warp.distance_to(self.enemy_start_locations[0]) <= dist:
+                    abilities = await self.get_available_abilities(warp)
+                    if AbilityId.MORPH_WARPPRISMPHASINGMODE in abilities:
+                        self.do(warp(AbilityId.MORPH_WARPPRISMPHASINGMODE))
+        else:
+            for warp in self.units(unit.WARPPRISMPHASING):
+                abilities = await self.get_available_abilities(warp)
+                if AbilityId.MORPH_WARPPRISMTRANSPORTMODE in abilities:
+                    self.do(warp(AbilityId.MORPH_WARPPRISMTRANSPORTMODE))
+
+    def save_stats(self):
+        self.lost_cost = self.state.score.lost_minerals_army + 1.2 * self.state.score.lost_vespene_army
+        self.killed_cost = self.state.score.killed_minerals_army + 1.2 * self.state.score.killed_vespene_army
+        # print('lost_cost: ' + str(self.lost_cost))
+        # print('killed_cost: ' + str(self.killed_cost))
 
 
-def test(real_time=0, n=1):
-    if real_time == 1:
+def botVsComputer(ai, real_time=0):
+    if real_time:
         real_time = True
     else:
         real_time = False
-    for i in range(n):
-        print('==================================================================================--> ' + str(i))
-        # try:
-        botVsComputer(real_time)
-        # except Exception as ex:
-        #     print('Error.')
-        #     print(ex)
-
-
-def botVsComputer(real_time):
     maps_set = ["TritonLE", "Ephemeron",
                 # 'DiscoBloodbathLE',      #'Eternal Empire LE','Nightshade LE','Simulacrum LE',
                 'World of Sleepers LE', 'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
@@ -422,13 +362,27 @@ def botVsComputer(real_time):
     # computer_builds = [AIBuild.Power]
     computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
+
     # map_index = random.randint(0, 6)
-    race_index = random.randint(0, 2)
-    res = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
-        Bot(race=Race.Protoss, ai=OctopusEvo(None), name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+    # race_index = random.randint(0, 2)
+    result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
+        Bot(race=Race.Protoss, ai=ai, name='Octopus'),
+        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
-    return res, build, races[race_index]
+    return result, ai#, build, races[race_index]
+
+
+def test(genome, real_time=0):
+    ai = OctopusEvo(genome)
+    result, ai = botVsComputer(ai, real_time)
+    print('Result: {}'.format(result))
+    print('lost: {}'.format(ai.lost_cost))
+    print('killed: {}'.format(ai.killed_cost))
+    if result == Result.Victory:
+        win = 1
+    else:
+        win = 0
+    return win, ai.killed_cost, ai.lost_cost
 
 
 # CheatMoney   VeryHard
@@ -437,6 +391,6 @@ def botVsComputer(real_time):
 if __name__ == '__main__':
     import time
     start = time.time()
-    test(real_time=1, n=1)
+    test(real_time=0, n=1)
     stop = time.time()
     print('\n\ntime elapsed: {} s\n\n'.format(int(stop - start)))

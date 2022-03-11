@@ -104,7 +104,7 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
     state = await client.observation()
     # check game result every time we get the observation
     if client._game_result:
-        await ai.on_end(client._game_result[player_id])
+        await ai.on_end()
         return client._game_result[player_id]
     gs = GameState(state.observation)
     proto_game_info = await client._execute(game_info=sc_pb.RequestGameInfo())
@@ -115,7 +115,7 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
     except Exception as e:
         logger.exception(f"AI on_start threw an error")
         logger.error(f"resigning due to previous error")
-        await ai.on_end(Result.Defeat)
+        await ai.on_end()
         return Result.Defeat
 
     iteration = 0
@@ -129,7 +129,7 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
             # check game result every time we get the observation
             if client._game_result:
                 try:
-                    await ai.on_end(client._game_result[player_id])
+                    await ai.on_end()
                 except TypeError as error:
                     # print(f"caught type error {error}")
                     # print(f"return {client._game_result[player_id]}")
@@ -139,7 +139,7 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
             logger.debug(f"Score: {gs.score.score}")
 
             if game_time_limit and (gs.game_loop * 0.725 * (1 / 16)) > game_time_limit:
-                await ai.on_end(Result.Tie)
+                await ai.on_end()
                 return Result.Tie
             proto_game_info = await client._execute(game_info=sc_pb.RequestGameInfo())
             ai._prepare_step(gs, proto_game_info)
@@ -207,14 +207,14 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
                 if result is None:
                     logger.error("Game over, but no results gathered")
                     raise
-                await ai.on_end(result)
+                await ai.on_end()
                 return result
             # NOTE: this message is caught by pytest suite
             logger.exception(f"AI step threw an error")  # DO NOT EDIT!
             logger.error(f"Error: {e}")
             logger.error(f"Resigning due to previous error")
             try:
-                await ai.on_end(Result.Defeat)
+                await ai.on_end()
             except TypeError as error:
                 # print(f"caught type error {error}")
                 # print(f"return {Result.Defeat}")
@@ -225,7 +225,7 @@ async def _play_game_ai(client, player_id, ai, realtime, step_time_limit, game_t
 
         if not realtime:
             if not client.in_game:  # Client left (resigned) the game
-                await ai.on_end(client._game_result[player_id])
+                await ai.on_end()
                 return client._game_result[player_id]
 
             await client.step()
@@ -264,7 +264,7 @@ async def _play_replay(client, ai, realtime=False, player_id=0):
     state = await client.observation()
     # Check game result every time we get the observation
     if client._game_result:
-        await ai.on_end(client._game_result[player_id])
+        await ai.on_end()
         return client._game_result[player_id]
     gs = GameState(state.observation)
     proto_game_info = await client._execute(game_info=sc_pb.RequestGameInfo())
@@ -275,7 +275,7 @@ async def _play_replay(client, ai, realtime=False, player_id=0):
     except Exception as e:
         logger.exception(f"AI on_start threw an error")
         logger.error(f"resigning due to previous error")
-        await ai.on_end(Result.Defeat)
+        await ai.on_end()
         return Result.Defeat
 
     iteration = 0
@@ -290,7 +290,7 @@ async def _play_replay(client, ai, realtime=False, player_id=0):
             # check game result every time we get the observation
             if client._game_result:
                 try:
-                    await ai.on_end(client._game_result[player_id])
+                    await ai.on_end()
                 except TypeError as error:
                     # print(f"caught type error {error}")
                     # print(f"return {client._game_result[player_id]}")
@@ -325,14 +325,14 @@ async def _play_replay(client, ai, realtime=False, player_id=0):
                 # if result is None:
                 #     logger.error("Game over, but no results gathered")
                 #     raise
-                await ai.on_end(Result.Victory)
+                await ai.on_end()
                 return None
             # NOTE: this message is caught by pytest suite
             logger.exception(f"AI step threw an error")  # DO NOT EDIT!
             logger.error(f"Error: {e}")
             logger.error(f"Resigning due to previous error")
             try:
-                await ai.on_end(Result.Defeat)
+                await ai.on_end()
             except TypeError as error:
                 # print(f"caught type error {error}")
                 # print(f"return {Result.Defeat}")
@@ -343,7 +343,7 @@ async def _play_replay(client, ai, realtime=False, player_id=0):
 
         if not realtime:
             if not client.in_game:  # Client left (resigned) the game
-                await ai.on_end(Result.Victory)
+                await ai.on_end()
                 return Result.Victory
 
         await client.step()  # unindent one line to work in realtime

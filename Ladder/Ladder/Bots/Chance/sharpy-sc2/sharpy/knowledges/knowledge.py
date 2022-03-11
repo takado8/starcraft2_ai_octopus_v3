@@ -448,7 +448,7 @@ class Knowledge:
         self._print(f"Step time max: {step_time_max}", stats=False)
 
         for manager in self.managers:
-            await manager.on_end(game_result)
+            await manager.on_end()
 
 # region Knowledge event handlers
 
