@@ -62,10 +62,10 @@ class OctopusEvo(sc2.BotAI):
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         self.assign_defend_position()
         await self.distribute_workers()
-        await self.build_pylons()
+        await self.strategy.build_pylons()
         await self.morph_gates()
         await self.chronoboost()
-        self.train_probes()
+        self.strategy.train_probes()
         self.cybernetics_upgrade()
         await self.warp_prism()
         self.build_assimilators()
@@ -78,26 +78,24 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.build_cybernetics()
         await self.strategy.warp_units(max_archons=0, max_sentry=0, max_stalkers=0, max_adepts=0, max_zealots=0)
         self.strategy.gate_train()
-        await self.strategy.forge_build()
-        await self.strategy.robotics_build()
-        await self.strategy.robotics_bay_build()
-        await self.strategy.templar_archives_build()
-        await self.strategy.pylon_first_build()
-        await self.strategy.twilight_build()
-        await self.strategy.dark_shrine_build()
+        await self.strategy.build_forge()
+        await self.strategy.build_robotics()
+        # await self.strategy.build_robotics_bay()
+        await self.strategy.build_templar_archives()
+        await self.strategy.build_twilight()
+        # await self.strategy.dark_shrine_build()
         self.strategy.robotics_train()
-        await self.strategy.templar_archives_upgrades()
         await self.strategy.expand()
 
         # attack
-        if (not self.attack) and (not self.strategy.retreat_condition()) and (
-                self.strategy.counter_attack_condition() or self.attack_condition()):
+        if (not self.attack) and (not self.retreat_condition()) and (
+                self.counter_attack_condition() or self.attack_condition()):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
         # retreat
-        if self.strategy.retreat_condition():
+        if self.retreat_condition():
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -119,41 +117,17 @@ class OctopusEvo(sc2.BotAI):
             await self.chat_send('on_step error 9 -> micro_units')
             raise ex
 
-    async def build_gateway(self):
-        await self.strategy.gate_build()
-
-    async def build_pylons(self):
-        await self.strategy.build_pylons()
-
-    async def build_cybernetics(self):
-        await self.strategy.cybernetics_build()
-
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
         return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                build_worker=build_worker, random_alternative=random_alternative)
 
-    def train_probes(self):
-        self.strategy.nexus_train()
-
-    def train_units(self):
-        self.strategy.gate_train()
-
-    async def warp_units(self):
-        await self.strategy.warpgate_train()
-
     async def morph_gates(self):
         for gateway in self.structures(unit.GATEWAY).ready:
             abilities = await self.get_available_abilities(gateway)
             if AbilityId.MORPH_WARPGATE in abilities and self.can_afford(AbilityId.MORPH_WARPGATE):
                 self.do(gateway(AbilityId.MORPH_WARPGATE))
-
-    def cybernetics_upgrade(self):
-        self.strategy.cybernetics_upgrades()
-
-    def build_assimilators(self):
-        self.strategy.assimilator_build()
 
     async def chronoboost(self):
         await self.strategy.chronoboost()
@@ -241,9 +215,6 @@ class OctopusEvo(sc2.BotAI):
                 self.observer_scouting_index += 1
                 if self.observer_scouting_index == len(self.observer_scouting_points):
                     self.observer_scouting_index = 0
-
-    def attack_condition(self):
-        return self.strategy.attack_condition()
 
     def get_pylon_with_least_neighbours(self):
         return self.spot_validator.get_pylon_with_least_neighbours()
@@ -344,6 +315,16 @@ class OctopusEvo(sc2.BotAI):
         self.killed_cost = self.state.score.killed_minerals_army + 1.2 * self.state.score.killed_vespene_army
         # print('lost_cost: ' + str(self.lost_cost))
         # print('killed_cost: ' + str(self.killed_cost))
+
+    def attack_condition(self, max_supply):
+        return self.supply_used > max_supply
+
+    def retreat_condition(self, army_count_retreat):
+        return self.attack and self.army.amount < army_count_retreat
+
+    def counter_attack_condition(self):
+        en = self.enemy_units()
+        return en.exists and en.closer_than(40, self.defend_position).amount > 5
 
 
 def botVsComputer(ai, real_time=0):
