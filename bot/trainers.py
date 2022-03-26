@@ -485,14 +485,17 @@ class StargateTrainer:
                     self.ai.train(unit.TEMPEST)
                 elif self.ai.can_afford(unit.VOIDRAY) and carrier_amount + tempest_amount > voidray_amount < 3:
                     self.ai.train(unit.VOIDRAY)
-            # elif self.ai.units(unit.ORACLE).amount < 1:
-            #     if self.ai.can_afford(unit.ORACLE):
-            #         self.ai.train(unit.ORACLE)
+            elif self.ai.units(unit.ORACLE).amount < 1:
+                if self.ai.can_afford(unit.ORACLE):
+                    self.ai.train(unit.ORACLE)
             elif self.ai.can_afford(unit.VOIDRAY) and self.ai.army(unit.VOIDRAY).amount < 2:
                 self.ai.train(unit.VOIDRAY)
 
     def voidray(self):
         if self.ai.structures(unit.STARGATE).ready.idle.exists:
+            if self.ai.units(unit.ORACLE).amount < 1:
+                if self.ai.can_afford(unit.ORACLE):
+                    self.ai.train(unit.ORACLE)
             if self.ai.can_afford(unit.VOIDRAY):
                 self.ai.train(unit.VOIDRAY)
 

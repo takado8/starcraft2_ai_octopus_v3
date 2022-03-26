@@ -15,65 +15,53 @@ class EvolutionStrategy:
         self.ai = ai
         self.type = 'macro'
         self.name = 'evo'
-        self.expander = Expander(self)
-        self.chronobooster = Chronobooster(self)
+        self.expander = Expander(ai)
+        self.chronobooster = Chronobooster(ai)
 
     # =======================================================  Builders
-    def build_gateway(self, max_count):
-        gates_count = self.ai.structures(unit.GATEWAY).amount
-        gates_count += self.ai.structures(unit.WARPGATE).amount
+    async def build_from_queue(self):
+        order_dict = {}
+        for i in range(self.ai.build_order_index + 1):
+            building = self.ai.build_order[i]
+            if building in order_dict:
+                order_dict[building][1] += 1
+            else:
+                amount = self.ai.structures(building).amount
+                order_dict[building] = [amount, 1]
+        if unit.GATEWAY in order_dict:
+            warpgate_amount = self.ai.structures(unit.WARPGATE).amount
+            order_dict[unit.GATEWAY][0] += warpgate_amount
+        if unit.NEXUS in order_dict:
+            order_dict[unit.NEXUS][1] += 1
+        print('order dict: {}'.format(order_dict))
+        all_done = True
+        for building in order_dict:
+            if order_dict[building][0] < order_dict[building][1]:
+                all_done = False
+                print('need to build: {}'.format(building))
+                if self.ai.can_afford(building) and self.ai.already_pending(building) < 1:
+                    pylon = self.ai.get_pylon_with_least_neighbours()
+                    if pylon:
+                        if building == unit.NEXUS:
+                            await self.expander.evo()
+                        else:
+                            await self.ai.build(building, near=pylon, placement_step=3, max_distance=40,
+                                            random_alternative=True)
+        if all_done:
+            print('all done.')
+            if self.ai.build_order_index + 1 < len(self.ai.build_order):
+                self.ai.build_order_index += 1
 
-        pylon = self.ai.get_pylon_with_least_neighbours()
-        if gates_count < max_count and self.ai.can_afford(unit.GATEWAY) and pylon and \
-                self.ai.already_pending(unit.GATEWAY) < 1:
-            await self.ai.build(unit.GATEWAY, near=pylon, placement_step=3, max_distance=12,
-                                random_alternative=True)
-
-    def build_cybernetics(self, max_count):
-        if self.ai.structures(unit.CYBERNETICSCORE).amount < max_count and not self.ai.already_pending(
-                unit.CYBERNETICSCORE) and \
-                self.ai.structures(unit.GATEWAY).ready.exists:
-            cybernetics_position = self.ai.get_pylon_with_least_neighbours()
-            if cybernetics_position:
-                await self.ai.build(unit.CYBERNETICSCORE, near=cybernetics_position, placement_step=3,
-                                    random_alternative=True, max_distance=20)
-
-    def build_forge(self, max_count):
-        if self.ai.structures(unit.FORGE).amount < max_count and not self.ai.already_pending(unit.FORGE) \
-                and self.ai.can_afford(unit.FORGE):
-            placement = self.ai.get_pylon_with_least_neighbours()
-            if placement:
-                await self.ai.build(unit.FORGE, near=placement, placement_step=3)
-
-    def build_robotics(self, max_count):
-        if self.ai.forge_upg_priority():
-            return
-        if self.ai.structures(unit.ROBOTICSFACILITY).amount < max_count and self.ai.can_afford(unit.ROBOTICSFACILITY) \
-                and not self.ai.already_pending(unit.ROBOTICSFACILITY):
-            pylon = self.ai.get_pylon_with_least_neighbours()
-            if pylon:
-                await self.ai.build(unit.ROBOTICSFACILITY, near=pylon, random_alternative=True, placement_step=2)
-
-    def build_templar_archives(self, max_count):
-        if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and \
-                self.ai.structures(unit.TEMPLARARCHIVE).amount < max_count \
-                and self.ai.can_afford(unit.TEMPLARARCHIVE) and not self.ai.already_pending(unit.TEMPLARARCHIVE):
-            pylon = self.ai.get_pylon_with_least_neighbours()
-            if pylon:
-                await self.ai.build(unit.TEMPLARARCHIVE, near=pylon)
-
-    def build_twilight(self, max_amount):
-        if self.ai.structures(unit.CYBERNETICSCORE).ready.exists and \
-                self.ai.structures(unit.TWILIGHTCOUNCIL).amount < max_amount \
-                and not self.ai.already_pending(unit.TWILIGHTCOUNCIL) and self.ai.can_afford(unit.TWILIGHTCOUNCIL):
-            pylon = self.ai.get_pylon_with_least_neighbours()
-            if pylon:
-                await self.ai.build(unit.TWILIGHTCOUNCIL, near=pylon.position,
-                                    random_alternative=True, placement_step=3)
-
-    def build_pylons(self):
+    async def build_pylons(self):
         if self.ai.supply_cap < 200:
-            if self.ai.supply_cap < 100:
+            # if self.ai.structures(unit.PYLON).amount < 1:
+            #     if not self.ai.already_pending(unit.PYLON):
+            #         placement = self.ai.main_base_ramp.protoss_wall_pylon
+            #
+            #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
+            #                             random_alternative=False)
+            # else:
+            if self.ai.supply_cap < 80:
                 pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 5)
                 max_d = 23
                 pending = 2 if self.ai.time > 180 else 1
@@ -81,7 +69,7 @@ class EvolutionStrategy:
                 step = 7
             else:
                 pos = self.ai.structures(unit.NEXUS).ready.random.position
-                max_d = 27
+                max_d = 35
                 pending = 3
                 left = 9
                 step = 5
@@ -93,11 +81,6 @@ class EvolutionStrategy:
                         i += 1
                         pos = pos.random_on_distance(2)
                         result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
-
-    def expand(self, max_nexus):
-        if self.ai.structures(unit.NEXUS).amount < max_nexus and not self.ai.already_pending(unit.NEXUS) \
-                and self.ai.can_afford(unit.NEXUS):
-            self.expander._expand_now2()
 
     # =======================================================  Upgraders
     def forge_upgrades(self):
@@ -137,7 +120,15 @@ class EvolutionStrategy:
                         upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades:
                     self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL3))
 
-    def twilight_upgrades(self):
+    def cybernetics_upgrade(self):
+        cyber = self.ai.structures(unit.CYBERNETICSCORE).ready.idle
+        if cyber.exists:
+            if upgrade.WARPGATERESEARCH not in self.ai.state.upgrades and \
+                    not self.ai.already_pending_upgrade(upgrade.WARPGATERESEARCH) and \
+                    self.ai.can_afford(upgrade.WARPGATERESEARCH):
+                self.ai.do(cyber.random.research(upgrade.WARPGATERESEARCH))
+
+    async def twilight_upgrades(self):
         if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and \
                 self.ai.army(unit.ZEALOT).amount > 4:
             tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
@@ -148,7 +139,13 @@ class EvolutionStrategy:
                     self.ai.do(tc(ability.RESEARCH_CHARGE))
 
     # =======================================================  Trainers
-    def warp_units(self, max_archons, max_sentry, max_stalkers, max_adepts, max_zealots):
+    async def train_units(self):
+        await self.gate_train(3,1,0)
+        await self.warp_units(max_archons=14,max_sentry=2,max_stalkers=7,max_adepts=0,max_zealots=12)
+        self.robotics_train(12)
+
+    
+    async def warp_units(self, max_archons, max_sentry, max_stalkers, max_adepts, max_zealots):
         if self.ai.attack:
             prisms = self.ai.units(unit.WARPPRISMPHASING)
             if prisms.exists:
@@ -190,7 +187,7 @@ class EvolutionStrategy:
                         self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
                     self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
 
-    def gate_train(self, max_stalkers, max_zealots, max_adepts):
+    async def gate_train(self, max_stalkers, max_zealots, max_adepts):
         gateway = self.ai.structures(unit.GATEWAY).ready
         if gateway.idle.exists:
             if self.ai.can_afford(unit.STALKER) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists and \
@@ -676,4 +673,32 @@ class EvolutionStrategy:
 
     # ======================================================== Buffs
     def chronoboost(self):
-        self.chronobooster.standard()
+        try:
+            self.chronobooster.standard()
+        except Exception as ex:
+            print(ex)
+
+    def build_assimilators(self):
+        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or\
+                (self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.vespene > self.ai.minerals):
+            return
+        nexuses = self.ai.structures(unit.NEXUS)
+        if nexuses.amount < 4:
+            nexuses = nexuses.ready
+        probes = self.ai.units(unit.PROBE)
+        if probes.exists:
+            for nexus in nexuses:
+                vespenes = self.ai.vespene_geyser.closer_than(9,nexus)
+                workers = probes.closer_than(12, nexus)
+                if workers.amount > 14 or nexuses.amount > 3:
+                    for vespene in vespenes:
+                        if (not self.ai.already_pending(unit.ASSIMILATOR)) and (not
+                        self.ai.structures(unit.ASSIMILATOR).exists or not
+                        self.ai.structures(unit.ASSIMILATOR).closer_than(3, vespene).exists):
+                            if not self.ai.can_afford(unit.ASSIMILATOR):
+                                return
+                            worker = self.ai.select_build_worker(vespene.position)
+                            if worker is None:
+                                break
+                            self.ai.do(worker.build(unit.ASSIMILATOR,vespene))
+                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))

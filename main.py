@@ -162,7 +162,7 @@ class Octopus(sc2.BotAI):
             print('getting enemy info done.')
             if not strategy_name:
                 print('enemy is None. default strat')
-                strategy_name = 'stalker_proxy'
+                strategy_name = 'air'
             print('setting strat: ' + str(strategy_name))
             self.starting_strategy = strategy_name
             await self.set_strategy(strategy_name)
@@ -1030,7 +1030,7 @@ def botVsComputer(real_time):
     race_index = random.randint(0, 2)
     res = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=Octopus(), name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return res, build, races[race_index]
 
@@ -1039,4 +1039,4 @@ def botVsComputer(real_time):
 
 
 if __name__ == '__main__':
-    test(real_time=0, n=1)
+    test(real_time=1, n=1)

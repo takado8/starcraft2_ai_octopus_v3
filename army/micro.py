@@ -378,7 +378,7 @@ class Micro:
                     #     y2 = 5
                     # self.oracle_first_position = Point2((y2,x2))
                     self.oracle_first_position_visited = False
-                if (oracle.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in abilities) and oracle.shield_percentage > 0.8:
+                if (oracle.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in abilities) and oracle.shield_percentage > 0.75:
                     if workers.amount < 1:
                         if oracle.distance_to(self.mineral_lines[self.enemy_base_idx]) < 7:
                             print('close!')

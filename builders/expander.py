@@ -5,6 +5,9 @@ class Expander:
     def __init__(self, ai):
         self.ai = ai
 
+    async def evo(self):
+        await self._expand_now2()
+
     async def standard(self):
         gates_count = self.ai.structures(unit.GATEWAY).amount
         gates_count += self.ai.structures(unit.WARPGATE).amount

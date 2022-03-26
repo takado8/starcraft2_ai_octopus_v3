@@ -30,6 +30,7 @@ class OctopusEvo(sc2.BotAI):
     lost_cost = 0
     killed_cost = 0
 
+
     def __init__(self, genome):
         super().__init__()
         self.builder = Builder(self)
@@ -45,57 +46,61 @@ class OctopusEvo(sc2.BotAI):
         self.observer_scouting_points = []
         self.strategy: EvolutionStrategy = None
         self.genome = genome
-        self.chromosome_index = 0
+        self.build_order = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.GATEWAY, unit.FORGE,
+                            unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                            unit.TEMPLARARCHIVE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
+                            unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+        self.build_order_index = 0
+        self.eco_to_army_ratio = 0.25 #genome.eco_to_army_ratio
+        # self.units_ratio = genome.units_ratio
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
 
     async def on_step(self, iteration: int):
         self.save_stats()
-        # get genome row (chromosome) for this time
-        time_frame = int(self.time / 30)
-        if time_frame > self.chromosome_index:
-            self.chromosome_index = time_frame
-            print('time: {}'.format(self.time))
-            print('chromosome index: {}'.format(self.chromosome_index))
 
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         self.assign_defend_position()
         await self.distribute_workers()
-        await self.strategy.build_pylons()
         await self.morph_gates()
-        await self.chronoboost()
-        self.strategy.train_probes()
-        self.cybernetics_upgrade()
+        self.strategy.chronoboost()
         await self.warp_prism()
-        self.build_assimilators()
-        self.strategy.forge_upgrades()
         await self.morph_Archons()
+        await self.strategy.build_pylons()
+        self.strategy.train_probes()
+        self.strategy.build_assimilators()
         await self.strategy.twilight_upgrades()
-        # await self.strategy.transformation()
+        self.strategy.cybernetics_upgrade()
+        self.strategy.forge_upgrades()
 
-        await self.strategy.build_gateway()
-        await self.strategy.build_cybernetics()
-        await self.strategy.warp_units(max_archons=0, max_sentry=0, max_stalkers=0, max_adepts=0, max_zealots=0)
-        self.strategy.gate_train()
-        await self.strategy.build_forge()
-        await self.strategy.build_robotics()
-        # await self.strategy.build_robotics_bay()
-        await self.strategy.build_templar_archives()
-        await self.strategy.build_twilight()
-        # await self.strategy.dark_shrine_build()
-        self.strategy.robotics_train()
-        await self.strategy.expand()
+        supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
+                      - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
+        supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
+                     - 1000 - self.state.score.lost_minerals_economy - 1.2 * self.state.score.lost_vespene_economy
+        print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
+        build_in_progress = False
+        for building in self.build_order:
+            if self.already_pending(building):
+                build_in_progress = True
+        build_finished = False
+        if self.build_order_index + 1 == len(self.build_order):
+            build_finished = True
+
+        if build_in_progress or build_finished or (self.minerals > 500 and self.vespene > 300):
+            await self.strategy.train_units()
+
+        await self.strategy.build_from_queue()
 
         # attack
-        if (not self.attack) and (not self.retreat_condition()) and (
-                self.counter_attack_condition() or self.attack_condition()):
+        if (not self.attack) and (not self.retreat_condition(army_count_retreat=15)) and (
+                self.counter_attack_condition() or self.attack_condition(max_supply=195)):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
         # retreat
-        if self.retreat_condition():
+        if self.retreat_condition(5):
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -121,16 +126,13 @@ class OctopusEvo(sc2.BotAI):
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
         return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
-                                               build_worker=build_worker, random_alternative=random_alternative)
+                                        build_worker=build_worker, random_alternative=random_alternative)
 
     async def morph_gates(self):
         for gateway in self.structures(unit.GATEWAY).ready:
             abilities = await self.get_available_abilities(gateway)
             if AbilityId.MORPH_WARPGATE in abilities and self.can_afford(AbilityId.MORPH_WARPGATE):
                 self.do(gateway(AbilityId.MORPH_WARPGATE))
-
-    async def chronoboost(self):
-        await self.strategy.chronoboost()
 
     async def defend(self):
         enemy = self.enemy_units()
@@ -350,7 +352,7 @@ def botVsComputer(ai, real_time=0):
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
-    return result, ai#, build, races[race_index]
+    return result, ai  # , build, races[race_index]
 
 
 def test(genome, real_time=0):
@@ -371,7 +373,8 @@ def test(genome, real_time=0):
 
 if __name__ == '__main__':
     import time
+
     start = time.time()
-    test(real_time=0, n=1)
+    test(real_time=1, genome=None)
     stop = time.time()
     print('\n\ntime elapsed: {} s\n\n'.format(int(stop - start)))

@@ -1,4 +1,5 @@
 from evolution.subject import Subject
+from evolution.genome import Genome
 import random
 
 GENOME_LEN = 3
@@ -38,15 +39,22 @@ class Evolution:
             return gene
 
         new_subject = Subject()
-        new_genome = []
-        for i in range(len(parents[0].genome)):
-            chromosome0 = parents[0].genome[i]
-            chromosome1 = parents[1].genome[i]
-            new_chromosome = []
-            for j in range(len(chromosome0)):
-                new_chromosome.append(mutate(chromosome0[j] if random.uniform(0, 1) > 0.5 else chromosome1[j]))
-            new_genome.append(new_chromosome)
-        new_subject.genome = new_genome
+        longer = parents[0] if len(parents[0].genome.build_order) > len(parents[1].genome.build_order)\
+            else parents[1]
+        shorter = parents[0] if longer == parents[1] else parents[1]
+
+        for i in range(len(longer.genome.build_order)):
+            if random.uniform(0,1) < 0.5:
+                new_subject.genome.build_order.append(mutate(longer.genome.build_order[i]))
+            elif i < len(shorter.genome.build_order):
+                new_subject.genome.build_order.append(mutate(shorter.genome.build_order[i]))
+
+        for unit in parents[0].genome.units_ratio:
+            if random.uniform(1) < 0.5:
+                new_subject.genome.units_ratio[unit] = mutate(parents[0].genome.units_ratio[unit])
+            else:
+                new_subject.genome.units_ratio[unit] = mutate(parents[1].genome.units_ratio[unit])
+
         return new_subject
 
     def select_to_reproduction(self):
@@ -68,20 +76,10 @@ class Evolution:
     def generate_random_population(self):
         while len(self.population) < self.population_count:
             s = Subject()
-            s.genome = self.generate_random_genome(GENOME_LEN)
+            s.genome = Genome.create_random_genome()
             self.population.append(s)
 
-    @staticmethod
-    def generate_random_genome(length):
-        genome = []
-        while len(genome) < length:
-            gates_count = random.randint(0, 7)
-            stalkers_count = random.randint(0, 80)
-            zealots_count = random.randint(0, 80)
-            attack = random.randint(0, 1)
-            chromosome = [gates_count, stalkers_count, zealots_count, attack]
-            genome.append(chromosome)
-        return genome
+
 
 
 if __name__ == '__main__':

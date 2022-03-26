@@ -14,7 +14,7 @@ class Chronobooster:
     async def air(self):
         pass
 
-    async def standard(self):
+    def standard(self):
         if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
             nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
             i = 0
