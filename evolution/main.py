@@ -1,6 +1,7 @@
 import random
 import sc2
 from sc2 import run_game, maps, Race, Difficulty, AIBuild, AbilityId, Result
+from sc2.ids.effect_id import EffectId as effect
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
@@ -9,8 +10,17 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
+
+from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
+
+BUILD_ORDER = [unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 8, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, 32,
+               unit.ROBOTICSFACILITY, 48, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.GATEWAY, 60, unit.NEXUS, unit.TEMPLARARCHIVE,
+               unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
+               unit.GATEWAY, unit.NEXUS]
+UNITS_RATIO = {unit.ZEALOT: 12, unit.ADEPT: 12, unit.STALKER: 7, unit.IMMORTAL: 12,
+                            unit.ARCHON: 12, unit.SENTRY: 2}
 
 
 class OctopusEvo(sc2.BotAI):
@@ -33,6 +43,7 @@ class OctopusEvo(sc2.BotAI):
 
     def __init__(self, genome):
         super().__init__()
+        self.structures_amount = 0
         self.builder = Builder(self)
         self.spot_validator = BuildingSpotValidator(self)
         self.chronobooster = Chronobooster(self)
@@ -46,13 +57,9 @@ class OctopusEvo(sc2.BotAI):
         self.observer_scouting_points = []
         self.strategy: EvolutionStrategy = None
         self.genome = genome
-        self.build_order = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                            unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,
-                            unit.TEMPLARARCHIVE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
-                            unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+        self.build_order = BUILD_ORDER#genome.build_order
         self.build_order_index = 0
-        self.eco_to_army_ratio = 0.25 #genome.eco_to_army_ratio
-        # self.units_ratio = genome.units_ratio
+        self.units_ratio = UNITS_RATIO#genome.units_ratio
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
@@ -74,26 +81,39 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.cybernetics_upgrade()
         self.strategy.forge_upgrades()
 
-        supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
-                      - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
-        supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
-                     - 1000 - self.state.score.lost_minerals_economy - 1.2 * self.state.score.lost_vespene_economy
-        print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
+        # supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
+        #               - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
+        # supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
+        #              - 1000 - self.state.score.lost_minerals_economy - 1.2 * self.state.score.lost_vespene_economy
+        # print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
+
+
+        current_building = self.build_order[self.build_order_index]
+        army_priority = False
         build_in_progress = False
-        for building in self.build_order:
-            if self.already_pending(building):
-                build_in_progress = True
         build_finished = False
+        for building in self.build_order:
+            if isinstance(building, unit):
+                if self.already_pending(building):
+                    build_in_progress = True
         if self.build_order_index + 1 == len(self.build_order):
             build_finished = True
 
-        if build_in_progress or build_finished or (self.minerals > 500 and self.vespene > 300):
+        if not isinstance(current_building, unit):
+            min_army_supply = current_building
+            if self.state.score.food_used_army > min_army_supply:
+                self.build_order_index += 1
+            else:
+                army_priority = True
+
+        if build_in_progress or build_finished or army_priority or (self.minerals > 500 and self.vespene > 300):
             await self.strategy.train_units()
 
-        await self.strategy.build_from_queue()
+        if not army_priority:
+            await self.strategy.build_from_queue()
 
         # attack
-        if (not self.attack) and (not self.retreat_condition(army_count_retreat=15)) and (
+        if (not self.attack) and (not self.retreat_condition(army_count_retreat=17)) and (
                 self.counter_attack_condition() or self.attack_condition(max_supply=195)):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
@@ -121,6 +141,8 @@ class OctopusEvo(sc2.BotAI):
             print(ex)
             await self.chat_send('on_step error 9 -> micro_units')
             raise ex
+        self.avoid_aoe()
+
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -176,7 +198,7 @@ class OctopusEvo(sc2.BotAI):
                     self.do(man.attack(position.random_on_distance(random.randint(1, 2))))
 
     def assign_defend_position(self):
-        nex = self.structures(unit.NEXUS)
+        nex = self.structures(unit.NEXUS).ready
         enemy = self.enemy_units()
 
         if enemy.exists and enemy.closer_than(50, self.start_location).amount > 1:
@@ -315,6 +337,7 @@ class OctopusEvo(sc2.BotAI):
     def save_stats(self):
         self.lost_cost = self.state.score.lost_minerals_army + 1.2 * self.state.score.lost_vespene_army
         self.killed_cost = self.state.score.killed_minerals_army + 1.2 * self.state.score.killed_vespene_army
+        self.structures_amount = self.structures().amount
         # print('lost_cost: ' + str(self.lost_cost))
         # print('killed_cost: ' + str(self.killed_cost))
 
@@ -328,6 +351,22 @@ class OctopusEvo(sc2.BotAI):
         en = self.enemy_units()
         return en.exists and en.closer_than(40, self.defend_position).amount > 5
 
+    def avoid_aoe(self):
+        aoes_ids = [effect.RAVAGERCORROSIVEBILECP, effect.PSISTORMPERSISTENT, effect.NUKEPERSISTENT,
+                    effect.LIBERATORTARGETMORPHDELAYPERSISTENT]
+        purification_novas = self.enemy_units(unit.DISRUPTORPHASED)
+        purification_novas.extend(self.units(unit.DISRUPTORPHASED))
+        for man in self.army:
+            if purification_novas.exists and purification_novas.closer_than(3, man).exists:
+                self.do(man.move(man.position.towards(purification_novas.closest_to(man), -4)))
+                continue
+            for eff in self.state.effects:
+                if eff.id in aoes_ids:
+                    positions = eff.positions
+                    for position in positions:
+                        if man.distance_to(position) < eff.radius + 2:
+                            self.do(man.move(man.position.towards(position, -3)))
+
 
 def botVsComputer(ai, real_time=0):
     if real_time:
@@ -340,17 +379,17 @@ def botVsComputer(ai, real_time=0):
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
     # computer_builds = [AIBuild.Rush]
-    # computer_builds = [AIBuild.Timing]
+    computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
     # computer_builds = [AIBuild.Power]
-    computer_builds = [AIBuild.Macro]
+    # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 6)
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -361,7 +400,12 @@ def test(genome, real_time=0):
     print('Result: {}'.format(result))
     print('lost: {}'.format(ai.lost_cost))
     print('killed: {}'.format(ai.killed_cost))
+
     if result == Result.Victory:
+        win = 1
+    elif result == Result.Defeat:
+        win = 0
+    elif ai.structures_amount > 5:
         win = 1
     else:
         win = 0
@@ -373,8 +417,36 @@ def test(genome, real_time=0):
 
 if __name__ == '__main__':
     import time
+    import uuid
 
-    start = time.time()
-    test(real_time=1, genome=None)
-    stop = time.time()
-    print('\n\ntime elapsed: {} s\n\n'.format(int(stop - start)))
+    evo = Evolution(population_count=18, reproduction_rate=0.70)
+    generations_nb = 15
+    generation_directory_name = 'genomes/{}_generation_'.format(str(uuid.uuid4()))
+    for i in range(generations_nb):
+        k=0
+        for subject in evo.population:
+            k += 1
+            print('sub nr: {}'.format(k))
+            print(subject.genome)
+            start = time.time()
+            win, killed, lost = test(real_time=1, genome=subject.genome)
+            stop = time.time()
+            print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
+            fitness = 10000*win + killed - lost
+            subject.fitness = fitness
+        evo.evolve()
+        print('i: {} avg fit: {} best fit: {}'.format(i, round(
+            sum([s.fitness for s in evo.population]) / len(evo.population), 4),
+                                                      round(max([s.fitness for s in evo.population]), 4)))
+
+        for s in evo.population:
+            s.genome.save_genome(directory=generation_directory_name + str(i+1))
+
+
+    for s in evo.population:
+        print(s.genome)
+        print('fit: {}'.format(s.fitness))
+        s.genome.save_genome(directory=generation_directory_name + 'final')
+
+
+

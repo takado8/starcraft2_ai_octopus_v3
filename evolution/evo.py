@@ -1,13 +1,15 @@
 from evolution.subject import Subject
 from evolution.genome import Genome
+from sc2.ids.unit_typeid import UnitTypeId as unit
 import random
 
 GENOME_LEN = 3
 MUTATION_RATE = 0.05
+TECH_STRUCTURES = [unit.CYBERNETICSCORE, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE]
 
 
 class Evolution:
-    def __init__(self, population_count=100, reproduction_rate=0.6):
+    def __init__(self, population_count=100, reproduction_rate=0.8):
         self.population_count = population_count
         self.population = []
         self.reproduction_rate = reproduction_rate
@@ -28,6 +30,11 @@ class Evolution:
         while len(new_subjects) < len(reproduction_pool):
             parents = random.sample(reproduction_pool, 2)
             new_subject = self.cross_over(parents)
+            k=0
+            while not Genome.is_correct_order(new_subject.genome.build_order) and k < 60000:
+                k+=1
+                new_subject = self.cross_over(parents)
+            new_subject.genome.build_order = Genome.filter_double_tech_buildings(new_subject.genome.build_order)
             new_subjects.append(new_subject)
         return new_subjects
 
@@ -35,26 +42,51 @@ class Evolution:
     def cross_over(parents):
         def mutate(gene):
             if random.uniform(0, 1) < MUTATION_RATE:
-                gene = gene - (1 if gene > 0 and random.uniform(0, 1) < 0.5 else -1)
+                gene = gene - (2 if gene > 1 and random.uniform(0, 1) < 0.5 else -2)
             return gene
 
+        def mutate_build_order(build_order: list):
+            if random.uniform(0, 1) < MUTATION_RATE * 5:
+                i = random.randint(0, len(build_order)-1)
+                r = random.uniform(0,1)
+                if r < 0.33 and len(build_order) - 1 > i:
+                    temp = build_order[i+1]
+                    build_order[i+1] = build_order[i]
+                    build_order[i] = temp
+                elif r > 0.66:
+                    if build_order[i] != unit.CYBERNETICSCORE:
+                        build_order.pop(i)
+                else:
+                    if build_order[i] not in TECH_STRUCTURES:
+                        build_order.append(build_order[i])
+            return build_order
         new_subject = Subject()
+        new_subject.genome = Genome.create_random_genome()
+        new_subject.genome.build_order.clear()
+        new_subject.genome.units_ratio.clear()
         longer = parents[0] if len(parents[0].genome.build_order) > len(parents[1].genome.build_order)\
             else parents[1]
         shorter = parents[0] if longer == parents[1] else parents[1]
 
         for i in range(len(longer.genome.build_order)):
             if random.uniform(0,1) < 0.5:
-                new_subject.genome.build_order.append(mutate(longer.genome.build_order[i]))
+                gene = longer.genome.build_order[i]
+                if gene in TECH_STRUCTURES and gene in new_subject.genome.build_order:
+                    continue
+                new_subject.genome.build_order.append(gene)
             elif i < len(shorter.genome.build_order):
-                new_subject.genome.build_order.append(mutate(shorter.genome.build_order[i]))
+                gene = shorter.genome.build_order[i]
+                if gene in TECH_STRUCTURES and gene in new_subject.genome.build_order:
+                    continue
+                new_subject.genome.build_order.append(gene)
 
-        for unit in parents[0].genome.units_ratio:
-            if random.uniform(1) < 0.5:
-                new_subject.genome.units_ratio[unit] = mutate(parents[0].genome.units_ratio[unit])
+        for unit_ratio in parents[0].genome.units_ratio:
+            if random.uniform(0, 1) < 0.5:
+                new_subject.genome.units_ratio[unit_ratio] = mutate(parents[0].genome.units_ratio[unit_ratio])
             else:
-                new_subject.genome.units_ratio[unit] = mutate(parents[1].genome.units_ratio[unit])
+                new_subject.genome.units_ratio[unit_ratio] = mutate(parents[1].genome.units_ratio[unit_ratio])
 
+        new_subject.genome.build_order = mutate_build_order(new_subject.genome.build_order)
         return new_subject
 
     def select_to_reproduction(self):
@@ -83,13 +115,15 @@ class Evolution:
 
 
 if __name__ == '__main__':
-    evo = Evolution(population_count=100, reproduction_rate=0.6)
-    target = 23
-    generations_nb = 20
+    from sc2.ids.unit_typeid import UnitTypeId as unit
+    evo = Evolution(population_count=16, reproduction_rate=0.75)
+    target = 17
+    generations_nb = 10
     for i in range(generations_nb):
         evo.evolve()
         for subject in evo.population:
-            total = sum(subject.genome[0])
+            # print(subject.genome)
+            total = subject.genome.units_ratio[unit.STALKER]
             fitness = 100 - abs(target - total)
             if fitness <= 0:
                 fitness = 1
@@ -100,4 +134,6 @@ if __name__ == '__main__':
 
     for s in evo.population:
         print(s.genome)
-        print('sum: {} fit: {}'.format(sum(s.genome[0]), s.fitness))
+        print('fit: {}'.format( s.fitness))
+        s.genome.save_genome()
+
