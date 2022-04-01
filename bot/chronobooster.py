@@ -8,7 +8,7 @@ import random
 class Chronobooster:
     def __init__(self,ai):
         self.ai = ai
-        self.standard_chrono_queue = [unit.NEXUS, unit.GATEWAY,  unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
+        self.standard_chrono_queue = [unit.NEXUS, unit.GATEWAY,
                                       unit.STARGATE, unit.ROBOTICSFACILITY,
                                       unit.CYBERNETICSCORE, unit.FORGE, unit.TWILIGHTCOUNCIL]
         self.stalker_proxy_chrono_queue = [unit.NEXUS, unit.CYBERNETICSCORE]

@@ -2,18 +2,32 @@ from evolution.subject import Subject
 from evolution.genome import Genome
 from sc2.ids.unit_typeid import UnitTypeId as unit
 import random
+import os
 
-GENOME_LEN = 3
-MUTATION_RATE = 0.05
+MUTATION_RATE = 0.1
 TECH_STRUCTURES = [unit.CYBERNETICSCORE, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE]
 
 
 class Evolution:
-    def __init__(self, population_count=100, reproduction_rate=0.8):
+    def __init__(self, population_count=100, reproduction_rate=0.8, load_population_directory=None):
         self.population_count = population_count
         self.population = []
         self.reproduction_rate = reproduction_rate
         self.generate_random_population()
+        if load_population_directory:
+            if os.path.isdir(load_population_directory):
+                files = os.listdir(load_population_directory)
+                files_set = set([x[:-11] for x in files])
+                if len(self.population) < len(files_set):
+                    self.population_count = len(files_set)
+                    self.generate_random_population()
+                i=0
+                for file_name in files_set:
+                    self.population[i].genome.load_genome(os.path.join(load_population_directory,
+                                                                       file_name))
+                    i+=1
+
+
 
     def evolve(self):
         print('start population count: {}'.format(len(self.population)))

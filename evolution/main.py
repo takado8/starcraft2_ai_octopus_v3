@@ -16,7 +16,7 @@ from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
 
 BUILD_ORDER = [unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 8, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, 32,
-               unit.ROBOTICSFACILITY, 48, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.GATEWAY, 60, unit.NEXUS, unit.TEMPLARARCHIVE,
+               unit.ROBOTICSFACILITY, 48, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.GATEWAY, 64, unit.NEXUS, unit.TEMPLARARCHIVE,
                unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
                unit.GATEWAY, unit.NEXUS]
 UNITS_RATIO = {unit.ZEALOT: 12, unit.ADEPT: 12, unit.STALKER: 7, unit.IMMORTAL: 12,
@@ -56,10 +56,13 @@ class OctopusEvo(sc2.BotAI):
         self.observer_scouting_index = 0
         self.observer_scouting_points = []
         self.strategy: EvolutionStrategy = None
-        self.genome = genome
-        self.build_order = BUILD_ORDER#genome.build_order
+        self.build_order = genome.build_order
+        self.units_ratio = genome.units_ratio
+
+        # self.build_order = BUILD_ORDER
+        # self.units_ratio = UNITS_RATIO
+
         self.build_order_index = 0
-        self.units_ratio = UNITS_RATIO#genome.units_ratio
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
@@ -109,7 +112,7 @@ class OctopusEvo(sc2.BotAI):
         if build_in_progress or build_finished or army_priority or (self.minerals > 500 and self.vespene > 300):
             await self.strategy.train_units()
 
-        if not army_priority:
+        if not army_priority and not build_finished:
             await self.strategy.build_from_queue()
 
         # attack
@@ -120,7 +123,7 @@ class OctopusEvo(sc2.BotAI):
             self.attack = True
             self.retreat = False
         # retreat
-        if self.retreat_condition(5):
+        if self.retreat_condition(17):
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -379,9 +382,9 @@ def botVsComputer(ai, real_time=0):
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
     # computer_builds = [AIBuild.Rush]
-    computer_builds = [AIBuild.Timing]
+    # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -419,7 +422,8 @@ if __name__ == '__main__':
     import time
     import uuid
 
-    evo = Evolution(population_count=18, reproduction_rate=0.70)
+    evo = Evolution(population_count=15, reproduction_rate=0.70, load_population_directory=
+    'genomes/initial')
     generations_nb = 15
     generation_directory_name = 'genomes/{}_generation_'.format(str(uuid.uuid4()))
     for i in range(generations_nb):
@@ -429,7 +433,7 @@ if __name__ == '__main__':
             print('sub nr: {}'.format(k))
             print(subject.genome)
             start = time.time()
-            win, killed, lost = test(real_time=1, genome=subject.genome)
+            win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost
