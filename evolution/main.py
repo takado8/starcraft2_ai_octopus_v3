@@ -14,6 +14,8 @@ from scouting.scouting import Scouting
 from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
+from economy.own_economy import OwnEconomy
+
 
 BUILD_ORDER = [unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 8, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, 32,
                unit.ROBOTICSFACILITY, 48, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.GATEWAY, 64, unit.NEXUS, unit.TEMPLARARCHIVE,
@@ -54,6 +56,7 @@ class OctopusEvo(sc2.BotAI):
         self.defend_position = None
         self.army = None
         self.scouting = Scouting(self)
+        self.own_economy = OwnEconomy(self)
         self.strategy: EvolutionStrategy = None
         self.build_order = genome.build_order
         self.units_ratio = genome.units_ratio
@@ -62,6 +65,9 @@ class OctopusEvo(sc2.BotAI):
         # self.units_ratio = UNITS_RATIO
 
         self.build_order_index = 0
+
+    async def on_unit_destroyed(self, unit_tag: int):
+        self.scouting.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
@@ -95,6 +101,8 @@ class OctopusEvo(sc2.BotAI):
         self.scouting.gather_enemy_info()
         if iteration % 20 == 0:
             self.scouting.print_enemy_info()
+            self.own_economy.print_own_economy_info()
+
         ##
         #
         current_building = self.build_order[self.build_order_index]
@@ -482,7 +490,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = BUILD_ORDER
             # subject.genome.units_ratio = UNITS_RATIO
-            win, killed, lost = test(real_time=1, genome=subject.genome)
+            win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost

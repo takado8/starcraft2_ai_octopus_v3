@@ -1,14 +1,23 @@
 from sc2.ids.unit_typeid import UnitTypeId as Unit
 from sc2 import AbilityId, BotAI
 
+# from evolution.main import OctopusEvo
+
+
 # scouting categories
 BASES = 'bases'
+MILITARY = 'military'
 
 
 class Scouting:
-    def __init__(self, ai_object: BotAI):
+    def __init__(self, ai_object):
         self.ai = ai_object
         self.enemy_info = {}
+        self.total_enemy_ground_dps = 0
+        self.total_enemy_hp = 0
+        self.total_enemy_cost_minerals = 0
+        self.total_enemy_cost_gas = 0
+        self.total_enemy_supply = 0
         self.scouting_index = -1
         self.scouting_positions = []
 
@@ -33,16 +42,32 @@ class Scouting:
         # bases
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.add_units_to_enemy_info(BASES, enemy_bases)
+        # military units
+        enemy_military_units = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.workers_ids and
+                                                                      x.type_id not in self.ai.units_to_ignore and x.can_attack_ground)
+        self.add_units_to_enemy_info(MILITARY, enemy_military_units)
 
     def add_units_to_enemy_info(self, category, units):
         if units:
-            if category in self.enemy_info:
-                for unit in units:
-                    self.enemy_info[category][unit.tag] = unit.type_id
-            else:
+            if category not in self.enemy_info:
                 self.enemy_info[category] = {}
-                for unit in units:
-                    self.enemy_info[category][unit.tag] = unit.type_id
+
+            for unit in units:
+                self.enemy_info[category][unit.tag] = unit
+
+    def calculate_enemy_units_report(self):
+        self.total_enemy_ground_dps = 0
+        self.total_enemy_hp = 0
+        if MILITARY in self.enemy_info:
+            for unit_tag in self.enemy_info[MILITARY]:
+                unit = self.enemy_info[MILITARY][unit_tag]
+                self.total_enemy_ground_dps += unit.ground_dps
+                self.total_enemy_hp += unit.health + unit.shield
+
+    def remove_unit_from_enemy_info(self, unit_tag):
+        for category in self.enemy_info:
+            if unit_tag in self.enemy_info[category]:
+                self.enemy_info[category].pop(unit_tag)
 
     def create_scouting_positions_list(self):
         scouting_positions = []
@@ -74,9 +99,14 @@ class Scouting:
 
     def print_enemy_info(self):
         print('-------------------- enemy info -----------------------------')
+        self.calculate_enemy_units_report()
         for category in self.enemy_info:
             print("{}:".format(category))
             for item in self.enemy_info[category]:
                 print("   {}, {}".format(item, self.enemy_info[category][item]))
             print(" total: {}".format(len(self.enemy_info[category])))
+        print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))
         print('-------------------- end of enemy info ----------------------')
+
+    def on_unit_destroyed(self, unit_tag):
+        self.remove_unit_from_enemy_info(unit_tag)
