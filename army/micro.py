@@ -520,7 +520,8 @@ class Micro:
         enemy = self.ai.enemy_units()
         if not enemy.exists:
             return
-        whole_army = self.ai.army.exclude_type({unit.CARRIER, unit.TEMPEST, unit.VOIDRAY, unit.ZEALOT, unit.DARKTEMPLAR})
+        whole_army = self.ai.army.exclude_type({unit.CARRIER, unit.TEMPEST, unit.VOIDRAY, unit.ZEALOT, unit.DARKTEMPLAR,
+                                                unit.PHOENIX})
         dist = 9
         for man in whole_army:
             threats = enemy.filter(

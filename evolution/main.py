@@ -91,10 +91,10 @@ class OctopusEvo(sc2.BotAI):
         # print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
         #
         ## scan
-        # self.scouting.scan_middle_game()
-        # self.scouting.gather_enemy_info()
-        # if iteration % 20 == 0:,
-        #     self.scouting.print_enemy_info()
+        self.scouting.scan_middle_game()
+        self.scouting.gather_enemy_info()
+        if iteration % 20 == 0:
+            self.scouting.print_enemy_info()
         ##
         #
         current_building = self.build_order[self.build_order_index]
@@ -482,7 +482,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = BUILD_ORDER
             # subject.genome.units_ratio = UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
+            win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost
