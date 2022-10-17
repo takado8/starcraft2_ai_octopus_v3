@@ -625,68 +625,6 @@ class Micro:
                         if army_nearby.exists:
                             if threats.exists:
                                 self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se),-4)))
-        # # voidray
-        # for vr in self.ai.army(unit.VOIDRAY):
-        #     threats = self.ai.enemy_units().filter(lambda z: z.distance_to(vr) < 9 and z.type_id
-        #         not in self.ai.units_to_ignore)
-        #     threats.extend(self.ai.enemy_structures().filter(lambda z: z.can_attack_air))
-        #     if threats.exists:
-        #         # target2 = None
-        #         priority = threats.filter(lambda z: z.can_attack_air).sorted(lambda z: z.air_dps, reverse=True)
-        #         arm = False
-        #         if priority.exists:
-        #             armored = priority.filter(lambda z: z.is_armored)
-        #             if armored.exists:
-        #                 arm = True
-        #                 priority = armored
-        #             target2 = priority[0]
-        #         else:
-        #             armored = threats.filter(lambda z: z.is_armored)
-        #             if armored.exists:
-        #                 arm = True
-        #                 threats = armored
-        #             target2 = threats.sorted(lambda z: z.health + z.shield)[0]
-        #         if target2 is not None:
-        #             if arm:
-        #                 if ability.EFFECT_VOIDRAYPRISMATICALIGNMENT in await self.ai.get_available_abilities(vr)\
-        #                         and target2.distance_to(vr) < 8:
-        #                     self.ai.do(vr(ability.EFFECT_VOIDRAYPRISMATICALIGNMENT))
-        #             self.ai.do(vr.attack(target2))
-
-        # completion_ids = {unit.VOIDRAY, unit.BATTLECRUISER, unit.CARRIER}  # units that returns wrong air dps
-
-        # if self.ai.attack:
-        #     for ad in self.ai.army(unit.ADEPT):
-        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 17 and x.type_id in
-        #                                                          self.ai.workers_ids)
-        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 9 and x.type_id not in
-        #                                                self.ai.workers_ids)
-        #         if workers.amount < 3 or threats.amount > 3:
-        #             if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(ad):
-        #                 self.ai.do(ad(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, ad.position))
-        #         elif workers.amount > 2:
-        #             workers_in_range = workers.closer_than(5, ad)
-        #             if workers_in_range.exists:
-        #                 workers_in_range = sorted(workers_in_range, key=lambda x: x.health + x.shield)
-        #                 target3 = workers_in_range[0]
-        #             else:
-        #                 target3 = workers.closest_to(ad)
-        #             if ad.weapon_cooldown == 0:
-        #                 self.ai.do(ad.attack(target3))
-        #     for shadow in self.ai.units(unit.ADEPTPHASESHIFT):
-        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 12 and x.type_id in
-        #                                                self.ai.workers_ids)
-        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 9 and x.type_id not in
-        #                                                          self.ai.workers_ids)
-        #         if workers.amount > 3 and threats.amount < 5:
-        #             workers = sorted(workers, key=lambda x: x.health + x.shield)
-        #             self.ai.do(shadow.move(workers[0]))
-        #         else:
-        #             self.ai.do(shadow.move(self.mineral_lines[self.enemy_base_idx]))
-        #             if shadow.distance_to(self.mineral_lines[self.enemy_base_idx]) < 2:
-        #                 self.enemy_base_idx += 1
-        #                 if self.enemy_base_idx > 2:
-        #                     self.enemy_base_idx = 0
 
         # zealot
         for zl in self.ai.army(unit.ZEALOT):

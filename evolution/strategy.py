@@ -64,8 +64,8 @@ class EvolutionStrategy:
             #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
             #                             random_alternative=False)
             # else:
-            if self.ai.supply_cap < 100:
-                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 5).random_on_distance(5)
+            if self.ai.supply_cap < 130:
+                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 4).random_on_distance(5)
                 max_d = 25
                 pending = 2 if self.ai.time > 180 else 1
                 left = 5
@@ -78,14 +78,14 @@ class EvolutionStrategy:
                     return
                 minerals = self.ai.mineral_field.closest_to(pos)
                 if minerals.distance_to(pos) < 12:
-                    pos = pos.towards(minerals, -5).random_on_distance(5)
+                    pos = pos.towards(minerals, -7).random_on_distance(2)
                 max_d = 27
                 pending = 3
                 left = 9
                 step = 5
             if self.ai.supply_left < left:  # or (pylons.amount < 1 and self.ai.structures(unit.GATEWAY).exists):
                 if self.ai.already_pending(unit.PYLON) < pending:
-                    pos = pos.random_on_distance(7)
+                    # pos = pos.random_on_distance(7)
                     result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
                     i = 0
                     while not result and i < 12:
@@ -274,7 +274,7 @@ class EvolutionStrategy:
     # =======================================================  Army
 
     async def micro(self):
-        await self.micro_obj.new()
+        await self.micro_obj.personal_new()
 
 
     async def movements(self):

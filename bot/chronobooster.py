@@ -19,8 +19,11 @@ class Chronobooster:
     def standard(self):
         if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
             nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
+            starting_nexus = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location.position)
             i = 0
             for nexus in nexuses:
+                if nexus != starting_nexus and nexus.energy < 100:
+                    continue
                 # targets = None
                 targets_filtered = Units([],self.ai)
                 while targets_filtered.amount < 1 and i < len(self.standard_chrono_queue):

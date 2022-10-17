@@ -10,7 +10,7 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
-
+from scouting.scouting import Scouting
 from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
@@ -20,7 +20,7 @@ BUILD_ORDER = [unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 8, unit.GATEWAY
                unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
                unit.GATEWAY, unit.NEXUS]
 UNITS_RATIO = {unit.ZEALOT: 12, unit.ADEPT: 12, unit.STALKER: 7, unit.IMMORTAL: 12,
-                            unit.ARCHON: 12, unit.SENTRY: 2}
+                            unit.ARCHON: 12, unit.SENTRY: 4}
 
 
 class OctopusEvo(sc2.BotAI):
@@ -53,8 +53,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.observer_scouting_index = 0
-        self.observer_scouting_points = []
+        self.scouting = Scouting(self)
         self.strategy: EvolutionStrategy = None
         self.build_order = genome.build_order
         self.units_ratio = genome.units_ratio
@@ -69,7 +68,7 @@ class OctopusEvo(sc2.BotAI):
 
     async def on_step(self, iteration: int):
         self.save_stats()
-
+        self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         self.assign_defend_position()
         await self.distribute_workers()
@@ -83,14 +82,21 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.twilight_upgrades()
         self.strategy.cybernetics_upgrade()
         self.strategy.forge_upgrades()
-
+        # await self.build_batteries()
+        await self.shield_overcharge()
         # supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
         #               - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
         # supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
         #              - 1000 - self.state.score.lost_minerals_economy - 1.2 * self.state.score.lost_vespene_economy
         # print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
-
-
+        #
+        ## scan
+        # self.scouting.scan_middle_game()
+        # self.scouting.gather_enemy_info()
+        # if iteration % 20 == 0:,
+        #     self.scouting.print_enemy_info()
+        ##
+        #
         current_building = self.build_order[self.build_order_index]
         army_priority = False
         build_in_progress = False
@@ -116,14 +122,14 @@ class OctopusEvo(sc2.BotAI):
             await self.strategy.build_from_queue()
 
         # attack
-        if (not self.attack) and (not self.retreat_condition(army_count_retreat=17)) and (
+        if (not self.attack) and (not self.retreat_condition(army_count_retreat=25)) and (
                 self.counter_attack_condition() or self.attack_condition(max_supply=195)):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
         # retreat
-        if self.retreat_condition(17):
+        if self.retreat_condition(25):
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -263,6 +269,12 @@ class OctopusEvo(sc2.BotAI):
                 return True
         return False
 
+    def set_game_step(self):
+        if self.enemy_units().exists:
+            self._client.game_step = 4
+        else:
+            self._client.game_step = 8
+
     def get_super_pylon(self):
         pylons = self.structures(unit.PYLON).ready
         if pylons.exists:
@@ -370,6 +382,41 @@ class OctopusEvo(sc2.BotAI):
                         if man.distance_to(position) < eff.radius + 2:
                             self.do(man.move(man.position.towards(position, -3)))
 
+    async def build_batteries(self):
+        nexuses = self.structures(unit.NEXUS).ready
+        if nexuses.amount > 1:
+            start_nexus = nexuses.closest_to(self.start_location.position)
+            nexuses.remove(start_nexus)
+            for nexus in nexuses:
+                pylon = self.structures(unit.PYLON).ready.closer_than(11, nexus)
+                if pylon.exists:
+                    pylon = pylon.furthest_to(nexus)
+                    if self.structures(unit.SHIELDBATTERY).closer_than(5, pylon.position).amount < 2\
+                        and self.already_pending(unit.SHIELDBATTERY) < 2:
+                        await self.build(unit.SHIELDBATTERY, pylon.position, max_distance=5,
+                                         random_alternative=False, placement_step=2)
+                elif self.already_pending(unit.PYLON) < 1:
+                    minerals = self.mineral_field.closest_to(nexus.position)
+                    if minerals.distance_to(nexus.position) < 12:
+                        pylon_spot = nexus.position.towards(minerals, -7)
+                        await self.build(unit.PYLON, pylon_spot)
+
+
+    async def shield_overcharge(self):
+        en = self.enemy_units()
+        if en.exists and en.closer_than(40, self.defend_position).amount > 5:
+            nexus = self.structures(unit.NEXUS).ready.closest_to(self.defend_position)
+            battery = self.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus)\
+                                                                .sorted(lambda x: x.health, reverse=True)
+            if battery and nexus:
+                battery = battery[0]
+                if nexus.energy >= 50:
+                    abilities = await self.get_available_abilities(nexus)
+                    # print('nexus abilities: {}'.format(abilities))
+                    if AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE in abilities:
+                        self.do(nexus(AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE, battery))
+
+
 
 def botVsComputer(ai, real_time=0):
     if real_time:
@@ -433,15 +480,17 @@ if __name__ == '__main__':
             print('sub nr: {}'.format(k))
             print(subject.genome)
             start = time.time()
+            # subject.genome.build_order = BUILD_ORDER
+            # subject.genome.units_ratio = UNITS_RATIO
             win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost
             subject.fitness = fitness
-        evo.evolve()
         print('i: {} avg fit: {} best fit: {}'.format(i, round(
             sum([s.fitness for s in evo.population]) / len(evo.population), 4),
                                                       round(max([s.fitness for s in evo.population]), 4)))
+        evo.evolve()
 
         for s in evo.population:
             s.genome.save_genome(directory=generation_directory_name + str(i+1))
