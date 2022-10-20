@@ -42,7 +42,8 @@ class EvolutionStrategy:
             if order_dict[building][0] < order_dict[building][1]:
                 all_done = False
                 # print('need to build: {}'.format(building))
-                if self.ai.can_afford(building) and self.ai.already_pending(building) < 1:
+                if self.ai.can_afford(building) and self.ai.already_pending(building) < \
+                        (2 if building == unit.GATEWAY else 1):
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
                         if building == unit.NEXUS:

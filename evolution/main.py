@@ -17,15 +17,15 @@ from bot.builder import Builder
 from economy.own_economy import OwnEconomy
 
 
-BUILD_ORDER = [unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 8, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, 32,
-               unit.ROBOTICSFACILITY, 48, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.GATEWAY, 64, unit.NEXUS, unit.TEMPLARARCHIVE,
-               unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-               unit.GATEWAY, unit.NEXUS]
-UNITS_RATIO = {unit.ZEALOT: 12, unit.ADEPT: 12, unit.STALKER: 7, unit.IMMORTAL: 12,
-                            unit.ARCHON: 12, unit.SENTRY: 4}
-
-
 class OctopusEvo(sc2.BotAI):
+    BUILD_ORDER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,  unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS,
+                 unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, 48, unit.NEXUS,
+                unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
+                   unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                   unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+    UNITS_RATIO = {unit.ZEALOT: 0, unit.ADEPT: 0, unit.STALKER: 50, unit.IMMORTAL: 20,
+                   unit.ARCHON: 0, unit.SENTRY: 0}
+
     army_ids = [unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
                 unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
                 unit.TEMPEST]
@@ -89,7 +89,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.cybernetics_upgrade()
         self.strategy.forge_upgrades()
         # await self.build_batteries()
-        await self.shield_overcharge()
+        # await self.shield_overcharge()
         # supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
         #               - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
         # supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
@@ -97,9 +97,9 @@ class OctopusEvo(sc2.BotAI):
         # print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
         #
         ## scan
-        self.scouting.scan_middle_game()
+        # self.scouting.scan_middle_game()
         self.scouting.gather_enemy_info()
-        if iteration % 20 == 0:
+        if iteration % 30 == 0:
             self.scouting.print_enemy_info()
             self.own_economy.print_own_economy_info()
 
@@ -113,6 +113,7 @@ class OctopusEvo(sc2.BotAI):
             if isinstance(building, unit):
                 if self.already_pending(building):
                     build_in_progress = True
+                    break
         if self.build_order_index + 1 == len(self.build_order):
             build_finished = True
 
@@ -166,6 +167,9 @@ class OctopusEvo(sc2.BotAI):
                     placement_step: int = 3, ) -> bool:
         return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                         build_worker=build_worker, random_alternative=random_alternative)
+
+    def is_warpgate_research_ready(self):
+        return upgrade.WARPGATERESEARCH in self.state.upgrades
 
     async def morph_gates(self):
         for gateway in self.structures(unit.GATEWAY).ready:
@@ -365,10 +369,23 @@ class OctopusEvo(sc2.BotAI):
         # print('killed_cost: ' + str(self.killed_cost))
 
     def attack_condition(self, max_supply):
-        return self.supply_used > max_supply
+        if self.supply_used > max_supply:
+            return True
+
+        if self.is_warpgate_research_ready():
+            print('warpgate_research_ready')
+            return True
+
+        if self.scouting.number_of_scoutings_done > 1:
+            nexuses_amount = self.structures(unit.NEXUS).ready.amount
+            if self.scouting.get_enemy_bases_amount() > nexuses_amount and \
+                self.scouting.total_enemy_ground_dps * 0.6 < self.own_economy.total_own_ground_dps and \
+                self.scouting.total_enemy_hp * 1.5 < self.own_economy.total_own_hp:
+                return True
 
     def retreat_condition(self, army_count_retreat):
-        return self.attack and self.army.amount < army_count_retreat
+        return (self.scouting.total_enemy_ground_dps * 0.4 > self.own_economy.total_own_ground_dps and
+            self.scouting.total_enemy_hp > self.own_economy.total_own_hp)
 
     def counter_attack_condition(self):
         en = self.enemy_units()
@@ -447,12 +464,12 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
 
-def test(genome, real_time=0):
+def test(genome, real_time=1):
     ai = OctopusEvo(genome)
     result, ai = botVsComputer(ai, real_time)
     print('Result: {}'.format(result))
@@ -488,9 +505,9 @@ if __name__ == '__main__':
             print('sub nr: {}'.format(k))
             print(subject.genome)
             start = time.time()
-            # subject.genome.build_order = BUILD_ORDER
-            # subject.genome.units_ratio = UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
+            subject.genome.build_order = OctopusEvo.BUILD_ORDER
+            subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
+            win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost

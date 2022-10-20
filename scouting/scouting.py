@@ -1,6 +1,6 @@
 from sc2.ids.unit_typeid import UnitTypeId as Unit
 from sc2 import AbilityId, BotAI
-
+import time
 # from evolution.main import OctopusEvo
 
 
@@ -11,6 +11,7 @@ MILITARY = 'military'
 
 class Scouting:
     def __init__(self, ai_object):
+        self.number_of_scoutings_done = 0
         self.ai = ai_object
         self.enemy_info = {}
         self.total_enemy_ground_dps = 0
@@ -28,7 +29,6 @@ class Scouting:
                 self.scouting_positions.clear()
                 self.scouting_positions = self.create_scouting_positions_list()
 
-            print('sct idx: {}'.format(self.scouting_index))
             for scout in scouts.filter(lambda x: x.is_idle or
                                                  x.distance_to(self.scouting_positions[self.scouting_index]) < 5):
                 self.scouting_index += 1
@@ -91,9 +91,13 @@ class Scouting:
         sentries = self.ai.army(Unit.SENTRY)
         if sentries.exists:
             sentries = sorted(sentries.filter(lambda z: z.energy >= 75), key=lambda sent: sent.energy, reverse=True)
+            if self.number_of_scoutings_done > 3:
+                if len(sentries) < 2:
+                    return
             for sentry in sentries:
                 sentry_energy = sentry.energy_percentage
                 self.ai.do(sentry(AbilityId.HALLUCINATION_PHOENIX))
+                self.number_of_scoutings_done += 1
                 if sentry_energy < 1:
                     break
 
@@ -110,3 +114,6 @@ class Scouting:
 
     def on_unit_destroyed(self, unit_tag):
         self.remove_unit_from_enemy_info(unit_tag)
+
+    def get_enemy_bases_amount(self):
+        return len(self.enemy_info[BASES])
