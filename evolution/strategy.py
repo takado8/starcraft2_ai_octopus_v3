@@ -206,7 +206,7 @@ class EvolutionStrategy:
                 elif self.ai.can_afford(unit.ADEPT) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
                         and self.ai.units(unit.ADEPT).amount < max_adepts:
                     self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-                elif self.ai.minerals > 350 and \
+                elif self.ai.minerals > 100 and \
                         self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
                     self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
 

@@ -525,7 +525,7 @@ class Micro:
         if self.ai.army.amount > 10:
             excluded_types.add(unit.SENTRY)
 
-        whole_army = self.ai.army.exclude_type()
+        whole_army = self.ai.army.exclude_type(excluded_types)
         dist = 9
         for man in whole_army:
             threats = enemy.filter(

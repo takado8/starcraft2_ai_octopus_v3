@@ -10,17 +10,19 @@ class Army:
         self.status: ArmyStatus = ArmyStatus.DEFENSE_POSITION
         self.divisions: Dict[str, Division] = {}
 
+    def create_division(self, division_name, micro):
+        if division_name not in self.divisions:
+            new_division = Division(division_name, micro)
+            self.divisions[division_name] = new_division
+
     def add_soldier_to_division(self, division_name: str, soldier: Soldier):
         if division_name in self.divisions:
             self.divisions[division_name].add_soldier(soldier)
         else:
-            new_division = Division(division_name)
-            new_division.add_soldier(soldier)
-            self.divisions[division_name] = new_division
+            print('division of name \'{}\' does not exist.'.format(division_name))
 
-    def remove_soldier_form_division(self, soldier):
-        for division in self.divisions:
-            self.divisions[division].remove_soldier(soldier)
+    def remove_soldier_form_division(self, soldier: Soldier):
+        self.divisions[soldier.division_name].remove_soldier(soldier)
 
 
 class ArmyStatus:

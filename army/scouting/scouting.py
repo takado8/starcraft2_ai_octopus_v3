@@ -43,8 +43,10 @@ class Scouting:
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.add_units_to_enemy_info(BASES, enemy_bases)
         # military units
+        excluded = [Unit.BROODLING]
         enemy_military_units = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.workers_ids and
-                                                                      x.type_id not in self.ai.units_to_ignore and x.can_attack_ground)
+                                                                      x.type_id not in self.ai.units_to_ignore
+                                                                      and x.type_id not in excluded)
         self.add_units_to_enemy_info(MILITARY, enemy_military_units)
 
     def add_units_to_enemy_info(self, category, units):
