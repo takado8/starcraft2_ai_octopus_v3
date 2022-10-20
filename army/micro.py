@@ -520,8 +520,12 @@ class Micro:
         enemy = self.ai.enemy_units()
         if not enemy.exists:
             return
-        whole_army = self.ai.army.exclude_type({unit.CARRIER, unit.TEMPEST, unit.VOIDRAY, unit.ZEALOT, unit.DARKTEMPLAR,
-                                                unit.PHOENIX})
+        excluded_types = {unit.CARRIER, unit.TEMPEST, unit.VOIDRAY, unit.ZEALOT, unit.DARKTEMPLAR,
+                                                unit.PHOENIX}
+        if self.ai.army.amount > 10:
+            excluded_types.add(unit.SENTRY)
+
+        whole_army = self.ai.army.exclude_type()
         dist = 9
         for man in whole_army:
             threats = enemy.filter(
@@ -565,7 +569,6 @@ class Micro:
                         pos = pos.random_on_distance(j)
                         j+=1
 
-                # for st in army:
                 if man.shield_percentage < 0.4:
                     if man.health_percentage < 0.35:
                         self.ai.do(man.move(pos))
@@ -578,54 +581,53 @@ class Micro:
                 if pos is not None and man.weapon_cooldown > 0:
                     self.ai.do(man.move(man.position.towards(pos,d)))
                 else:
-                    if man.distance_to(target) > 6:
-                        self.ai.do(man.attack(target))
+                    self.ai.do(man.attack(target))
 
-                #  Sentry region  #
-            sents = self.ai.army(unit.SENTRY)
-            if sents.exists:
-                m = -1
-                sentry = None
-                for se in sents:
-                    close = sents.closer_than(7,se).amount
-                    if close > m:
-                        m = close
-                        sentry = se
-                force_fields = []
-                guardian_shield_on = False
-                for eff in self.ai.state.effects:
-                    if eff.id == FakeEffectID.get(unit.FORCEFIELD.value):
-                        force_fields.append(eff)
-                    elif not guardian_shield_on and eff.id == effect.GUARDIANSHIELDPERSISTENT:
-                        guardian_shield_on = True
-                threats = self.ai.enemy_units().filter(
-                    lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry) <= 9 and
-                                  unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids)
-                has_energy_amount = sents.filter(lambda x2: x2.energy >= 50).amount
-                points = []
+        #  Sentry region  #
+        sents = self.ai.army(unit.SENTRY)
+        if sents.exists:
+            m = -1
+            sentry = None
+            for se in sents:
+                close = sents.closer_than(7,se).amount
+                if close > m:
+                    m = close
+                    sentry = se
+            force_fields = []
+            guardian_shield_on = False
+            for eff in self.ai.state.effects:
+                if eff.id == FakeEffectID.get(unit.FORCEFIELD.value):
+                    force_fields.append(eff)
+                elif not guardian_shield_on and eff.id == effect.GUARDIANSHIELDPERSISTENT:
+                    guardian_shield_on = True
+            threats = self.ai.enemy_units().filter(
+                lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry) <= 9 and
+                              unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids)
+            has_energy_amount = sents.filter(lambda x2: x2.energy >= 50).amount
+            points = []
 
-                if has_energy_amount > 0 and len(
-                        force_fields) < 5 and threats.amount > 4:  # and self.ai.time - self.ai.force_field_time > 1:
-                    enemy_army_center = threats.center.towards(sentry,-1)
-                    gap = 3
-                    points.append(enemy_army_center)
-                    points.append(Point2((enemy_army_center.x - gap,enemy_army_center.y)))
-                    points.append(Point2((enemy_army_center.x + gap,enemy_army_center.y)))
-                    points.append(Point2((enemy_army_center.x,enemy_army_center.y - gap)))
-                    points.append(Point2((enemy_army_center.x,enemy_army_center.y + gap)))
-                for se in self.ai.units(unit.SENTRY):
-                    abilities = await self.ai.get_available_abilities(se)
-                    if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities \
-                            and se.distance_to(threats.closest_to(se)) < 7:
-                        self.ai.do(se(ability.GUARDIANSHIELD_GUARDIANSHIELD))
-                        guardian_shield_on = True
-                    if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
-                        self.ai.do(se(ability.FORCEFIELD_FORCEFIELD,points.pop(0)))
-                    else:
-                        army_nearby = self.ai.army.closer_than(9,se)
-                        if army_nearby.exists:
-                            if threats.exists:
-                                self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se),-4)))
+            if has_energy_amount > 0 and len(
+                    force_fields) < 5 and threats.amount > 4:  # and self.ai.time - self.ai.force_field_time > 1:
+                enemy_army_center = threats.center.towards(sentry,-1)
+                gap = 3
+                points.append(enemy_army_center)
+                points.append(Point2((enemy_army_center.x - gap,enemy_army_center.y)))
+                points.append(Point2((enemy_army_center.x + gap,enemy_army_center.y)))
+                points.append(Point2((enemy_army_center.x,enemy_army_center.y - gap)))
+                points.append(Point2((enemy_army_center.x,enemy_army_center.y + gap)))
+            for se in self.ai.units(unit.SENTRY):
+                abilities = await self.ai.get_available_abilities(se)
+                if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities \
+                        and se.distance_to(threats.closest_to(se)) < 7:
+                    self.ai.do(se(ability.GUARDIANSHIELD_GUARDIANSHIELD))
+                    guardian_shield_on = True
+                if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
+                    self.ai.do(se(ability.FORCEFIELD_FORCEFIELD,points.pop(0)))
+                else:
+                    army_nearby = self.ai.army.closer_than(9,se)
+                    if army_nearby.exists:
+                        if threats.exists:
+                            self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se),-4)))
 
         # zealot
         for zl in self.ai.army(unit.ZEALOT):

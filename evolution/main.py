@@ -10,7 +10,7 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
-from scouting.scouting import Scouting
+from army.scouting.scouting import Scouting
 from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
 from bot.builder import Builder
@@ -18,7 +18,7 @@ from economy.own_economy import OwnEconomy
 
 
 class OctopusEvo(sc2.BotAI):
-    BUILD_ORDER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,  unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS,
+    BUILD_ORDER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,  unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS,
                  unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, 48, unit.NEXUS,
                 unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
@@ -464,7 +464,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

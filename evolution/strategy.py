@@ -277,7 +277,6 @@ class EvolutionStrategy:
     async def micro(self):
         await self.micro_obj.personal_new()
 
-
     async def movements(self):
         enemy_units = self.ai.enemy_units()
         enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore and (x.can_attack_ground
@@ -295,6 +294,7 @@ class EvolutionStrategy:
             if enemy_units.exists:
                 for man in self.ai.army.exclude_type(unit.OBSERVER):
                     self.ai.do(man.attack(enemy_units.closest_to(man)))
+
 
         if enemy.amount > 1:
             if enemy.closer_than(25, self.ai.start_location).amount > 1:
