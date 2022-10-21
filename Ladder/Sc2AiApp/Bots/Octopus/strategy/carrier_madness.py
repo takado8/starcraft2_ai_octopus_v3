@@ -34,7 +34,7 @@ class CarrierMadness(Strategy):
         pass
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_build(self):
         await self._robotics_builder.none()
@@ -46,7 +46,7 @@ class CarrierMadness(Strategy):
         pass
 
     async def expand(self):
-        await self._expander.standard()
+        await self._expander.standard_old()
 
     # =======================================================  Upgraders
 

@@ -1,14 +1,15 @@
 from sc2.ids.upgrade_id import UpgradeId as upgrade
-from sc2.constants import FakeEffectID
 from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
-from sc2.position import Point2
-from sc2.ids.effect_id import EffectId as effect
-from sc2.units import Units
-from sc2 import Race
 from builders.expander import Expander
 from bot.chronobooster import Chronobooster
-from army.micro import Micro
+from builders.build_orders import BuildQueues
+from builders.pylon_builder import PylonBuilder
+from builders.assimilator_builder import AssimilatorBuilder
+from army.army import Army
+from bot.builder import Builder
+from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
+from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 
 
 class EvolutionStrategy:
@@ -16,266 +17,53 @@ class EvolutionStrategy:
         self.ai = ai
         self.type = 'macro'
         self.name = 'evo'
-        self.expander = Expander(ai)
         self.chronobooster = Chronobooster(ai)
-        self.micro_obj = Micro(ai)
+        # self.micro_obj = Micro(ai)
+        self.army_obj = Army(ai)
+        build_queue = BuildQueues.stalker_rush
+        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
+        self.pylon_builder = PylonBuilder(ai)
+        self.assimilator_builder = AssimilatorBuilder(ai)
+        self.forge_upgrader = ForgeUpgrader(ai)
+        self.cybernetics_upgrader = CyberneticsUpgrader(ai)
+        self.twilight_upgrader = TwilightUpgrader(ai)
+        self.warpgate_trainer = WarpgateTrainer(ai)
+        self.gate_trainer = GateTrainer(ai)
+        self.nexus_trainer = NexusTrainer(ai)
+        self.robtics_trainer = RoboticsTrainer(ai)
+
 
     # =======================================================  Builders
     async def build_from_queue(self):
-        order_dict = {}
-        for i in range(self.ai.build_order_index + 1):
-            building = self.ai.build_order[i]
-            if isinstance(building, unit):
-                if building in order_dict:
-                    order_dict[building][1] += 1
-                else:
-                    amount = self.ai.structures(building).amount
-                    order_dict[building] = [amount, 1]
-        if unit.GATEWAY in order_dict:
-            warpgate_amount = self.ai.structures(unit.WARPGATE).amount
-            order_dict[unit.GATEWAY][0] += warpgate_amount
-        if unit.NEXUS in order_dict:
-            order_dict[unit.NEXUS][1] += 1
-        # print('order dict: {}'.format(order_dict))
-        all_done = True
-        for building in order_dict:
-            if order_dict[building][0] < order_dict[building][1]:
-                all_done = False
-                # print('need to build: {}'.format(building))
-                if self.ai.can_afford(building) and self.ai.already_pending(building) < \
-                        (2 if building == unit.GATEWAY else 1):
-                    pylon = self.ai.get_pylon_with_least_neighbours()
-                    if pylon:
-                        if building == unit.NEXUS:
-                            await self.expander.evo()
-                        else:
-                            await self.ai.build(building, near=pylon, placement_step=3, max_distance=25,
-                                                random_alternative=True)
-        if all_done:
-            # print('all done.')
-            if self.ai.build_order_index + 1 < len(self.ai.build_order):
-                self.ai.build_order_index += 1
+        await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        if self.ai.supply_cap < 200:
-            # if self.ai.structures(unit.PYLON).amount < 1:
-            #     if not self.ai.already_pending(unit.PYLON):
-            #         placement = self.ai.main_base_ramp.protoss_wall_pylon
-            #
-            #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
-            #                             random_alternative=False)
-            # else:
-            if self.ai.supply_cap < 130:
-                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 4).random_on_distance(5)
-                max_d = 25
-                pending = 2 if self.ai.time > 180 else 1
-                left = 5
-                step = 7
-            else:
-                pos = self.ai.structures(unit.NEXUS).ready
-                if pos.exists:
-                    pos = pos.random.position
-                else:
-                    return
-                minerals = self.ai.mineral_field.closest_to(pos)
-                if minerals.distance_to(pos) < 12:
-                    pos = pos.towards(minerals, -7).random_on_distance(2)
-                max_d = 27
-                pending = 3
-                left = 9
-                step = 5
-            if self.ai.supply_left < left:  # or (pylons.amount < 1 and self.ai.structures(unit.GATEWAY).exists):
-                if self.ai.already_pending(unit.PYLON) < pending:
-                    # pos = pos.random_on_distance(7)
-                    result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
-                    i = 0
-                    while not result and i < 12:
-                        i += 1
-                        pos = pos.random_on_distance(7)
-                        result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
+        await self.pylon_builder.new_standard()
 
     # =======================================================  Upgraders
-    def forge_upgrades(self):
-        for forge in self.ai.structures(unit.FORGE).ready.idle:
-            if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL1):
-                self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1))
-            elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2):
-                self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2))
-            elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or \
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades:
-                if upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in \
-                        self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL3):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL3))
-                elif upgrade.PROTOSSGROUNDARMORSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSGROUNDARMORSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL1):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL1))
-                elif upgrade.PROTOSSSHIELDSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSSHIELDSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL1):
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL1))
-                elif upgrade.PROTOSSGROUNDARMORSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSGROUNDARMORSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL2):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL2))
-                elif upgrade.PROTOSSGROUNDARMORSLEVEL2 in \
-                        self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                    upgrade.PROTOSSGROUNDARMORSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL3):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL3))
-                elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSSHIELDSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL2) and \
-                        upgrade.PROTOSSSHIELDSLEVEL1 in self.ai.state.upgrades and self.ai.structures(
-                    unit.TWILIGHTCOUNCIL).ready.exists:
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL2))
-                elif upgrade.PROTOSSSHIELDSLEVEL3 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSSHIELDSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL3) and \
-                        upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades:
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL3))
+    def forge_upgrade(self):
+        self.forge_upgrader.standard()
 
     def cybernetics_upgrade(self):
-        cyber = self.ai.structures(unit.CYBERNETICSCORE).ready.idle
-        if cyber.exists:
-            if upgrade.WARPGATERESEARCH not in self.ai.state.upgrades and \
-                    not self.ai.already_pending_upgrade(upgrade.WARPGATERESEARCH) and \
-                    self.ai.can_afford(upgrade.WARPGATERESEARCH):
-                self.ai.do(cyber.random.research(upgrade.WARPGATERESEARCH))
+        self.cybernetics_upgrader.standard()
 
-    async def twilight_upgrades(self):
-        if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
-            if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
-                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
-                if tc.exists:
-                    tc = tc.random
-                    abilities = await self.ai.get_available_abilities(tc)
-                    if ability.RESEARCH_CHARGE in abilities:
-                        self.ai.do(tc(ability.RESEARCH_CHARGE))
-            if self.ai.army(unit.ADEPT).amount > 4:
-                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
-                if tc.exists:
-                    tc = tc.random
-                    abilities = await self.ai.get_available_abilities(tc)
-                    if ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
-                        self.ai.do(tc(ability.RESEARCH_ADEPTRESONATINGGLAIVES))
+    async def twilight_upgrade(self):
+        await self.twilight_upgrader.standard()
 
     # =======================================================  Trainers
     async def train_units(self):
-        max_stalkers = self.ai.units_ratio[unit.STALKER]
-        max_zealots = self.ai.units_ratio[unit.ZEALOT]
-        max_adepts = self.ai.units_ratio[unit.ADEPT]
-        await self.gate_train(max_stalkers=max_stalkers, max_zealots=max_zealots, max_adepts=max_adepts)
-        await self.warp_units(max_archons=self.ai.units_ratio[unit.ARCHON],
-                              max_sentry=self.ai.units_ratio[unit.SENTRY],
-                              max_stalkers=max_stalkers, max_adepts=max_adepts, max_zealots=max_zealots)
-        self.robotics_train(self.ai.units_ratio[unit.IMMORTAL])
-
-    async def warp_units(self, max_archons, max_sentry, max_stalkers, max_adepts, max_zealots):
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or self.ai.forge_upg_priority() or not self.ai.structures(
-                unit.WARPGATE).exists:
-                return
-            pos = self.ai.get_super_pylon().position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.HIGHTEMPLAR) and self.ai.army(unit.ARCHON).amount < max_archons \
-                        and self.ai.structures(unit.TEMPLARARCHIVE).ready.exists:
-                    self.ai.do(warpgate.warp_in(unit.HIGHTEMPLAR, placement))
-                elif self.ai.can_afford(unit.SENTRY) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
-                        and self.ai.units(unit.SENTRY).amount < max_sentry and self.ai.state.score.food_used_army > 12:
-                    self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
-                elif self.ai.can_afford(unit.STALKER) and self.ai.army(unit.STALKER).amount < max_stalkers:
-                    self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                elif self.ai.can_afford(unit.ADEPT) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
-                        and self.ai.units(unit.ADEPT).amount < max_adepts:
-                    self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-                elif self.ai.minerals > 100 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
-                    self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
-    async def gate_train(self, max_stalkers, max_zealots, max_adepts):
-        gateway = self.ai.structures(unit.GATEWAY).ready
-        if gateway.idle.exists:
-            if self.ai.can_afford(unit.STALKER) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists and \
-                    self.ai.army(unit.STALKER).amount < max_stalkers:
-                u = unit.STALKER
-            elif self.ai.minerals > 155 and self.ai.units(unit.ZEALOT).amount < max_zealots:
-                u = unit.ZEALOT
-            elif self.ai.can_afford(unit.ADEPT) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists and \
-                    self.ai.army(unit.ADEPT).amount < max_adepts:
-                u = unit.ADEPT
-            else:
-                return
-            gateway = gateway.ready.idle.random
-            self.ai.do(gateway.train(u))
+        await self.gate_trainer.standard()
+        await self.warpgate_trainer.standard()
+        await self.robtics_trainer.standard_new()
 
     def train_probes(self):
-        workers = self.ai.workers.amount
-        nex = self.ai.structures(unit.NEXUS).amount
-        if not self.ai.structures(unit.PYLON).exists and workers == 14:
-            return
-        if workers < 20 * nex and workers < 55:
-            for nexus in self.ai.structures(unit.NEXUS).ready:
-                if nexus.is_idle and self.ai.can_afford(unit.PROBE):
-                    self.ai.do(nexus.train(unit.PROBE))
-        elif 54 < workers < 74:
-            if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
-                if self.ai.structures(unit.NEXUS).idle.amount < nex:
-                    return
-                nexus = self.ai.structures(unit.NEXUS).ready.idle.random
-                self.ai.do(nexus.train(unit.PROBE))
-
-    def robotics_train(self, max_immortals):
-        robotics = self.ai.structures(unit.ROBOTICSFACILITY).ready.idle
-        if robotics.exists:
-            immortals = self.ai.units(unit.IMMORTAL)
-            if self.ai.units(unit.OBSERVER).amount + self.ai.units(unit.OBSERVERSIEGEMODE).amount < 1 and \
-                    self.ai.can_afford(unit.OBSERVER):
-                for factory in robotics:
-                    self.ai.do(factory.train(unit.OBSERVER))
-                    break
-            elif self.ai.units(unit.WARPPRISMPHASING).amount + self.ai.units(unit.WARPPRISM).amount < 1 \
-                    and self.ai.can_afford(unit.WARPPRISM) and not self.ai.already_pending(
-                unit.WARPPRISM) and (immortals.amount > 1 or self.ai.attack):
-                for factory in self.ai.structures(unit.ROBOTICSFACILITY).ready.idle:
-                    self.ai.do(factory.train(unit.WARPPRISM))
-                    break
-            # elif self.ai.can_afford(unit.COLOSSUS) and self.ai.supply_left > 5 and self.ai.structures(
-            #         unit.ROBOTICSBAY).ready.exists \
-            #         and self.ai.units(unit.COLOSSUS).amount < 3:
-            #     for factory in self.ai.structures(unit.ROBOTICSFACILITY).ready.idle:
-            #         self.ai.do(factory.train(unit.COLOSSUS))
-            # elif self.ai.can_afford(unit.DISRUPTOR) and self.ai.supply_left > 3 and self.ai.structures(
-            #         unit.ROBOTICSBAY).ready.exists \
-            #         and self.ai.units(unit.DISRUPTOR).amount < 3:
-            #     for factory in self.ai.structures(unit.ROBOTICSFACILITY).ready.idle:
-            #         self.ai.do(factory.train(unit.DISRUPTOR))
-            else:
-                for factory in self.ai.structures(unit.ROBOTICSFACILITY).ready.idle:
-                    if self.ai.can_afford(unit.IMMORTAL) and immortals.amount < max_immortals:
-                        self.ai.do(factory.train(unit.IMMORTAL))
+        self.nexus_trainer.probes_standard()
 
     # =======================================================  Army
 
     async def micro(self):
-        await self.micro_obj.personal_new()
+        self.army_obj.do_stuff()
+        # await self.micro_obj.personal_new()
 
     async def movements(self):
         enemy_units = self.ai.enemy_units()
@@ -394,29 +182,4 @@ class EvolutionStrategy:
             print(ex)
 
     def build_assimilators(self):
-        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \
-                (self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.vespene > self.ai.minerals):
-            return
-        nexuses = self.ai.structures(unit.NEXUS)
-        if nexuses.amount < 4:
-            nexuses = nexuses.ready
-        probes = self.ai.units(unit.PROBE)
-        if probes.exists:
-            for nexus in nexuses:
-                vespenes = self.ai.vespene_geyser.closer_than(9, nexus)
-                workers = probes.closer_than(12, nexus)
-                if workers.amount > 14 or nexuses.amount > 3:
-                    for vespene in vespenes:
-                        if (not self.ai.already_pending(unit.ASSIMILATOR)) and (not
-                                                                                self.ai.structures(
-                                                                                    unit.ASSIMILATOR).exists or not
-                                                                                self.ai.structures(
-                                                                                    unit.ASSIMILATOR).closer_than(3,
-                                                                                                                  vespene).exists):
-                            if not self.ai.can_afford(unit.ASSIMILATOR):
-                                return
-                            worker = self.ai.select_build_worker(vespene.position)
-                            if worker is None:
-                                break
-                            self.ai.do(worker.build(unit.ASSIMILATOR, vespene))
-                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
+        self.assimilator_builder.standard()

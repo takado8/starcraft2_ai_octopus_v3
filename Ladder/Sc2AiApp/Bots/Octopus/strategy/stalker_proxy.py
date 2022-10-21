@@ -39,7 +39,7 @@ class StalkerProxy(Strategy):
         await self._templar_archives_builder.none()
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_bay_build(self):
         await self._robotics_bay_builder.none()
@@ -53,7 +53,7 @@ class StalkerProxy(Strategy):
     # =======================================================  Upgraders
 
     def cybernetics_upgrades(self):
-        self._cybernetics_upgrader.standard()
+        self._cybernetics_upgrader.standard_old()
 
     def forge_upgrades(self):
         self._forge_upgrader.none()

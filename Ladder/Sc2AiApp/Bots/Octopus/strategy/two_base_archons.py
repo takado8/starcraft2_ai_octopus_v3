@@ -24,7 +24,7 @@ class TwoBaseArchons(Strategy):
         await self._twilight_builder.early()
 
     async def templar_archives_build(self):
-        await self._templar_archives_builder.standard()
+        await self._templar_archives_builder.standard_old()
 
     async def pylon_first_build(self):
         await self._pylon_builder.first_and_next_standard()
@@ -36,7 +36,7 @@ class TwoBaseArchons(Strategy):
         pass
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_build(self):
         await self._robotics_builder.macro()
@@ -53,7 +53,7 @@ class TwoBaseArchons(Strategy):
     # =======================================================  Upgraders
 
     def cybernetics_upgrades(self):
-        self._cybernetics_upgrader.standard()
+        self._cybernetics_upgrader.standard_old()
 
     def forge_upgrades(self):
         pass
@@ -80,10 +80,10 @@ class TwoBaseArchons(Strategy):
         pass
 
     def robotics_train(self):
-        self._robotics_trainer.standard()
+        self._robotics_trainer.standard_old()
 
     async def warpgate_train(self):
-        await self._warpgate_trainer.standard()
+        await self._warpgate_trainer.standard_old()
 
     # =======================================================  Army
 

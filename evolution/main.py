@@ -13,25 +13,10 @@ from typing import Optional, Union
 from army.scouting.scouting import Scouting
 from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
-from bot.builder import Builder
 from economy.own_economy import OwnEconomy
 
 
 class OctopusEvo(sc2.BotAI):
-    # BUILD_ORDER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,  unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS,
-    #              unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, 48, unit.NEXUS,
-    #             unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-    #                unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-    #                unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
-    BUILD_ORDER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.NEXUS, unit.FORGE,
-                   unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 12, unit.NEXUS, unit.ROBOTICSFACILITY,
-                   unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                   unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-                   unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                   unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY,unit.GATEWAY,unit.GATEWAY]
-    UNITS_RATIO = {unit.ZEALOT: 24, unit.ADEPT: 20, unit.STALKER: 20, unit.IMMORTAL: 7,
-                   unit.ARCHON: 10, unit.SENTRY: 3}
-
     army_ids = [unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
                 unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
                 unit.TEMPEST]
@@ -50,10 +35,9 @@ class OctopusEvo(sc2.BotAI):
     scoutings_last_attack = 0
 
 
-    def __init__(self, genome):
+    def __init__(self, genome=None):
         super().__init__()
         self.structures_amount = 0
-        self.builder = Builder(self)
         self.spot_validator = BuildingSpotValidator(self)
         self.chronobooster = Chronobooster(self)
         self.attack = False
@@ -65,13 +49,11 @@ class OctopusEvo(sc2.BotAI):
         self.scouting = Scouting(self)
         self.own_economy = OwnEconomy(self)
         self.strategy: EvolutionStrategy = None
-        self.build_order = genome.build_order
-        self.units_ratio = genome.units_ratio
 
         # self.build_order = BUILD_ORDER
         # self.units_ratio = UNITS_RATIO
 
-        self.build_order_index = 0
+
 
     async def on_unit_destroyed(self, unit_tag: int):
         self.scouting.on_unit_destroyed(unit_tag)
@@ -92,36 +74,31 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.build_pylons()
         self.strategy.train_probes()
         self.strategy.build_assimilators()
-        await self.strategy.twilight_upgrades()
+        await self.strategy.twilight_upgrade()
         self.strategy.cybernetics_upgrade()
-        self.strategy.forge_upgrades()
+        self.strategy.forge_upgrade()
         # await self.build_batteries()
         # await self.shield_overcharge()
-        # supply_army = self.state.score.total_used_minerals_army + 1.2 * self.state.score.total_used_vespene_army\
-        #               - self.state.score.lost_minerals_army - 1.2 * self.state.score.lost_vespene_army
-        # supply_eco = self.state.score.total_used_minerals_economy + 1.2 * self.state.score.total_used_vespene_economy\
-        #              - 1000 - self.state.score.lost_minerals_economy - 1.2 * self.state.score.lost_vespene_economy
-        # print('supply used army: {}\nsupply used eco: {}'.format(supply_army, supply_eco))
-        #
+
+
         ## scan
         self.scouting.scan_middle_game()
         self.scouting.gather_enemy_info()
         if iteration % 30 == 0:
             self.scouting.print_enemy_info()
             self.own_economy.print_own_economy_info()
-
         ##
         #
-        current_building = self.build_order[self.build_order_index]
+        current_building = self.strategy.build_order[self.strategy.builder.build_order_index]
         army_priority = False
         build_in_progress = False
         build_finished = False
-        for building in self.build_order:
+        for building in self.strategy.build_order:
             if isinstance(building, unit):
                 if self.already_pending(building):
                     build_in_progress = True
                     break
-        if self.build_order_index + 1 == len(self.build_order):
+        if self.build_order_index + 1 == len(self.strategy.build_order):
             build_finished = True
 
         if not isinstance(current_building, unit):
@@ -172,8 +149,11 @@ class OctopusEvo(sc2.BotAI):
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
-        return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
-                                        build_worker=build_worker, random_alternative=random_alternative)
+        print('this function is deprecated. use strategy.builder.build if necessary.')
+        raise NotImplementedError
+        return False
+        # return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
+        #                                 build_worker=build_worker, random_alternative=random_alternative)
 
     def is_warpgate_research_ready(self):
         return upgrade.WARPGATERESEARCH in self.state.upgrades
@@ -470,7 +450,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -511,8 +491,8 @@ if __name__ == '__main__':
             print('sub nr: {}'.format(k))
             print(subject.genome)
             start = time.time()
-            subject.genome.build_order = OctopusEvo.BUILD_ORDER
-            subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
+            # subject.genome.build_order = OctopusEvo.strategy.build_order
+            # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
             win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

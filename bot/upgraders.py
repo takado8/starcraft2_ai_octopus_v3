@@ -12,18 +12,17 @@ class ForgeUpgrader:
 
     def standard(self):
         for forge in self.ai.structures(unit.FORGE).ready.idle:
-
             if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL1):
                 self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1))
             elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2):
                 self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2))
-            elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or\
-                upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades:
+            elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or \
+                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades:
                 if upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in \
                         self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSGROUNDWEAPONSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL3):
+                    upgrade.PROTOSSGROUNDWEAPONSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL3):
                     self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL3))
                 elif upgrade.PROTOSSGROUNDARMORSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSGROUNDARMORSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL1):
@@ -36,12 +35,12 @@ class ForgeUpgrader:
                     self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL2))
                 elif upgrade.PROTOSSGROUNDARMORSLEVEL2 in \
                         self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                        upgrade.PROTOSSGROUNDARMORSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL3):
+                    upgrade.PROTOSSGROUNDARMORSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL3):
                     self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL3))
                 elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSSHIELDSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL2) and \
                         upgrade.PROTOSSSHIELDSLEVEL1 in self.ai.state.upgrades and self.ai.structures(
-                        unit.TWILIGHTCOUNCIL).ready.exists:
+                    unit.TWILIGHTCOUNCIL).ready.exists:
                     self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL2))
                 elif upgrade.PROTOSSSHIELDSLEVEL3 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSSHIELDSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL3) and \
@@ -135,6 +134,23 @@ class TwilightUpgrader:
                     abilities = await self.ai.get_available_abilities(tc)
                     if ability.RESEARCH_BLINK in abilities:
                         self.ai.do(tc(ability.RESEARCH_BLINK))
+
+    async def standard(self):
+        if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
+            if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
+                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
+                if tc.exists:
+                    tc = tc.random
+                    abilities = await self.ai.get_available_abilities(tc)
+                    if ability.RESEARCH_CHARGE in abilities:
+                        self.ai.do(tc(ability.RESEARCH_CHARGE))
+            if self.ai.army(unit.ADEPT).amount > 4:
+                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
+                if tc.exists:
+                    tc = tc.random
+                    abilities = await self.ai.get_available_abilities(tc)
+                    if ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
+                        self.ai.do(tc(ability.RESEARCH_ADEPTRESONATINGGLAIVES))
 
 
 class TemplarArchiveUpgrader:

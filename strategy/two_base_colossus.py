@@ -36,13 +36,13 @@ class TwoBaseColossus(Strategy):
         await self._pylon_builder.none()
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_build(self):
         await self._robotics_builder.double()
 
     async def robotics_bay_build(self):
-        await self._robotics_bay_builder.standard()
+        await self._robotics_bay_builder.standard_old()
 
     async def cannons_build(self):
         await self._cannon_builder.double_per_nex()
@@ -53,10 +53,10 @@ class TwoBaseColossus(Strategy):
     # =======================================================  Upgraders
 
     def cybernetics_upgrades(self):
-        self._cybernetics_upgrader.standard()
+        self._cybernetics_upgrader.standard_old()
 
     def forge_upgrades(self):
-        self._forge_upgrader.standard()
+        self._forge_upgrader.standard_old()
 
     async def twilight_upgrades(self):
         await self._twilight_upgrader.none()
@@ -111,4 +111,4 @@ class TwoBaseColossus(Strategy):
  # ======================================================== Buffs
 
     async def chronoboost(self):
-        await self._chronobooster.standard()
+        await self._chronobooster.standard_old()

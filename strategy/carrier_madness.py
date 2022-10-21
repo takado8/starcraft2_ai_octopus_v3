@@ -106,4 +106,4 @@ class CarrierMadness(Strategy):
     # ======================================================== Buffs
 
     async def chronoboost(self):
-        await self._chronobooster.standard()
+        await self._chronobooster.standard_old()

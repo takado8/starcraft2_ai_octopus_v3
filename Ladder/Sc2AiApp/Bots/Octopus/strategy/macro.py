@@ -22,10 +22,10 @@ class Macro(Strategy):
         await self._forge_builder.double_late()
 
     async def twilight_build(self):
-        await self._twilight_builder.standard()
+        await self._twilight_builder.standard_old()
 
     async def templar_archives_build(self):
-        await self._templar_archives_builder.standard()
+        await self._templar_archives_builder.standard_old()
 
     async def pylon_first_build(self):
         await self._pylon_builder.first_and_next_standard()
@@ -37,27 +37,27 @@ class Macro(Strategy):
         await self._pylon_builder.none()
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_build(self):
         await self._robotics_builder.double()
 
     async def robotics_bay_build(self):
-        await self._robotics_bay_builder.standard()
+        await self._robotics_bay_builder.standard_old()
 
     async def cannons_build(self):
         await self._cannon_builder.double_per_nex()
 
     async def expand(self):
-        await self._expander.standard()
+        await self._expander.standard_old()
 
     # =======================================================  Upgraders
 
     def cybernetics_upgrades(self):
-        self._cybernetics_upgrader.standard()
+        self._cybernetics_upgrader.standard_old()
 
     def forge_upgrades(self):
-        self._forge_upgrader.standard()
+        self._forge_upgrader.standard_old()
 
     async def twilight_upgrades(self):
         await self._twilight_upgrader.charge()
@@ -75,16 +75,16 @@ class Macro(Strategy):
         self._nexus_trainer.probes_standard()
 
     def gate_train(self):
-        self._gate_trainer.standard()
+        self._gate_trainer.standard_old()
 
     def stargate_train(self):
         self._stargate_trainer.none()
 
     def robotics_train(self):
-        self._robotics_trainer.standard()
+        self._robotics_trainer.standard_old()
 
     async def warpgate_train(self):
-        await self._warpgate_trainer.standard()
+        await self._warpgate_trainer.standard_old()
 
     # =======================================================  Army
 

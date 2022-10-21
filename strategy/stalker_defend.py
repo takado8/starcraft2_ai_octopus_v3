@@ -16,7 +16,7 @@ class StalkerDefend(Strategy):
         pass
 
     def assimilator_build(self):
-        self._assimilator_builder.standard()
+        self._assimilator_builder.standard_old()
 
     async def forge_build(self):
         await self._forge_builder.none()
@@ -37,7 +37,7 @@ class StalkerDefend(Strategy):
         await self._templar_archives_builder.none()
 
     async def cybernetics_build(self):
-        await self._cybernetics_builder.standard()
+        await self._cybernetics_builder.standard_old()
 
     async def robotics_bay_build(self):
         await self._robotics_bay_builder.none()
@@ -51,7 +51,7 @@ class StalkerDefend(Strategy):
     # =======================================================  Upgraders
 
     def cybernetics_upgrades(self):
-        self._cybernetics_upgrader.standard()
+        self._cybernetics_upgrader.standard_old()
 
     def forge_upgrades(self):
         self._forge_upgrader.none()
@@ -107,4 +107,4 @@ class StalkerDefend(Strategy):
  # ======================================================== Buffs
 
     async def chronoboost(self):
-        await self._chronobooster.standard()
+        await self._chronobooster.standard_old()

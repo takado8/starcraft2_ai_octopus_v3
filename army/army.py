@@ -10,6 +10,9 @@ class Army:
         self.status: ArmyStatus = ArmyStatus.DEFENSE_POSITION
         self.divisions: Dict[str, Division] = {}
 
+    def do_stuff(self):
+        pass
+
     def create_division(self, division_name, micro):
         if division_name not in self.divisions:
             new_division = Division(division_name, micro)
