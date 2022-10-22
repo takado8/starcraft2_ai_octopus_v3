@@ -3,20 +3,19 @@ from typing import Optional, Union
 from sc2.position import Point2, Point3
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.building_spot_validator import BuildingSpotValidator
-from evolution.main import OctopusEvo
 
 
 class Builder:
-    def __init__(self, ai: OctopusEvo, build_queue, expander):
+    def __init__(self, ai, build_queue, expander):
         self.ai = ai
         self.expander = expander
         self.validator = BuildingSpotValidator(ai)
         self.build_queue = build_queue
-        self.build_order_index = 0
+        self.build_queue_index = 0
 
     async def build_from_queue(self):
         order_dict = {}
-        for i in range(self.build_order_index + 1):
+        for i in range(self.build_queue_index + 1):
             building = self.build_queue[i]
             if isinstance(building, unit):
                 if building in order_dict:
@@ -46,11 +45,11 @@ class Builder:
                                                 random_alternative=True)
         if all_done:
             # print('all done.')
-            if self.build_order_index + 1 < len(self.build_queue):
-                self.build_order_index += 1
+            if self.build_queue_index + 1 < len(self.build_queue):
+                self.build_queue_index += 1
 
     def get_current_building(self):
-        return
+        return self.build_queue[self.build_queue_index]
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -77,3 +76,16 @@ class Builder:
             return True
         else:
             return False
+
+    def is_build_finished(self):
+        return self.build_queue_index + 1 == len(self.build_queue)
+
+    def is_build_in_progress(self):
+        for building in self.build_queue:
+            if isinstance(building, unit):
+                if self.ai.already_pending(building):
+                    return True
+        return False
+
+    def increment_build_queue_index(self):
+        self.build_queue_index += 1

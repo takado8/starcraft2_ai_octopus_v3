@@ -43,7 +43,6 @@ class AssimilatorBuilder:
                             self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
 
 
-
     def standard(self):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \
                 (self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.vespene > self.ai.minerals):

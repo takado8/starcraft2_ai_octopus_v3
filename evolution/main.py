@@ -51,8 +51,8 @@ class OctopusEvo(sc2.BotAI):
         self.strategy: EvolutionStrategy = None
 
         # self.build_order = BUILD_ORDER
-        # self.units_ratio = UNITS_RATIO
-
+        self.units_ratio = {unit.ZEALOT: 12, unit.ADEPT: 0, unit.STALKER: 40, unit.IMMORTAL: 10,
+                   unit.ARCHON: 0, unit.SENTRY: 3}
 
 
     async def on_unit_destroyed(self, unit_tag: int):
@@ -87,24 +87,17 @@ class OctopusEvo(sc2.BotAI):
         if iteration % 30 == 0:
             self.scouting.print_enemy_info()
             self.own_economy.print_own_economy_info()
-        ##
-        #
-        current_building = self.strategy.build_order[self.strategy.builder.build_order_index]
+
+
+        current_building = self.strategy.builder.get_current_building()
         army_priority = False
-        build_in_progress = False
-        build_finished = False
-        for building in self.strategy.build_order:
-            if isinstance(building, unit):
-                if self.already_pending(building):
-                    build_in_progress = True
-                    break
-        if self.build_order_index + 1 == len(self.strategy.build_order):
-            build_finished = True
+        build_in_progress = self.strategy.builder.is_build_in_progress()
+        build_finished = self.strategy.builder.is_build_finished()
 
         if not isinstance(current_building, unit):
             min_army_supply = current_building
             if self.state.score.food_used_army > min_army_supply:
-                self.build_order_index += 1
+                self.strategy.builder.increment_build_queue_index()
             else:
                 army_priority = True
 
@@ -149,11 +142,8 @@ class OctopusEvo(sc2.BotAI):
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
-        print('this function is deprecated. use strategy.builder.build if necessary.')
-        raise NotImplementedError
-        return False
-        # return await self.builder.build(building=building, near=near, max_distance=max_distance, block=block,
-        #                                 build_worker=build_worker, random_alternative=random_alternative)
+        return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
+                                        build_worker=build_worker, random_alternative=random_alternative)
 
     def is_warpgate_research_ready(self):
         return upgrade.WARPGATERESEARCH in self.state.upgrades
@@ -363,14 +353,14 @@ class OctopusEvo(sc2.BotAI):
         #     print('warpgate_research_ready')
         #     return True
 
-        if self.scouting.number_of_scoutings_done - self.scoutings_last_attack > 1:
-            if self.scouting.total_enemy_ground_dps * 0.95 < self.own_economy.total_own_ground_dps and \
-                self.scouting.total_enemy_hp * 1.55 < self.own_economy.total_own_hp:
+        if self.scouting.number_of_scoutings_done - self.scoutings_last_attack > 2:
+            if self.scouting.total_enemy_ground_dps * 1.5 < self.own_economy.total_own_ground_dps and \
+                self.scouting.total_enemy_hp * 1.6 < self.own_economy.total_own_hp:
                 self.scoutings_last_attack = self.scouting.number_of_scoutings_done
                 return True
 
     def retreat_condition(self, army_count_retreat):
-        return (self.scouting.total_enemy_ground_dps * 0.6 > self.own_economy.total_own_ground_dps and
+        return (self.scouting.total_enemy_ground_dps * 1.2 > self.own_economy.total_own_ground_dps and
             self.scouting.total_enemy_hp > self.own_economy.total_own_hp)
 
     def counter_attack_condition(self):
@@ -450,7 +440,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -493,7 +483,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=1, genome=subject.genome)
+            win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost

@@ -3,11 +3,12 @@ from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from builders.expander import Expander
 from bot.chronobooster import Chronobooster
-from builders.build_orders import BuildQueues
+from builders.build_queues import BuildQueues
 from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
+from army.micro import StalkerMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 
@@ -18,9 +19,9 @@ class EvolutionStrategy:
         self.type = 'macro'
         self.name = 'evo'
         self.chronobooster = Chronobooster(ai)
-        # self.micro_obj = Micro(ai)
-        self.army_obj = Army(ai)
-        build_queue = BuildQueues.stalker_rush
+        self.micro_obj = StalkerMicro(ai)
+        # self.army_obj = Army(ai)
+        build_queue = BuildQueues.stalker_power
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
@@ -52,9 +53,9 @@ class EvolutionStrategy:
 
     # =======================================================  Trainers
     async def train_units(self):
-        await self.gate_trainer.standard()
+        self.gate_trainer.standard()
         await self.warpgate_trainer.standard()
-        await self.robtics_trainer.standard_new()
+        self.robtics_trainer.standard_new()
 
     def train_probes(self):
         self.nexus_trainer.probes_standard()
@@ -62,8 +63,8 @@ class EvolutionStrategy:
     # =======================================================  Army
 
     async def micro(self):
-        self.army_obj.do_stuff()
-        # await self.micro_obj.personal_new()
+        # self.army_obj.do_stuff()
+        await self.micro_obj.personal_new()
 
     async def movements(self):
         enemy_units = self.ai.enemy_units()
