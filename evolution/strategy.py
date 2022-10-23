@@ -11,6 +11,9 @@ from bot.builder import Builder
 from army.micro import StalkerMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
+from bot.units_training_dicts import UnitsTrainingDicts
+from army.scouting.scouting import Scouting
+from economy.own_economy import OwnEconomy
 
 
 class EvolutionStrategy:
@@ -21,17 +24,20 @@ class EvolutionStrategy:
         self.chronobooster = Chronobooster(ai)
         self.micro_obj = StalkerMicro(ai)
         # self.army_obj = Army(ai)
-        build_queue = BuildQueues.stalker_power
+        build_queue = BuildQueues.STALKER_POWER
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
-        self.warpgate_trainer = WarpgateTrainer(ai)
-        self.gate_trainer = GateTrainer(ai)
+        units_training_dict = UnitsTrainingDicts.STALKER_POWER
         self.nexus_trainer = NexusTrainer(ai)
-        self.robtics_trainer = RoboticsTrainer(ai)
+        self.gate_trainer = GateTrainer(ai, units_training_dict)
+        self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
+        self.robtics_trainer = RoboticsTrainer(ai, units_training_dict)
+        self.scouting = Scouting(ai)
+        self.own_economy = OwnEconomy(ai)
 
 
     # =======================================================  Builders
@@ -86,7 +92,7 @@ class EvolutionStrategy:
 
 
         if enemy.amount > 1:
-            if enemy.closer_than(25, self.ai.start_location).amount > 1:
+            if enemy.closer_than(35, self.ai.start_location).amount > 1:
                 destination = enemy.closest_to(self.ai.start_location).position
             else:
                 destination = enemy.further_than(25, self.ai.start_location)

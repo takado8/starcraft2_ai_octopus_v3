@@ -10,10 +10,10 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
-from army.scouting.scouting import Scouting
+
+
 from evolution.evo import Evolution
 from evolution.strategy import EvolutionStrategy
-from economy.own_economy import OwnEconomy
 
 
 class OctopusEvo(sc2.BotAI):
@@ -46,17 +46,13 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.scouting = Scouting(self)
-        self.own_economy = OwnEconomy(self)
         self.strategy: EvolutionStrategy = None
 
         # self.build_order = BUILD_ORDER
-        self.units_ratio = {unit.ZEALOT: 12, unit.ADEPT: 0, unit.STALKER: 40, unit.IMMORTAL: 10,
-                   unit.ARCHON: 0, unit.SENTRY: 3}
 
 
     async def on_unit_destroyed(self, unit_tag: int):
-        self.scouting.on_unit_destroyed(unit_tag)
+        self.strategy.scouting.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
@@ -82,11 +78,11 @@ class OctopusEvo(sc2.BotAI):
 
 
         ## scan
-        self.scouting.scan_middle_game()
-        self.scouting.gather_enemy_info()
+        self.strategy.scouting.scan_middle_game()
+        self.strategy.scouting.gather_enemy_info()
         if iteration % 30 == 0:
-            self.scouting.print_enemy_info()
-            self.own_economy.print_own_economy_info()
+            self.strategy.scouting.print_enemy_info()
+            self.strategy.own_economy.print_own_economy_info()
 
 
         current_building = self.strategy.builder.get_current_building()
@@ -108,14 +104,14 @@ class OctopusEvo(sc2.BotAI):
             await self.strategy.build_from_queue()
 
         # attack
-        if (not self.attack) and (not self.retreat_condition(army_count_retreat=25)) and (
+        if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition(max_supply=195)):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
         # retreat
-        if self.retreat_condition(25):
+        if self.retreat_condition():
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -206,37 +202,6 @@ class OctopusEvo(sc2.BotAI):
         else:
             self.defend_position = nex.closest_to(self.enemy_start_locations[0]).position.towards(
                 self.game_info.map_center, 5)
-
-    def scan(self):
-        scouts = self.units(unit.PHOENIX).filter(lambda z: z.is_hallucination)
-        if scouts.amount < 3:
-            snts = self.army(unit.SENTRY)
-            if snts.exists and self.time < 1800:
-                snts = self.army(unit.SENTRY).filter(lambda z: z.energy >= 75)
-                if snts:
-                    for se in snts:
-                        self.do(se(AbilityId.HALLUCINATION_PHOENIX))
-                    scouts = self.units(unit.PHOENIX).filter(lambda z: z.is_hallucination)
-            else:
-                scouts = self.units({unit.WARPPRISM, unit.OBSERVER})
-                if not scouts.exists:
-                    scouts = self.army.filter(lambda z: z.is_flying)
-                    if not scouts.exists:
-                        scouts = self.units(unit.PROBE).closest_n_units(self.enemy_start_locations[0], 3)
-                        if not scouts.exists:
-                            scouts = self.units().closest_n_units(self.enemy_start_locations[0], 3)
-        if scouts.exists:
-            if len(self.observer_scouting_points) == 0:
-                for exp in self.expansion_locations_list:
-                    if not self.structures().closer_than(7, exp).exists:
-                        self.observer_scouting_points.append(exp)
-                self.observer_scouting_points = sorted(self.observer_scouting_points,
-                                                       key=lambda x: self.enemy_start_locations[0].distance_to(x))
-            for px in scouts.idle:
-                self.do(px.move(self.observer_scouting_points[self.observer_scouting_index]))
-                self.observer_scouting_index += 1
-                if self.observer_scouting_index == len(self.observer_scouting_points):
-                    self.observer_scouting_index = 0
 
     def get_pylon_with_least_neighbours(self):
         return self.spot_validator.get_pylon_with_least_neighbours()
@@ -353,15 +318,17 @@ class OctopusEvo(sc2.BotAI):
         #     print('warpgate_research_ready')
         #     return True
 
-        if self.scouting.number_of_scoutings_done - self.scoutings_last_attack > 2:
-            if self.scouting.total_enemy_ground_dps * 1.5 < self.own_economy.total_own_ground_dps and \
-                self.scouting.total_enemy_hp * 1.6 < self.own_economy.total_own_hp:
-                self.scoutings_last_attack = self.scouting.number_of_scoutings_done
-                return True
+        # if self.strategy.scouting.number_of_scoutings_done - self.scoutings_last_attack > 2:
+        #     if self.strategy.scouting.total_enemy_ground_dps * 1.5 < self.strategy.own_economy.total_own_ground_dps and \
+        #         self.strategy.scouting.total_enemy_hp * 1.6 < self.strategy.own_economy.total_own_hp:
+        #         self.scoutings_last_attack = self.strategy.scouting.number_of_scoutings_done
+        #         return True
 
-    def retreat_condition(self, army_count_retreat):
-        return (self.scouting.total_enemy_ground_dps * 1.2 > self.own_economy.total_own_ground_dps and
-            self.scouting.total_enemy_hp > self.own_economy.total_own_hp)
+    def retreat_condition(self):
+        return (self.strategy.scouting.total_enemy_ground_dps * 0.8 > self.strategy.own_economy.total_own_ground_dps and
+            self.strategy.scouting.total_enemy_hp > self.strategy.own_economy.total_own_hp) or \
+        (self.enemy_units().exists and self.enemy_units().closer_than(40, self.defend_position).amount > 5 or
+         self.enemy_units().closer_than(40, self.start_location).amount > 5)
 
     def counter_attack_condition(self):
         en = self.enemy_units()
@@ -440,7 +407,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -470,8 +437,7 @@ if __name__ == '__main__':
     import time
     import uuid
 
-    evo = Evolution(population_count=15, reproduction_rate=0.70, load_population_directory=
-    'genomes/initial')
+    evo = Evolution(population_count=15, reproduction_rate=0.70, load_population_directory='genomes/initial')
     generations_nb = 15
     generation_directory_name = 'genomes/{}_generation_'.format(str(uuid.uuid4()))
     for i in range(generations_nb):

@@ -1,7 +1,5 @@
 from sc2.ids.unit_typeid import UnitTypeId as Unit
-from sc2 import AbilityId, BotAI
-import time
-# from evolution.main import OctopusEvo
+from sc2 import AbilityId
 
 
 # scouting categories
@@ -43,10 +41,12 @@ class Scouting:
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.add_units_to_enemy_info(BASES, enemy_bases)
         # military units
-        excluded = [Unit.BROODLING]
+        excluded = [Unit.BROODLING, Unit.OVERLORD, Unit.OVERSEER, Unit.ADEPTPHASESHIFT, Unit.OVERLORDCOCOON,
+                    Unit.OVERLORDTRANSPORT]
         enemy_military_units = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.workers_ids and
                                                                       x.type_id not in self.ai.units_to_ignore
-                                                                      and x.type_id not in excluded)
+                                                                      and x.type_id not in excluded and x.is_visible
+                                                            and not x.is_snapshot and not x.is_hallucination)
         self.add_units_to_enemy_info(MILITARY, enemy_military_units)
 
     def add_units_to_enemy_info(self, category, units):
@@ -69,7 +69,8 @@ class Scouting:
     def remove_unit_from_enemy_info(self, unit_tag):
         for category in self.enemy_info:
             if unit_tag in self.enemy_info[category]:
-                self.enemy_info[category].pop(unit_tag)
+                u = self.enemy_info[category].pop(unit_tag)
+                # print('unit {} removed from info.'.format(u))
 
     def create_scouting_positions_list(self):
         scouting_positions = []
@@ -115,7 +116,40 @@ class Scouting:
         print('-------------------- end of enemy info ----------------------')
 
     def on_unit_destroyed(self, unit_tag):
+        # print('unit of tag {} destroyed.'.format(unit_tag))
         self.remove_unit_from_enemy_info(unit_tag)
 
     def get_enemy_bases_amount(self):
         return len(self.enemy_info[BASES])
+
+
+    def scan_on_end(self):
+        scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
+        if scouts.amount < 3:
+            snts = self.ai.army(Unit.SENTRY)
+            if snts.exists and self.ai.time < 1800:
+                snts = self.ai.army(Unit.SENTRY).filter(lambda z: z.energy >= 75)
+                if snts:
+                    for se in snts:
+                        self.ai.do(se(AbilityId.HALLUCINATION_PHOENIX))
+                    scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
+            else:
+                scouts = self.ai.units({Unit.WARPPRISM, Unit.OBSERVER})
+                if not scouts.exists:
+                    scouts = self.ai.army.filter(lambda z: z.is_flying)
+                    if not scouts.exists:
+                        scouts = self.ai.units(Unit.PROBE).closest_n_units(self.ai.enemy_start_locations[0], 3)
+                        if not scouts.exists:
+                            scouts = self.ai.units().closest_n_units(self.ai.enemy_start_locations[0], 3)
+        if scouts.exists:
+            if len(self.scouting_positions) == 0:
+                for exp in self.ai.expansion_locations_list:
+                    if not self.ai.structures().closer_than(7, exp).exists:
+                        self.scouting_positions.append(exp)
+                self.scouting_positions = sorted(self.scouting_positions,
+                                                       key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
+            for px in scouts.idle:
+                self.ai.do(px.move(self.scouting_positions[self.scouting_index]))
+                self.scouting_index += 1
+                if self.scouting_index == len(self.scouting_positions):
+                    self.scouting_index = 0
