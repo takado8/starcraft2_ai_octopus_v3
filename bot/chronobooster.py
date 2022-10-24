@@ -34,7 +34,7 @@ class Chronobooster:
                         if tg.orders:
                             progress = tg.orders[0].progress
                             abil_id = tg.orders[0].ability.id
-                            print('ability id: {}'.format(abil_id))
+                            # print('ability id: {}'.format(abil_id))
                             if abil_id == ability.STARGATETRAIN_CARRIER:
                                 time = 64
                             elif abil_id == ability.STARGATETRAIN_TEMPEST:

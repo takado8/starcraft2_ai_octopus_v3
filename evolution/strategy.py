@@ -25,16 +25,17 @@ class EvolutionStrategy:
         self.chronobooster = Chronobooster(ai)
         self.stalker_micro = StalkerMicro(ai)
         self.zealot_micro = ZealotMicro(ai)
+        self.sentry_micro = SentryMicro(ai)
 
         # self.army_obj = Army(ai)
-        build_queue = BuildQueues.STALKER_MID
+        build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
-        units_training_dict = UnitsTrainingDicts.STALKER_MID
+        units_training_dict = UnitsTrainingDicts.STALKER_RUSH
         self.nexus_trainer = NexusTrainer(ai)
         self.gate_trainer = GateTrainer(ai, units_training_dict)
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
@@ -50,6 +51,7 @@ class EvolutionStrategy:
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
+        await self.pylon_builder.proxy()
 
     # =======================================================  Upgraders
     def forge_upgrade(self):
@@ -64,7 +66,7 @@ class EvolutionStrategy:
     # =======================================================  Trainers
     async def train_units(self):
         self.gate_trainer.standard()
-        await self.warpgate_trainer.stalker_power()
+        await self.warpgate_trainer.standard()
         self.robotics_trainer.standard_new()
 
     def train_probes(self):
@@ -76,6 +78,7 @@ class EvolutionStrategy:
         # self.army_obj.do_stuff()
         await self.stalker_micro.personal_new()
         await self.zealot_micro.standard()
+        await self.sentry_micro.standard()
 
     async def movements(self):
         enemy_units = self.ai.enemy_units()

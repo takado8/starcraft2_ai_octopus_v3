@@ -20,7 +20,7 @@ coords = {
             'pylon_block': (137.0, 46.0)
         }
     },
-    'Ephemeron LE': {
+    '[TLMC12] Ephemeron': {
         (29.5, 138.5):{
             'defend_pos': (35.0, 112.0),
             'proxy': (90.0, 15.0),

@@ -15,7 +15,7 @@ class BuildingSpotValidator:
         self.g2 = None
         self.r = None
         self.linear_func = None
-        self.building_pylon_max_dist = 27
+        self.building_pylon_max_dist = 45
         self.building_pylon_max_dist_increment = 20
 
     def is_valid_location(self, x, y):

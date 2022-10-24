@@ -6,6 +6,7 @@ import math
 class PylonBuilder:
     def __init__(self, ai):
         self.ai = ai
+        self.is_proxy_pylon_built = False
 
     async def none(self):
         pass
@@ -52,7 +53,8 @@ class PylonBuilder:
 
     async def proxy(self):
         pylons = self.ai.structures(unit.PYLON)
-        if not self.ai.proxy_pylon and pylons.exists and self.ai.structures(unit.CYBERNETICSCORE).exists and self.ai.can_afford(unit.PYLON):
+        if not self.is_proxy_pylon_built and pylons.exists and self.ai.structures(unit.CYBERNETICSCORE).exists and\
+                self.ai.can_afford(unit.PYLON):
             if pylons.further_than(40, self.ai.start_location.position).amount == 0:
                 if not self.ai.already_pending(unit.PYLON):
                     if self.ai.coords is None:
@@ -70,10 +72,10 @@ class PylonBuilder:
                     if placement is not None:
                         worker = self.ai.units(unit.PROBE).closest_to(placement)
                         done = await self.ai.build(unit.PYLON, near=placement, build_worker=worker)
-                        if done:
-                            self.ai.do(worker.hold_position(queue=True))
+                        # if done:
+                        #     self.ai.do(worker.hold_position(queue=True))
             else:
-                self.ai.proxy_pylon = True
+                self.is_proxy_pylon_built = True
 
     async def new_standard(self):
         if self.ai.supply_cap < 200:
@@ -99,7 +101,7 @@ class PylonBuilder:
                 minerals = self.ai.mineral_field.closest_to(pos)
                 if minerals.distance_to(pos) < 12:
                     pos = pos.towards(minerals, -7).random_on_distance(2)
-                max_d = 27
+                max_d = 45
                 pending = 3
                 left = 9
                 step = 5

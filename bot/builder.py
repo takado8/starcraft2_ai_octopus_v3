@@ -41,7 +41,7 @@ class Builder:
                         if building == unit.NEXUS:
                             await self.expander.evo()
                         else:
-                            await self.ai.build(building, near=pylon, placement_step=3, max_distance=25,
+                            await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
                                                 random_alternative=True)
         if all_done:
             # print('all done.')

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/builders/pylon_builder.py" line="77" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/economy/enemy_economy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micro.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micro.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/scouting/scouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/scouting/scouting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/building_spot_validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/building_spot_validator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/chronobooster.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/chronobooster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/trainers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/trainers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/coords.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/coords.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/units_training_dicts.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/units_training_dicts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/upgraders.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/upgraders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/assimilator_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/assimilator_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/economy/own_economy.py" beforeDir="false" afterPath="$PROJECT_DIR$/economy/own_economy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/pylon_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/pylon_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evolution/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evolution/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/strategy.py" afterDir="false" />
     </list>
@@ -64,35 +65,35 @@
     <session id="1374357970">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.4" value="3" />
-          <entry key="project.open.time.5" value="5" />
+          <entry key="project.open.time.5" value="6" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="59" />
-          <entry key="py" value="15995" />
+          <entry key="py" value="16646" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="59" />
-          <entry key="Python" value="15995" />
+          <entry key="Python" value="16646" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="67" />
+          <entry key="py" value="80" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="67" />
+          <entry key="Python" value="80" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
@@ -100,15 +101,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/evolution/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="454" column="48" selection-start-line="454" selection-start-column="48" selection-end-line="454" selection-end-column="48" />
+            <state relative-caret-position="54">
+              <caret line="437" column="29" selection-start-line="437" selection-start-column="29" selection-end-line="437" selection-end-column="29" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1666569017059" expanded="true" signature="5361:5370" ph="..." />
-                <marker date="1666569017059" expanded="true" signature="14837:14846" ph="..." />
+                <marker date="1666635796807" expanded="true" signature="6062:6071" ph="..." />
+                <marker date="1666635796807" expanded="true" signature="15486:15495" ph="..." />
+                <marker date="1666635796807" expanded="true" signature="16103:16112" ph="..." />
               </folding>
             </state>
           </provider>
@@ -117,42 +119,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot/builder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="64">
-              <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
+            <state relative-caret-position="220">
+              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <marker date="1666393072607" expanded="true" signature="2187:2249" ph="..." />
+                <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/units.py">
+        <entry file="file://$PROJECT_DIR$/bot/building_spot_validator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/distances.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28">
-              <caret line="42" selection-start-line="42" selection-end-line="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="42" column="41" lean-forward="true" selection-start-line="42" selection-start-column="41" selection-end-line="42" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="480">
+              <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -160,43 +141,65 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evolution/strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
+            <state relative-caret-position="674">
+              <caret line="198" column="33" lean-forward="true" selection-start-line="198" selection-start-column="33" selection-end-line="198" selection-end-column="33" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
-                <marker date="1666568995686" expanded="true" signature="893:894" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2139:2191" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2269:2274" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2371:2416" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2530:2584" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2819:2824" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2892:2898" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="2989:2998" ph="..." />
-                <marker date="1666568995686" expanded="true" signature="3024:3033" ph="..." />
+                <element signature="e#3243#8775#0" />
+                <marker date="1666633851012" expanded="true" signature="893:894" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2185:2237" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2356:2361" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2458:2503" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2617:2671" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2901:2906" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="2974:2980" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="3071:3080" ph="..." />
+                <marker date="1666633851012" expanded="true" signature="3106:3115" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+        <entry file="file://$PROJECT_DIR$/builders/pylon_builder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+            <state relative-caret-position="420">
+              <caret line="59" column="34" lean-forward="true" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
               <folding>
-                <marker date="1666567240743" expanded="true" signature="350:354" ph="..." />
+                <element signature="e#250#364#0" />
+                <element signature="e#415#714#0" />
+                <element signature="e#765#1075#0" />
+                <element signature="e#1130#2246#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/army/army.py">
+        <entry file="file://$PROJECT_DIR$/bot/coords.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="59">
-              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="440">
+              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-234660522/math.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="179">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="54">
+              <caret line="37" column="59" lean-forward="true" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#0#51#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -205,8 +208,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot/trainers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1374">
-              <caret line="387" column="101" selection-start-line="387" selection-start-column="101" selection-end-line="387" selection-end-column="101" />
+            <state relative-caret-position="411">
+              <caret line="356" column="14" selection-start-line="356" selection-start-column="14" selection-end-line="356" selection-end-column="14" />
               <folding>
                 <element signature="e#150#990#0" />
                 <element signature="e#182#194#0" />
@@ -216,8 +219,21 @@
                 <element signature="e#691#990#0" />
                 <element signature="e#786#990#0" />
                 <element signature="e#1074#1141#0" />
-                <marker date="1666567369982" expanded="false" signature="20207:20212" ph="..." />
-                <marker date="1666567369982" expanded="false" signature="31927:31933" ph="..." />
+                <element signature="e#15399#18234#0" />
+                <marker date="1666577405503" expanded="false" signature="20207:20212" ph="..." />
+                <marker date="1666577405503" expanded="false" signature="31927:31933" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+              <folding>
+                <marker date="1666578232260" expanded="true" signature="523:524" ph="..." />
               </folding>
             </state>
           </provider>
@@ -295,9 +311,6 @@
         <option value="$PROJECT_DIR$/army/soldier.py" />
         <option value="$PROJECT_DIR$/army/army.py" />
         <option value="$PROJECT_DIR$/builders/build_orders.py" />
-        <option value="$PROJECT_DIR$/builders/pylon_builder.py" />
-        <option value="$PROJECT_DIR$/builders/assimilator_builder.py" />
-        <option value="$PROJECT_DIR$/bot/builder.py" />
         <option value="$PROJECT_DIR$/bot/training_quques.py" />
         <option value="$PROJECT_DIR$/bot/units_training_dict.py" />
         <option value="$PROJECT_DIR$/army/scouting/scouting.py" />
@@ -305,17 +318,21 @@
         <option value="$PROJECT_DIR$/economy/own_economy.py" />
         <option value="$PROJECT_DIR$/army/micro.py" />
         <option value="$PROJECT_DIR$/bot/upgraders.py" />
-        <option value="$PROJECT_DIR$/builders/build_queues.py" />
-        <option value="$PROJECT_DIR$/bot/chronobooster.py" />
-        <option value="$PROJECT_DIR$/bot/units_training_dicts.py" />
-        <option value="$PROJECT_DIR$/bot/trainers.py" />
+        <option value="$PROJECT_DIR$/bot/builder.py" />
         <option value="$PROJECT_DIR$/bot/building_spot_validator.py" />
+        <option value="$PROJECT_DIR$/builders/assimilator_builder.py" />
+        <option value="$PROJECT_DIR$/bot/trainers.py" />
+        <option value="$PROJECT_DIR$/builders/build_queues.py" />
+        <option value="$PROJECT_DIR$/bot/units_training_dicts.py" />
+        <option value="$PROJECT_DIR$/builders/pylon_builder.py" />
+        <option value="$PROJECT_DIR$/bot/chronobooster.py" />
+        <option value="$PROJECT_DIR$/bot/coords.py" />
         <option value="$PROJECT_DIR$/evolution/strategy.py" />
         <option value="$PROJECT_DIR$/evolution/main.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="714" />
     <option name="width" value="1215" />
     <option name="height" value="690" />
@@ -345,7 +362,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -367,6 +383,11 @@
             <path>
               <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
               <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
               <item name="economy" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -378,6 +399,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -539,13 +561,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17329094" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.62811387" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.6245552" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39679715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -582,20 +605,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="35" column="37" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/game_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="155" column="58" lean-forward="true" selection-start-line="155" selection-start-column="58" selection-end-line="155" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
@@ -770,13 +779,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/builders/assimilator_builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="880">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolution/genome.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -784,28 +786,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/builders/pylon_builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="108" column="41" selection-start-line="108" selection-start-column="41" selection-end-line="108" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3872">
-          <caret line="1930" column="23" selection-start-line="1930" selection-start-column="23" selection-end-line="1930" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/cannon_builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/evolution/subject.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -825,31 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
-          <folding>
-            <marker date="1666550536584" expanded="true" signature="522:668" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micro.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="300" column="10" selection-start-line="300" selection-start-column="10" selection-end-line="300" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <marker date="1666562827122" expanded="true" signature="11690:11717" ph="..." />
-            <marker date="1666562827122" expanded="true" signature="15943:15948" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="11" column="97" selection-start-line="11" selection-start-column="97" selection-end-line="11" selection-end-column="97" />
-          <folding>
-            <marker date="1666564176555" expanded="true" signature="523:524" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -857,9 +814,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -874,9 +828,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1060">
           <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
-          <folding>
-            <marker date="1666550481431" expanded="true" signature="100:105" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -884,19 +835,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="59">
           <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding>
-            <marker date="1666567240743" expanded="true" signature="350:354" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -914,28 +852,104 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/builder.py">
+    <entry file="file://$PROJECT_DIR$/builders/assimilator_builder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
+        <state relative-caret-position="1020">
+          <caret line="51" column="86" selection-start-line="51" selection-start-column="86" selection-end-line="51" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micro.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5880">
+          <caret line="300" column="14" selection-start-line="300" selection-start-column="14" selection-end-line="300" selection-end-column="14" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1666393072607" expanded="true" signature="2187:2249" ph="..." />
+            <element signature="e#0#38#0" expanded="true" />
+            <marker date="1666562827122" expanded="true" signature="11690:11717" ph="..." />
+            <marker date="1666562827122" expanded="true" signature="15943:15948" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="85" selection-start-line="7" selection-start-column="85" selection-end-line="7" selection-end-column="85" />
+          <folding>
+            <marker date="1666579359882" expanded="true" signature="351:355" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+          <folding>
+            <marker date="1666578232260" expanded="true" signature="523:524" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="37" column="59" lean-forward="true" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-234660522/math.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/pylon_builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="59" column="34" lean-forward="true" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+          <folding>
+            <element signature="e#250#364#0" />
+            <element signature="e#415#714#0" />
+            <element signature="e#765#1075#0" />
+            <element signature="e#1130#2246#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="160" selection-start-line="160" selection-end-line="160" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bot/building_spot_validator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="56" column="33" lean-forward="true" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
+        <state relative-caret-position="480">
+          <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bot/trainers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1374">
-          <caret line="387" column="101" selection-start-line="387" selection-start-column="101" selection-end-line="387" selection-end-column="101" />
+        <state relative-caret-position="411">
+          <caret line="356" column="14" selection-start-line="356" selection-start-column="14" selection-end-line="356" selection-end-column="14" />
           <folding>
             <element signature="e#150#990#0" />
             <element signature="e#182#194#0" />
@@ -945,49 +959,49 @@
             <element signature="e#691#990#0" />
             <element signature="e#786#990#0" />
             <element signature="e#1074#1141#0" />
-            <marker date="1666567369982" expanded="false" signature="20207:20212" ph="..." />
-            <marker date="1666567369982" expanded="false" signature="31927:31933" ph="..." />
+            <element signature="e#15399#18234#0" />
+            <marker date="1666577405503" expanded="false" signature="20207:20212" ph="..." />
+            <marker date="1666577405503" expanded="false" signature="31927:31933" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evolution/strategy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
+        <state relative-caret-position="674">
+          <caret line="198" column="33" lean-forward="true" selection-start-line="198" selection-start-column="33" selection-end-line="198" selection-end-column="33" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
-            <marker date="1666568995686" expanded="true" signature="893:894" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2139:2191" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2269:2274" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2371:2416" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2530:2584" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2819:2824" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2892:2898" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="2989:2998" ph="..." />
-            <marker date="1666568995686" expanded="true" signature="3024:3033" ph="..." />
+            <element signature="e#3243#8775#0" />
+            <marker date="1666633851012" expanded="true" signature="893:894" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2185:2237" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2356:2361" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2458:2503" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2617:2671" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2901:2906" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="2974:2980" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="3071:3080" ph="..." />
+            <marker date="1666633851012" expanded="true" signature="3106:3115" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/coords.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evolution/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="454" column="48" selection-start-line="454" selection-start-column="48" selection-end-line="454" selection-end-column="48" />
+        <state relative-caret-position="54">
+          <caret line="437" column="29" selection-start-line="437" selection-start-column="29" selection-end-line="437" selection-end-column="29" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1666569017059" expanded="true" signature="5361:5370" ph="..." />
-            <marker date="1666569017059" expanded="true" signature="14837:14846" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="42" column="41" lean-forward="true" selection-start-line="42" selection-start-column="41" selection-end-line="42" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
+            <marker date="1666635796807" expanded="true" signature="6062:6071" ph="..." />
+            <marker date="1666635796807" expanded="true" signature="15486:15495" ph="..." />
+            <marker date="1666635796807" expanded="true" signature="16103:16112" ph="..." />
           </folding>
         </state>
       </provider>
