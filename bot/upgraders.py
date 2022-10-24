@@ -16,7 +16,8 @@ class ForgeUpgrader:
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL1):
                 self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1))
             elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2):
+                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and \
+                    self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
                 self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2))
             elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or \
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades or\

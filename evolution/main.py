@@ -52,7 +52,7 @@ class OctopusEvo(sc2.BotAI):
 
 
     async def on_unit_destroyed(self, unit_tag: int):
-        self.strategy.scouting.on_unit_destroyed(unit_tag)
+        self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
@@ -80,8 +80,11 @@ class OctopusEvo(sc2.BotAI):
         ## scan
         self.strategy.scouting.scan_middle_game()
         self.strategy.scouting.gather_enemy_info()
+        self.strategy.own_economy.calculate_units_report()
+        self.strategy.enemy_economy.calculate_enemy_units_report()
+
         if iteration % 30 == 0:
-            self.strategy.scouting.print_enemy_info()
+            self.strategy.enemy_economy.print_enemy_info()
             self.strategy.own_economy.print_own_economy_info()
 
 
@@ -319,14 +322,14 @@ class OctopusEvo(sc2.BotAI):
         #     return True
 
         # if self.strategy.scouting.number_of_scoutings_done - self.scoutings_last_attack > 2:
-        #     if self.strategy.scouting.total_enemy_ground_dps * 1.5 < self.strategy.own_economy.total_own_ground_dps and \
-        #         self.strategy.scouting.total_enemy_hp * 1.6 < self.strategy.own_economy.total_own_hp:
+        #     if self.strategy.enemy_economy.total_enemy_ground_dps * 1.5 < self.strategy.own_economy.total_own_ground_dps and \
+        #         self.strategy.enemy_economy.total_enemy_hp * 1.6 < self.strategy.own_economy.total_own_hp:
         #         self.scoutings_last_attack = self.strategy.scouting.number_of_scoutings_done
         #         return True
 
     def retreat_condition(self):
-        return (self.strategy.scouting.total_enemy_ground_dps * 0.8 > self.strategy.own_economy.total_own_ground_dps and
-            self.strategy.scouting.total_enemy_hp > self.strategy.own_economy.total_own_hp) or \
+        return (self.strategy.enemy_economy.total_enemy_ground_dps * 0.4 > self.strategy.own_economy.total_own_ground_dps and
+            self.strategy.enemy_economy.total_enemy_hp * 0.5 > self.strategy.own_economy.total_own_hp) or \
         (self.enemy_units().exists and self.enemy_units().closer_than(40, self.defend_position).amount > 5 or
          self.enemy_units().closer_than(40, self.start_location).amount > 5)
 
@@ -449,7 +452,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
+            win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost

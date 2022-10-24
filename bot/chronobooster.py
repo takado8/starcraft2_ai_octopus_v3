@@ -1,4 +1,5 @@
 from sc2.ids.ability_id import AbilityId as ability
+from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.buff_id import BuffId as buff
 from sc2.units import Units
@@ -19,11 +20,11 @@ class Chronobooster:
     def standard(self):
         if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
             nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
-            starting_nexus = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location.position)
+            # starting_nexus = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location.position)
             i = 0
             for nexus in nexuses:
-                if nexus != starting_nexus and nexus.energy < 100:
-                    continue
+                # if nexus != starting_nexus and nexus.energy < 100:
+                #     continue
                 # targets = None
                 targets_filtered = Units([],self.ai)
                 while targets_filtered.amount < 1 and i < len(self.standard_chrono_queue):
@@ -33,12 +34,36 @@ class Chronobooster:
                         if tg.orders:
                             progress = tg.orders[0].progress
                             abil_id = tg.orders[0].ability.id
+                            print('ability id: {}'.format(abil_id))
                             if abil_id == ability.STARGATETRAIN_CARRIER:
                                 time = 64
                             elif abil_id == ability.STARGATETRAIN_TEMPEST:
                                 time = 43
                             elif abil_id == ability.RESEARCH_WARPGATE:
                                 time = 150
+                            elif abil_id == ability.RESEARCH_PROTOSSGROUNDWEAPONS:
+                                            #
+                                            # ability.RESEARCH_PROTOSSSHIELDS:
+                                if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades:
+                                    time = 129
+                                elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades:
+                                    time = 154
+                                else:
+                                    time = 179
+                            elif abil_id == ability.RESEARCH_PROTOSSGROUNDARMOR:
+                                if upgrade.PROTOSSGROUNDARMORSLEVEL1 not in self.ai.state.upgrades:
+                                    time = 129
+                                elif upgrade.PROTOSSGROUNDARMORSLEVEL2 not in self.ai.state.upgrades:
+                                    time = 154
+                                else:
+                                    time = 179
+                            elif abil_id == ability.RESEARCH_PROTOSSSHIELDS:
+                                if upgrade.PROTOSSSHIELDSLEVEL1 not in self.ai.state.upgrades:
+                                    time = 129
+                                elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades:
+                                    time = 154
+                                else:
+                                    time = 179
                             else:
                                 time = 31
 

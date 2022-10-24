@@ -198,27 +198,6 @@ class AirMicro:
                             queue = True
                     self.ai.do(vr.attack(target2, queue=queue))
 
-        # zealot
-        for zl in self.ai.army.filter(lambda z: z.type_id == unit.ZEALOT and not z.is_attacking):
-            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl) < 7).sorted(
-                lambda _x: _x.health + _x.shield)
-            if threats.exists:
-                closest = threats.closest_to(zl)
-                if self.ai.enemy_race == Race.Protoss:
-                    a = threats[0].shield_percentage
-                else:
-                    a = 1
-                dist = await self.ai._client.query_pathing(zl.position,threats[0].position)
-                if threats[0].health_percentage * a == 1 or dist is None or dist > closest.distance_to(zl) + 4:
-                    target = closest
-                else:
-                    target = threats[0]
-                if not zl.is_attacking:
-                    if ability.EFFECT_CHARGE in await self.ai.get_available_abilities(zl):
-                        self.ai.do(zl(ability.EFFECT_CHARGE,target))
-                    else:
-                        self.ai.do(zl.attack(target))
-
 
 class StalkerMicro:
     def __init__(self, ai):
@@ -228,21 +207,17 @@ class StalkerMicro:
         enemy = self.ai.enemy_units()
         if not enemy.exists:
             return
-        excluded_types = {unit.CARRIER, unit.TEMPEST, unit.VOIDRAY, unit.ZEALOT, unit.DARKTEMPLAR,
-                                                unit.PHOENIX}
-        if self.ai.army.amount > 10:
-            excluded_types.add(unit.SENTRY)
 
-        whole_army = self.ai.army.exclude_type(excluded_types)
+        stalkers = self.ai.army(unit.STALKER)
         dist = 9
-        for man in whole_army:
+        for stalker in stalkers:
             threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(man) <= dist and
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker) <= dist and
                               unit_.type_id not in self.ai.units_to_ignore)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
             if threats.exists:
-                closest_enemy = threats.closest_to(man)
+                closest_enemy = threats.closest_to(stalker)
                 priority = threats.filter(lambda x1: x1.type_id in [unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.THOR, unit.BUNKER, unit.QUEEN])
                 if priority.exists:
@@ -252,7 +227,7 @@ class StalkerMicro:
                     else:
                         a = 1
                     if targets[0].health_percentage * a == 1:
-                        target = priority.closest_to(man)
+                        target = priority.closest_to(stalker)
                     else:
                         target = targets[0]
                 else:
@@ -265,39 +240,72 @@ class StalkerMicro:
                         target = closest_enemy
                     else:
                         target = targets[0]
-                if target.distance_to(man) > man.distance_to(closest_enemy) + 4:
+                if target.distance_to(stalker) > 5:
                     target = closest_enemy
-                i=3
-                pos = man.position.towards(closest_enemy.position,-i)
-                while not in_grid(self.ai, pos) and i < 12:
-                    pos = man.position.towards(closest_enemy.position,-i)
-                    i += 1
-                    j=1
-                    while not in_grid(self.ai, pos) and j < 9:
-                        pos = pos.random_on_distance(j)
-                        j+=1
 
-                if man.shield_percentage < 0.4:
-                    if man.health_percentage < 0.35:
-                        self.ai.do(man.move(pos))
+
+                if stalker.shield_percentage < 0.4:
+                    d = 4
+                    if stalker.health_percentage < 0.35:
+                        self.ai.do(stalker.move(self.find_back_out_position(stalker, closest_enemy.position)))
                         continue
-                    else:
-                        d = 4
                 else:
                     d = 2
 
-                if pos is not None and man.weapon_cooldown > 0:
-                    self.ai.do(man.move(man.position.towards(pos,d)))
+                back_out_position = self.find_back_out_position(stalker, closest_enemy.position)
+                if back_out_position is not None and stalker.weapon_cooldown > 0:
+                    self.ai.do(stalker.move(stalker.position.towards(back_out_position, d)))
                 else:
-                    self.ai.do(man.attack(target))
+                    self.ai.do(stalker.attack(target))
 
+    def find_back_out_position(self, stalker, closest_enemy_position):
+        i = 3
+        position = stalker.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = stalker.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 3:
+                k = 0
+                while not in_grid(self.ai, position) and k < 7:
+                    k += 1
+                    position = position.random_on_distance(j * 2)
+                j += 1
+        return position
+
+
+class ZealotMicro:
+    def __init__(self, ai):
+        self.ai = ai
+
+    async def standard(self):
+        for zl in self.ai.army(unit.ZEALOT):
+            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl) < 9 and not x2.is_flying and
+                          x2.type_id not in self.ai.units_to_ignore).sorted(lambda _x: _x.health + _x.shield)
+            if threats.exists:
+                closest = threats.closest_to(zl)
+                if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl) > \
+                    closest.distance_to(zl) + 5 or not self.ai.in_pathing_grid(threats[0]):
+                    target = closest
+                else:
+                    target = threats[0]
+                if ability.EFFECT_CHARGE in await self.ai.get_available_abilities(zl):
+                    self.ai.do(zl(ability.EFFECT_CHARGE, target))
+                self.ai.do(zl.attack(target))
+
+
+class SentryMicro:
+    def __init__(self, ai):
+        self.ai = ai
+
+    async def standard(self):
         #  Sentry region  #
         sents = self.ai.army(unit.SENTRY)
         if sents.exists:
             m = -1
             sentry = None
             for se in sents:
-                close = sents.closer_than(7,se).amount
+                close = sents.closer_than(7, se).amount
                 if close > m:
                     m = close
                     sentry = se
@@ -316,13 +324,13 @@ class StalkerMicro:
 
             if has_energy_amount > 0 and len(
                     force_fields) < 5 and threats.amount > 4:  # and self.ai.time - self.ai.force_field_time > 1:
-                enemy_army_center = threats.center.towards(sentry,-1)
+                enemy_army_center = threats.center.towards(sentry, -1)
                 gap = 3
                 points.append(enemy_army_center)
-                points.append(Point2((enemy_army_center.x - gap,enemy_army_center.y)))
-                points.append(Point2((enemy_army_center.x + gap,enemy_army_center.y)))
-                points.append(Point2((enemy_army_center.x,enemy_army_center.y - gap)))
-                points.append(Point2((enemy_army_center.x,enemy_army_center.y + gap)))
+                points.append(Point2((enemy_army_center.x - gap, enemy_army_center.y)))
+                points.append(Point2((enemy_army_center.x + gap, enemy_army_center.y)))
+                points.append(Point2((enemy_army_center.x, enemy_army_center.y - gap)))
+                points.append(Point2((enemy_army_center.x, enemy_army_center.y + gap)))
             for se in self.ai.units(unit.SENTRY):
                 abilities = await self.ai.get_available_abilities(se)
                 if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities \
@@ -330,37 +338,9 @@ class StalkerMicro:
                     self.ai.do(se(ability.GUARDIANSHIELD_GUARDIANSHIELD))
                     guardian_shield_on = True
                 if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
-                    self.ai.do(se(ability.FORCEFIELD_FORCEFIELD,points.pop(0)))
+                    self.ai.do(se(ability.FORCEFIELD_FORCEFIELD, points.pop(0)))
                 else:
-                    army_nearby = self.ai.army.closer_than(9,se)
+                    army_nearby = self.ai.army.closer_than(9, se)
                     if army_nearby.exists:
                         if threats.exists:
-                            self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se),-4)))
-
-        # zealot
-        for zl in self.ai.army(unit.ZEALOT):
-            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl) < 9 and not x2.is_flying and
-                          x2.type_id not in self.ai.units_to_ignore).sorted(lambda _x: _x.health + _x.shield)
-            if threats.exists:
-                closest = threats.closest_to(zl)
-                if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl) > \
-                    closest.distance_to(zl) + 5 or not self.ai.in_pathing_grid(threats[0]):
-                    target = closest
-                else:
-                    target = threats[0]
-                if ability.EFFECT_CHARGE in await self.ai.get_available_abilities(zl):
-                    self.ai.do(zl(ability.EFFECT_CHARGE, target))
-                self.ai.do(zl.attack(target))
-
-        for dt in self.ai.army().filter(lambda x: x.type_id == unit.DARKTEMPLAR and not x.is_attacking):
-            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(dt) < 9 and not x2.is_flying and
-                          x2.type_id not in self.ai.units_to_ignore).sorted(lambda _x: _x.health + _x.shield)
-            if threats.exists:
-                closest = threats.closest_to(dt)
-                if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(dt) > \
-                    closest.distance_to(dt) + 3 or not self.ai.in_pathing_grid(threats[0]):
-                    target = closest
-                else:
-                    target = threats[0]
-                self.ai.do(dt.attack(target))
-
+                            self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se), -4)))

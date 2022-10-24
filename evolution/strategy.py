@@ -8,12 +8,13 @@ from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
-from army.micro import StalkerMicro
+from army.micro import StalkerMicro, SentryMicro, ZealotMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
 from economy.own_economy import OwnEconomy
+from economy.enemy_economy import EnemyEconomy
 
 
 class EvolutionStrategy:
@@ -22,22 +23,25 @@ class EvolutionStrategy:
         self.type = 'macro'
         self.name = 'evo'
         self.chronobooster = Chronobooster(ai)
-        self.micro_obj = StalkerMicro(ai)
+        self.stalker_micro = StalkerMicro(ai)
+        self.zealot_micro = ZealotMicro(ai)
+
         # self.army_obj = Army(ai)
-        build_queue = BuildQueues.STALKER_POWER
+        build_queue = BuildQueues.STALKER_MID
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
-        units_training_dict = UnitsTrainingDicts.STALKER_POWER
+        units_training_dict = UnitsTrainingDicts.STALKER_MID
         self.nexus_trainer = NexusTrainer(ai)
         self.gate_trainer = GateTrainer(ai, units_training_dict)
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
-        self.robtics_trainer = RoboticsTrainer(ai, units_training_dict)
-        self.scouting = Scouting(ai)
+        self.robotics_trainer = RoboticsTrainer(ai, units_training_dict)
         self.own_economy = OwnEconomy(ai)
+        self.enemy_economy = EnemyEconomy(ai)
+        self.scouting = Scouting(ai, self.enemy_economy)
 
 
     # =======================================================  Builders
@@ -60,8 +64,8 @@ class EvolutionStrategy:
     # =======================================================  Trainers
     async def train_units(self):
         self.gate_trainer.standard()
-        await self.warpgate_trainer.standard()
-        self.robtics_trainer.standard_new()
+        await self.warpgate_trainer.stalker_power()
+        self.robotics_trainer.standard_new()
 
     def train_probes(self):
         self.nexus_trainer.probes_standard()
@@ -70,7 +74,8 @@ class EvolutionStrategy:
 
     async def micro(self):
         # self.army_obj.do_stuff()
-        await self.micro_obj.personal_new()
+        await self.stalker_micro.personal_new()
+        await self.zealot_micro.standard()
 
     async def movements(self):
         enemy_units = self.ai.enemy_units()

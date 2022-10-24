@@ -15,6 +15,8 @@ class BuildingSpotValidator:
         self.g2 = None
         self.r = None
         self.linear_func = None
+        self.building_pylon_max_dist = 27
+        self.building_pylon_max_dist_increment = 20
 
     def is_valid_location(self, x, y):
         """
@@ -35,9 +37,10 @@ class BuildingSpotValidator:
         return False
 
     def get_pylon_with_least_neighbours(self):
-        range_ = 27
         properPylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
-                        and unit_.is_ready and unit_.distance_to(self.ai.start_location.position) < range_)
+                        and unit_.is_ready and unit_.distance_to(self.ai.start_location.position) <
+                                                                 self.building_pylon_max_dist)
+        max_neighbours = 6
         if properPylons.exists:
             min_neighbours = 99
             pylon = None
@@ -46,9 +49,18 @@ class BuildingSpotValidator:
                 if neighbours < min_neighbours:
                     min_neighbours = neighbours
                     pylon = pyl
+
+            if min_neighbours > max_neighbours:
+                pylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
+                        and unit_.is_ready and self.building_pylon_max_dist < unit_.distance_to(self.ai.start_location.position) <
+                                         self.building_pylon_max_dist + self.building_pylon_max_dist_increment)
+                if pylons.exists:
+                    self.building_pylon_max_dist += self.building_pylon_max_dist_increment
+                    return self.get_pylon_with_least_neighbours()
+
             return pylon
         else:
-            print('No pylons in range {} from main base.'.format(range_))
+            print('No pylons in range {} from main base.'.format(self.building_pylon_max_dist))
             return None
 
     def compute_coefficients_for_building_validation(self):
