@@ -27,7 +27,7 @@ class EvolutionStrategy:
         self.zealot_micro = ZealotMicro(ai)
         self.sentry_micro = SentryMicro(ai)
 
-        # self.army_obj = Army(ai)
+        self.army = Army(ai)
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)

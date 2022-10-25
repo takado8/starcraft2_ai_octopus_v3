@@ -2,7 +2,7 @@ from sc2.unit import Unit
 
 
 class Soldier:
-    def __init__(self, unit: Unit, division_name):
+    def __init__(self, unit: Unit, division_name=None):
         self.unit: Unit = unit
         self.tag = unit.tag
         self.type_id = unit.type_id

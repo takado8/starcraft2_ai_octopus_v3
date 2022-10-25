@@ -11,6 +11,7 @@ from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
 from typing import Optional, Union
 from bot.coords import coords
+from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
 
 from evolution.evo import Evolution
@@ -18,23 +19,17 @@ from evolution.strategy import EvolutionStrategy
 
 
 class OctopusEvo(sc2.BotAI):
-    army_ids = [unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
-                unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
-                unit.TEMPEST]
-    bases_ids = [unit.NEXUS, unit.COMMANDCENTER, unit.COMMANDCENTERFLYING, unit.ORBITALCOMMAND,
-                 unit.ORBITALCOMMANDFLYING,
-                 unit.PLANETARYFORTRESS, unit.HIVE, unit.HATCHERY, unit.LAIR]
-    units_to_ignore = [unit.LARVA, unit.EGG, unit.INTERCEPTOR]
-    workers_ids = [unit.SCV, unit.PROBE, unit.DRONE, unit.MULE]
+    army_ids = ARMY_IDS
+    bases_ids = BASES_IDS
+    units_to_ignore = UNITS_TO_IGNORE
+    workers_ids = WORKERS_IDS
+
     enemy_main_base_down = False
     leader_tag = None
     destination = None
-    psi_storm_wait = 0
-    nova_wait = 0
     lost_cost = 0
     killed_cost = 0
     scoutings_last_attack = 0
-
 
     def __init__(self, genome=None):
         super().__init__()
@@ -50,18 +45,21 @@ class OctopusEvo(sc2.BotAI):
         self.strategy: EvolutionStrategy = None
         self.coords = None
 
-        # self.build_order = BUILD_ORDER
+
+    # async def on_unit_created(self, unit: Unit):
+    #     if unit.is_mine and unit.type_id in self.army_ids:
+    #         self.strategy.army.add_unassigned_soldier(unit)
 
 
     async def on_unit_destroyed(self, unit_tag: int):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
+
 
     async def on_start(self):
         self.strategy = EvolutionStrategy(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
-        print('getting coords...')
         if map_name in coords and self.start_location.position in coords[map_name]:
             self.coords = coords[map_name][self.start_location.position]
             print('getting coords successful.')
@@ -70,7 +68,7 @@ class OctopusEvo(sc2.BotAI):
             await self.chat_send('getting coords failed')
 
     async def on_step(self, iteration: int):
-        self.save_stats()
+        # self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         self.assign_defend_position()
@@ -148,8 +146,6 @@ class OctopusEvo(sc2.BotAI):
 
         if not army_priority and not build_finished:
             await self.strategy.build_from_queue()
-
-
 
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
@@ -413,7 +409,6 @@ class OctopusEvo(sc2.BotAI):
                         self.do(nexus(AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE, battery))
 
 
-
 def botVsComputer(ai, real_time=0):
     if real_time:
         real_time = True
@@ -424,8 +419,9 @@ def botVsComputer(ai, real_time=0):
                 'World of Sleepers LE', 'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
+    computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
     # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
@@ -435,7 +431,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
