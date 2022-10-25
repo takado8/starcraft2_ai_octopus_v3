@@ -202,13 +202,18 @@ class AirMicro:
 class StalkerMicro:
     def __init__(self, ai):
         self.ai = ai
+        self.name = 'StalkerMicro'
 
-    async def personal_new(self):
+    def __str__(self):
+        return self.name
+
+    async def do_micro(self, soldiers):
         enemy = self.ai.enemy_units()
         if not enemy.exists:
             return
 
-        stalkers = self.ai.army(unit.STALKER)
+        stalkers = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.STALKER]
+        # print('doing micro with {} units: {}'.format(len(stalkers), stalkers))
         dist = 9
         for stalker in stalkers:
             threats = enemy.filter(

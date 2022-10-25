@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/army/divisions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/Army.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/Army.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/division.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/division.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/soldier.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/soldier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/micro.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evolution/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evolution/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/evolution/strategy.py" afterDir="false" />
     </list>
@@ -61,35 +61,35 @@
     <session id="1374357970">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="12" />
+          <entry key="project.closed" value="13" />
           <entry key="project.open.time.0" value="2" />
-          <entry key="project.open.time.4" value="3" />
+          <entry key="project.open.time.4" value="4" />
           <entry key="project.open.time.5" value="6" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="59" />
-          <entry key="py" value="18320" />
+          <entry key="py" value="19947" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="59" />
-          <entry key="Python" value="18320" />
+          <entry key="Python" value="19947" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="87" />
+          <entry key="py" value="94" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="87" />
+          <entry key="Python" value="94" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
@@ -97,27 +97,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evolution/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-720">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="214">
+              <caret line="122" column="47" lean-forward="true" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#5867#6145#0" />
-                <element signature="e#6183#8246#0" />
-                <element signature="e#8294#8845#0" />
-                <element signature="e#9006#10048#0" />
-                <element signature="e#10087#10208#0" />
-                <element signature="e#10249#10827#0" />
-                <element signature="e#10881#11231#0" />
-                <element signature="e#11276#12998#0" />
-                <element signature="e#13040#13788#0" />
-                <marker date="1666659204930" expanded="true" signature="1513:1643" ph="..." />
-                <marker date="1666659204930" expanded="true" signature="5718:5727" ph="..." />
-                <marker date="1666659204930" expanded="true" signature="15142:15151" ph="..." />
-                <marker date="1666659204930" expanded="true" signature="15759:15768" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/economy/own_economy.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -134,13 +130,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/army.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="25" lean-forward="true" selection-end-line="1" />
+            <state relative-caret-position="1540">
+              <caret line="77" column="83" selection-start-line="77" selection-start-column="83" selection-end-line="77" selection-end-column="83" />
               <folding>
-                <marker date="1666650963186" expanded="true" signature="693:702" ph="..." />
-                <marker date="1666650963186" expanded="true" signature="737:756" ph="..." />
-                <marker date="1666650963186" expanded="true" signature="1800:1805" ph="..." />
-                <marker date="1666650963186" expanded="true" signature="1858:1863" ph="..." />
+                <element signature="e#0#25#0" expanded="true" />
+                <marker date="1666719487533" expanded="true" signature="705:714" ph="..." />
+                <marker date="1666719487533" expanded="true" signature="749:768" ph="..." />
+                <marker date="1666719487533" expanded="true" signature="2244:2249" ph="..." />
+                <marker date="1666719487533" expanded="true" signature="2309:2314" ph="..." />
+                <marker date="1666719487533" expanded="true" signature="3215:3224" ph="..." />
               </folding>
             </state>
           </provider>
@@ -149,12 +147,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/division.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="260">
+              <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1666647940532" expanded="true" signature="329:356" ph="..." />
+                <marker date="1666718851400" expanded="true" signature="399:487" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/divisions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="3" column="61" selection-start-line="3" selection-start-column="61" selection-end-line="3" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -162,61 +169,46 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/soldier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
+            <state relative-caret-position="340">
+              <caret line="17" column="22" lean-forward="true" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/army/policy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bot/builder.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-420">
-              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-                <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/evolution/strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+            <state relative-caret-position="234">
+              <caret line="33" column="72" selection-start-line="33" selection-start-column="72" selection-end-line="33" selection-end-column="72" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
-                <element signature="e#3243#8775#0" />
-                <marker date="1666648298144" expanded="true" signature="893:894" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2179:2231" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2350:2355" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2452:2497" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2611:2665" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2895:2900" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="2968:2974" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="3065:3074" ph="..." />
-                <marker date="1666648298144" expanded="true" signature="3100:3109" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="933:934" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="2438:2490" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="2609:2614" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="2711:2756" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="2870:2924" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3154:3159" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3227:3233" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3332:3509" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3531:3574" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3565:3574" ph="..." />
+                <marker date="1666719663431" expanded="true" signature="3602:3611" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bot/coords.py">
+        <entry file="file://$PROJECT_DIR$/army/micro.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+            <state relative-caret-position="114">
+              <caret line="205" lean-forward="true" selection-start-line="205" selection-end-line="205" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+                <marker date="1666719487542" expanded="true" signature="11690:11801" ph="..." />
+                <marker date="1666719487542" expanded="true" signature="11770:11801" ph="..." />
+                <marker date="1666719487542" expanded="true" signature="16174:16179" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -295,7 +287,6 @@
         <option value="$PROJECT_DIR$/army/scouting/scouting.py" />
         <option value="$PROJECT_DIR$/economy/enemy_economy.py" />
         <option value="$PROJECT_DIR$/economy/own_economy.py" />
-        <option value="$PROJECT_DIR$/army/micro.py" />
         <option value="$PROJECT_DIR$/bot/upgraders.py" />
         <option value="$PROJECT_DIR$/bot/builder.py" />
         <option value="$PROJECT_DIR$/bot/building_spot_validator.py" />
@@ -306,12 +297,14 @@
         <option value="$PROJECT_DIR$/builders/pylon_builder.py" />
         <option value="$PROJECT_DIR$/bot/chronobooster.py" />
         <option value="$PROJECT_DIR$/bot/coords.py" />
-        <option value="$PROJECT_DIR$/army/division.py" />
-        <option value="$PROJECT_DIR$/evolution/strategy.py" />
         <option value="$PROJECT_DIR$/army/soldier.py" />
-        <option value="$PROJECT_DIR$/army/army.py" />
         <option value="$PROJECT_DIR$/bot/constants.py" />
+        <option value="$PROJECT_DIR$/army/division.py" />
         <option value="$PROJECT_DIR$/evolution/main.py" />
+        <option value="$PROJECT_DIR$/army/micro.py" />
+        <option value="$PROJECT_DIR$/army/army.py" />
+        <option value="$PROJECT_DIR$/army/divisions.py" />
+        <option value="$PROJECT_DIR$/evolution/strategy.py" />
       </list>
     </option>
   </component>
@@ -345,6 +338,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -371,6 +365,11 @@
             <path>
               <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
               <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
+              <item name="builders" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
               <item name="economy" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -382,7 +381,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -546,7 +544,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17329094" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18521462" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -588,13 +586,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/strategy/call_of_void.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="59" column="45" lean-forward="true" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/expander.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -744,20 +735,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/economy/own_economy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/army/scouting/scouting.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -796,38 +777,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/micro.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5880">
-          <caret line="300" column="14" selection-start-line="300" selection-start-column="14" selection-end-line="300" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <marker date="1666562827122" expanded="true" signature="11690:11717" ph="..." />
-            <marker date="1666562827122" expanded="true" signature="15943:15948" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="85" selection-start-line="7" selection-start-column="85" selection-end-line="7" selection-end-column="85" />
-          <folding>
-            <marker date="1666579359882" expanded="true" signature="351:355" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding>
-            <marker date="1666578232260" expanded="true" signature="523:524" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-234660522/math.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
@@ -846,19 +795,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="411">
           <caret line="356" column="14" selection-start-line="356" selection-start-column="14" selection-end-line="356" selection-end-column="14" />
-          <folding>
-            <element signature="e#150#990#0" />
-            <element signature="e#182#194#0" />
-            <element signature="e#235#990#0" />
-            <element signature="e#471#646#0" />
-            <element signature="e#538#646#0" />
-            <element signature="e#691#990#0" />
-            <element signature="e#786#990#0" />
-            <element signature="e#1074#1141#0" />
-            <element signature="e#15399#18234#0" />
-            <marker date="1666577405503" expanded="false" signature="20207:20212" ph="..." />
-            <marker date="1666577405503" expanded="false" signature="31927:31933" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -866,9 +802,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="37" column="59" lean-forward="true" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -876,24 +809,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-420">
-          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/policy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -912,18 +827,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/neural/deep_craft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1200">
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/coords.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
-        </state>
+        <state relative-caret-position="-1200" />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-234660522/builtins.py">
@@ -933,54 +837,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evolution/strategy.py">
+    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+        <state relative-caret-position="200">
+          <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
           <folding>
-            <element signature="e#0#51#0" expanded="true" />
-            <element signature="e#3243#8775#0" />
-            <marker date="1666648298144" expanded="true" signature="893:894" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2179:2231" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2350:2355" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2452:2497" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2611:2665" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2895:2900" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="2968:2974" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="3065:3074" ph="..." />
-            <marker date="1666648298144" expanded="true" signature="3100:3109" ph="..." />
+            <marker date="1666578232260" expanded="true" signature="523:524" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/soldier.py">
+    <entry file="file://$PROJECT_DIR$/bot/coords.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/division.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1666647940532" expanded="true" signature="329:356" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/army.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="25" lean-forward="true" selection-end-line="1" />
-          <folding>
-            <marker date="1666650963186" expanded="true" signature="693:702" ph="..." />
-            <marker date="1666650963186" expanded="true" signature="737:756" ph="..." />
-            <marker date="1666650963186" expanded="true" signature="1800:1805" ph="..." />
-            <marker date="1666650963186" expanded="true" signature="1858:1863" ph="..." />
-          </folding>
+        <state relative-caret-position="440">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -991,25 +861,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bot/builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/policy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="25" lean-forward="true" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding>
+            <marker date="1666579359882" expanded="true" signature="351:355" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/economy/own_economy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/soldier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="17" column="22" lean-forward="true" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micro.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="205" lean-forward="true" selection-start-line="205" selection-end-line="205" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <marker date="1666719487542" expanded="true" signature="11690:11801" ph="..." />
+            <marker date="1666719487542" expanded="true" signature="11770:11801" ph="..." />
+            <marker date="1666719487542" expanded="true" signature="16174:16179" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/army.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1540">
+          <caret line="77" column="83" selection-start-line="77" selection-start-column="83" selection-end-line="77" selection-end-column="83" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1666719487533" expanded="true" signature="705:714" ph="..." />
+            <marker date="1666719487533" expanded="true" signature="749:768" ph="..." />
+            <marker date="1666719487533" expanded="true" signature="2244:2249" ph="..." />
+            <marker date="1666719487533" expanded="true" signature="2309:2314" ph="..." />
+            <marker date="1666719487533" expanded="true" signature="3215:3224" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/evolution/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-720">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="214">
+          <caret line="122" column="47" lean-forward="true" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#5867#6145#0" />
-            <element signature="e#6183#8246#0" />
-            <element signature="e#8294#8845#0" />
-            <element signature="e#9006#10048#0" />
-            <element signature="e#10087#10208#0" />
-            <element signature="e#10249#10827#0" />
-            <element signature="e#10881#11231#0" />
-            <element signature="e#11276#12998#0" />
-            <element signature="e#13040#13788#0" />
-            <marker date="1666659204930" expanded="true" signature="1513:1643" ph="..." />
-            <marker date="1666659204930" expanded="true" signature="5718:5727" ph="..." />
-            <marker date="1666659204930" expanded="true" signature="15142:15151" ph="..." />
-            <marker date="1666659204930" expanded="true" signature="15759:15768" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/division.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1666718851400" expanded="true" signature="399:487" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/divisions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="61" selection-start-line="3" selection-start-column="61" selection-end-line="3" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolution/strategy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="33" column="72" selection-start-line="33" selection-start-column="72" selection-end-line="33" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+            <marker date="1666719663431" expanded="true" signature="933:934" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="2438:2490" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="2609:2614" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="2711:2756" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="2870:2924" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3154:3159" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3227:3233" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3332:3509" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3531:3574" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3565:3574" ph="..." />
+            <marker date="1666719663431" expanded="true" signature="3602:3611" ph="..." />
           </folding>
         </state>
       </provider>

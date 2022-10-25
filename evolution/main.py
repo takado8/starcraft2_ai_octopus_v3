@@ -92,9 +92,9 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.own_economy.calculate_units_report()
         self.strategy.enemy_economy.calculate_enemy_units_report()
 
-        if iteration % 30 == 0:
-            self.strategy.enemy_economy.print_enemy_info()
-            self.strategy.own_economy.print_own_economy_info()
+        # if iteration % 30 == 0:
+        #     self.strategy.enemy_economy.print_enemy_info()
+        #     self.strategy.own_economy.print_own_economy_info()
         #
         ## attack
         army_priority = False
@@ -120,10 +120,10 @@ class OctopusEvo(sc2.BotAI):
             print(ex)
             await self.chat_send('on_step error 10')
         try:
-            await self.strategy.micro()
+            await self.strategy.army_do_stuff()
         except Exception as ex:
             print(ex)
-            await self.chat_send('on_step error 9 -> micro_units')
+            await self.chat_send('on_step error 9')
             raise ex
         self.avoid_aoe()
         #
@@ -335,7 +335,7 @@ class OctopusEvo(sc2.BotAI):
             return True
 
         if self.is_warpgate_research_ready():
-            print('warpgate_research_ready')
+            # print('warpgate_research_ready')
             return True
 
         # if self.strategy.scouting.number_of_scoutings_done - self.scoutings_last_attack > 2:
@@ -350,7 +350,7 @@ class OctopusEvo(sc2.BotAI):
         # (self.enemy_units().exists and self.enemy_units().closer_than(40, self.defend_position).amount > 5 or
         #  self.enemy_units().closer_than(40, self.start_location).amount > 5)
         if self.army.amount < (2 if self.time < 500 else 20):
-            print("Retreat condition.")
+            # print("Retreat condition.")
             return True
         return False
 
@@ -421,9 +421,9 @@ def botVsComputer(ai, real_time=0):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    computer_builds = [AIBuild.Timing]
+    # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -431,7 +431,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -473,7 +473,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=1, genome=subject.genome)
+            win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000*win + killed - lost

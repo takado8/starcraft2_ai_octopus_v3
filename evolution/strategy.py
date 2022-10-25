@@ -15,6 +15,7 @@ from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
 from economy.own_economy import OwnEconomy
 from economy.enemy_economy import EnemyEconomy
+from army.divisions import STALKER_x10
 
 
 class EvolutionStrategy:
@@ -23,11 +24,15 @@ class EvolutionStrategy:
         self.type = 'macro'
         self.name = 'evo'
         self.chronobooster = Chronobooster(ai)
-        self.stalker_micro = StalkerMicro(ai)
-        self.zealot_micro = ZealotMicro(ai)
-        self.sentry_micro = SentryMicro(ai)
+        stalker_micro = StalkerMicro(ai)
+        # self.zealot_micro = ZealotMicro(ai)
+        # self.sentry_micro = SentryMicro(ai)
 
         self.army = Army(ai)
+        self.army.create_division('div1', STALKER_x10, [stalker_micro])
+        self.army.create_division('div2', STALKER_x10, [stalker_micro])
+        self.army.create_division('div3', STALKER_x10, [stalker_micro])
+
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
@@ -74,11 +79,18 @@ class EvolutionStrategy:
 
     # =======================================================  Army
 
+    async def army_do_stuff(self):
+        self.army.refresh_all_soldiers()
+        self.army.train_divisions()
+        await self.army.execute_divisions_orders()
+        # self.army.print_divisions_info()
+
     async def micro(self):
-        # self.army_obj.do_stuff()
-        await self.stalker_micro.personal_new()
-        await self.zealot_micro.standard()
-        await self.sentry_micro.standard()
+        raise NotImplementedError
+        # # self.army_obj.do_stuff()
+        # await self.stalker_micro.personal_new()
+        # await self.zealot_micro.standard()
+        # await self.sentry_micro.standard()
 
     async def movements(self):
         enemy_units = self.ai.enemy_units()
