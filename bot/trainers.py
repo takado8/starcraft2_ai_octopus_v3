@@ -120,191 +120,6 @@ class WarpgateTrainer:
         self.ai = ai
         self.units_training_dict = units_training_dict
 
-    async def stalkers(self):
-        warpgates = self.ai.structures(unit.WARPGATE).ready.idle
-        if warpgates.exists:
-            if self.ai.attack:
-                prisms = self.ai.units(unit.WARPPRISMPHASING)
-                if prisms.exists:
-                    pos = prisms.furthest_to(self.ai.start_location).position
-                else:
-                    furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                    pos = furthest_pylon.position
-            else:
-                pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                    self.ai.start_location).position
-            placement = None
-            i = 0
-            while placement is None:
-                i += 1
-                placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                         max_distance=5, placement_step=2, random_alternative=False)
-                if i > 5:
-                    print("can't find position for warpin.")
-                    return
-            for warpgate in warpgates:
-                abilities = await self.ai.get_available_abilities(warpgate)
-                if ability.WARPGATETRAIN_ZEALOT in abilities:
-                    if self.ai.can_afford(unit.STALKER):
-                        self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-
-    async def adepts(self):
-        warpgates = self.ai.structures(unit.WARPGATE).ready.idle
-        if warpgates.exists:
-            if self.ai.attack:
-                prisms = self.ai.units(unit.WARPPRISMPHASING)
-                if prisms.exists:
-                    pos = prisms.furthest_to(self.ai.start_location).position
-                else:
-                    furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                    pos = furthest_pylon.position
-            else:
-                pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                    self.ai.start_location).position
-            for warpgate in warpgates:
-                abilities = await self.ai.get_available_abilities(warpgate)
-                if ability.WARPGATETRAIN_ZEALOT in abilities:
-                    placement = None
-                    i = 0
-                    while placement is None:
-                        i += 1
-                        placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT,
-                                                                 near=pos.random_on_distance(5),
-                                                                 max_distance=5, placement_step=2,
-                                                                 random_alternative=False)
-                        if i > 5:
-                            print("can't find position for warpin.")
-                            break
-                    if self.ai.can_afford(unit.SENTRY):
-                        self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
-                    elif self.ai.can_afford(unit.ADEPT):
-                        self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-
-    async def defend_rush(self):
-        warpgates = self.ai.structures(unit.WARPGATE).ready.idle
-        if warpgates.exists and self.ai.minerals >= 100:
-            if self.ai.attack:
-                prisms = self.ai.units(unit.WARPPRISMPHASING)
-                if prisms.exists:
-                    pos = prisms.furthest_to(self.ai.start_location).position
-                else:
-                    # furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                    # pos = furthest_pylon.position
-                    pos = self.ai.get_super_pylon()
-                    if pos:
-                        pos = pos.position
-                    else:
-                        print('defend_rush warpgate trainer: pos is none')
-                        return
-            else:
-                pos = self.ai.get_super_pylon()
-                if pos:
-                    pos = pos.position
-                else:
-                    print('defend_rush warpgate trainer: pos is none')
-                    return
-            for warpgate in warpgates:
-                abilities = await self.ai.get_available_abilities(warpgate)
-                if ability.WARPGATETRAIN_ZEALOT in abilities:
-                    placement = None
-                    i = 0
-                    while placement is None:
-                        i += 1
-                        placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT,
-                                                                 near=pos.random_on_distance(5),
-                                                                 max_distance=5, placement_step=2,
-                                                                 random_alternative=False)
-                        if i > 5:
-                            print("can't find position for warpin.")
-                            break
-                    if self.ai.can_afford(unit.STALKER):
-                        self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                    elif self.ai.supply_left > 1 and self.ai.minerals > 200 and self.ai.vespene < 40:
-                        self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
-    async def adept_stalker(self):
-        warpgates = self.ai.structures(unit.WARPGATE).ready.idle
-        if warpgates.exists:
-            if self.ai.attack:
-                prisms = self.ai.units(unit.WARPPRISMPHASING)
-                if prisms.exists:
-                    pos = prisms.furthest_to(self.ai.start_location).position
-                else:
-                    furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                    pos = furthest_pylon.position
-            else:
-                pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                    self.ai.start_location).position
-            for warpgate in warpgates:
-                abilities = await self.ai.get_available_abilities(warpgate)
-                if ability.WARPGATETRAIN_ZEALOT in abilities:
-                    placement = None
-                    i = 0
-                    while placement is None:
-                        i += 1
-                        placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT,
-                                                                 near=pos.random_on_distance(5),
-                                                                 max_distance=5, placement_step=2,
-                                                                 random_alternative=False)
-                        if i > 5:
-                            print("can't find position for warpin.")
-                            break
-                    if self.ai.can_afford(unit.STALKER):
-                        self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                    elif self.ai.can_afford(unit.ADEPT) and self.ai.units(unit.STALKER).amount + 5 >= \
-                            self.ai.units(unit.ADEPT).amount:
-                        self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-
-    async def bio(self):
-        if not self.ai.attack:
-            if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or self.ai.forge_upg_priority() or not self.ai.structures(
-                unit.WARPGATE).exists:
-                return
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                self.ai.start_location).position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-        archons = self.ai.army(unit.ARCHON).amount
-        if archons == 0:
-            archons = 1
-        amount = 1.5 * archons
-        if amount > 3:
-            amount = 3
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.HIGHTEMPLAR) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.ARCHON).amount < 11 and self.ai.structures(unit.TEMPLARARCHIVE).ready.exists:
-                    self.ai.do(warpgate.warp_in(unit.HIGHTEMPLAR, placement))
-                elif self.ai.can_afford(unit.SENTRY) and self.ai.units(unit.ARCHON).amount > 0 and \
-                        self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.SENTRY).amount < 3:
-                    self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
-                elif self.ai.can_afford(unit.STALKER) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.STALKER).amount < amount:
-                    self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                # elif self.ai.minerals > 150 and self.ai.supply_left > 1 and \
-                #         self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.ADEPT).amount < 7:
-                #     self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-                elif self.ai.minerals > 300 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < 16:
-                    self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
     async def standard(self):
         max_stalkers = self.units_training_dict[unit.STALKER]
         max_zealots = self.units_training_dict[unit.ZEALOT]
@@ -321,7 +136,7 @@ class WarpgateTrainer:
                 pos = furthest_pylon.position
         else:
             if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or self.ai.forge_upg_priority() or not self.ai.structures(
+                self.ai.army(unit.IMMORTAL).amount < 5) or not self.ai.structures(
                 unit.WARPGATE).exists:
                 return
             pos = self.ai.get_super_pylon().position
@@ -355,6 +170,9 @@ class WarpgateTrainer:
 
 
     async def stalker_power(self):
+        if not self.ai.structures(unit.WARPGATE).exists:
+            return
+
         max_stalkers = self.units_training_dict[unit.STALKER]
         max_zealots = self.units_training_dict[unit.ZEALOT]
 
@@ -366,10 +184,6 @@ class WarpgateTrainer:
                 furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
                 pos = furthest_pylon.position
         else:
-            if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or self.ai.forge_upg_priority() or not self.ai.structures(
-                unit.WARPGATE).exists:
-                return
             pos = self.ai.get_super_pylon().position
         placement = None
         i = 0
@@ -389,134 +203,6 @@ class WarpgateTrainer:
                     self.ai.do(warpgate.warp_in(unit.STALKER, placement))
                 elif self.ai.minerals > 150 and \
                         self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
-                    self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
-    async def dt(self):
-        if not self.ai.structures(unit.WARPGATE).exists:
-            return
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                self.ai.start_location).position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-        dts = self.ai.army(unit.DARKTEMPLAR).amount
-        if dts == 0:
-            dts = 2
-        amount = 2 * dts
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_DARKTEMPLAR in abilities:
-                if self.ai.structures(unit.DARKSHRINE).ready.exists and self.ai.can_afford(
-                        unit.DARKTEMPLAR) and self.ai.supply_left > 1:
-                    self.ai.do(warpgate.warp_in(unit.DARKTEMPLAR, placement))
-            elif ability.WARPGATETRAIN_STALKER in abilities:
-                if self.ai.can_afford(unit.STALKER) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.STALKER).amount < amount:
-                    self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                elif self.ai.minerals > 350 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < 23:
-                    self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
-    async def two_base_colossus(self):
-        if not self.ai.attack:
-            if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or self.ai.forge_upg_priority() or not self.ai.structures(
-                unit.WARPGATE).exists:
-                return
-
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                self.ai.start_location).position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-        immortals = self.ai.army(unit.IMMORTAL).amount
-        if immortals == 0:
-            immortals = 2
-        amount = 3 * immortals
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.HIGHTEMPLAR) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.ARCHON).amount < 7 and self.ai.structures(unit.TEMPLARARCHIVE).ready.exists:
-                    self.ai.do(warpgate.warp_in(unit.HIGHTEMPLAR, placement))
-                elif self.ai.can_afford(unit.SENTRY) and self.ai.units(unit.STALKER).amount > 5 and \
-                        self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.SENTRY).amount < 3:
-                    self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
-                elif self.ai.can_afford(unit.STALKER) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.STALKER).amount < amount:
-                    self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                # elif self.ai.minerals > 150 and self.ai.supply_left > 1 and \
-                #         self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.ADEPT).amount < 7:
-                #     self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-                elif self.ai.minerals > 450 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < 17:
-                    self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
-
-    async def stargate_priority(self):
-        if self.ai.structures(unit.FLEETBEACON).ready.exists and self.ai.structures(unit.STARGATE).ready.idle.exists \
-                or self.ai.forge_upg_priority() or not self.ai.structures(unit.WARPGATE).exists:
-            return
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            pos = self.ai.structures(unit.PYLON).ready.closer_than(35, self.ai.start_location).furthest_to(
-                self.ai.start_location).position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.SENTRY) and self.ai.units(unit.STALKER).amount > 7 and \
-                        self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.SENTRY).amount < 3:
-                    self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
-                elif self.ai.can_afford(unit.STALKER) and self.ai.supply_left > 1 and self.ai.army(
-                        unit.STALKER).amount < 30:
-                    self.ai.do(warpgate.warp_in(unit.STALKER, placement))
-                elif self.ai.minerals > 150 and self.ai.supply_left > 1 and \
-                        self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.ADEPT).amount < 12:
-                    self.ai.do(warpgate.warp_in(unit.ADEPT, placement))
-                elif self.ai.minerals > 130 and self.ai.vespene < 50 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < 12:
                     self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
 
 

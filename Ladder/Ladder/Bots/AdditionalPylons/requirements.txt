@@ -1,9 +1,0 @@
-numpy
-scipy
-random
-configparser
-math
-operator
-datetime
-time
-pickle

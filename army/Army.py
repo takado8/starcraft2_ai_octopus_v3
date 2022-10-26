@@ -1,7 +1,7 @@
 from sc2.unit import Unit
 from .division import Division
 from .soldier import Soldier
-from typing import Dict, List
+from typing import Dict, List, Set
 from bot.constants import ARMY_IDS
 
 
@@ -72,10 +72,13 @@ class Army:
                 self.all_soldiers[unit.tag] = soldier
                 self.unassigned_soldiers.append(soldier)
         living_units_tags = {u.tag for u in all_units}
+        dead_units_tags = set()
         for unit_tag in self.all_soldiers:
             if unit_tag not in living_units_tags:
-                dead_soldier = self.all_soldiers.pop(unit_tag)
-                self.divisions[dead_soldier.division_name].remove_soldier(unit_tag)
+                dead_units_tags.add(unit_tag)
+        for dead_unit_tag in dead_units_tags:
+            dead_soldier = self.all_soldiers.pop(dead_unit_tag)
+            self.divisions[dead_soldier.division_name].remove_soldier(dead_unit_tag)
 
     def print_divisions_info(self):
         for division_name in self.divisions:
