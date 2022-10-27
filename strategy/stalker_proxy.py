@@ -18,24 +18,24 @@ from army.divisions import STALKER_x10, ZEALOT_x10
 from bot.conditions import *
 
 
-class StalkerMid(StrategyABS):
+class StalkerProxy(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='mid', name='stalker_mid')
         self.ai = ai
         self.army = Army(ai)
 
         stalker_micro = StalkerMicro(ai)
-        zealot_micro = ZealotMicro(ai)
+        # zealot_micro = ZealotMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
         self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
-        self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
-        self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
+        # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
+        # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
 
-        build_queue = BuildQueues.STALKER_MID
+        build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
@@ -44,7 +44,7 @@ class StalkerMid(StrategyABS):
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
 
-        units_training_dict = UnitsTrainingDicts.STALKER_MID
+        units_training_dict = UnitsTrainingDicts.STALKER_RUSH
         self.nexus_trainer = NexusTrainer(ai)
         self.gate_trainer = GateTrainer(ai, units_training_dict)
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
@@ -85,7 +85,7 @@ class StalkerMid(StrategyABS):
     # =======================================================  Trainers
     async def train_units(self):
         self.gate_trainer.standard()
-        await self.warpgate_trainer.stalker_power()
+        await self.warpgate_trainer.standard()
         self.robotics_trainer.standard_new()
 
     def train_probes(self):
@@ -101,10 +101,10 @@ class StalkerMid(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.ground_weapons_and_armor_lvl2()
+        return self.condition_attack.warpgate_research_ready()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(20)
+        return self.condition_retreat.army_count_less_than(3)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

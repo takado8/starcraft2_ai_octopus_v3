@@ -1,8 +1,9 @@
-from sc2.unit import Unit
+from sc2.unit import UnitTypeId as unit
 from .division import Division
 from .soldier import Soldier
-from typing import Dict, List, Set
+from typing import Dict, List
 from bot.constants import ARMY_IDS
+from .movements import Movements
 
 
 class Army:
@@ -21,14 +22,69 @@ class Army:
     def establish_army_status(self):
         pass
 
-    def select_targets(self):
-        pass
+    async def attack(self):
+        target = self.select_targets_to_attack()
+        await self.move_army(target)
 
-    def create_division(self, division_name, units_ids_dict, micros: List):
+    def select_targets_to_attack(self):
+        enemy_units = self.ai.enemy_units()
+        enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore
+                                             and (x.can_attack_ground or x.can_attack_air))
+        enemy.extend(self.ai.enemy_structures().filter(lambda b: b.type_id in self.ai.bases_ids
+                        or b.can_attack_ground or b.can_attack_air or b.type_id == unit.BUNKER))
+        if self.ai.enemy_main_base_down or (
+                self.ai.army.closer_than(20, self.ai.enemy_start_locations[0]).amount > 17 and
+                not self.ai.enemy_structures().exists):
+            if not self.ai.enemy_main_base_down:
+                # await self.ai.chat_send('enemy main base down.')
+                print('enemy main base down.')
+                self.ai.enemy_main_base_down = True
+            self.ai.scan()
+            enemy_units.extend(self.ai.enemy_structures())
+            if enemy_units.exists:
+                for man in self.ai.army.exclude_type(unit.OBSERVER):
+                    self.ai.do(man.attack(enemy_units.closest_to(man)))
+
+        if enemy.amount > 1:
+            if enemy.closer_than(35, self.ai.start_location).amount > 1:
+                destination = enemy.closest_to(self.ai.start_location).position
+            else:
+                destination = enemy.further_than(25, self.ai.start_location)
+                if destination:
+                    destination = destination.closest_to(self.ai.start_location).position
+                elif self.ai.enemy_structures().exists:
+                    enemy = self.ai.enemy_structures()
+                    destination = enemy.closest_to(self.ai.start_location).position
+                else:
+                    destination = self.ai.enemy_start_locations[0].position
+        elif self.ai.enemy_structures().exists:
+            enemy = self.ai.enemy_structures()
+            destination = enemy.closest_to(self.ai.start_location).position
+        else:
+            if self.ai.enemy_main_base_down:
+                if len(self.ai.observer_scouting_points) == 0:
+                    for exp in self.ai.expansion_locations:
+                        if not self.ai.structures().closer_than(7, exp).exists:
+                            self.ai.observer_scouting_points.append(exp)
+                    self.ai.observer_scouting_points = sorted(self.ai.observer_scouting_points,
+                                                              key=lambda x: self.ai.enemy_start_locations[
+                                                                  0].distance_to(x))
+                if self.ai.army() and self.ai.army().closer_than(12, self.ai.observer_scouting_points[
+                    self.ai.observer_scouting_index]).amount > 12 \
+                        and self.ai.enemy_structures().amount < 1:
+                    self.ai.observer_scouting_index += 1
+                    if self.ai.observer_scouting_index == len(self.ai.observer_scouting_points):
+                        self.ai.observer_scouting_index = 0
+                destination = self.ai.observer_scouting_points[self.ai.observer_scouting_index]
+            else:
+                destination = self.ai.enemy_start_locations[0].position
+        return destination
+
+    def create_division(self, division_name, units_ids_dict, micros: List, movements):
         if division_name in self.divisions:
             print('Division "{}" already exists.'.format(division_name))
         else:
-            new_division = Division(division_name, units_ids_dict, micros)
+            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements)
             self.divisions[division_name] = new_division
             return new_division
 
@@ -79,6 +135,10 @@ class Army:
         for dead_unit_tag in dead_units_tags:
             dead_soldier = self.all_soldiers.pop(dead_unit_tag)
             self.divisions[dead_soldier.division_name].remove_soldier(dead_unit_tag)
+
+    async def move_army(self, destination):
+        for division_name in self.divisions:
+            await self.divisions[division_name].move_division(destination)
 
     def print_divisions_info(self):
         for division_name in self.divisions:

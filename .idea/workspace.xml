@@ -5,1211 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/army/micros/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/army/micros/microABS.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy/strategyABS.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/strategy/stalker_proxy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/ANI LOGO.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/ANI.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/ANI.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/ANI_base_bot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/LadderBots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/Thor.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/analyze.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/changelog.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/data/res.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/program.prof" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/run and replay.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/expiring_dict.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/game_data.py.0d1d2ce529e3e8aa3af1d27258e5b23d.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/main Copy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/strategies.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/ANIbot/trainingdata.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/additionalpylons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/adept.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/archive.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/archon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/bot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/botinfo.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/building_list.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/cannon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/carrier.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/colossus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/config.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/cybercore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/data/res.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/data/unitRes.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/disruptor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/disruptor_phased.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/effects.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/fleet.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/forge.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/gateway.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/hightemplar.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/immortal.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/mothership.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/nexus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/observer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/phoenix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/probe.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/protoss_agent.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/robo.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/robobay.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sentry.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/sentry_old.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/shade.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/stalker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/stargate.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/stats.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/strategist.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/tempest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/trainer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/trainingdata.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/twilight.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/unit_counters.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/unit_list.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/voidray.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/warpprism.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/AdditionalPylons/zealot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/BetterThanNothing.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/BetterThanNothing.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/Google.Protobuf.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/Google.Protobuf.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/LadderBots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/BetterThanNothing/data/countersheet.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/chance.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/protoss/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/protoss/cannon_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/protoss/four_gate_stalkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/protoss/threebase_voidray.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/protoss/warpgate_push.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/random/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/random/worker_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/strat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/terran/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/terran/four_rax.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/terran/mass_reaper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/terran/planetary_fortress_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/terran/proxy_rax.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/hydralisk_push.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/ling_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/ravager_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/roach_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/chance/strats/zerg/zerg_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/config.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/data/a9292d9c0e59590.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/COPYING.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/backend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/compat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/ext/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/ext/numpy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/ext/pandas.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/handlers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/pickler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/tags.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/unpickler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/util.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/jsonpickle/version.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/expiring_dict.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sc2pathlibp/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sc2pathlibp/path_finder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/events/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/events/unit_destroyed_event.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/debug/no_double_orders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/extended_power.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/extended_ramp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/path.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/rocks.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/unit_feature.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/unit_value_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/general/zone.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/knowledges/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/knowledges/knowledge.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/knowledges/knowledge_bot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/action_issued.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/build_detector.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/building_solver.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/chat_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/combat_units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/generic_micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/micro_step.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/micro_workers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/move_type.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/no_micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_adepts.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_carriers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_colossi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_disruptor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_hightemplars.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_observers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_oracles.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_phoenixes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_sentries.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_stalkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_voidrays.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_warp_prism.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/protoss/micro_zealots.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_battlecruisers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_medivacs.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_ravens.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_tanks.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/terran/micro_vikings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/zerg/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/zerg/micro_overseers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/zerg/micro_queens.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/zerg/micro_ravagers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/combat2/zerg/micro_zerglings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/cooldown_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/data_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/enemy_army_predicter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/enemy_units_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/game_analyzer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/game_states/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/game_states/advantage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/game_states/air_army.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/blocker_type.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/build_area.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/build_grid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/cliff.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/grid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/grid_area.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/rectangle.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/grids/zone_area.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/group_combat_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/income_calculator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/lostunitsmanager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/manager_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/memory_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/pathing_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/predict/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/predict/composition_guesser.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/previousunitsmanager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/roles/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/roles/unit_task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/roles/units_in_role.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/unit_cache_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/unit_role_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/unit_value.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/managers/zone_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/mapping/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/mapping/gather_point.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/mapping/heat_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/mapping/map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/mapping/map_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_archon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_custom.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_expand.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_many.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_tech.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_unit_once.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_warp_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/act_zerg_morph.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/build_position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/build_ramp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/cancel_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/defensive_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/grid_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/morph_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/morph_warp_gates.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/position_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/act_defensive_cannons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/artosis_pylon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/auto_pylon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/chrono_any_tech.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/chrono_tech.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/chrono_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/gate_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/protoss_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/restore_power.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/robo_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/protoss/star_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/reserve.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/act_build_addon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/auto_depot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/morph_orbitals.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/morph_planetary.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/terran/terran_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/auto_overlord.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/morph_greater_spire.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/morph_townhall.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/morph_units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/acts/zerg/zerg_unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/build_order.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/build_step.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/require_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/require_custom.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_all.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_any.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_count.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_enemy_bases.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_enemy_building_exists.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_enemy_unit_exists.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_enemy_unit_exists_after.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_gas.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_less_unit_exists.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_minerals.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_supply.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_supply_left.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_supply_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_tech_ready.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_time.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_total_unit_exists.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_unit_exists.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/require/required_unit_ready.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/sequential_list.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/step_gas.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/attack_expansions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/cancel_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/distribute_workers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/double_adept_scout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/dt_attack.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/hallucinated_phoenix_scout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/main_defender.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/plan_hallucinations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/plan_heat_defender.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/protoss/plan_heat_observer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/taunt_enemy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/call_mule.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/continue_building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/lower_depots.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/man_the_bunkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/repair.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/scan_enemy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/terran/zone_gather_terran.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/warn_build_macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/worker_counterattack.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/worker_only_defense.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/worker_scout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/counter_terran_tie.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/inject_larva.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/overlord_scout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/plan_heat_overseer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zerg/spread_creep.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zone_attack.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zone_attack_all_in.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zone_defense.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/plans/tactics/zone_gather.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/sc2math.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/sc2math_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/tools/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/tools/interval_func.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/tools/opponent_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/unit_count.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/version.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Gumbys/Gumbys.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Gumbys/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/MadAI_10_01_2020" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/MadAI_RF_10_01_2020.sav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/MadBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MadAI/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MicroMachine/BotConfig.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MicroMachine/CommandCenter_SC2API.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MicroMachine/MicroMachine.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/MicroMachine/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/TOP5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/army/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/army/micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/army/movements.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/army/numbers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/chronobooster.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/conditions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/coords.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/enemy_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/trainers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/bot/upgraders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/assimilator_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/cannon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/cybernetics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/dark_shrine.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/expander.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/forge_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/gate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/pylon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_bay_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/robotics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/stargate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/templar_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/builders/twilight_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/data/enemy_info/7e32d83.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/data/enemy_info/85fd4bc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/data/enemy_info/a9292d9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/data/enemy_info/general_stats.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/deep_craft.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/dqn.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/prepare_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/neural/visual.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/adept_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/adept_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/blinkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/call_of_void.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/carrier_madness.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/defend_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/dt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/stalker_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/stalker_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/two_base_archons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/Octopus_v2/strategy/two_base_colossus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/PerfectSplit/PerfectSplit.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/PerfectSplit/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/Main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/create_ladder_zip.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/profiler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/RoachRush/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/LadderBots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/LiftBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/WorkerRush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/WorthlessBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/army.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/build.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Bots/WorthlessBot/worker_rush_defense.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Ladder/LadderManager.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Ladder/MapListFile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Ladder/Sc2LadderServer.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Ladder/matchupList" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Ladder/playerids" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/LadderGUI.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/AutomatonLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/BlueshiftLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/CeruleanFallLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/DarknessSanctuaryLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/KairosJunctionLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/ParaSiteLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/PortAleksanderLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Maps/StasisLE.SC2Map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/DeepCraftvOctopus-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vANIbot-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vAdditionalPylons-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vBetterThanNothing-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vChance-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vGumbys-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vPerfectSplit-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vPerfectSplit-ZenLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vRoachRush-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/Octopus_v2vWorthlessBot-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvANIbot-ThunderbirdLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvANIbot-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvANIbot-WorldofSleepersLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvAdditionalPylons-ThunderbirdLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvAdditionalPylons-WorldofSleepersLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvAdditionalPylons-ZenLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvChance-WorldofSleepersLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvGumbys-NightshadeLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvGumbys-WorldofSleepersLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvGumbys-ZenLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvOneTrickPonyCore-ThunderbirdLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvRoachRush-ThunderbirdLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/OctopusvRoachRush-ZenLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/PerfectSplitvOctopus-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Replays/TensorTestvOctopus-TritonLE.SC2Replay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Results.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Ladder/Settings.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/Octopus_v2.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/army/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/army/micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/army/movements.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/army/numbers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/chronobooster.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/conditions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/coords.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/enemy_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/player_vs.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/trainers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/bot/upgraders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/assimilator_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/cannon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/cybernetics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/dark_shrine.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/expander.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/forge_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/gate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/pylon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_bay_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/robotics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/stargate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/templar_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/builders/twilight_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/021d0e2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/0da3765.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/0e9d92d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/12c39b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/2557ad1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/3c98e65.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/3f36d56.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/486892f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/4eb61a2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/54bca4a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/5d8dcea.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/6cb484c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/76cc987.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/81fa0ac.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/842c609.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/859b6be.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/8cc0bf1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/8d35ca8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/9bd5360.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/9dd4771.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/a652e1d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/a9919c1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/b01e84e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/b4d7dc4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/b5769b4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/ba7782e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/c5e0e20.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/c63f77f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/d7bd501.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/d835798.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/dd2dba4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/e7120c6.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/e7d5b34.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/eed4412.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/f71e49e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/data/enemy_info/general_stats.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/deep_craft.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/dqn.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/prepare_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/neural/visual.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/adept_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/adept_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/blinkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/call_of_void.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/carrier_madness.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/defend_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/dt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/stalker_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/stalker_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/two_base_archons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2 — Arena/strategy/two_base_colossus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/army/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/army/micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/army/movements.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/army/numbers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/chronobooster.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/conditions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/coords.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/enemy_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/player_vs.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/trainers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/bot/upgraders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/assimilator_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/cannon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/cybernetics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/dark_shrine.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/expander.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/forge_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/gate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/pylon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_bay_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/robotics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/stargate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/templar_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/builders/twilight_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/deep_craft.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/dqn.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/prepare_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/neural/visual.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/adept_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/adept_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/blinkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/call_of_void.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/carrier_madness.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/defend_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/dt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/stalker_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/stalker_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/two_base_archons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Octopus_v2/strategy/two_base_colossus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/army/micro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/army/movements.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/army/numbers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/conditions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/coords.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/enemy_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/player_vs.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/trainers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/bot/upgraders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/assimilator_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/cannon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/cybernetics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/dark_shrine.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/expander.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/forge_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/gate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/pylon_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_bay_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/robotics_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/stargate_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/templar_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/builders/twilight_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/ladderbots.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/deep_craft.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/dqn.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/prepare_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/neural/visual.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/action.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/bot_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/generic_redirect_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_research_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_tech_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_train_build_abilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_trained_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/unit_unit_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/dicts/upgrade_researched_from.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/distances.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/game_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/game_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/game_state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/helpers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/helpers/control_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/helpers/devtools.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/ability_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/buff_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/effect_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/unit_typeid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/ids/upgrade_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/maps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/observer_ai.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/paths.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/pixel_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/portconfig.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/position.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/power_source.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/protocol.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/renderer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/sc2process.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/score.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/tmpfix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/unit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/unit_command.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/units.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/sc2/versions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/adept_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/adept_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/blinkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/call_of_void.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/carrier_madness.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/dt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/stalker_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/stalker_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/two_base_archons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Bots/Octopus/strategy/two_base_colossus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/D3Dcompiler_47.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Qt5Core.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Qt5Gui.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Qt5Svg.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Qt5Widgets.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/Sc2AiAPP.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/iconengines/qsvgicon.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qgif.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qicns.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qico.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qjpeg.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qsvg.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qtga.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qtiff.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qwbmp.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/imageformats/qwebp.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/libEGL.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/libGLESV2.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/opengl32sw.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/platforms/qwindows.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/styles/qwindowsvistastyle.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_ar.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_bg.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_ca.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_cs.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_da.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_de.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_en.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_es.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_fi.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_fr.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_gd.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_he.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_hu.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_it.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_ja.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_ko.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_lv.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_pl.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_ru.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_sk.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_uk.qm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ladder/Sc2AiApp/translations/qt_zh_TW.qm" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/army/Army.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/Army.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/divisions.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/divisions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micro.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/micro.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/division.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/division.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/movements.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/movements.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/conditions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/conditions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/trainers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/trainers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/units_training_dicts.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/units_training_dicts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/robotics_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/robotics_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evolution/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evolution/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/stalker_mid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/adept_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/blinkers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/call_of_void.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/carrier_madness.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/defend_rush.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/dt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/macro.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/stalker_defend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/stalker_proxy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/two_base_archons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/two_base_colossus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/stalker_mid.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/stalker_mid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/strategyABS.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/strategyABS.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1259,35 +63,35 @@
     <session id="1374357970">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.4" value="4" />
-          <entry key="project.open.time.5" value="6" />
+          <entry key="project.open.time.5" value="7" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="14" />
+          <entry key="project.opened" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="81" />
-          <entry key="py" value="21475" />
+          <entry key="py" value="23185" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="81" />
-          <entry key="Python" value="21475" />
+          <entry key="Python" value="23185" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="122" />
+          <entry key="py" value="142" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="122" />
+          <entry key="Python" value="142" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
@@ -1296,57 +100,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/strategy/stalker_mid.py">
+        <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
+            <state relative-caret-position="400">
+              <caret line="20" column="18" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="18" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
-                <element signature="e#3275#8807#0" />
-                <marker date="1666742891931" expanded="true" signature="906:907" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="2897:2949" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3107:3112" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3209:3254" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3368:3422" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3657:3662" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3730:3736" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="3835:4007" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="9685:9760" ph="..." />
-                <marker date="1666742891931" expanded="true" signature="9892:9960" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/strategy/strategyABS.py">
+        <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+            <state relative-caret-position="80">
+              <caret line="4" column="85" lean-forward="true" selection-start-line="4" selection-start-column="85" selection-end-line="4" selection-end-column="85" />
               <folding>
-                <marker date="1666742231841" expanded="true" signature="54:179" ph="..." />
-                <marker date="1666742231841" expanded="true" signature="178:179" ph="..." />
-                <marker date="1666742231841" expanded="true" signature="1042:1082" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2040">
-              <caret line="458" column="48" selection-start-line="458" selection-start-column="48" selection-end-line="458" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#6077#6355#0" />
-                <element signature="e#6393#8456#0" />
-                <element signature="e#8504#9055#0" />
-                <element signature="e#9334#10887#0" />
-                <element signature="e#10459#11037#0" />
-                <element signature="e#11091#11441#0" />
-                <element signature="e#11486#13208#0" />
-                <element signature="e#13250#13998#0" />
+                <marker date="1666733931533" expanded="true" signature="350:354" ph="..." />
               </folding>
             </state>
           </provider>
@@ -1355,7 +126,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/micros/micro.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
+            <state relative-caret-position="874">
               <caret line="247" column="42" selection-start-line="247" selection-start-column="42" selection-end-line="247" selection-end-column="42" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
@@ -1370,8 +141,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot/conditions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
+            <state relative-caret-position="100">
+              <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
               </folding>
@@ -1380,13 +151,82 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+        <entry file="file://$PROJECT_DIR$/army/army.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="13" column="95" selection-start-line="13" selection-start-column="95" selection-end-line="13" selection-end-column="95" />
+            <state relative-caret-position="44">
+              <caret line="140" column="48" selection-start-line="140" selection-start-column="48" selection-end-line="140" selection-end-column="48" />
               <folding>
-                <marker date="1666745765157" expanded="true" signature="523:524" ph="..." />
+                <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#1180#2248#0" />
+                <element signature="e#2485#2888#0" />
+                <element signature="e#3031#3114#0" />
+                <element signature="e#3173#3309#0" />
+                <marker date="1666832977912" expanded="true" signature="752:761" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="794:886" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="921:4167" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="5674:5679" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="5739:5744" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="6779:6905" ph="..." />
+                <marker date="1666832977912" expanded="true" signature="6936:6945" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/movements.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="33" column="94" lean-forward="true" selection-start-line="33" selection-start-column="94" selection-end-line="33" selection-end-column="94" />
+              <folding>
+                <marker date="1666835731155" expanded="true" signature="2106:2473" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/division.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="860">
+              <caret line="54" column="57" selection-start-line="54" selection-start-column="57" selection-end-line="54" selection-end-column="57" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#789#1264#0" />
+                <marker date="1666833987664" expanded="true" signature="575:663" ph="..." />
+                <marker date="1666833987664" expanded="true" signature="1466:1570" ph="..." />
+                <marker date="1666833987664" expanded="true" signature="2198:2203" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="44">
+              <caret line="460" column="48" selection-start-line="460" selection-start-column="48" selection-end-line="460" selection-end-column="48" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/unit.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="538" selection-start-line="538" selection-end-line="538" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/units.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="20">
+              <caret line="458" selection-start-line="458" selection-end-line="458" />
             </state>
           </provider>
         </entry>
@@ -1444,7 +284,6 @@
       <list>
         <option value="$PROJECT_DIR$/bot/BuildingSpotValidator.py" />
         <option value="$PROJECT_DIR$/evolution.py" />
-        <option value="$PROJECT_DIR$/army/movements.py" />
         <option value="$PROJECT_DIR$/evolution/evolution.py" />
         <option value="$PROJECT_DIR$/strategy/evolution.py" />
         <option value="$PROJECT_DIR$/builders/gate_builder.py" />
@@ -1472,30 +311,33 @@
         <option value="$PROJECT_DIR$/bot/coords.py" />
         <option value="$PROJECT_DIR$/army/soldier.py" />
         <option value="$PROJECT_DIR$/bot/constants.py" />
-        <option value="$PROJECT_DIR$/army/division.py" />
         <option value="$PROJECT_DIR$/army/divisions.py" />
         <option value="$PROJECT_DIR$/army/micro.py" />
         <option value="$PROJECT_DIR$/army/micros/microABS.py" />
-        <option value="$PROJECT_DIR$/army/army.py" />
         <option value="$PROJECT_DIR$/builders/robotics_builder.py" />
         <option value="$PROJECT_DIR$/bot/units_training_dicts.py" />
         <option value="$PROJECT_DIR$/evolution/main.py" />
         <option value="$PROJECT_DIR$/evolution/strategy.py" />
         <option value="$PROJECT_DIR$/strategy/manager.py" />
-        <option value="$PROJECT_DIR$/strategy/strategyABS.py" />
         <option value="$PROJECT_DIR$/strategy/strategy.py" />
-        <option value="$PROJECT_DIR$/bot/conditions.py" />
-        <option value="$PROJECT_DIR$/strategy/stalker_mid.py" />
         <option value="$PROJECT_DIR$/bot/trainers.py" />
         <option value="$PROJECT_DIR$/strategy/__init__.py" />
         <option value="$PROJECT_DIR$/army/micros/micro.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/builders/build_queues.py" />
+        <option value="$PROJECT_DIR$/strategy/strategyABS.py" />
+        <option value="$PROJECT_DIR$/army/army.py" />
+        <option value="$PROJECT_DIR$/strategy/stalker_mid.py" />
+        <option value="$PROJECT_DIR$/bot/conditions.py" />
+        <option value="$PROJECT_DIR$/strategy/stalker_proxy.py" />
+        <option value="$PROJECT_DIR$/army/division.py" />
+        <option value="$PROJECT_DIR$/army/movements.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="714" />
+    <option name="x" value="426" />
+    <option name="y" value="186" />
     <option name="width" value="1215" />
     <option name="height" value="690" />
   </component>
@@ -1561,7 +403,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="replace&#9;ACTION&#9;Replace" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -1585,7 +427,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Evo" type="PythonConfigurationType" factoryName="Python">
       <module name="starcraft2_ai_octopus_v3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -1677,9 +519,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\korne\Desktop\starcraft2_ai_octopus_v3\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
@@ -1721,14 +563,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19077902" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.67793596" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.67793596" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39679715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1765,13 +606,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/evolution/evo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="25" column="71" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/gate_builder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3160">
@@ -1786,20 +620,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/knowledges/knowledge_bot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="39" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/expiring_dict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="112" column="8" selection-start-line="112" selection-start-column="8" selection-end-line="112" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/sharpy/knowledges/knowledge_bot.py" />
+    <entry file="file://$PROJECT_DIR$/Ladder/Ladder/Bots/Chance/sharpy-sc2/python-sc2/sc2/expiring_dict.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/cache.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
@@ -1808,18 +630,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/army/numbers.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/unit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11200">
-          <caret line="627" column="20" selection-start-line="627" selection-start-column="20" selection-end-line="627" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-80" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolution/genome.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -1848,9 +658,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1858,20 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1060">
           <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/distances.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/units.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
@@ -1935,31 +728,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/soldier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="17" column="22" lean-forward="true" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/division.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1666718851400" expanded="true" signature="399:487" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/army/micros/microABS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
-          <folding>
-            <marker date="1666720394919" expanded="true" signature="15:20" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1991,60 +763,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="428" column="52" lean-forward="true" selection-start-line="428" selection-start-column="52" selection-end-line="428" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="66" selection-start-line="7" selection-start-column="66" selection-end-line="7" selection-end-column="66" />
-          <folding>
-            <marker date="1666733931533" expanded="true" signature="350:354" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/army.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1480">
-          <caret line="74" column="31" lean-forward="true" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1666727522502" expanded="true" signature="710:719" ph="..." />
-            <marker date="1666727522502" expanded="true" signature="754:773" ph="..." />
-            <marker date="1666727522502" expanded="true" signature="2249:2254" ph="..." />
-            <marker date="1666727522502" expanded="true" signature="2314:2319" ph="..." />
-            <marker date="1666727522502" expanded="true" signature="3346:3355" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6520">
-          <caret line="22" column="9" lean-forward="true" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/stalker_defend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-160" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/carrier_madness.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1526">
-          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/stalker_defend.py" />
+    <entry file="file://$PROJECT_DIR$/strategy/carrier_madness.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-234660522/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -2059,23 +779,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bot/chronobooster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2097,16 +804,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="73" selection-start-line="73" selection-end-line="73" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/manager.py" />
     <entry file="file://$PROJECT_DIR$/strategy/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -2114,56 +812,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1666572871001" expanded="true" signature="2187:2249" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/strategyABS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-          <folding>
-            <marker date="1666742231841" expanded="true" signature="54:179" ph="..." />
-            <marker date="1666742231841" expanded="true" signature="178:179" ph="..." />
-            <marker date="1666742231841" expanded="true" signature="1042:1082" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/micro.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="247" column="42" selection-start-line="247" selection-start-column="42" selection-end-line="247" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <marker date="1666745107499" expanded="true" signature="11731:11838" ph="..." />
-            <marker date="1666745107499" expanded="true" signature="11832:11838" ph="..." />
-            <marker date="1666745107499" expanded="true" signature="16391:16396" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/stalker_mid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-            <element signature="e#3275#8807#0" />
-            <marker date="1666742891931" expanded="true" signature="906:907" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="2897:2949" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3107:3112" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3209:3254" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3368:3422" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3657:3662" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3730:3736" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="3835:4007" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="9685:9760" ph="..." />
-            <marker date="1666742891931" expanded="true" signature="9892:9960" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2177,20 +825,173 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/army/soldier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/position.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1589">
+          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-20292">
+          <caret line="53" column="6" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/strategyABS.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <marker date="1666830483378" expanded="true" signature="54:179" ph="..." />
+            <marker date="1666830483378" expanded="true" signature="178:179" ph="..." />
+            <marker date="1666830483378" expanded="true" signature="1013:1018" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/distances.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/stalker_mid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="29" column="32" lean-forward="true" selection-end-line="117" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+            <marker date="1666832977920" expanded="true" signature="892:893" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="2986:3038" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="3196:3201" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="3298:3343" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="3457:3511" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="3746:3751" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="3819:3825" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="4201:4276" ph="..." />
+            <marker date="1666832977920" expanded="true" signature="4408:4476" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="85" lean-forward="true" selection-start-line="4" selection-start-column="85" selection-end-line="4" selection-end-column="85" />
+          <folding>
+            <marker date="1666733931533" expanded="true" signature="350:354" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/army.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="140" column="48" selection-start-line="140" selection-start-column="48" selection-end-line="140" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#1180#2248#0" />
+            <element signature="e#2485#2888#0" />
+            <element signature="e#3031#3114#0" />
+            <element signature="e#3173#3309#0" />
+            <marker date="1666832977912" expanded="true" signature="752:761" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="794:886" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="921:4167" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="5674:5679" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="5739:5744" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="6779:6905" ph="..." />
+            <marker date="1666832977912" expanded="true" signature="6936:6945" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/division.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="860">
+          <caret line="54" column="57" selection-start-line="54" selection-start-column="57" selection-end-line="54" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#789#1264#0" />
+            <marker date="1666833987664" expanded="true" signature="575:663" ph="..." />
+            <marker date="1666833987664" expanded="true" signature="1466:1570" ph="..." />
+            <marker date="1666833987664" expanded="true" signature="2198:2203" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/micro.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="247" column="42" selection-start-line="247" selection-start-column="42" selection-end-line="247" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <marker date="1666745107499" expanded="true" signature="11731:11838" ph="..." />
+            <marker date="1666745107499" expanded="true" signature="11832:11838" ph="..." />
+            <marker date="1666745107499" expanded="true" signature="16391:16396" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/unit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="538" selection-start-line="538" selection-end-line="538" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/units.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="458" selection-start-line="458" selection-end-line="458" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/movements.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="33" column="94" lean-forward="true" selection-start-line="33" selection-start-column="94" selection-end-line="33" selection-end-column="94" />
+          <folding>
+            <marker date="1666835731155" expanded="true" signature="2106:2473" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2040">
-          <caret line="458" column="48" selection-start-line="458" selection-start-column="48" selection-end-line="458" selection-end-column="48" />
+        <state relative-caret-position="44">
+          <caret line="460" column="48" selection-start-line="460" selection-start-column="48" selection-end-line="460" selection-end-column="48" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#6077#6355#0" />
-            <element signature="e#6393#8456#0" />
-            <element signature="e#8504#9055#0" />
-            <element signature="e#9334#10887#0" />
-            <element signature="e#10459#11037#0" />
-            <element signature="e#11091#11441#0" />
-            <element signature="e#11486#13208#0" />
-            <element signature="e#13250#13998#0" />
           </folding>
         </state>
       </provider>

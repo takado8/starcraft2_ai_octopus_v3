@@ -15,6 +15,7 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
 from evolution.evo import Evolution
 from strategy.stalker_mid import StalkerMid
+from strategy.stalker_proxy import StalkerProxy
 
 
 class OctopusEvo(sc2.BotAI):
@@ -41,7 +42,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: StalkerMid = None
+        self.strategy: StalkerProxy = None
         self.coords = None
 
     # async def on_unit_created(self, unit: Unit):
@@ -52,7 +53,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = StalkerMid(self)
+        self.strategy = StalkerProxy(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -109,14 +110,15 @@ class OctopusEvo(sc2.BotAI):
             self.after_first_attack = True
         try:
             if self.attack:
-                await self.strategy.movements()
+                await self.strategy.army.attack()
             else:
                 await self.defend()
         except Exception as ex:
             print(ex)
             await self.chat_send('on_step error 10')
+            raise ex
         try:
-            await self.strategy.army_do_stuff()
+            await self.strategy.army_do_micro()
         except Exception as ex:
             print(ex)
             await self.chat_send('on_step error 9')
@@ -456,7 +458,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
+            win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000 * win + killed - lost

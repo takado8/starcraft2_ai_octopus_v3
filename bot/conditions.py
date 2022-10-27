@@ -9,7 +9,7 @@ class ConditionAttack:
     def none(self):
         pass
 
-    def rush(self):
+    def warpgate_research_ready(self):
         return (not self.ai.first_attack) and upgrade.WARPGATERESEARCH in self.ai.state.upgrades
 
     def blink_complete(self):
