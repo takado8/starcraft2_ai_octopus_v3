@@ -7,14 +7,14 @@ from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
-from army.micros.micro import StalkerMicro, ZealotMicro
+from army.micros.micro import StalkerMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
 from economy.own_economy import OwnEconomy
 from economy.enemy_economy import EnemyEconomy
-from army.divisions import STALKER_x10, ZEALOT_x10
+from army.divisions import STALKER_x10
 from bot.conditions import *
 
 
@@ -93,11 +93,14 @@ class StalkerProxy(StrategyABS):
 
     # =======================================================  Army
 
-    async def army_do_micro(self):
+    def army_refresh_and_train(self):
         self.army.refresh_all_soldiers()
         self.army.train_divisions()
+
+    async def army_do_micro(self):
         await self.army.execute_divisions_orders()
         # self.army.print_divisions_info()
+
 
     # ======================================================= Conditions
     def attack_condition(self):

@@ -202,9 +202,8 @@ class AirMicro:
 
 class StalkerMicro(MicroABS):
     def __init__(self, ai):
-        self.ai = ai
         self.name = 'StalkerMicro'
-        super().__init__(self.name, self.ai)
+        super().__init__(self.name, ai)
 
     async def do_micro(self, soldiers):
         enemy = self.ai.enemy_units()
@@ -279,7 +278,6 @@ class StalkerMicro(MicroABS):
 
 class ZealotMicro(MicroABS):
     def __init__(self, ai):
-        self.ai = ai
         self.name = 'ZealotMicro'
         super().__init__(self.name, ai)
 
@@ -301,18 +299,20 @@ class ZealotMicro(MicroABS):
                 self.ai.do(zl.attack(target))
 
 
-class SentryMicro:
+class SentryMicro(MicroABS):
     def __init__(self, ai):
-        self.ai = ai
+        super().__init__('SentryMicro', ai)
 
-    async def standard(self):
+    async def do_micro(self, soldiers):
         #  Sentry region  #
-        sents = self.ai.army(unit.SENTRY)
-        if sents.exists:
+        sentries = Units([soldiers[soldier_tag].unit for soldier_tag in soldiers if
+               soldiers[soldier_tag].type_id == unit.SENTRY], self.ai)
+        # sentries = self.ai.army(unit.SENTRY)
+        if sentries.exists:
             m = -1
             sentry = None
-            for se in sents:
-                close = sents.closer_than(7, se).amount
+            for se in sentries:
+                close = sentries.closer_than(7, se).amount
                 if close > m:
                     m = close
                     sentry = se
@@ -326,7 +326,7 @@ class SentryMicro:
             threats = self.ai.enemy_units().filter(
                 lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry) <= 9 and
                               unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids)
-            has_energy_amount = sents.filter(lambda x2: x2.energy >= 50).amount
+            has_energy_amount = sentries.filter(lambda x2: x2.energy >= 50).amount
             points = []
 
             if has_energy_amount > 0 and len(

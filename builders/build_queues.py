@@ -10,9 +10,9 @@ class BuildQueues:
 
     STALKER_MID = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,
                      unit.NEXUS, unit.FORGE, unit.GATEWAY,  unit.GATEWAY, 7, unit.TWILIGHTCOUNCIL, unit.FORGE,
-                     unit.GATEWAY, unit.GATEWAY, 12, unit.NEXUS, unit.FORGE,
+                     unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS, unit.FORGE,
                      unit.GATEWAY, unit.GATEWAY,unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, 45,
-                     unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     STALKER_POWER = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,

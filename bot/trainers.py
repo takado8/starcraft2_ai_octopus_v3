@@ -175,6 +175,7 @@ class WarpgateTrainer:
 
         max_stalkers = self.units_training_dict[unit.STALKER]
         max_zealots = self.units_training_dict[unit.ZEALOT]
+        max_sentry = self.units_training_dict[unit.SENTRY]
 
         if self.ai.attack:
             prisms = self.ai.units(unit.WARPPRISMPHASING)
@@ -199,11 +200,14 @@ class WarpgateTrainer:
             abilities = await self.ai.get_available_abilities(warpgate)
             if ability.WARPGATETRAIN_ZEALOT in abilities:
                 if self.ai.can_afford(unit.STALKER) and self.ai.army(unit.STALKER).amount < max_stalkers \
-                        and self.ai.army(unit.STALKER).amount / 3 < self.ai.units(unit.ZEALOT).amount:
+                        and self.ai.army(unit.STALKER).amount * 0.4 < self.ai.units(unit.ZEALOT).amount:
                     self.ai.do(warpgate.warp_in(unit.STALKER, placement))
                 elif self.ai.minerals > 150 and \
                         self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
                     self.ai.do(warpgate.warp_in(unit.ZEALOT, placement))
+                elif self.ai.can_afford(unit.SENTRY) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
+                        and self.ai.units(unit.SENTRY).amount < max_sentry and self.ai.state.score.food_used_army > 12:
+                    self.ai.do(warpgate.warp_in(unit.SENTRY, placement))
 
 
 class StargateTrainer:

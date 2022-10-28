@@ -7,14 +7,14 @@ from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
-from army.micros.micro import StalkerMicro, ZealotMicro
+from army.micros.micro import StalkerMicro, ZealotMicro, SentryMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
 from economy.own_economy import OwnEconomy
 from economy.enemy_economy import EnemyEconomy
-from army.divisions import STALKER_x10, ZEALOT_x10
+from army.divisions import STALKER_x10, ZEALOT_x10, SENTRY_x3
 from bot.conditions import *
 
 
@@ -26,7 +26,7 @@ class StalkerMid(StrategyABS):
 
         stalker_micro = StalkerMicro(ai)
         zealot_micro = ZealotMicro(ai)
-        # self.sentry_micro = SentryMicro(ai)
+        sentry_micro = SentryMicro(ai)
         self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
@@ -34,6 +34,7 @@ class StalkerMid(StrategyABS):
         self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
+        self.army.create_division('sentry1', SENTRY_x3, [sentry_micro], Movements(ai))
 
         build_queue = BuildQueues.STALKER_MID
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -93,9 +94,11 @@ class StalkerMid(StrategyABS):
 
     # =======================================================  Army
 
-    async def army_do_micro(self):
+    def army_refresh_and_train(self):
         self.army.refresh_all_soldiers()
         self.army.train_divisions()
+
+    async def army_do_micro(self):
         await self.army.execute_divisions_orders()
         # self.army.print_divisions_info()
 
@@ -104,7 +107,7 @@ class StalkerMid(StrategyABS):
         return self.condition_attack.ground_weapons_and_armor_lvl2()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(20)
+        return self.condition_retreat.army_count_less_than(15)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

@@ -33,10 +33,11 @@ class StrategyABS:
 
     # =======================================================  Army
 
-    async def army_do_micro(self):
+    def army_refresh_and_train(self):
         raise NotImplementedError
 
-
+    async def army_do_micro(self):
+        raise NotImplementedError
 
     # ======================================================= Conditions
     def attack_condition(self):

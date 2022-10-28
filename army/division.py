@@ -49,11 +49,7 @@ class Division:
         biggest_group = None
         division_units = self.get_units()
         for unit in division_units:
-            try:
-                neighbours = division_units.closer_than(self.max_units_distance, unit)
-            except IndexError as ex:
-                print('Division.get_position() error: {}'.format(ex))
-                continue
+            neighbours = division_units.closer_than(self.max_units_distance, unit)
             if neighbours.amount > max_neighbours:
                 max_neighbours = neighbours.amount
                 biggest_group = neighbours
