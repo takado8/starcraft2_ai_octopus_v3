@@ -9,7 +9,7 @@ import random
 class Chronobooster:
     def __init__(self,ai):
         self.ai = ai
-        self.standard_chrono_queue = [unit.NEXUS, unit.GATEWAY,
+        self.standard_chrono_queue = [unit.NEXUS,
                                       unit.STARGATE, unit.ROBOTICSFACILITY,
                                       unit.CYBERNETICSCORE, unit.FORGE, unit.TWILIGHTCOUNCIL]
         self.stalker_proxy_chrono_queue = [unit.NEXUS, unit.CYBERNETICSCORE]
@@ -41,6 +41,10 @@ class Chronobooster:
                                 time = 43
                             elif abil_id == ability.RESEARCH_WARPGATE:
                                 time = 150
+                            elif abil_id == ability.RESEARCH_BLINK:
+                                time = 121
+                            elif abil_id == ability.RESEARCH_CHARGE:
+                                time = 100
                             elif abil_id == ability.RESEARCH_PROTOSSGROUNDWEAPONS:
                                             #
                                             # ability.RESEARCH_PROTOSSSHIELDS:

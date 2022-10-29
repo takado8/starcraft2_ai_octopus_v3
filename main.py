@@ -2,7 +2,7 @@ import random
 import sc2
 from sc2 import run_game, maps, Race, Difficulty, AIBuild, AbilityId, Result
 from sc2.ids.effect_id import EffectId as effect
-from sc2.ids.upgrade_id import UpgradeId as upgrade
+# from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
@@ -14,8 +14,9 @@ from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
 from evolution.evo import Evolution
+from strategy.blinkers import Blinkers
 from strategy.stalker_mid import StalkerMid
-from strategy.stalker_proxy import StalkerProxy
+# from strategy.stalker_proxy import StalkerProxy
 
 
 class OctopusEvo(sc2.BotAI):
@@ -42,7 +43,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: StalkerMid = None
+        self.strategy: Blinkers = None
         self.coords = None
 
     # async def on_unit_created(self, unit: Unit):
@@ -53,7 +54,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = StalkerMid(self)
+        self.strategy = Blinkers(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -71,10 +72,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.army_refresh_and_train()
         self.assign_defend_position()
         await self.distribute_workers()
-        await self.morph_gates()
         self.strategy.chronoboost()
-        await self.warp_prism()
-        await self.morph_Archons()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
         self.strategy.build_assimilators()
@@ -111,7 +109,7 @@ class OctopusEvo(sc2.BotAI):
             self.after_first_attack = True
         try:
             if self.attack:
-                await self.strategy.army.attack()
+                await self.strategy.attack()
             else:
                 await self.defend()
         except Exception as ex:
@@ -138,12 +136,12 @@ class OctopusEvo(sc2.BotAI):
                 self.strategy.builder.increment_build_queue_index()
             else:
                 army_priority = True
-        forge_priority = await self.is_forge_upg_priority()
+        lock_spending = await self.lock_spending_condition()
         if (build_in_progress or build_finished or army_priority or
-            (self.minerals > 500 and self.vespene > 300)) and not forge_priority:
+            (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
             await self.strategy.train_units()
 
-        if not army_priority and not build_finished and not forge_priority:
+        if not army_priority and not build_finished and not lock_spending:
             await self.strategy.build_from_queue()
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
@@ -152,11 +150,6 @@ class OctopusEvo(sc2.BotAI):
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
 
-    async def morph_gates(self):
-        for gateway in self.structures(unit.GATEWAY).ready:
-            abilities = await self.get_available_abilities(gateway)
-            if AbilityId.MORPH_WARPGATE in abilities and self.can_afford(AbilityId.MORPH_WARPGATE):
-                self.do(gateway(AbilityId.MORPH_WARPGATE))
 
     async def defend(self):
         enemy = self.enemy_units()
@@ -214,43 +207,6 @@ class OctopusEvo(sc2.BotAI):
     def get_pylon_with_least_neighbours(self):
         return self.spot_validator.get_pylon_with_least_neighbours()
 
-    async def is_forge_upg_priority(self):
-        upgrades_abilities_ids = [AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL1,
-                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL1,
-                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL1,
-                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL2,
-                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL2,
-                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL2,
-                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL3,
-                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL3,
-                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL3]
-
-        if self.structures(unit.TWILIGHTCOUNCIL).ready.exists:
-            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL1,
-                     upgrade.PROTOSSSHIELDSLEVEL1,
-                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2, upgrade.PROTOSSGROUNDARMORSLEVEL2,
-                     upgrade.PROTOSSSHIELDSLEVEL2,
-                     upgrade.PROTOSSGROUNDWEAPONSLEVEL3, upgrade.PROTOSSGROUNDARMORSLEVEL3,
-                     upgrade.PROTOSSSHIELDSLEVEL3]
-        else:
-            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL1,
-                     upgrade.PROTOSSSHIELDSLEVEL1]
-        done = True
-        for u in upgds:
-            if u not in self.state.upgrades:
-                done = False
-                break
-        if not done:
-            forges = self.structures(unit.FORGE).ready
-            if forges.exists:
-                for forge in forges.idle:
-                    abilities = await self.get_available_abilities(forge, ignore_resource_requirements=True)
-                    for ab in abilities:
-                        if ab in upgrades_abilities_ids:
-                            if not self.can_afford(ab):
-                                return True
-        return False
-
     def set_game_step(self):
         if self.enemy_units().exists:
             self._client.game_step = 4
@@ -270,67 +226,6 @@ class OctopusEvo(sc2.BotAI):
                             return pylon
                 return pylons[-1]
 
-    async def blink(self, stalker, target):
-        if stalker.type_id == unit.STALKER:
-            abilities = await self.get_available_abilities(stalker)
-            if AbilityId.EFFECT_BLINK_STALKER in abilities:
-                self.do(stalker(AbilityId.EFFECT_BLINK_STALKER, target))
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    async def morph_Archons(self):
-        if upgrade.PSISTORMTECH is self.state.upgrades or self.already_pending_upgrade(upgrade.PSISTORMTECH):
-            archons = self.army(unit.ARCHON)
-            ht_amount = int(archons.amount / 2)
-            ht_thresh = ht_amount + 1
-        else:
-            ht_thresh = 1
-        if self.units(unit.HIGHTEMPLAR).amount > ht_thresh:
-            hts = self.units(unit.HIGHTEMPLAR).sorted(lambda u: u.energy)
-            ht2 = hts[0]
-            ht1 = hts[1]
-            if ht2 and ht1:
-                for ht in self.army(unit.HIGHTEMPLAR):
-                    if ht.tag == ht1.tag or ht.tag == ht2.tag:
-                        self.army.remove(ht)
-                if ht1.distance_to(ht2) > 4:
-                    if ht1.distance_to(self.main_base_ramp.bottom_center) > 30:
-                        self.do(ht1.move(ht2))
-                        self.do(ht2.move(ht1))
-                    else:
-                        self.do(ht1.move(self.main_base_ramp.bottom_center))
-                        self.do(ht2.move(self.main_base_ramp.bottom_center))
-                else:
-                    # print('morphing!')
-                    from s2clientprotocol import raw_pb2 as raw_pb
-                    from s2clientprotocol import sc2api_pb2 as sc_pb
-                    command = raw_pb.ActionRawUnitCommand(
-                        ability_id=AbilityId.MORPH_ARCHON.value,
-                        unit_tags=[ht1.tag, ht2.tag],
-                        queue_command=False
-                    )
-                    action = raw_pb.ActionRaw(unit_command=command)
-                    await self._client._execute(action=sc_pb.RequestAction(
-                        actions=[sc_pb.Action(action_raw=action)]
-                    ))
-
-    async def warp_prism(self):
-        if self.attack:
-            dist = self.enemy_start_locations[0].distance_to(self.game_info.map_center) * 0.8
-            for warp in self.units(unit.WARPPRISM):
-                if warp.distance_to(self.enemy_start_locations[0]) <= dist:
-                    abilities = await self.get_available_abilities(warp)
-                    if AbilityId.MORPH_WARPPRISMPHASINGMODE in abilities:
-                        self.do(warp(AbilityId.MORPH_WARPPRISMPHASINGMODE))
-        else:
-            for warp in self.units(unit.WARPPRISMPHASING):
-                abilities = await self.get_available_abilities(warp)
-                if AbilityId.MORPH_WARPPRISMTRANSPORTMODE in abilities:
-                    self.do(warp(AbilityId.MORPH_WARPPRISMTRANSPORTMODE))
-
     def save_stats(self):
         self.lost_cost = self.state.score.lost_minerals_army + 1.2 * self.state.score.lost_vespene_army
         self.killed_cost = self.state.score.killed_minerals_army + 1.2 * self.state.score.killed_vespene_army
@@ -344,6 +239,9 @@ class OctopusEvo(sc2.BotAI):
 
     def counter_attack_condition(self):
         return self.strategy.counter_attack_condition()
+
+    async def lock_spending_condition(self):
+        return await self.strategy.lock_spending_condition()
 
     def avoid_aoe(self):
         aoes_ids = [effect.RAVAGERCORROSIVEBILECP, effect.PSISTORMPERSISTENT, effect.NUKEPERSISTENT,

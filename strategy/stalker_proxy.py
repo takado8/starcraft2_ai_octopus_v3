@@ -1,4 +1,5 @@
 from army.movements import Movements
+from bot.morphing import Morphing
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from bot.chronobooster import Chronobooster
@@ -20,7 +21,8 @@ from bot.conditions import *
 
 class StalkerProxy(StrategyABS):
     def __init__(self, ai):
-        super().__init__(type='mid', name='stalker_mid')
+        super().__init__(type='rush', name='StalkerProxy')
+        self.morphing_ = Morphing(ai)
         self.ai = ai
         self.army = Army(ai)
 
@@ -67,6 +69,7 @@ class StalkerProxy(StrategyABS):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
+        await self.pylon_builder.proxy()
 
     def build_assimilators(self):
         self.assimilator_builder.standard()
@@ -101,6 +104,8 @@ class StalkerProxy(StrategyABS):
         await self.army.execute_divisions_orders()
         # self.army.print_divisions_info()
 
+    async def attack(self):
+        await self.army.attack()
 
     # ======================================================= Conditions
     def attack_condition(self):
@@ -118,3 +123,10 @@ class StalkerProxy(StrategyABS):
         self.chronobooster.standard()
         # except Exception as ex:
         #     print(ex)
+
+    async def lock_spending_condition(self):
+        pass
+
+    async def morphing(self):
+        await self.morphing_.morph_gates()
+

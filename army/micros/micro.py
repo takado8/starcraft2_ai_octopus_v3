@@ -1,6 +1,7 @@
 from sc2.constants import FakeEffectID
 from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
+from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.position import Point2
 from sc2.ids.effect_id import EffectId as effect
 from sc2.units import Units
@@ -13,6 +14,8 @@ def in_grid(ai, pos):
         return ai.in_pathing_grid(pos)
     except:
         return False
+
+
 
 
 class AirMicro:
@@ -201,6 +204,7 @@ class AirMicro:
 
 
 class StalkerMicro(MicroABS):
+
     def __init__(self, ai):
         self.name = 'StalkerMicro'
         super().__init__(self.name, ai)
@@ -254,11 +258,42 @@ class StalkerMicro(MicroABS):
                 else:
                     d = 2
 
-                back_out_position = self.find_back_out_position(stalker, closest_enemy.position)
-                if back_out_position is not None and stalker.weapon_cooldown > 0:
-                    self.ai.do(stalker.move(stalker.position.towards(back_out_position, d)))
+                if stalker.shield_percentage < 0.4 and upgrade.BLINKTECH in self.ai.state.upgrades and \
+                        self.is_blink_available(stalker):
+                    back_out_position = self.find_blink_out_position(stalker, closest_enemy.position)
+                    if back_out_position is not None and stalker.weapon_cooldown > 0:
+                        await self.blink(stalker, back_out_position)
+                    else:
+                        self.ai.do(stalker.attack(target))
                 else:
-                    self.ai.do(stalker.attack(target))
+                    back_out_position = self.find_back_out_position(stalker, closest_enemy.position)
+                    if back_out_position is not None and stalker.weapon_cooldown > 0:
+                        self.ai.do(stalker.move(stalker.position.towards(back_out_position, d)))
+                    else:
+                        self.ai.do(stalker.attack(target))
+
+    async def is_blink_available(self, stalker):
+        abilities = await self.ai.get_available_abilities(stalker)
+        return ability.EFFECT_BLINK_STALKER in abilities
+
+    async def blink(self, stalker, target):
+        self.ai.do(stalker(ability.EFFECT_BLINK_STALKER, target))
+
+
+    def find_blink_out_position(self, stalker, closest_enemy_position):
+        i = 8
+        position = stalker.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 14:
+            position = stalker.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                while not in_grid(self.ai, position) and k < 7:
+                    k += 1
+                    position = position.random_on_distance(j * 2)
+                j += 1
+        return position
 
     def find_back_out_position(self, stalker, closest_enemy_position):
         i = 3
@@ -351,3 +386,22 @@ class SentryMicro(MicroABS):
                     if army_nearby.exists:
                         if threats.exists:
                             self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se), -4)))
+
+
+class WarpPrismMicro(MicroABS):
+    def __init__(self, ai):
+        super().__init__("WarpPrismMicro", ai)
+
+    async def do_micro(self, soldiers):
+        if self.ai.attack:
+            dist = self.ai.enemy_start_locations[0].distance_to(self.ai.game_info.map_center) * 0.8
+            for warp in self.ai.units(unit.WARPPRISM):
+                if warp.distance_to(self.ai.enemy_start_locations[0]) <= dist:
+                    abilities = await self.ai.get_available_abilities(warp)
+                    if ability.MORPH_WARPPRISMPHASINGMODE in abilities:
+                        self.ai.do(warp(ability.MORPH_WARPPRISMPHASINGMODE))
+        else:
+            for warp in self.ai.units(unit.WARPPRISMPHASING):
+                abilities = await self.ai.get_available_abilities(warp)
+                if ability.MORPH_WARPPRISMTRANSPORTMODE in abilities:
+                    self.ai.do(warp(ability.MORPH_WARPPRISMTRANSPORTMODE))

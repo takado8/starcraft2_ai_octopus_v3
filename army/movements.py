@@ -14,7 +14,7 @@ class Movements:
             if division_position is None:
                 return
             distance = division_position.distance_to(destination)
-            step = 23
+            step = 40
             if distance > step:
                 point = division_position.towards(destination, step)
             else:

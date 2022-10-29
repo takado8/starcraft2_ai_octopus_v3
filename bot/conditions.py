@@ -1,5 +1,6 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.upgrade_id import UpgradeId as upgrade
+from sc2.ids.ability_id import AbilityId
 
 
 class ConditionAttack:
@@ -12,13 +13,12 @@ class ConditionAttack:
     def warpgate_research_ready(self):
         return (not self.ai.first_attack) and upgrade.WARPGATERESEARCH in self.ai.state.upgrades
 
-    def blink_complete(self):
-        return (not self.ai.first_attack) and upgrade.BLINKTECH in self.ai.state.upgrades
-
     def ground_weapons_and_armor_lvl2(self):
         return upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades and \
-               upgrade.PROTOSSGROUNDARMORSLEVEL2 in self.ai.state.upgrades and \
-               self.ai.supply_used > 160
+               upgrade.PROTOSSGROUNDARMORSLEVEL1 in self.ai.state.upgrades
+
+    def blink_research_ready(self):
+        return (not self.ai.first_attack) and upgrade.BLINKTECH in self.ai.state.upgrades
 
     def air(self):
         return upgrade.PROTOSSAIRWEAPONSLEVEL2 in self.ai.state.upgrades and \
@@ -104,3 +104,59 @@ class ConditionTransform:
             self.ai.after_first_attack = False
             self.ai.first_attack = False
             await self.ai.set_strategy('bio')
+
+
+class ConditionLockSpending:
+    def __init__(self, ai):
+        self.ai = ai
+
+    async def twilight_council(self):
+        upgrades_abilities_ids = [AbilityId.RESEARCH_CHARGE, AbilityId.RESEARCH_BLINK]
+
+        twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready
+        if twilight_council.exists and twilight_council.idle.exists:
+            twilight_council = twilight_council.first
+            abilities = await self.ai.get_available_abilities(twilight_council, ignore_resource_requirements=True)
+            for ab in abilities:
+                if ab in upgrades_abilities_ids:
+                    if not self.ai.can_afford(ab):
+                        return True
+        return False
+
+
+    async def forge(self):
+        upgrades_abilities_ids = [AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL1,
+                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL1,
+                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL1,
+                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL2,
+                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL2,
+                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL2,
+                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL3,
+                                  AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL3,
+                                  AbilityId.FORGERESEARCH_PROTOSSSHIELDSLEVEL3]
+
+        if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
+            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL1,
+                     upgrade.PROTOSSSHIELDSLEVEL1,
+                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2, upgrade.PROTOSSGROUNDARMORSLEVEL2,
+                     upgrade.PROTOSSSHIELDSLEVEL2,
+                     upgrade.PROTOSSGROUNDWEAPONSLEVEL3, upgrade.PROTOSSGROUNDARMORSLEVEL3,
+                     upgrade.PROTOSSSHIELDSLEVEL3]
+        else:
+            upgds = [upgrade.PROTOSSGROUNDWEAPONSLEVEL1, upgrade.PROTOSSGROUNDARMORSLEVEL1,
+                     upgrade.PROTOSSSHIELDSLEVEL1]
+        done = True
+        for u in upgds:
+            if u not in self.ai.state.upgrades:
+                done = False
+                break
+        if not done:
+            forges = self.ai.structures(unit.FORGE).ready
+            if forges.exists:
+                for forge in forges.idle:
+                    abilities = await self.ai.get_available_abilities(forge, ignore_resource_requirements=True)
+                    for ab in abilities:
+                        if ab in upgrades_abilities_ids:
+                            if not self.ai.can_afford(ab):
+                                return True
+        return False

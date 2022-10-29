@@ -20,7 +20,7 @@ class ForgeUpgrader:
                     self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
                 self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2))
             elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or \
-                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades or\
+                    upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades or \
                     not self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
                 if upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in \
                         self.ai.state.upgrades and not self.ai.already_pending_upgrade(
@@ -57,8 +57,8 @@ class CyberneticsUpgrader:
     def standard(self):
         cyber = self.ai.structures(unit.CYBERNETICSCORE).ready.idle
         if cyber.exists:
-            if upgrade.WARPGATERESEARCH not in self.ai.state.upgrades and\
-                    not self.ai.already_pending_upgrade(upgrade.WARPGATERESEARCH) and\
+            if upgrade.WARPGATERESEARCH not in self.ai.state.upgrades and \
+                    not self.ai.already_pending_upgrade(upgrade.WARPGATERESEARCH) and \
                     self.ai.can_afford(upgrade.WARPGATERESEARCH):
                 self.ai.do(cyber.random.research(upgrade.WARPGATERESEARCH))
 
@@ -102,7 +102,7 @@ class TwilightUpgrader:
         pass
 
     async def charge(self):
-        if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and\
+        if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and \
                 self.ai.army(unit.ZEALOT).amount > 4:
             tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
             if tc.exists:
@@ -139,20 +139,22 @@ class TwilightUpgrader:
 
     async def standard(self):
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
-            if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
-                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
-                if tc.exists:
-                    tc = tc.random
-                    abilities = await self.ai.get_available_abilities(tc)
+            tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
+            if tc.exists:
+                tc = tc.random
+                research = None
+                abilities = await self.ai.get_available_abilities(tc)
+                if self.ai.army(unit.STALKER).amount > 2 and upgrade.BLINKTECH not in self.ai.state.upgrades:
+                    if ability.RESEARCH_BLINK in abilities:
+                        research = ability.RESEARCH_BLINK
+                elif upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
                     if ability.RESEARCH_CHARGE in abilities:
-                        self.ai.do(tc(ability.RESEARCH_CHARGE))
-            if self.ai.army(unit.ADEPT).amount > 4:
-                tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
-                if tc.exists:
-                    tc = tc.random
-                    abilities = await self.ai.get_available_abilities(tc)
-                    if ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
-                        self.ai.do(tc(ability.RESEARCH_ADEPTRESONATINGGLAIVES))
+                        research = ability.RESEARCH_CHARGE
+                elif self.ai.army(unit.ADEPT).amount > 4 and \
+                        ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
+                    research = ability.RESEARCH_ADEPTRESONATINGGLAIVES
+                if research:
+                    self.ai.do(tc(research))
 
 
 class TemplarArchiveUpgrader:
@@ -170,7 +172,6 @@ class TemplarArchiveUpgrader:
                 abilities = await self.ai.get_available_abilities(tc)
                 if ability.RESEARCH_PSISTORM in abilities:
                     self.ai.do(tc(ability.RESEARCH_PSISTORM))
-
 
 
 class FleetBeaconUpgrader:

@@ -200,7 +200,7 @@ class WarpgateTrainer:
             abilities = await self.ai.get_available_abilities(warpgate)
             if ability.WARPGATETRAIN_ZEALOT in abilities:
                 if self.ai.can_afford(unit.STALKER) and self.ai.army(unit.STALKER).amount < max_stalkers \
-                        and self.ai.army(unit.STALKER).amount * 0.4 < self.ai.units(unit.ZEALOT).amount:
+                        and self.ai.army(unit.STALKER).amount * 0.3 < self.ai.units(unit.ZEALOT).amount:
                     self.ai.do(warpgate.warp_in(unit.STALKER, placement))
                 elif self.ai.minerals > 150 and \
                         self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:

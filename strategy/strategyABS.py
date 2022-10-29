@@ -39,6 +39,9 @@ class StrategyABS:
     async def army_do_micro(self):
         raise NotImplementedError
 
+    async def attack(self):
+        raise NotImplementedError
+
     # ======================================================= Conditions
     def attack_condition(self):
         raise NotImplementedError
@@ -49,6 +52,12 @@ class StrategyABS:
     def counter_attack_condition(self):
         raise NotImplementedError
 
+    async def lock_spending_condition(self):
+        raise NotImplementedError
+
     # ======================================================== Buffs
     def chronoboost(self):
+        raise NotImplementedError
+
+    async def morphing(self):
         raise NotImplementedError

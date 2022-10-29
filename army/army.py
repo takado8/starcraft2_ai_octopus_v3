@@ -39,14 +39,14 @@ class Army:
                 # await self.ai.chat_send('enemy main base down.')
                 print('enemy main base down.')
                 self.ai.enemy_main_base_down = True
-            self.ai.scan()
+            # self.ai.scan()
             enemy_units.extend(self.ai.enemy_structures())
             if enemy_units.exists:
                 for man in self.ai.army.exclude_type(unit.OBSERVER):
                     self.ai.do(man.attack(enemy_units.closest_to(man)))
 
-        if enemy.amount > 1:
-            if enemy.closer_than(35, self.ai.start_location).amount > 1:
+        if enemy.amount > 4:
+            if enemy.closer_than(35, self.ai.start_location).amount > 5:
                 destination = enemy.closest_to(self.ai.start_location).position
             else:
                 destination = enemy.further_than(25, self.ai.start_location)
