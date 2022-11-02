@@ -14,8 +14,9 @@ from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
 from evolution.evo import Evolution
-from strategy.blinkers import Blinkers
-from strategy.stalker_mid import StalkerMid
+from strategy.air_oracle import AirOracle
+# from strategy.blinkers import Blinkers
+# from strategy.stalker_mid import StalkerMid
 # from strategy.stalker_proxy import StalkerProxy
 
 
@@ -43,7 +44,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: Blinkers = None
+        self.strategy: AirOracle = None
         self.coords = None
 
     # async def on_unit_created(self, unit: Unit):
@@ -54,7 +55,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = Blinkers(self)
+        self.strategy = AirOracle(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -138,7 +139,7 @@ class OctopusEvo(sc2.BotAI):
                 army_priority = True
         lock_spending = await self.lock_spending_condition()
         if (build_in_progress or build_finished or army_priority or
-            (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
+             (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
             await self.strategy.train_units()
 
         if not army_priority and not build_finished and not lock_spending:
@@ -315,7 +316,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

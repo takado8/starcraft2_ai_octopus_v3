@@ -10,3 +10,7 @@ class UnitsTrainingDicts:
 
     STALKER_POWER = {unit.ZEALOT: 12, unit.ADEPT: 0, unit.STALKER: 40, unit.IMMORTAL: 10,
                    unit.ARCHON: 0, unit.SENTRY: 3}
+
+    AIR_ORACLE_CARRIERS = {unit.ZEALOT: 5, unit.STALKER: 5, unit.ORACLE: 1, unit.CARRIER: 8,
+                           unit.TEMPEST: 5, unit.VOIDRAY: 5, unit.ADEPT: 0,unit.ARCHON: 0, unit.SENTRY: 0,
+                           unit.IMMORTAL: 0}

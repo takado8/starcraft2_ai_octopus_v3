@@ -20,7 +20,7 @@ class ConditionAttack:
     def blink_research_ready(self):
         return (not self.ai.first_attack) and upgrade.BLINKTECH in self.ai.state.upgrades
 
-    def air(self):
+    def air_dmg_lvl2_full_supply(self):
         return upgrade.PROTOSSAIRWEAPONSLEVEL2 in self.ai.state.upgrades and \
                self.ai.supply_used > 193
 
@@ -110,18 +110,26 @@ class ConditionLockSpending:
     def __init__(self, ai):
         self.ai = ai
 
-    async def twilight_council(self):
-        upgrades_abilities_ids = [AbilityId.RESEARCH_CHARGE, AbilityId.RESEARCH_BLINK]
+    async def none(self):
+        pass
 
-        twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready
-        if twilight_council.exists and twilight_council.idle.exists:
-            twilight_council = twilight_council.first
-            abilities = await self.ai.get_available_abilities(twilight_council, ignore_resource_requirements=True)
-            for ab in abilities:
-                if ab in upgrades_abilities_ids:
-                    if not self.ai.can_afford(ab):
-                        return True
-        return False
+    async def is_oracle_ready(self):
+        if self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
+                and not self.ai.structures(unit.STARGATE).ready.exists:
+            return True
+
+
+    async def twilight_council_blink(self):
+        if upgrade.BLINKTECH not in self.ai.state.upgrades:
+            twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready
+            if twilight_council.exists and twilight_council.idle.exists:
+                twilight_council = twilight_council.first
+                abilities = await self.ai.get_available_abilities(twilight_council, ignore_resource_requirements=True)
+                for ab in abilities:
+                    if ab == AbilityId.RESEARCH_BLINK:
+                        if not self.ai.can_afford(ab):
+                            return True
+            return False
 
 
     async def forge(self):

@@ -15,9 +15,14 @@ class BuildQueues:
                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                      unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS]
 
-    STALKER_BLINKERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL, unit.NEXUS,
-                        unit.GATEWAY, unit.GATEWAY, 7,
+    STALKER_BLINKERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
+                        unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS,
                    unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS,
                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, 45,
                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.NEXUS]
+
+    AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.STARGATE, 4, unit.NEXUS, unit.GATEWAY,
+                           unit.STARGATE, 20, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 80, unit.STARGATE,
+                           unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS]

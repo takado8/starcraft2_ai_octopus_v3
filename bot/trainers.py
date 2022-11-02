@@ -211,13 +211,19 @@ class WarpgateTrainer:
 
 
 class StargateTrainer:
-    def __init__(self, ai):
+    def __init__(self, ai, units_training_dict=None):
         self.ai = ai
+        self.units_training_dict = units_training_dict
 
     def none(self):
         pass
 
     def carriers(self):
+        oracles_amount = self.units_training_dict[unit.ORACLE]
+        voidrays_amount = self.units_training_dict[unit.VOIDRAY]
+        # carriers_amount = self.units_training_dict[unit.CARRIER]
+        # tempests_amount = self.units_training_dict[unit.TEMPEST]
+
         if self.ai.structures(unit.STARGATE).ready.idle.exists:
             if self.ai.structures(unit.FLEETBEACON).ready.exists:
                 carrier_amount = self.ai.army(unit.CARRIER).amount + self.ai.already_pending(unit.CARRIER)
@@ -227,12 +233,12 @@ class StargateTrainer:
                     self.ai.train(unit_type=unit.CARRIER)
                 elif self.ai.can_afford(unit.TEMPEST) and tempest_amount < carrier_amount + 1:
                     self.ai.train(unit.TEMPEST)
-                elif self.ai.can_afford(unit.VOIDRAY) and carrier_amount + tempest_amount > voidray_amount < 3:
+                elif self.ai.can_afford(unit.VOIDRAY) and carrier_amount + tempest_amount > voidray_amount < voidrays_amount:
                     self.ai.train(unit.VOIDRAY)
-            elif self.ai.units(unit.ORACLE).amount < 1:
+            elif self.ai.units(unit.ORACLE).amount < oracles_amount:
                 if self.ai.can_afford(unit.ORACLE):
                     self.ai.train(unit.ORACLE)
-            elif self.ai.can_afford(unit.VOIDRAY) and self.ai.army(unit.VOIDRAY).amount < 2:
+            elif self.ai.can_afford(unit.VOIDRAY) and self.ai.army(unit.VOIDRAY).amount < voidrays_amount:
                 self.ai.train(unit.VOIDRAY)
 
     def voidray(self):

@@ -2,8 +2,7 @@ from sc2.unit import UnitTypeId as unit
 from .division import Division
 from .soldier import Soldier
 from typing import Dict, List
-from bot.constants import ARMY_IDS
-from .movements import Movements
+from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS
 
 
 class Army:
@@ -116,7 +115,8 @@ class Army:
         pass
 
     def refresh_all_soldiers(self):
-        all_units = self.ai.units().filter(lambda x: x.type_id in ARMY_IDS and x.is_ready)
+        all_units = self.ai.units().filter(lambda x: (x.type_id in ARMY_IDS or x.type_id in SPECIAL_UNITS_IDS)
+                                                      and x.is_ready)
         for unit in all_units:
             if unit.tag in self.all_soldiers:
                 soldier = self.all_soldiers[unit.tag]
@@ -134,7 +134,11 @@ class Army:
                 dead_units_tags.add(unit_tag)
         for dead_unit_tag in dead_units_tags:
             dead_soldier = self.all_soldiers.pop(dead_unit_tag)
-            self.divisions[dead_soldier.division_name].remove_soldier(dead_unit_tag)
+            if dead_soldier.division_name:
+                self.divisions[dead_soldier.division_name].remove_soldier(dead_unit_tag)
+            else:
+                print('soldier: {} not in division.'.format(str(dead_soldier)))
+
 
     async def move_army(self, destination):
         for division_name in self.divisions:

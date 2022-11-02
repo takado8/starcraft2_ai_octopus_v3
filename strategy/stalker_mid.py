@@ -124,8 +124,8 @@ class StalkerMid(StrategyABS):
         return self.condition_counter_attack.counter_attack()
 
     async def lock_spending_condition(self):
-        return (await self.condition_lock_spending.twilight_council() or
-               await self.condition_lock_spending.forge())
+        return (await self.condition_lock_spending.twilight_council_blink() or
+                await self.condition_lock_spending.forge())
 
     # ======================================================== Buffs
     def chronoboost(self):

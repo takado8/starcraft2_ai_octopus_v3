@@ -7,6 +7,7 @@ from sc2.ids.effect_id import EffectId as effect
 from sc2.units import Units
 from sc2 import Race
 from .microABS import MicroABS
+from bot.constants import ANTI_AIR_IDS
 
 
 def in_grid(ai, pos):
@@ -18,9 +19,9 @@ def in_grid(ai, pos):
 
 
 
-class AirMicro:
+class AirMicro(MicroABS):
     def __init__(self, ai):
-        self.ai = ai
+        super().__init__('air', ai)
         self.enemy_base_idx = 0
         expansions = sorted(self.ai.expansion_locations,
                                  key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
@@ -55,9 +56,10 @@ class AirMicro:
         self.oracle_on_harassment = True
         self.set_new_first_pos = False
 
-    async def air(self):
+    async def do_micro(self, soldiers):
         # Oracle
-        oracles = self.ai.units(unit.ORACLE)
+        all_units = Units([soldiers[soldier_tag].unit for soldier_tag in soldiers], self.ai)
+        oracles = all_units(unit.ORACLE)
         for oracle in oracles:
             if self.oracle_on_harassment:
                 abilities = await self.ai.get_available_abilities(oracle)
@@ -67,7 +69,7 @@ class AirMicro:
                                                  x.type_id in [unit.SENTRY,unit.WIDOWMINE,unit.VOIDRAY]))
                 threats.extend(self.ai.enemy_structures().filter(
                     lambda x: x.distance_to(oracle) < 11 and x.can_attack_air and x.is_ready))
-                if threats.amount > 0 and threats.filter(lambda x: x.type_id in self.ai.anti_air_ids).amount > 0 and \
+                if threats.amount > 0 and threats.filter(lambda x: x.type_id in ANTI_AIR_IDS).amount > 0 and \
                         oracle.distance_to(self.mineral_lines[self.enemy_base_idx]) < 19:
                     print('anti-air detected')
                     if len(self.mineral_lines) > 1:
@@ -107,6 +109,8 @@ class AirMicro:
                                 self.oracle_first_position_visited = True
                         else:
                             # print('attack lines')
+                            if len(self.mineral_lines) <= self.enemy_base_idx:
+                                self.enemy_base_idx = 0
                             attack_position = self.mineral_lines[self.enemy_base_idx].towards(self.oracle_first_position, 3)
                             if oracle.distance_to(attack_position) > 17 and\
                                     self.mineral_lines[self.enemy_base_idx].distance_to(self.ai.enemy_start_locations[0]) < 7:
@@ -156,7 +160,8 @@ class AirMicro:
             else:       # end of harassment
                 self.ai.do(oracle.move(self.ai.defend_position))
         # Carrier
-        for cr in self.ai.army().filter(lambda x: x.type_id in [unit.CARRIER, unit.TEMPEST] and not x.is_attacking):
+        carriers = all_units.filter(lambda x: x.type_id in [unit.CARRIER, unit.TEMPEST] and not x.is_attacking)
+        for cr in carriers:
             threats = self.ai.enemy_units().filter(
                 lambda z: z.distance_to(cr) < 15 and z.type_id not in self.ai.units_to_ignore)
             threats.extend(
@@ -175,7 +180,8 @@ class AirMicro:
                 if target2 is not None:
                     self.ai.do(cr.attack(target2))
 
-        for vr in self.ai.army().filter(lambda x: x.type_id == unit.VOIDRAY and not x.is_attacking):
+        void_rays = all_units.filter(lambda x: x.type_id == unit.VOIDRAY and not x.is_attacking)
+        for vr in void_rays:
             threats = self.ai.enemy_units().filter(
                 lambda z: z.distance_to(vr) < 12 and z.type_id not in self.ai.units_to_ignore or z.type_id in [unit.VOIDRAY, unit.WIDOWMINE, unit.BUNKER])
             threats.extend(
@@ -209,14 +215,26 @@ class StalkerMicro(MicroABS):
         self.name = 'StalkerMicro'
         super().__init__(self.name, ai)
 
+    def select_target(self, targets, stalker):
+        if self.ai.enemy_race == Race.Protoss:
+            a = targets[0].shield_percentage
+        else:
+            a = 1
+        if targets[0].health_percentage * a == 1:
+            target = targets.closest_to(stalker)
+        else:
+            target = targets[0]
+        return target
+
     async def do_micro(self, soldiers):
+
         enemy = self.ai.enemy_units()
         if not enemy.exists:
             return
 
         stalkers = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.STALKER]
         # print('doing micro with {} units: {}'.format(len(stalkers), stalkers))
-        dist = 9
+        dist = 6
         for stalker in stalkers:
             threats = enemy.filter(
                 lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker) <= dist and
@@ -229,32 +247,22 @@ class StalkerMicro(MicroABS):
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.THOR, unit.BUNKER, unit.QUEEN])
                 if priority.exists:
                     targets = priority.sorted(lambda x1: x1.health + x1.shield)
-                    if self.ai.enemy_race == Race.Protoss:
-                        a = targets[0].shield_percentage
-                    else:
-                        a = 1
-                    if targets[0].health_percentage * a == 1:
-                        target = priority.closest_to(stalker)
-                    else:
-                        target = targets[0]
+                    target = self.select_target(targets, stalker)
                 else:
-                    targets = threats.sorted(lambda x1: x1.health + x1.shield)
-                    if self.ai.enemy_race == Race.Protoss:
-                        a = targets[0].shield_percentage
-                    else:
-                        a = 1
-                    if targets[0].health_percentage * a == 1:
-                        target = closest_enemy
-                    else:
-                        target = targets[0]
-                if target.distance_to(stalker) > 5:
-                    target = closest_enemy
+                    targets = threats.filter(lambda x: x.is_armored)
+                    if not targets.exists:
+                        targets = threats
+                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, stalker)
+
+                # if target.distance_to(stalker) > dist:
+                #     target = closest_enemy
 
                 if stalker.shield_percentage < 0.4:
-                    d = 4
                     if stalker.health_percentage < 0.35:
                         self.ai.do(stalker.move(self.find_back_out_position(stalker, closest_enemy.position)))
                         continue
+                    d = 4
                 else:
                     d = 2
 
@@ -320,7 +328,7 @@ class ZealotMicro(MicroABS):
         zealots = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ZEALOT]
 
         for zl in zealots:
-            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl) < 9 and not x2.is_flying and
+            threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl.position) < 9 and not x2.is_flying and
                           x2.type_id not in self.ai.units_to_ignore).sorted(lambda _x: _x.health + _x.shield)
             if threats.exists:
                 closest = threats.closest_to(zl)
