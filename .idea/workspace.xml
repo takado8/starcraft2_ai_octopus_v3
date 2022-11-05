@@ -5,23 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/army/micros/probes_micro.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/economy/distribute_workers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/economy/info/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/micro.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/micro.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/scouting/scouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/scouting/scouting.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/conditions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/conditions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/trainers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/trainers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/assimilator_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/assimilator_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/economy/enemy_economy.py" beforeDir="false" afterPath="$PROJECT_DIR$/economy/info/enemy_economy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/economy/own_economy.py" beforeDir="false" afterPath="$PROJECT_DIR$/economy/info/own_economy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/units_training_dicts.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/units_training_dicts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/economy/distribute_workers.py" beforeDir="false" afterPath="$PROJECT_DIR$/economy/distribute_workers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/strategy/air_oracle.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/air_oracle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/blinkers.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/blinkers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/stalker_mid.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/stalker_mid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/stalker_proxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/stalker_proxy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/strategyABS.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/strategyABS.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,26 +73,26 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="81" />
-          <entry key="py" value="27674" />
+          <entry key="py" value="28402" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="81" />
-          <entry key="Python" value="27674" />
+          <entry key="Python" value="28402" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gitignore" value="1" />
-          <entry key="py" value="212" />
+          <entry key="py" value="215" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="212" />
+          <entry key="Python" value="215" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
@@ -112,11 +103,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="361" column="48" selection-start-line="361" selection-start-column="48" selection-end-line="361" selection-end-column="48" />
+            <state relative-caret-position="47">
+              <caret line="315" column="37" lean-forward="true" selection-start-line="315" selection-start-column="37" selection-end-line="315" selection-end-column="37" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1667680366081" expanded="true" signature="10327:10394" ph="..." />
+                <marker date="1667691951579" expanded="true" signature="10389:10456" ph="..." />
               </folding>
             </state>
           </provider>
@@ -125,29 +116,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/micros/micro.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1500">
-              <caret line="92" column="51" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/builders/assimilator_builder.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="13" column="66" selection-start-line="13" selection-start-column="66" selection-end-line="13" selection-end-column="66" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="587">
+              <caret line="189" column="17" selection-start-line="189" selection-start-column="17" selection-end-line="189" selection-end-column="17" />
               <folding>
-                <element signature="e#0#36#0" expanded="true" />
+                <element signature="e#0#38#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bot/constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="18" column="112" selection-start-line="18" selection-start-column="112" selection-end-line="18" selection-end-column="112" />
             </state>
           </provider>
         </entry>
@@ -155,10 +137,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/economy/distribute_workers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="48" column="39" lean-forward="true" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
+            <state relative-caret-position="-160">
+              <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
               <folding>
-                <marker date="1667676492271" expanded="true" signature="96:101" ph="..." />
+                <marker date="1667689943268" expanded="true" signature="96:101" ph="..." />
               </folding>
             </state>
           </provider>
@@ -167,11 +149,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/strategy/air_oracle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="103" column="36" selection-start-line="103" selection-start-column="36" selection-end-line="103" selection-end-column="36" />
+            <state relative-caret-position="20">
+              <caret line="49" column="49" selection-start-line="49" selection-start-column="49" selection-end-line="49" selection-end-column="49" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="25" column="76" selection-start-line="25" selection-start-column="76" selection-end-line="25" selection-end-column="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -188,8 +188,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot/conditions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="118" column="35" selection-start-line="118" selection-start-column="35" selection-end-line="118" selection-end-column="35" />
+            <state relative-caret-position="171">
+              <caret line="115" column="14" selection-start-line="115" selection-start-column="14" selection-end-line="115" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -283,24 +283,24 @@
         <option value="$PROJECT_DIR$/strategy/stalker_mid.py" />
         <option value="$PROJECT_DIR$/strategy/blinkers.py" />
         <option value="$PROJECT_DIR$/army/divisions.py" />
-        <option value="$PROJECT_DIR$/bot/constants.py" />
         <option value="$PROJECT_DIR$/army/army.py" />
-        <option value="$PROJECT_DIR$/bot/units_training_dicts.py" />
-        <option value="$PROJECT_DIR$/builders/build_queues.py" />
         <option value="$PROJECT_DIR$/economy/probes_micro.py" />
         <option value="$PROJECT_DIR$/strategy/strategyABS.py" />
         <option value="$PROJECT_DIR$/strategy/stalker_proxy.py" />
-        <option value="$PROJECT_DIR$/strategy/air_oracle.py" />
-        <option value="$PROJECT_DIR$/economy/distribute_workers.py" />
         <option value="$PROJECT_DIR$/builders/assimilator_builder.py" />
-        <option value="$PROJECT_DIR$/bot/conditions.py" />
-        <option value="$PROJECT_DIR$/army/micros/micro.py" />
         <option value="$PROJECT_DIR$/bot/trainers.py" />
+        <option value="$PROJECT_DIR$/bot/units_training_dicts.py" />
+        <option value="$PROJECT_DIR$/strategy/air_oracle.py" />
+        <option value="$PROJECT_DIR$/bot/conditions.py" />
+        <option value="$PROJECT_DIR$/bot/constants.py" />
+        <option value="$PROJECT_DIR$/builders/build_queues.py" />
+        <option value="$PROJECT_DIR$/economy/distribute_workers.py" />
+        <option value="$PROJECT_DIR$/army/micros/micro.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="426" />
     <option name="y" value="186" />
     <option name="width" value="1215" />
@@ -338,6 +338,11 @@
             <path>
               <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
               <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
@@ -529,7 +534,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.66014236" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.66014236" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39679715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -764,31 +769,10 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/army/soldier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
           <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="25" column="92" selection-start-line="25" selection-start-column="92" selection-end-line="25" selection-end-column="92" />
         </state>
       </provider>
     </entry>
@@ -853,16 +837,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/economy/distribute_workers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="48" column="39" lean-forward="true" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
-          <folding>
-            <marker date="1667676492271" expanded="true" signature="96:101" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/assimilator_builder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -880,17 +854,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bot/trainers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="251" lean-forward="true" selection-start-line="251" selection-end-line="251" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/units_training_dicts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="18" column="112" selection-start-line="18" selection-start-column="112" selection-end-line="18" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="25" column="76" selection-start-line="25" selection-start-column="76" selection-end-line="25" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bot/conditions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="118" column="35" selection-start-line="118" selection-start-column="35" selection-end-line="118" selection-end-column="35" />
+        <state relative-caret-position="171">
+          <caret line="115" column="14" selection-start-line="115" selection-start-column="14" selection-end-line="115" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/economy/distribute_workers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-160">
+          <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
+          <folding>
+            <marker date="1667689943268" expanded="true" signature="96:101" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/strategy/air_oracle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="103" column="36" selection-start-line="103" selection-start-column="36" selection-end-line="103" selection-end-column="36" />
+        <state relative-caret-position="20">
+          <caret line="49" column="49" selection-start-line="49" selection-start-column="49" selection-end-line="49" selection-end-column="49" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
@@ -899,25 +911,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/army/micros/micro.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
-          <caret line="92" column="51" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/trainers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="251" lean-forward="true" selection-start-line="251" selection-end-line="251" />
+        <state relative-caret-position="587">
+          <caret line="189" column="17" selection-start-line="189" selection-start-column="17" selection-end-line="189" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="361" column="48" selection-start-line="361" selection-start-column="48" selection-end-line="361" selection-end-column="48" />
+        <state relative-caret-position="47">
+          <caret line="315" column="37" lean-forward="true" selection-start-line="315" selection-start-column="37" selection-end-line="315" selection-end-column="37" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1667680366081" expanded="true" signature="10327:10394" ph="..." />
+            <marker date="1667691951579" expanded="true" signature="10389:10456" ph="..." />
           </folding>
         </state>
       </provider>

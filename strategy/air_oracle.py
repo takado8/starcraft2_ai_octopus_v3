@@ -9,14 +9,14 @@ from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
-from army.micros.micro import StalkerMicro, AirMicro, ZealotMicro
+from army.micros.micro import AirMicro, ZealotMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer, StargateTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
 from economy.info.own_economy import OwnEconomy
 from economy.info.enemy_economy import EnemyEconomy
-from army.divisions import ZEALOT_x5, STALKER_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x5
+from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x5
 from bot.conditions import *
 
 
@@ -27,19 +27,21 @@ class AirOracle(StrategyABS):
         self.ai = ai
         self.army = Army(ai)
 
-        stalker_micro = StalkerMicro(ai)
+        # stalker_micro = StalkerMicro(ai)
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
+        units_training_dict = UnitsTrainingDicts.AIR_ORACLE_CARRIERS
         self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai))
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai))
-        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai))
+        # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai))
+        # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
+        self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
@@ -54,7 +56,6 @@ class AirOracle(StrategyABS):
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
 
-        units_training_dict = UnitsTrainingDicts.AIR_ORACLE_CARRIERS
         self.nexus_trainer = NexusTrainer(ai)
         self.gate_trainer = GateTrainer(ai, units_training_dict)
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)

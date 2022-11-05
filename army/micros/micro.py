@@ -7,7 +7,7 @@ from sc2.ids.effect_id import EffectId as effect
 from sc2.units import Units
 from sc2 import Race
 from .microABS import MicroABS
-from bot.constants import ANTI_AIR_IDS
+from bot.constants import ANTI_AIR_IDS, AIR_PRIORITY_UNITS
 
 
 def in_grid(ai, pos):
@@ -156,23 +156,28 @@ class AirMicro(MicroABS):
                             else:
                                 y2 = 5
                             self.oracle_first_position = Point2((y2,x2))
-                        if oracle.health_percentage < 0.15:
+                        if oracle.health_percentage < 0.25:
                             self.oracle_on_harassment = False
                         self.oracle_first_position_visited = False
             else:       # end of harassment
                 self.ai.do(oracle.move(self.ai.defend_position))
+
         # Carrier
-        carriers = all_units.filter(lambda x: x.type_id in [unit.CARRIER, unit.TEMPEST] and not x.is_attacking)
-        for cr in carriers:
+        carriers = all_units(unit.CARRIER)#and not x.is_attacking)
+        for carrier in carriers:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(cr) < 15 and z.type_id not in self.ai.units_to_ignore)
+                lambda z: z.distance_to(carrier) < 10 and z.type_id not in self.ai.units_to_ignore)
             threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(cr) < 15 and z.can_attack_air))
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier) < 10 and
+                                                            (z.can_attack_air or z.type_id == unit.BUNKER)))
             if threats.exists:
-                priority = threats.filter(lambda z: z.can_attack_air or z.type_id in [unit.VOIDRAY, unit.WIDOWMINE, unit.BUNKER]).sorted(
+                if threats.closer_than(8, carrier).exists:
+                    carrier.move(carrier.position.towards(threats.closest_to(carrier), -3))
+                    continue
+                priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
                     lambda z: z.health + z.shield,reverse=False)
                 if priority.exists:
-                    queens = priority.filter(lambda z: z.type_id == unit.QUEEN)
+                    queens = priority.filter(lambda z: z.type_id in AIR_PRIORITY_UNITS)
                     if queens.exists:
                         target2 = queens[0]
                     else:
@@ -180,7 +185,33 @@ class AirMicro(MicroABS):
                 else:
                     target2 = threats.sorted(lambda z: z.health + z.shield)[0]
                 if target2 is not None:
-                    self.ai.do(cr.attack(target2))
+                    self.ai.do(carrier.attack(target2))
+
+        # Tempest
+        tempests = all_units(unit.TEMPEST)  # and not x.is_attacking)
+        for tempest in tempests:
+            threats = self.ai.enemy_units().filter(
+                lambda z: z.distance_to(tempest) < 15 and z.type_id not in self.ai.units_to_ignore)
+            threats.extend(
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest) < 15 and
+                                                            (z.can_attack_air or z.type_id == unit.BUNKER)))
+            if threats.exists:
+                if tempest.weapon_cooldown > 0 and threats.closer_than(14, tempest).exists:
+                    tempest.move(tempest.position.towards(threats.closest_to(tempest), -2))
+                    continue
+                priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
+                    lambda z: z.health + z.shield, reverse=False)
+                if priority.exists:
+                    queens = priority.filter(lambda z: z.type_id in AIR_PRIORITY_UNITS)
+                    if queens.exists:
+                        target2 = queens[0]
+                    else:
+                        target2 = priority[0]
+                else:
+                    target2 = threats.sorted(lambda z: z.health + z.shield)[0]
+                if target2 is not None:
+                    self.ai.do(tempest.attack(target2))
+
 
         void_rays = all_units.filter(lambda x: x.type_id == unit.VOIDRAY and not x.is_attacking)
         for vr in void_rays:
@@ -192,9 +223,9 @@ class AirMicro(MicroABS):
                 # target2 = None
                 priority = threats.filter(lambda z: z.can_attack_air).sorted(lambda z: z.health + z.shield,reverse=False)
                 if priority.exists:
-                    # closest = priority.closest_to(cr)
-                    # if cr.distance_to(closest) < 7:
-                    #     self.ai.do(cr.move(cr.position.towards(closest,-3)))
+                    # closest = priority.closest_to(carrier)
+                    # if carrier.distance_to(closest) < 7:
+                    #     self.ai.do(carrier.move(carrier.position.towards(closest,-3)))
                     # else:
                     # if priority.amount > 2:
                     #     priority = sorted(priority[:int(len(priority) / 2)],key=lambda z: z.health + z.shield)

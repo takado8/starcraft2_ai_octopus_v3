@@ -65,6 +65,8 @@ class OctopusEvo(sc2.BotAI):
         else:
             print('getting coords failed')
             await self.chat_send('getting coords failed')
+        for worker in self.workers:
+            worker.stop()
 
     async def on_step(self, iteration: int):
         # self.save_stats()
@@ -308,8 +310,8 @@ def botVsComputer(ai, real_time=0):
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
-    # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Air]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -317,7 +319,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -359,7 +361,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=1, genome=subject.genome)
+            win, killed, lost = test(real_time=0, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000 * win + killed - lost

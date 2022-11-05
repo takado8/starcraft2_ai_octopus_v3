@@ -6,7 +6,7 @@ class DistributeWorkers:
     def __init__(self, ai):
         self.ai = ai
 
-    def distribute_workers(self):
+    def distribute_workers(self, resources_ratio=1.5):
         if not self.ai.mineral_field or not self.ai.workers or not self.ai.townhalls.ready:
             return
         workers_idle = self.ai.workers.idle
@@ -44,33 +44,43 @@ class DistributeWorkers:
                 workers_idle.extend(local_workers[:surplus_harvesters])
             else:
                 gas_buildings_with_deficit[gas_building] = -surplus_harvesters
-
-        if len(workers_idle) > 0:
+        prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < resources_ratio
+        if prefer_minerals:
             for worker in workers_idle:
                 if len(bases_with_deficit) > 0:
-                    closest_base = min(bases_with_deficit, key=lambda place: place.distance_to(worker))
-
-                    local_minerals = (
-                        mineral for mineral in self.ai.mineral_field if mineral.distance_to(closest_base) <= 8)
-                    # local_minerals can be empty if townhall is misplaced
-                    target_mineral = max(local_minerals, key=lambda mineral: mineral.mineral_contents, default=None)
-                    if target_mineral:
-                        worker.gather(target_mineral)
-
-                        bases_with_deficit[closest_base] -= 1
-                        if bases_with_deficit[closest_base] <= 0:
-                            bases_with_deficit.pop(closest_base)
+                    self.assign_minerals_mining(bases_with_deficit, worker)
                 elif len(gas_buildings_with_deficit) > 0:
-                    closest_place = min(gas_buildings_with_deficit, key=lambda place: place.distance_to(worker))
-                    nexuses = self.ai.structures(unit.NEXUS).ready
-                    if nexuses.exists and nexuses.closer_than(10, closest_place).exists:
-                        worker.gather(closest_place)
-                        gas_buildings_with_deficit[closest_place] -= 1
-                        if gas_buildings_with_deficit[closest_place] <= 0:
-                            gas_buildings_with_deficit.pop(closest_place)
-        #
+                    self.assign_gas_mining(gas_buildings_with_deficit, worker)
+        else:
+            for worker in workers_idle:
+                if len(gas_buildings_with_deficit) > 0:
+                    self.assign_gas_mining(gas_buildings_with_deficit, worker)
+                elif len(bases_with_deficit) > 0:
+                    self.assign_minerals_mining(bases_with_deficit, worker)
         # for base in bases_with_deficit:
         #     if len(surplus_workers) > 0:
         #         while bases_with_deficit[base] >= 0:
         #             closest_workers_position = min(surplus_workers, key=lambda position: position.distance_to(base))
         #             while surplus_workers[closest_workers_position].amount >= 0:
+
+    def assign_minerals_mining(self,bases_with_deficit, worker):
+        closest_base = min(bases_with_deficit, key=lambda place: place.distance_to(worker))
+
+        local_minerals = self.ai.mineral_field.filter(lambda mineral: mineral.distance_to(closest_base) <= 8)
+        # local_minerals can be empty if townhall is misplaced
+        # target_mineral = max(local_minerals, key=lambda mineral: mineral.mineral_contents, default=None)
+        target_mineral = local_minerals.closest_to(worker)
+        if target_mineral:
+            worker.gather(target_mineral)
+            bases_with_deficit[closest_base] -= 1
+            if bases_with_deficit[closest_base] <= 0:
+                bases_with_deficit.pop(closest_base)
+
+    def assign_gas_mining(self,gas_buildings_with_deficit, worker):
+        closest_place = min(gas_buildings_with_deficit, key=lambda place: place.distance_to(worker))
+        nexuses = self.ai.structures(unit.NEXUS).ready
+        if nexuses.exists and nexuses.closer_than(10, closest_place).exists:
+            worker.gather(closest_place)
+            gas_buildings_with_deficit[closest_place] -= 1
+            if gas_buildings_with_deficit[closest_place] <= 0:
+                gas_buildings_with_deficit.pop(closest_place)
