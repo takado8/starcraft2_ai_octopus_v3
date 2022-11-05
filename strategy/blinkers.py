@@ -13,8 +13,8 @@ from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
-from economy.own_economy import OwnEconomy
-from economy.enemy_economy import EnemyEconomy
+from economy.info.own_economy import OwnEconomy
+from economy.info.enemy_economy import EnemyEconomy
 from army.divisions import STALKER_x10
 from bot.conditions import *
 

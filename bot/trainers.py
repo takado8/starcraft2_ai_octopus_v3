@@ -238,6 +238,7 @@ class StargateTrainer:
             elif self.ai.units(unit.ORACLE).amount < oracles_amount:
                 if self.ai.can_afford(unit.ORACLE):
                     self.ai.train(unit.ORACLE)
+                    self.units_training_dict[unit.ORACLE] -= 1
             elif self.ai.can_afford(unit.VOIDRAY) and self.ai.army(unit.VOIDRAY).amount < voidrays_amount:
                 self.ai.train(unit.VOIDRAY)
 

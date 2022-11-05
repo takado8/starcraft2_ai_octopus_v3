@@ -13,10 +13,11 @@ from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
-from economy.own_economy import OwnEconomy
-from economy.enemy_economy import EnemyEconomy
+from economy.info.own_economy import OwnEconomy
+from economy.info.enemy_economy import EnemyEconomy
 from army.divisions import STALKER_x10
 from bot.conditions import *
+from economy.distribute_workers import DistributeWorkers
 
 
 class StalkerProxy(StrategyABS):
@@ -36,6 +37,7 @@ class StalkerProxy(StrategyABS):
         self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
+        self.workers_distribution = DistributeWorkers(ai)
 
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -62,6 +64,8 @@ class StalkerProxy(StrategyABS):
 
         self.chronobooster = Chronobooster(ai)
 
+    def distribute_workers(self):
+        self.workers_distribution.distribute_workers()
 
     # =======================================================  Builders
     async def build_from_queue(self):

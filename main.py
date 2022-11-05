@@ -72,7 +72,8 @@ class OctopusEvo(sc2.BotAI):
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         self.strategy.army_refresh_and_train()
         self.assign_defend_position()
-        await self.distribute_workers()
+        # await self.distribute_workers()
+        self.strategy.distribute_workers()
         self.strategy.chronoboost()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
@@ -358,7 +359,7 @@ if __name__ == '__main__':
             start = time.time()
             # subject.genome.build_order = OctopusEvo.strategy.build_order
             # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
+            win, killed, lost = test(real_time=1, genome=subject.genome)
             stop = time.time()
             print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
             fitness = 10000 * win + killed - lost

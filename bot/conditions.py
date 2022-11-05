@@ -115,7 +115,8 @@ class ConditionLockSpending:
 
     async def is_oracle_ready(self):
         if self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
-                and not self.ai.structures(unit.STARGATE).ready.exists:
+                and not self.ai.structures(unit.STARGATE).ready.exists and (self.ai.minerals < 550 or
+                self.ai.vespene < 250):
             return True
 
 

@@ -17,6 +17,8 @@ class AssimilatorBuilder:
                             if worker is None:
                                 break
                             self.ai.do(worker.build(unit.ASSIMILATOR, vaspene))
+                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
+
 
     def more_vespene(self):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \

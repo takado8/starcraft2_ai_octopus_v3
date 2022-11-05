@@ -1,5 +1,6 @@
 from army.movements import Movements
 from bot.morphing import Morphing
+from economy.distribute_workers import DistributeWorkers
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from bot.chronobooster import Chronobooster
@@ -13,8 +14,8 @@ from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer, StargateTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
-from economy.own_economy import OwnEconomy
-from economy.enemy_economy import EnemyEconomy
+from economy.info.own_economy import OwnEconomy
+from economy.info.enemy_economy import EnemyEconomy
 from army.divisions import ZEALOT_x5, STALKER_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x5
 from bot.conditions import *
 
@@ -42,6 +43,7 @@ class AirOracle(StrategyABS):
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
+        self.workers_distribution = DistributeWorkers(ai)
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -70,6 +72,9 @@ class AirOracle(StrategyABS):
 
         self.chronobooster = Chronobooster(ai)
 
+
+    def distribute_workers(self):
+        self.workers_distribution.distribute_workers()
 
     # =======================================================  Builders
     async def build_from_queue(self):

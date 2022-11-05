@@ -76,7 +76,7 @@ class AirMicro(MicroABS):
                         print('removing mineral line: ' + str(self.mineral_lines[self.enemy_base_idx]))
                         self.mineral_lines.remove(self.mineral_lines[self.enemy_base_idx])
                     self.enemy_base_idx += 1
-                    if self.enemy_base_idx == len(self.mineral_lines):
+                    if self.enemy_base_idx >= len(self.mineral_lines):
                         self.enemy_base_idx = 0
                     self.set_new_first_pos = True
                     # x2 = self.oracle_first_position.x
@@ -89,11 +89,13 @@ class AirMicro(MicroABS):
                     self.oracle_first_position_visited = False
                 if (oracle.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in abilities) and oracle.shield_percentage > 0.75:
                     if workers.amount < 1:
+                        if self.enemy_base_idx >= len(self.mineral_lines):
+                            self.enemy_base_idx = 0
                         if oracle.distance_to(self.mineral_lines[self.enemy_base_idx]) < 7:
-                            print('close!')
+                            # print('close!')
                             if self.ai.enemy_structures().filter(lambda x1: x1.type_id in self.ai.bases_ids and
                                                                  x1.distance_to(oracle) < 10).amount < 1:
-                                print('no base here')
+                                # print('no base here')
                                 if len(self.mineral_lines) > 1:
                                     self.mineral_lines.remove(self.mineral_lines[self.enemy_base_idx])
                                 self.enemy_base_idx += 1

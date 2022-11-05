@@ -1,6 +1,6 @@
 from sc2.ids.unit_typeid import UnitTypeId as Unit
 from sc2 import AbilityId
-from economy.enemy_economy import BASES, MILITARY
+from economy.info.enemy_economy import BASES, MILITARY
 
 
 class Scouting:

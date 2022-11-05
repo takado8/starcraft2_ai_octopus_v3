@@ -4,6 +4,9 @@ class StrategyABS:
         self.name = name
 
 
+    def distribute_workers(self):
+        raise NotImplementedError
+
     # =======================================================  Builders
     async def build_from_queue(self):
         raise NotImplementedError

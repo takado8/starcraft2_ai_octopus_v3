@@ -7,14 +7,14 @@ from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
 from bot.builder import Builder
-from army.micros.micro import StalkerMicro, ZealotMicro, SentryMicro
+from army.micros.micro import StalkerMicro, ZealotMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
 from bot.units_training_dicts import UnitsTrainingDicts
 from army.scouting.scouting import Scouting
-from economy.own_economy import OwnEconomy
-from economy.enemy_economy import EnemyEconomy
-from army.divisions import STALKER_x10, ZEALOT_x10, SENTRY_x3
+from economy.info.own_economy import OwnEconomy
+from economy.info.enemy_economy import EnemyEconomy
+from army.divisions import STALKER_x10
 from bot.conditions import *
 from bot.morphing import Morphing
 
