@@ -1,23 +1,43 @@
 # from sc2.units import Units
 from sc2.unit import UnitTypeId as unit
+from sc2.position import Point2
+from typing import Dict, Set
 
 
 class DistributeWorkers:
     def __init__(self, ai):
         self.ai = ai
+        # [base position][mineral position]{workers tags}
+        # self.minerals_mining_dict: Dict[Point2, Dict[Point2, Set[int]]] = Dict[Point2, Dict[Point2, Set[int]]]()
+
+    # def distribute_workers_2(self):
+    #     if not self.ai.mineral_field or not self.ai.workers or not self.ai.townhalls.ready:
+    #         return
+    #     bases = self.ai.townhalls.ready
+    #
+    #     for base in bases:
+    #         if base.position not in self.minerals_mining_dict:
+    #             local_minerals_positions = [mineral.position for mineral in self.ai.mineral_field
+    #                                    if mineral.distance_to(base) <= 10]
+    #             for mineral_position in local_minerals_positions:
+    #                 self.minerals_mining_dict[base.position][mineral_position] = Set[int]()
+
+
+
 
     def distribute_workers(self, resources_ratio=2):
-        if not self.ai.mineral_field or not self.ai.workers or not self.ai.townhalls.ready:
+        bases = self.ai.townhalls.ready
+
+        if not self.ai.mineral_field or not self.ai.workers or not bases:
             return
         workers_idle = self.ai.workers.idle
-        bases = self.ai.townhalls.ready
         gas_buildings = self.ai.gas_buildings.ready
         # surplus_workers = {}
         bases_with_deficit = {}
         gas_buildings_with_deficit = {}
         for base in bases:
             local_minerals_tags = {mineral.tag for mineral in self.ai.mineral_field
-                                   if mineral.distance_to(base) <= 10}
+                                   if mineral.distance_to(base) <= 12}
             local_workers = self.ai.workers.filter(
                 lambda unit: unit.order_target in local_minerals_tags
                              or (unit.is_carrying_minerals and unit.order_target == base.tag))
@@ -50,18 +70,18 @@ class DistributeWorkers:
                     self.assign_minerals_mining(bases_with_deficit, worker)
                 elif len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
-                else:
-                    self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
-                                                worker)
+                # else:
+                #     self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
+                #                                 worker)
         else:
             for worker in workers_idle:
                 if len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
                 elif len(bases_with_deficit) > 0:
                     self.assign_minerals_mining(bases_with_deficit, worker)
-                else:
-                    self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
-                                                worker)
+                # else:
+                #     self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
+                #                                 worker)
         # for base in bases_with_deficit:
         #     if len(surplus_workers) > 0:
         #         while bases_with_deficit[base] >= 0:
@@ -71,7 +91,7 @@ class DistributeWorkers:
     def assign_minerals_mining(self,bases_with_deficit, worker):
         closest_base = min(bases_with_deficit, key=lambda place: place.distance_to(worker))
 
-        local_minerals = self.ai.mineral_field.filter(lambda mineral: mineral.distance_to(closest_base) <= 8)
+        local_minerals = self.ai.mineral_field.filter(lambda mineral: mineral.distance_to(closest_base) <= 12)
         # local_minerals can be empty if townhall is misplaced
         # target_mineral = max(local_minerals, key=lambda mineral: mineral.mineral_contents, default=None)
         target_mineral = local_minerals.closest_to(worker)
@@ -84,7 +104,7 @@ class DistributeWorkers:
     def assign_gas_mining(self,gas_buildings_with_deficit, worker):
         closest_place = min(gas_buildings_with_deficit, key=lambda place: place.distance_to(worker))
         nexuses = self.ai.structures(unit.NEXUS).ready
-        if nexuses.exists and nexuses.closer_than(10, closest_place).exists:
+        if nexuses.exists and nexuses.closer_than(12, closest_place).exists:
             worker.gather(closest_place)
             gas_buildings_with_deficit[closest_place] -= 1
             if gas_buildings_with_deficit[closest_place] <= 0:

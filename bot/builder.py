@@ -39,7 +39,7 @@ class Builder:
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
                         if building == unit.NEXUS:
-                            await self.expander.evo()
+                            await self.expander.expand()
                         else:
                             await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
                                                 random_alternative=True)
