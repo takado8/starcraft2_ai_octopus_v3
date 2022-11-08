@@ -18,4 +18,3 @@ CARRIER_x8 = {unit.CARRIER: 8}
 TEMPEST_x5 = {unit.TEMPEST: 5}
 
 VOIDRAY_x5 = {unit.VOIDRAY: 5}
-

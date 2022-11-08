@@ -15,6 +15,7 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
 from evolution.evo import Evolution
 from strategy.air_oracle import AirOracle
+from economy.workers.speed_mining import SpeedMining
 # from strategy.blinkers import Blinkers
 # from strategy.stalker_mid import StalkerMid
 # from strategy.stalker_proxy import StalkerProxy
@@ -46,6 +47,7 @@ class OctopusEvo(sc2.BotAI):
         self.army = None
         self.strategy: AirOracle = None
         self.coords = None
+        self.speed_mining: SpeedMining = None
 
     # async def on_unit_created(self, unit: Unit):
     #     if unit.is_mine and unit.type_id in self.army_ids:
@@ -56,6 +58,8 @@ class OctopusEvo(sc2.BotAI):
 
     async def on_start(self):
         self.strategy = AirOracle(self)
+        self.speed_mining = SpeedMining(self)
+        self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -76,6 +80,7 @@ class OctopusEvo(sc2.BotAI):
         self.assign_defend_position()
         # await self.distribute_workers()
         self.strategy.distribute_workers()
+        self.speed_mining.execute()
         self.strategy.chronoboost()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
@@ -154,58 +159,59 @@ class OctopusEvo(sc2.BotAI):
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
 
-
     async def defend(self):
         enemy = self.enemy_units()
-        if 3 > enemy.amount > 0:
-            hunters = []
-            hunters_ids = [unit.STALKER, unit.OBSERVER, unit.ADEPT, unit.VOIDRAY]
-            regular = []
+        if 3 > enemy.closer_than(70, self.start_location.position).amount > 0:
+            high_mobility = []
+            high_mobility_ids = [unit.STALKER,  unit.ADEPT, unit.ZEALOT]
+            # regular = []
             for man in self.army:
-                if man.type_id in hunters_ids:
-                    hunters.append(man)
-                else:
-                    regular.append(man)
-            for hunter in hunters:
-                if hunter.distance_to(self.start_location) < 50:
-                    self.do(hunter.attack(enemy.closest_to(hunter)))
-                else:
-                    self.do(hunter.move(self.defend_position))
-            dist = 7
-            for man in regular:
-                position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
-                    man.type_id == unit.ZEALOT else Point2(self.defend_position)
-                if man.distance_to(self.defend_position) > dist:
-                    self.do(man.move(position.random_on_distance(random.randint(1, 2))))
-        elif enemy.amount > 2:
-            dist = 12
+                if man.is_flying or man.type_id in high_mobility_ids:
+                    high_mobility.append(man)
+                # else:
+                    # regular.append(man)
+
+            high_mobility = high_mobility[:5]
+            observer = self.units(unit.OBSERVER).ready
+            if observer.exists:
+                high_mobility.append(observer.random)
+            for unit_ in high_mobility:
+                self.do(unit_.attack(enemy.closest_to(unit_)))
+
+            # dist = 7
+            # for man in regular:
+            #     position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
+            #         man.type_id == unit.ZEALOT else Point2(self.defend_position)
+            #     if man.distance_to(self.defend_position) > dist:
+            #         self.do(man.move(position.random_on_distance(random.randint(1, 2))))
+        elif enemy.enemy.closer_than(30, self.defend_position).amount > 2:
+            # dist = 12
             for man in self.army:
-                position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
-                    man.type_id == unit.ZEALOT else Point2(self.defend_position)
-                distance = man.distance_to(self.defend_position)
-                if distance > dist:
-                    if self.retreat and distance > 2 * dist:
-                        self.do(man.move(position.random_on_distance(random.randint(1, 2))))
-                    else:
-                        self.do(man.attack(position.random_on_distance(random.randint(1, 2))))
+                man.attack(enemy.closest_to(man))
+                # position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
+                #     man.type_id == unit.ZEALOT else Point2(self.defend_position)
+                # distance = man.distance_to(self.defend_position)
+                # if distance > dist:
+                #     self.do(man.attack(position.random_on_distance(random.randint(1, 2))))
         else:
             dist = 7
             for man in self.army:
                 position = Point2(self.defend_position).towards(self.game_info.map_center, 5) if \
                     man.type_id == unit.ZEALOT else Point2(self.defend_position)
                 if man.distance_to(self.defend_position) > dist:
-                    self.do(man.attack(position.random_on_distance(random.randint(1, 2))))
+                    self.do(man.move(position.random_on_distance(random.randint(1, 2))))
 
     def assign_defend_position(self):
-        nex = self.structures(unit.NEXUS).ready
+        nexuses = self.structures(unit.NEXUS).ready
         enemy = self.enemy_units()
-
-        if enemy.exists and enemy.closer_than(50, self.start_location).amount > 1:
-            self.defend_position = enemy.closest_to(self.enemy_start_locations[0]).position
-        elif nex.amount < 2:
-            self.defend_position = self.main_base_ramp.top_center.towards(self.main_base_ramp.bottom_center, -6)
+        if enemy.exists:
+            for nexus in nexuses:
+                if enemy.closer_than(20, nexus).amount > 3:
+                    self.defend_position = nexus.position.towards(self.game_info.map_center, 5)
+        elif nexuses.amount < 2:
+            self.defend_position = self.main_base_ramp.top_center.towards(self.main_base_ramp.bottom_center, -2)
         else:
-            self.defend_position = nex.closest_to(self.enemy_start_locations[0]).position.towards(
+            self.defend_position = nexuses.closest_to(self.enemy_start_locations[0]).position.towards(
                 self.game_info.map_center, 5)
 
     def get_pylon_with_least_neighbours(self):
@@ -297,14 +303,14 @@ class OctopusEvo(sc2.BotAI):
                         self.do(nexus(AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE, battery))
 
 
-def botVsComputer(ai, real_time=0):
+def botVsComputer(ai, real_time=1):
     if real_time:
         real_time = True
     else:
         real_time = False
     maps_set = ["TritonLE", "Ephemeron",
-                # 'DiscoBloodbathLE',      #'Eternal Empire LE','Nightshade LE','Simulacrum LE',
-                'World of Sleepers LE', 'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
+                # 'DiscoBloodbathLE',      #'Eternal Empire LE','Nightshade LE','Simulacrum LE', 'World of Sleepers LE',
+                'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
     # computer_builds = [AIBuild.Rush]
@@ -319,7 +325,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     result = run_game(map_settings=maps.get(random.choice(maps_set)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

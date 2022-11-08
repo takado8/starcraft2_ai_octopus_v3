@@ -36,6 +36,21 @@ class GateTrainer:
                 gateway = gateway.random
                 self.ai.do(gateway.train(unit.ZEALOT))
 
+    def zealots_and_sentry(self):
+        def train(self, unit_):
+            gateway = self.ai.structures(unit.GATEWAY).ready.idle
+            if gateway.exists:
+                gateway = gateway.random
+                self.ai.do(gateway.train(unit_))
+
+        if self.ai.structures(unit.CYBERNETICSCORE).ready.exists and self.ai.units(unit.SENTRY).amount <\
+                self.units_training_dict[unit.SENTRY] and self.ai.can_afford(unit.SENTRY) and not \
+            self.ai.already_pending(unit.SENTRY):
+            train(self, unit.SENTRY)
+        if self.ai.minerals > 350 and self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount <\
+                self.units_training_dict[unit.ZEALOT]:
+            train(self, unit.ZEALOT)
+
     def zealots_and_stalker(self):
         gateway = self.ai.structures(unit.GATEWAY).ready.idle
         if gateway.exists:

@@ -17,7 +17,7 @@ from economy.info.own_economy import OwnEconomy
 from economy.info.enemy_economy import EnemyEconomy
 from army.divisions import STALKER_x10
 from bot.conditions import *
-from economy.distribute_workers import DistributeWorkers
+from economy.workers.distribute_workers import DistributeWorkers
 
 
 class StalkerProxy(StrategyABS):
@@ -30,11 +30,11 @@ class StalkerProxy(StrategyABS):
         stalker_micro = StalkerMicro(ai)
         # zealot_micro = ZealotMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai))
-        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
-        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai))
-        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
         self.workers_distribution = DistributeWorkers(ai)
@@ -113,10 +113,10 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.warpgate_research_ready()
+        return self.condition_attack.stalkers_more_than(1)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(3)
+        return self.condition_retreat.army_count_less_than(2)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

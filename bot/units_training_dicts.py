@@ -12,5 +12,5 @@ class UnitsTrainingDicts:
                    unit.ARCHON: 0, unit.SENTRY: 3}
 
     AIR_ORACLE_CARRIERS = {unit.ZEALOT: 10, unit.STALKER: 0, unit.ORACLE: 1, unit.CARRIER: 8,
-                           unit.TEMPEST: 8, unit.VOIDRAY: 3, unit.ADEPT: 0,unit.ARCHON: 0, unit.SENTRY: 0,
+                           unit.TEMPEST: 8, unit.VOIDRAY: 3, unit.ADEPT: 0, unit.ARCHON: 0, unit.SENTRY: 1,
                            unit.IMMORTAL: 0}

@@ -10,6 +10,9 @@ class ConditionAttack:
     def none(self):
         pass
 
+    def stalkers_more_than(self, amount):
+        return self.ai.army(unit.STALKER).ready.amount > amount
+
     def warpgate_research_ready(self):
         return (not self.ai.first_attack) and upgrade.WARPGATERESEARCH in self.ai.state.upgrades
 
@@ -116,9 +119,8 @@ class ConditionLockSpending:
     async def is_oracle_ready(self):
         if self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
                 and not self.ai.structures(unit.STARGATE).ready.exists and (self.ai.minerals < 550 or
-                self.ai.vespene < 200):
+                                                                            self.ai.vespene < 200):
             return True
-
 
     async def twilight_council_blink(self):
         if upgrade.BLINKTECH not in self.ai.state.upgrades:
@@ -131,7 +133,6 @@ class ConditionLockSpending:
                         if not self.ai.can_afford(ab):
                             return True
             return False
-
 
     async def forge(self):
         upgrades_abilities_ids = [AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL1,

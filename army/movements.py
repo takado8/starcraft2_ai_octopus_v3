@@ -2,9 +2,10 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 
 
 class Movements:
-    def __init__(self,ai):
+    def __init__(self, ai, units_ratio_before_next_step=0.7):
         self.ai = ai
         self.position = None
+        self.units_ratio_before_next_step = units_ratio_before_next_step
 
     async def move_division(self, division, destination):
         division_units = division.get_units()
@@ -44,7 +45,7 @@ class Movements:
             elif man.type_id not in [unit.ZEALOT, unit.DARKTEMPLAR] or not man.is_attacking:  # away. join army
                 self.ai.do(man.attack(self.position))
 
-        if units_in_position_count > len(division_units) * 0.70:  # take next position
+        if units_in_position_count > len(division_units) * self.units_ratio_before_next_step:  # take next position
             self.position = None
 
     def find_placement_for_unit(self, position):

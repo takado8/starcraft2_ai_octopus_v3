@@ -6,7 +6,7 @@ class DistributeWorkers:
     def __init__(self, ai):
         self.ai = ai
 
-    def distribute_workers(self, resources_ratio=1.5):
+    def distribute_workers(self, resources_ratio=2):
         if not self.ai.mineral_field or not self.ai.workers or not self.ai.townhalls.ready:
             return
         workers_idle = self.ai.workers.idle
@@ -16,16 +16,15 @@ class DistributeWorkers:
         bases_with_deficit = {}
         gas_buildings_with_deficit = {}
         for base in bases:
-            surplus_harvesters = base.surplus_harvesters
-
+            local_minerals_tags = {mineral.tag for mineral in self.ai.mineral_field
+                                   if mineral.distance_to(base) <= 10}
+            local_workers = self.ai.workers.filter(
+                lambda unit: unit.order_target in local_minerals_tags
+                             or (unit.is_carrying_minerals and unit.order_target == base.tag))
+            surplus_harvesters = local_workers.amount - base.ideal_harvesters
             if surplus_harvesters == 0:
                 continue
             elif surplus_harvesters > 0:
-                local_minerals_tags = {mineral.tag for mineral in self.ai.mineral_field
-                                       if mineral.distance_to(base) <= 8}
-                local_workers = self.ai.workers.filter(
-                    lambda unit: unit.order_target in local_minerals_tags
-                                 or (unit.is_carrying_minerals and unit.order_target == base.tag))
                 workers_idle.extend(local_workers[:surplus_harvesters])
             else:
                 bases_with_deficit[base] = -surplus_harvesters
@@ -51,12 +50,18 @@ class DistributeWorkers:
                     self.assign_minerals_mining(bases_with_deficit, worker)
                 elif len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
+                else:
+                    self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
+                                                worker)
         else:
             for worker in workers_idle:
                 if len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
                 elif len(bases_with_deficit) > 0:
                     self.assign_minerals_mining(bases_with_deficit, worker)
+                else:
+                    self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
+                                                worker)
         # for base in bases_with_deficit:
         #     if len(surplus_workers) > 0:
         #         while bases_with_deficit[base] >= 0:

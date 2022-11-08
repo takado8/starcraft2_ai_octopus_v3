@@ -23,6 +23,6 @@ class BuildQueues:
                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.NEXUS]
 
     AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.STARGATE, 4, unit.NEXUS,
-                            20, unit.FLEETBEACON, unit.NEXUS, unit.STARGATE, 40,
-                           unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS,
+                            20, unit.FLEETBEACON, unit.NEXUS, unit.STARGATE, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
+                           unit.NEXUS, unit.STARGATE, unit.NEXUS, 140, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.STARGATE, unit.NEXUS]
