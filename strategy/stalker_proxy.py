@@ -30,9 +30,9 @@ class StalkerProxy(StrategyABS):
         stalker_micro = StalkerMicro(ai)
         # zealot_micro = ZealotMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
-        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
         self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
         self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
@@ -113,10 +113,10 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(1)
+        return self.condition_attack.stalkers_more_than(5)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(2)
+        return self.condition_retreat.army_count_less_than(5)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

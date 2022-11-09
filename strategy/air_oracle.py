@@ -124,13 +124,13 @@ class AirOracle(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return False#self.condition_attack.air_dmg_lvl2_full_supply()
+        return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
         return self.condition_retreat.army_count_less_than(20)
 
     def counter_attack_condition(self):
-        return False# self.condition_counter_attack.counter_attack()
+        return self.condition_counter_attack.counter_attack()
 
     # ======================================================== Buffs
     def chronoboost(self):

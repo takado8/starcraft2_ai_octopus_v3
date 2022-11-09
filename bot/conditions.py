@@ -11,7 +11,7 @@ class ConditionAttack:
         pass
 
     def stalkers_more_than(self, amount):
-        return self.ai.army(unit.STALKER).ready.amount > amount
+        return self.ai.army(unit.STALKER).ready.amount > amount and not self.ai.after_first_attack
 
     def warpgate_research_ready(self):
         return (not self.ai.first_attack) and upgrade.WARPGATERESEARCH in self.ai.state.upgrades

@@ -15,7 +15,7 @@ class Movements:
             if division_position is None:
                 return
             distance = division_position.distance_to(destination)
-            step = 40
+            step = 35
             if distance > step:
                 point = division_position.towards(destination, step)
             else:
@@ -37,7 +37,7 @@ class Movements:
         for man in division_units:
             if man.distance_to(self.position) <= _range:  # in position
                 units_in_position_count += 1
-                if enemy and not enemy.in_attack_range_of(man).exists:
+                if enemy and not enemy.closer_than(man.ground_range + man.radius, man.position).exists:
                     # go help someone who is fighting
                     attacking_friend = division_units.filter(lambda x: x.is_attacking)
                     if attacking_friend.exists:

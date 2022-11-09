@@ -6,6 +6,7 @@ from sc2.ids.effect_id import EffectId as effect
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
+from sc2.ids.buff_id import BuffId
 from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
@@ -18,7 +19,7 @@ from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
 # from strategy.blinkers import Blinkers
 # from strategy.stalker_mid import StalkerMid
-# from strategy.stalker_proxy import StalkerProxy
+from strategy.stalker_proxy import StalkerProxy
 
 
 class OctopusEvo(sc2.BotAI):
@@ -45,7 +46,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: AirOracle = None
+        self.strategy: StalkerProxy = None
         self.coords = None
         self.speed_mining: SpeedMining = None
 
@@ -57,7 +58,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = AirOracle(self)
+        self.strategy = StalkerProxy(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -94,9 +95,9 @@ class OctopusEvo(sc2.BotAI):
         #
         ## scan
         # self.strategy.scouting.scan_middle_game()
-        self.strategy.scouting.gather_enemy_info()
-        self.strategy.own_economy.calculate_units_report()
-        self.strategy.enemy_economy.calculate_enemy_units_report()
+        # self.strategy.scouting.gather_enemy_info()
+        # self.strategy.own_economy.calculate_units_report()
+        # self.strategy.enemy_economy.calculate_enemy_units_report()
 
         # if iteration % 30 == 0:
         #     self.strategy.enemy_economy.print_enemy_info()
@@ -148,7 +149,7 @@ class OctopusEvo(sc2.BotAI):
                 army_priority = True
         lock_spending = await self.lock_spending_condition()
         if (build_in_progress or build_finished or army_priority or
-             (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
+                (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
             await self.strategy.train_units()
 
         if not army_priority and not build_finished and not lock_spending:
@@ -164,20 +165,20 @@ class OctopusEvo(sc2.BotAI):
         enemy = self.enemy_units()
         if 3 > enemy.closer_than(70, self.start_location.position).amount > 0:
             high_mobility = []
-            high_mobility_ids = [unit.STALKER,  unit.ADEPT, unit.ZEALOT]
+            high_mobility_ids = [unit.STALKER, unit.ADEPT, unit.ZEALOT]
             # regular = []
             for man in self.army:
                 if man.is_flying or man.type_id in high_mobility_ids:
                     high_mobility.append(man)
                 # else:
-                    # regular.append(man)
+                # regular.append(man)
 
             high_mobility = high_mobility[:5]
             observer = self.units(unit.OBSERVER).ready
             if observer.exists:
                 high_mobility.append(observer.random)
             for unit_ in high_mobility:
-                self.do(unit_.attack(enemy.closest_to(unit_)))
+                unit_.attack(enemy.closest_to(unit_))
 
             # dist = 7
             # for man in regular:
@@ -200,19 +201,21 @@ class OctopusEvo(sc2.BotAI):
                 position = Point2(self.defend_position).towards(self.game_info.map_center, 5) if \
                     man.type_id == unit.ZEALOT else Point2(self.defend_position)
                 if man.distance_to(self.defend_position) > dist:
-                    self.do(man.move(position.random_on_distance(random.randint(1, 2))))
+                    man.move(position.random_on_distance(random.randint(1, 2)))
 
     def assign_defend_position(self):
         nexuses = self.structures(unit.NEXUS).ready
         enemy = self.enemy_units()
         if enemy.exists:
             for nexus in nexuses:
-                if enemy.closer_than(20, nexus).amount > 3:
+                if enemy.closer_than(25, nexus).amount > 3:
                     self.defend_position = nexus.position.towards(self.game_info.map_center, 5)
         elif nexuses.amount < 2:
             self.defend_position = self.main_base_ramp.top_center.towards(self.main_base_ramp.bottom_center, -2)
         else:
-            self.defend_position = nexuses.closest_to(self.enemy_start_locations[0]).position.towards(
+            closest_nexuses = nexuses.closest_n_units(self.enemy_start_locations[0].position, n=3)
+            nexus_with_most_workers = max(closest_nexuses, key=lambda x: self.workers.closer_than(15, x).amount)
+            self.defend_position = nexus_with_most_workers.position.towards(
                 self.game_info.map_center, 5)
 
     def get_pylon_with_least_neighbours(self):
@@ -314,23 +317,23 @@ def botVsComputer(ai, real_time=1):
     #              #'World of Sleepers LE']
     #             # 'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
     maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
-                  "WaterfallAIE", 'World of Sleepers LE']
+                 "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
-    computer_builds = [AIBuild.Macro]
+    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 6)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy
-    result = run_game(map_settings=maps.get(maps_list[6]), players=[
+    result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryEasy, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -351,8 +354,6 @@ def test(genome, real_time=1):
     else:
         win = 0
     return win, ai.killed_cost, ai.lost_cost
-
-
 
 
 if __name__ == '__main__':

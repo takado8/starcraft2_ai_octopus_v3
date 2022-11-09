@@ -272,8 +272,7 @@ class StalkerMicro(MicroABS):
             return
 
         stalkers = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.STALKER]
-        # print('doing micro with {} units: {}'.format(len(stalkers), stalkers))
-        dist = 6
+        dist = 9
         for stalker in stalkers:
             threats = enemy.filter(
                 lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker) <= dist and
@@ -343,17 +342,18 @@ class StalkerMicro(MicroABS):
         return position
 
     def find_back_out_position(self, stalker, closest_enemy_position):
-        i = 3
+        i = 6
         position = stalker.position.towards(closest_enemy_position, -i)
         while not in_grid(self.ai, position) and i < 12:
             position = stalker.position.towards(closest_enemy_position, -i)
             i += 1
             j = 1
-            while not in_grid(self.ai, position) and j < 3:
+            while not in_grid(self.ai, position) and j < 5:
                 k = 0
-                while not in_grid(self.ai, position) and k < 7:
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
                     k += 1
-                    position = position.random_on_distance(j * 2)
+                    position = position.random_on_distance(distance)
                 j += 1
         return position
 
