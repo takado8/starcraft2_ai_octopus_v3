@@ -1,5 +1,6 @@
 from army.movements import Movements
 from bot.morphing import Morphing
+from economy.workers.distribute_workers import DistributeWorkers
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from bot.chronobooster import Chronobooster
@@ -22,6 +23,7 @@ from bot.conditions import *
 class Blinkers(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='rush', name='Blinkers')
+        self.workers_distribution = DistributeWorkers(ai)
         self.morphing_ = Morphing(ai)
         self.ai = ai
         self.army = Army(ai)
@@ -64,6 +66,8 @@ class Blinkers(StrategyABS):
 
         self.chronobooster = Chronobooster(ai)
 
+    def distribute_workers(self):
+        self.workers_distribution.distribute_workers()
 
     # =======================================================  Builders
     async def build_from_queue(self):

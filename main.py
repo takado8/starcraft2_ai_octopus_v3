@@ -6,7 +6,6 @@ from sc2.ids.effect_id import EffectId as effect
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
-from sc2.ids.buff_id import BuffId
 from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from bot.chronobooster import Chronobooster
@@ -17,9 +16,9 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from evolution.evo import Evolution
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
-# from strategy.blinkers import Blinkers
-# from strategy.stalker_mid import StalkerMid
-from strategy.stalker_proxy import StalkerProxy
+from strategy.blinkers import Blinkers
+# from strategy.stalker_proxy import StalkerProxy
+from strategy.one_base_robo import OneBaseRobo
 
 
 class OctopusEvo(sc2.BotAI):
@@ -46,7 +45,7 @@ class OctopusEvo(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: StalkerProxy = None
+        self.strategy: AirOracle = None
         self.coords = None
         self.speed_mining: SpeedMining = None
 
@@ -58,7 +57,7 @@ class OctopusEvo(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = StalkerProxy(self)
+        self.strategy = AirOracle(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -213,7 +212,7 @@ class OctopusEvo(sc2.BotAI):
         elif nexuses.amount < 2:
             self.defend_position = self.main_base_ramp.top_center.towards(self.main_base_ramp.bottom_center, -2)
         else:
-            closest_nexuses = nexuses.closest_n_units(self.enemy_start_locations[0].position, n=3)
+            closest_nexuses = nexuses.closest_n_units(self.enemy_start_locations[0].position, n=2)
             nexus_with_most_workers = max(closest_nexuses, key=lambda x: self.workers.closer_than(15, x).amount)
             self.defend_position = nexus_with_most_workers.position.towards(
                 self.game_info.map_center, 5)
@@ -333,7 +332,7 @@ def botVsComputer(ai, real_time=1):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

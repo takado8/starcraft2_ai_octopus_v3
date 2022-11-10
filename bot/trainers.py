@@ -244,9 +244,9 @@ class StargateTrainer:
                 carrier_amount = self.ai.army(unit.CARRIER).amount + self.ai.already_pending(unit.CARRIER)
                 tempest_amount = self.ai.army(unit.TEMPEST).amount + self.ai.already_pending(unit.TEMPEST)
                 voidray_amount = self.ai.army(unit.VOIDRAY).amount + self.ai.already_pending(unit.VOIDRAY)
-                if self.ai.can_afford(unit.CARRIER) and carrier_amount < tempest_amount:
+                if self.ai.can_afford(unit.CARRIER) and carrier_amount <= tempest_amount:
                     self.ai.train(unit_type=unit.CARRIER)
-                elif self.ai.can_afford(unit.TEMPEST) and tempest_amount < carrier_amount + 1:
+                elif self.ai.can_afford(unit.TEMPEST) and tempest_amount < carrier_amount:
                     self.ai.train(unit.TEMPEST)
                 elif self.ai.can_afford(unit.VOIDRAY) and carrier_amount + tempest_amount > voidray_amount < voidrays_amount:
                     self.ai.train(unit.VOIDRAY)

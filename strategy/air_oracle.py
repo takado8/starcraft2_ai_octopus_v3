@@ -97,7 +97,7 @@ class AirOracle(StrategyABS):
         self.cybernetics_upgrader.air_dmg()
 
     async def twilight_upgrade(self):
-        await self.twilight_upgrader.none()
+        await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
     async def train_units(self):
@@ -127,7 +127,7 @@ class AirOracle(StrategyABS):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(20)
+        return self.condition_retreat.supply_less_than(160)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

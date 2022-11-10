@@ -26,3 +26,8 @@ class BuildQueues:
                             20, unit.FLEETBEACON, unit.NEXUS, unit.STARGATE, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
                            unit.NEXUS, unit.STARGATE, unit.NEXUS, 120, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS,unit.NEXUS, unit.NEXUS]
+
+    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, 8, unit.ROBOTICSFACILITY, 30,  unit.NEXUS,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
+                    unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]

@@ -193,13 +193,13 @@ class AirMicro(MicroABS):
         tempests = all_units(unit.TEMPEST)  # and not x.is_attacking)
         for tempest in tempests:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(tempest) < 15 and z.type_id not in self.ai.units_to_ignore)
+                lambda z: z.distance_to(tempest) < 16 and z.type_id not in self.ai.units_to_ignore and z.can_attack_air)
             threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest) < 15 and
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest) < 11 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
             if threats.exists:
-                if tempest.weapon_cooldown > 0 and threats.closer_than(9, tempest).exists:
-                    tempest.move(tempest.position.towards(threats.closest_to(tempest), -2))
+                if threats.closer_than(9, tempest).exists:
+                    tempest.move(tempest.position.towards(threats.closest_to(tempest), -5))
                     continue
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
                     lambda z: z.health + z.shield, reverse=False)
@@ -212,7 +212,7 @@ class AirMicro(MicroABS):
                 else:
                     target2 = threats.sorted(lambda z: z.health + z.shield)[0]
                 if target2 is not None:
-                    self.ai.do(tempest.attack(target2))
+                    tempest.attack(target2)
 
 
         void_rays = all_units.filter(lambda x: x.type_id == unit.VOIDRAY)
@@ -346,6 +346,86 @@ class StalkerMicro(MicroABS):
         position = stalker.position.towards(closest_enemy_position, -i)
         while not in_grid(self.ai, position) and i < 12:
             position = stalker.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
+                    k += 1
+                    position = position.random_on_distance(distance)
+                j += 1
+        return position
+
+
+class ImmortalMicro(MicroABS):
+
+    def __init__(self, ai):
+        self.name = 'ImmortalMicro'
+        super().__init__(self.name, ai)
+
+    def select_target(self, targets, immortal):
+        if self.ai.enemy_race == Race.Protoss:
+            a = targets[0].shield_percentage
+        else:
+            a = 1
+        if targets[0].health_percentage * a == 1:
+            target = targets.closest_to(immortal)
+        else:
+            target = targets[0]
+        return target
+
+    async def do_micro(self, soldiers):
+
+        enemy = self.ai.enemy_units()
+        if not enemy.exists:
+            return
+
+        immortals = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.IMMORTAL]
+        dist = 8
+        for immortal in immortals:
+            threats = enemy.filter(
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal) <= dist and
+                              unit_.type_id not in self.ai.units_to_ignore)
+            if self.ai.attack:
+                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+            if threats.exists:
+                closest_enemy = threats.closest_to(immortal)
+                priority = threats.filter(lambda x1: x1.type_id in [unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
+                    unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.THOR, unit.BUNKER, unit.QUEEN])
+                if priority.exists:
+                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, immortal)
+                else:
+                    targets = threats.filter(lambda x: x.is_armored)
+                    if not targets.exists:
+                        targets = threats
+                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, immortal)
+
+                # if target.distance_to(stalker) > dist:
+                #     target = closest_enemy
+
+                if immortal.shield_percentage < 0.4:
+                    if immortal.health_percentage < 0.35:
+                        self.ai.do(immortal.move(self.find_back_out_position(immortal, closest_enemy.position)))
+                        continue
+                    d = 4
+                else:
+                    d = 2
+
+
+                back_out_position = self.find_back_out_position(immortal, closest_enemy.position)
+                if back_out_position is not None and immortal.weapon_cooldown > 0:
+                    self.ai.do(immortal.move(immortal.position.towards(back_out_position, d)))
+                else:
+                    self.ai.do(immortal.attack(target))
+
+    def find_back_out_position(self, immortal, closest_enemy_position):
+        i = 6
+        position = immortal.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = immortal.position.towards(closest_enemy_position, -i)
             i += 1
             j = 1
             while not in_grid(self.ai, position) and j < 5:
