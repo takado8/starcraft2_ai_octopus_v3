@@ -9,8 +9,7 @@ from sc2.unit import UnitTypeId
 # from sharpy.managers.core.roles import UnitTask
 # from sharpy.plans.acts import ActBase
 
-# MINING_RADIUS = 1.325
-MINING_RADIUS = 1.4
+MINING_RADIUS = 1.325
 
 
 class SpeedMining:
@@ -22,10 +21,9 @@ class SpeedMining:
         self.mineral_target_dict: Dict[Point2, Point2] = {}
 
     def execute(self):
-        if len(self.ai.townhalls) < 1 or (not self.enable_on_return and not self.enable_on_mine):
-            return
-        workers = self.get_mineral_workers()
-        self.speedmine(workers)
+        if self.ai.townhalls.ready.amount < 3:
+            workers = self.get_mineral_workers()
+            self.speedmine(workers)
 
     def get_mineral_workers(self) -> List:
         bases = self.ai.townhalls.ready

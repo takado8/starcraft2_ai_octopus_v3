@@ -2,25 +2,30 @@ import random
 
 from sc2.position import Point2
 from sc2.unit import UnitTypeId as unit
+
 from .division import Division
 from .soldier import Soldier
 from typing import Dict, List
 from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS, AOE_IDS
 
 
+
 class Army:
     # TODO try genetic algo to calc army composition accordingly to enemy army type
-    def __init__(self, ai_object):
+    def __init__(self, ai_object, scouting):
         self.ai = ai_object
+        self.scouting = scouting
         self.status: ArmyStatus = ArmyStatus.DEFENSE_POSITION
         self.divisions: Dict[str, Division] = {}
         self.unassigned_soldiers: List[Soldier] = []
         self.all_soldiers: Dict[str, Soldier] = {}
+        self.enemy_main_base_down = False
 
     async def execute(self):
         self.establish_army_status()
         self.refresh_all_soldiers()
         self.train_divisions()
+
 
         if self.status == ArmyStatus.ATTACKING:
             await self.attack()
@@ -30,6 +35,8 @@ class Army:
 
         await self.execute_micro()
         self.avoid_aoe()
+        if self.enemy_main_base_down:
+            self.scouting.scan_on_end()
 
     async def execute_micro(self):
         for division in self.divisions:
@@ -112,18 +119,17 @@ class Army:
                                              and (x.can_attack_ground or x.can_attack_air))
         enemy.extend(self.ai.enemy_structures().filter(lambda b: #b.type_id in self.ai.bases_ids or
                          b.can_attack_ground or b.can_attack_air or b.type_id == unit.BUNKER))
-        if self.ai.enemy_main_base_down or (
-                self.ai.army.closer_than(20, self.ai.enemy_start_locations[0]).amount > 17 and
-                not self.ai.enemy_structures().exists):
-            if not self.ai.enemy_main_base_down:
+        if self.enemy_main_base_down or (
+                self.ai.army.closer_than(30, self.ai.enemy_start_locations[0]).amount > 5 and
+                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(20,
+                                                                    self.ai.enemy_start_locations[0]).amount < 5)):
+            if not self.enemy_main_base_down:
                 # await self.ai.chat_send('enemy main base down.')
                 print('enemy main base down.')
-                self.ai.enemy_main_base_down = True
-            # self.ai.scan()
+                self.enemy_main_base_down = True
             enemy.extend(self.ai.enemy_structures())
 
-
-        if enemy.amount > 4:
+        if enemy.amount > 4 or self.enemy_main_base_down and enemy.exists:
             if enemy.closer_than(50, self.ai.start_location).amount > 3:
                 destination = enemy.closest_to(self.ai.start_location).position
             else:

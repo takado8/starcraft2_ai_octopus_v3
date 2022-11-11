@@ -8,7 +8,7 @@ from builders.build_queues import BuildQueues
 from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
-from bot.builder import Builder
+from builders.builder import Builder
 from army.micros.micro import AirMicro, ZealotMicro, SentryMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer, StargateTrainer
@@ -25,8 +25,12 @@ class AirOracle(StrategyABS):
         super().__init__(type='air', name='AirOracle')
         self.morphing_ = Morphing(ai)
         self.ai = ai
-        self.army = Army(ai)
 
+        self.own_economy = OwnEconomy(ai)
+        self.enemy_economy = EnemyEconomy(ai)
+        self.scouting = Scouting(ai, self.enemy_economy)
+
+        self.army = Army(ai, self.scouting)
         # stalker_micro = StalkerMicro(ai)
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
@@ -64,10 +68,6 @@ class AirOracle(StrategyABS):
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
         self.robotics_trainer = RoboticsTrainer(ai, units_training_dict)
         self.stargate_trainer = StargateTrainer(ai, units_training_dict)
-
-        self.own_economy = OwnEconomy(ai)
-        self.enemy_economy = EnemyEconomy(ai)
-        self.scouting = Scouting(ai, self.enemy_economy)
 
         self.condition_attack = ConditionAttack(ai)
         self.condition_counter_attack = ConditionCounterAttack(ai)

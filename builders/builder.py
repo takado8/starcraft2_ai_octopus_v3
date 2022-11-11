@@ -36,13 +36,13 @@ class Builder:
                 # print('need to build: {}'.format(building))
                 if self.ai.can_afford(building) and self.ai.already_pending(building) < \
                         (2 if building == unit.GATEWAY else 1):
-                    pylon = self.ai.get_pylon_with_least_neighbours()
-                    if pylon:
-                        if building == unit.NEXUS:
-                            await self.expander.expand()
-                        else:
+                    if building == unit.NEXUS:
+                        await self.expander.expand()
+                    else:
+                        pylon = self.ai.get_pylon_with_least_neighbours()
+                        if pylon:
                             await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
-                                                random_alternative=True)
+                                            random_alternative=True)
         if all_done:
             # print('all done.')
             if self.build_queue_index + 1 < len(self.build_queue):
@@ -72,7 +72,7 @@ class Builder:
             builder = build_worker or self.ai.select_build_worker(p)
             if builder is None:
                 return False
-            self.ai.do(builder.build(building, p), subtract_cost=True)
+            builder.build(building, p)
             return True
         else:
             return False

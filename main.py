@@ -1,37 +1,36 @@
 import random
 import sc2
 from sc2 import run_game, maps, Race, Difficulty, AIBuild, Result
-# from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2, Point3
+
 from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
+
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 
-from evolution.evo import Evolution
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
 # from strategy.blinkers import Blinkers
-# from strategy.stalker_proxy import StalkerProxy
+from strategy.stalker_proxy import StalkerProxy
 # from strategy.one_base_robo import OneBaseRobo
 
 
-class OctopusEvo(sc2.BotAI):
+class OctopusV3(sc2.BotAI):
     army_ids = ARMY_IDS
     bases_ids = BASES_IDS
     units_to_ignore = UNITS_TO_IGNORE
     workers_ids = WORKERS_IDS
 
-    enemy_main_base_down = False
+    # enemy_main_base_down = False
     destination = None
     lost_cost = 0
     killed_cost = 0
-    scoutings_last_attack = 0
 
-    def __init__(self, genome=None):
+    def __init__(self):
         super().__init__()
         self.structures_amount = 0
         self.spot_validator = BuildingSpotValidator(self)
@@ -65,9 +64,9 @@ class OctopusEvo(sc2.BotAI):
         else:
             print('getting coords failed')
             # await self.chat_send('getting coords failed')
-
-        for worker in self.workers:
-            worker.gather(self.mineral_field.closest_to(worker))
+        self.distribute_workers_on_first_step()
+        # for worker in self.workers:
+        #     worker.gather(self.mineral_field.closest_to(worker))
 
     async def on_step(self, iteration: int):
         # self.save_stats()
@@ -130,6 +129,22 @@ class OctopusEvo(sc2.BotAI):
         if not army_priority and not build_finished and not lock_spending:
             await self.strategy.build_from_queue()
 
+    def distribute_workers_on_first_step(self):
+        mineral_fields = self.mineral_field.closer_than(12, self.start_location.position)
+        fields_workers_dict = {}
+        for worker in self.workers:
+            closest_field = mineral_fields.closest_to(worker)
+            if closest_field in fields_workers_dict:
+                fields_workers_dict[closest_field].append(worker)
+            else:
+                fields_workers_dict[closest_field] = [worker]
+        empty_fields = mineral_fields.filter(lambda field: field not in fields_workers_dict)
+        for field in fields_workers_dict:
+            if len(fields_workers_dict[field]) > 2:
+                worker = fields_workers_dict[field].pop(-1)
+                worker.gather(empty_fields.closest_to(worker))
+            for worker in fields_workers_dict[field]:
+                worker.gather(field)
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -149,11 +164,6 @@ class OctopusEvo(sc2.BotAI):
     def get_super_pylon(self):
         return self.spot_validator.get_super_pylon()
 
-    def save_stats(self):
-        self.lost_cost = self.state.score.lost_minerals_army + 1.2 * self.state.score.lost_vespene_army
-        self.killed_cost = self.state.score.killed_minerals_army + 1.2 * self.state.score.killed_vespene_army
-        self.structures_amount = self.structures().amount
-
     def attack_condition(self):
         return self.strategy.attack_condition()
 
@@ -172,10 +182,7 @@ def botVsComputer(ai, real_time=1):
         real_time = True
     else:
         real_time = False
-    # old_maps_set = [#"TritonLE", "Ephemeron",
-    #             # 'DiscoBloodbathLE',      #'Eternal Empire LE','Nightshade LE','Simulacrum LE',
-    #              #'World of Sleepers LE']
-    #             # 'AcropolisLE', 'ThunderbirdLE', 'WintersGateLE']
+
     maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
@@ -188,7 +195,7 @@ def botVsComputer(ai, real_time=1):
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
-    # map_index = random.randint(0, 6)
+    # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
@@ -198,12 +205,10 @@ def botVsComputer(ai, real_time=1):
     return result, ai  # , build, races[race_index]
 
 
-def test(genome, real_time=1):
-    ai = OctopusEvo(genome)
+def test(real_time=1):
+    ai = OctopusV3()
     result, ai = botVsComputer(ai, real_time)
     print('Result: {}'.format(result))
-    print('lost: {}'.format(ai.lost_cost))
-    print('killed: {}'.format(ai.killed_cost))
 
     if result == Result.Victory:
         win = 1
@@ -218,34 +223,8 @@ def test(genome, real_time=1):
 
 if __name__ == '__main__':
     import time
-    import uuid
 
-    evo = Evolution(population_count=15, reproduction_rate=0.70, load_population_directory='genomes/initial')
-    generations_nb = 15
-    generation_directory_name = 'genomes/{}_generation_'.format(str(uuid.uuid4()))
-    for i in range(generations_nb):
-        k = 0
-        for subject in evo.population:
-            k += 1
-            print('sub nr: {}'.format(k))
-            print(subject.genome)
-            start = time.time()
-            # subject.genome.build_order = OctopusEvo.strategy.build_order
-            # subject.genome.units_ratio = OctopusEvo.UNITS_RATIO
-            win, killed, lost = test(real_time=0, genome=subject.genome)
-            stop = time.time()
-            print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
-            fitness = 10000 * win + killed - lost
-            subject.fitness = fitness
-        print('i: {} avg fit: {} best fit: {}'.format(i, round(
-            sum([s.fitness for s in evo.population]) / len(evo.population), 4),
-                                                      round(max([s.fitness for s in evo.population]), 4)))
-        evo.evolve()
-
-        for s in evo.population:
-            s.genome.save_genome(directory=generation_directory_name + str(i + 1))
-
-    for s in evo.population:
-        print(s.genome)
-        print('fit: {}'.format(s.fitness))
-        s.genome.save_genome(directory=generation_directory_name + 'final')
+    start = time.time()
+    win, killed, lost = test(real_time=1)
+    stop = time.time()
+    print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

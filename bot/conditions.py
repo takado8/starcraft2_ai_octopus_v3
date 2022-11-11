@@ -123,10 +123,9 @@ class ConditionLockSpending:
         pass
 
     async def is_oracle_ready(self):
-        if self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
+        return self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
                 and not self.ai.structures(unit.STARGATE).ready.exists and (self.ai.minerals < 550 or
-                                                                            self.ai.vespene < 200):
-            return True
+                                                                            self.ai.vespene < 50)
 
     async def twilight_council_blink(self):
         if upgrade.BLINKTECH not in self.ai.state.upgrades:

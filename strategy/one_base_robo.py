@@ -7,7 +7,7 @@ from builders.build_queues import BuildQueues
 from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
-from bot.builder import Builder
+from builders.builder import Builder
 from army.micros.micro import StalkerMicro, ZealotMicro, SentryMicro, ImmortalMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer

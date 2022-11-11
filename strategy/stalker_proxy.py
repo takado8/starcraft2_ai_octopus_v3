@@ -2,12 +2,12 @@ from army.movements import Movements
 from bot.morphing import Morphing
 from .strategyABS import StrategyABS
 from builders.expander import Expander
-from bot.chronobooster import Chronobooster
+from bot.nexus_abilities import Chronobooster
 from builders.build_queues import BuildQueues
 from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
 from army.army import Army
-from bot.builder import Builder
+from builders.builder import Builder
 from army.micros.micro import StalkerMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer
@@ -25,7 +25,13 @@ class StalkerProxy(StrategyABS):
         super().__init__(type='rush', name='StalkerProxy')
         self.morphing_ = Morphing(ai)
         self.ai = ai
-        self.army = Army(ai)
+
+
+        self.own_economy = OwnEconomy(ai)
+        self.enemy_economy = EnemyEconomy(ai)
+        self.scouting = Scouting(ai, self.enemy_economy)
+
+        self.army = Army(ai, self.scouting)
 
         stalker_micro = StalkerMicro(ai)
         # zealot_micro = ZealotMicro(ai)
@@ -53,10 +59,6 @@ class StalkerProxy(StrategyABS):
         self.gate_trainer = GateTrainer(ai, units_training_dict)
         self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
         self.robotics_trainer = RoboticsTrainer(ai, units_training_dict)
-
-        self.own_economy = OwnEconomy(ai)
-        self.enemy_economy = EnemyEconomy(ai)
-        self.scouting = Scouting(ai, self.enemy_economy)
 
         self.condition_attack = ConditionAttack(ai)
         self.condition_counter_attack = ConditionCounterAttack(ai)
@@ -100,9 +102,8 @@ class StalkerProxy(StrategyABS):
 
     # =======================================================  Army
 
-    def army_refresh_and_train(self):
-        self.army.refresh_all_soldiers()
-        self.army.train_divisions()
+    async def army_execute(self):
+        await self.army.execute()
 
     async def army_do_micro(self):
         await self.army.execute_micro()

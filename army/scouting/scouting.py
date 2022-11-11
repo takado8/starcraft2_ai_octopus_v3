@@ -78,12 +78,11 @@ class Scouting:
         scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
         if scouts.amount < 3:
             snts = self.ai.army(Unit.SENTRY)
-            if snts.exists and self.ai.time < 1800:
+            if snts.exists:
                 snts = self.ai.army(Unit.SENTRY).filter(lambda z: z.energy >= 75)
                 if snts:
                     for se in snts:
                         self.ai.do(se(AbilityId.HALLUCINATION_PHOENIX))
-                    scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
             else:
                 scouts = self.ai.units({Unit.WARPPRISM, Unit.OBSERVER})
                 if not scouts.exists:
@@ -93,12 +92,12 @@ class Scouting:
                         if not scouts.exists:
                             scouts = self.ai.units().closest_n_units(self.ai.enemy_start_locations[0], 3)
         if scouts.exists:
-            if len(self.scouting_positions) == 0:
-                for exp in self.ai.expansion_locations_list:
-                    if not self.ai.structures().closer_than(7, exp).exists:
-                        self.scouting_positions.append(exp)
-                self.scouting_positions = sorted(self.scouting_positions,
-                                                       key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
+            self.scouting_positions.clear()
+            for exp in self.ai.expansion_locations_list:
+                if not self.ai.structures().closer_than(7, exp).exists:
+                    self.scouting_positions.append(exp)
+            self.scouting_positions = sorted(self.scouting_positions,
+                                                   key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
             for px in scouts.idle:
                 self.ai.do(px.move(self.scouting_positions[self.scouting_index]))
                 self.scouting_index += 1
