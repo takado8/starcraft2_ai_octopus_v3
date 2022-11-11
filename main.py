@@ -1,14 +1,12 @@
 import random
 import sc2
-from sc2 import run_game, maps, Race, Difficulty, AIBuild, AbilityId, Result
-from sc2.ids.effect_id import EffectId as effect
+from sc2 import run_game, maps, Race, Difficulty, AIBuild, Result
 # from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
-from bot.chronobooster import Chronobooster
 from typing import Optional, Union
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
@@ -28,7 +26,6 @@ class OctopusEvo(sc2.BotAI):
     workers_ids = WORKERS_IDS
 
     enemy_main_base_down = False
-    leader_tag = None
     destination = None
     lost_cost = 0
     killed_cost = 0
@@ -38,7 +35,6 @@ class OctopusEvo(sc2.BotAI):
         super().__init__()
         self.structures_amount = 0
         self.spot_validator = BuildingSpotValidator(self)
-        self.chronobooster = Chronobooster(self)
         self.attack = False
         self.first_attack = False
         self.retreat = False
@@ -68,18 +64,17 @@ class OctopusEvo(sc2.BotAI):
             print('getting coords successful.')
         else:
             print('getting coords failed')
-            await self.chat_send('getting coords failed')
+            # await self.chat_send('getting coords failed')
+
         for worker in self.workers:
-            worker.stop()
+            worker.gather(self.mineral_field.closest_to(worker))
 
     async def on_step(self, iteration: int):
         # self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         await self.strategy.army_execute()
-        # await self.distribute_workers()
         self.strategy.distribute_workers()
-
         self.speed_mining.execute()
         self.strategy.chronoboost()
         await self.strategy.build_pylons()
@@ -88,18 +83,17 @@ class OctopusEvo(sc2.BotAI):
         await self.strategy.twilight_upgrade()
         self.strategy.cybernetics_upgrade()
         self.strategy.forge_upgrade()
-        # await self.build_batteries()
-        # await self.shield_overcharge()
         #
         ## scan
         # self.strategy.scouting.scan_middle_game()
         # self.strategy.scouting.gather_enemy_info()
         # self.strategy.own_economy.calculate_units_report()
         # self.strategy.enemy_economy.calculate_enemy_units_report()
-
         # if iteration % 30 == 0:
         #     self.strategy.enemy_economy.print_enemy_info()
         #     self.strategy.own_economy.print_own_economy_info()
+        ##
+
         #
         ## attack
         army_priority = False
@@ -116,26 +110,9 @@ class OctopusEvo(sc2.BotAI):
             self.retreat = True
             self.attack = False
             self.after_first_attack = True
-        # try:
-        #     if self.attack:
-        #         await self.strategy.attack()
-        #     else:
-        #         await self.defend()
-        # except Exception as ex:
-        #     print(ex)
-        #     await self.chat_send('on_step error 10')
-        #     raise ex
-        # try:
-        #     await self.strategy.army_do_micro()
-        # except Exception as ex:
-        #     print(ex)
-        #     await self.chat_send('on_step error 9')
-        #     raise ex
-        self.avoid_aoe()
         #
         ## build
         current_building = self.strategy.builder.get_current_building()
-
         build_in_progress = self.strategy.builder.is_build_in_progress()
         build_finished = self.strategy.builder.is_build_finished()
 
@@ -153,6 +130,7 @@ class OctopusEvo(sc2.BotAI):
         if not army_priority and not build_finished and not lock_spending:
             await self.strategy.build_from_queue()
 
+
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
@@ -169,17 +147,7 @@ class OctopusEvo(sc2.BotAI):
             self._client.game_step = 8
 
     def get_super_pylon(self):
-        pylons = self.structures(unit.PYLON).ready
-        if pylons.exists:
-            pylons = pylons.closer_than(45, self.start_location)
-            if pylons.exists:
-                pylons = pylons.sorted_by_distance_to(self.enemy_start_locations[0])
-                warps = self.structures().filter(lambda x: x.type_id in [unit.WARPGATE, unit.NEXUS] and x.is_ready)
-                if warps.exists:
-                    for pylon in pylons:
-                        if warps.closer_than(6.5, pylon).exists:
-                            return pylon
-                return pylons[-1]
+        return self.spot_validator.get_super_pylon()
 
     def save_stats(self):
         self.lost_cost = self.state.score.lost_minerals_army + 1.2 * self.state.score.lost_vespene_army
@@ -197,55 +165,6 @@ class OctopusEvo(sc2.BotAI):
 
     async def lock_spending_condition(self):
         return await self.strategy.lock_spending_condition()
-
-    def avoid_aoe(self):
-        aoes_ids = [effect.RAVAGERCORROSIVEBILECP, effect.PSISTORMPERSISTENT, effect.NUKEPERSISTENT,
-                    effect.LIBERATORTARGETMORPHDELAYPERSISTENT]
-        purification_novas = self.enemy_units(unit.DISRUPTORPHASED)
-        purification_novas.extend(self.units(unit.DISRUPTORPHASED))
-        for man in self.army:
-            if purification_novas.exists and purification_novas.closer_than(3, man).exists:
-                self.do(man.move(man.position.towards(purification_novas.closest_to(man), -4)))
-                continue
-            for eff in self.state.effects:
-                if eff.id in aoes_ids:
-                    positions = eff.positions
-                    for position in positions:
-                        if man.distance_to(position) < eff.radius + 2:
-                            self.do(man.move(man.position.towards(position, -3)))
-
-    async def build_batteries(self):
-        nexuses = self.structures(unit.NEXUS).ready
-        if nexuses.amount > 1:
-            start_nexus = nexuses.closest_to(self.start_location.position)
-            nexuses.remove(start_nexus)
-            for nexus in nexuses:
-                pylon = self.structures(unit.PYLON).ready.closer_than(11, nexus)
-                if pylon.exists:
-                    pylon = pylon.furthest_to(nexus)
-                    if self.structures(unit.SHIELDBATTERY).closer_than(5, pylon.position).amount < 2 \
-                            and self.already_pending(unit.SHIELDBATTERY) < 2:
-                        await self.build(unit.SHIELDBATTERY, pylon.position, max_distance=5,
-                                         random_alternative=False, placement_step=2)
-                elif self.already_pending(unit.PYLON) < 1:
-                    minerals = self.mineral_field.closest_to(nexus.position)
-                    if minerals.distance_to(nexus.position) < 12:
-                        pylon_spot = nexus.position.towards(minerals, -7)
-                        await self.build(unit.PYLON, pylon_spot)
-
-    async def shield_overcharge(self):
-        en = self.enemy_units()
-        if en.exists and en.closer_than(40, self.defend_position).amount > 5:
-            nexus = self.structures(unit.NEXUS).ready.closest_to(self.defend_position)
-            battery = self.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus) \
-                .sorted(lambda x: x.health, reverse=True)
-            if battery and nexus:
-                battery = battery[0]
-                if nexus.energy >= 50:
-                    abilities = await self.get_available_abilities(nexus)
-                    # print('nexus abilities: {}'.format(abilities))
-                    if AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE in abilities:
-                        self.do(nexus(AbilityId.BATTERYOVERCHARGE_BATTERYOVERCHARGE, battery))
 
 
 def botVsComputer(ai, real_time=1):

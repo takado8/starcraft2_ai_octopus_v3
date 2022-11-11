@@ -36,33 +36,6 @@ class BuildingSpotValidator:
             return True
         return False
 
-    def get_pylon_with_least_neighbours(self):
-        properPylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
-                        and unit_.is_ready and unit_.distance_to(self.ai.start_location.position) <
-                                                                 self.building_pylon_max_dist)
-        max_neighbours = 6
-        if properPylons.exists:
-            min_neighbours = 99
-            pylon = None
-            for pyl in properPylons:
-                neighbours = self.ai.structures().filter(lambda unit_: unit_.distance_to(pyl) < 6).amount
-                if neighbours < min_neighbours:
-                    min_neighbours = neighbours
-                    pylon = pyl
-
-            if min_neighbours > max_neighbours:
-                pylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
-                        and unit_.is_ready and self.building_pylon_max_dist < unit_.distance_to(self.ai.start_location.position) <
-                                         self.building_pylon_max_dist + self.building_pylon_max_dist_increment)
-                if pylons.exists:
-                    self.building_pylon_max_dist += self.building_pylon_max_dist_increment
-                    return self.get_pylon_with_least_neighbours()
-
-            return pylon
-        else:
-            print('No pylons in range {} from main base.'.format(self.building_pylon_max_dist))
-            return None
-
     def compute_coefficients_for_building_validation(self):
         self.n = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location).position
         vespenes = self.ai.vespene_geyser.closer_than(9, self.n)
@@ -107,3 +80,43 @@ class BuildingSpotValidator:
     @staticmethod
     def line_bigger_than(x, y, a, b):
         return y > a * x + b
+
+    def get_pylon_with_least_neighbours(self):
+        properPylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
+                        and unit_.is_ready and unit_.distance_to(self.ai.start_location.position) <
+                                                                 self.building_pylon_max_dist)
+        max_neighbours = 6
+        if properPylons.exists:
+            min_neighbours = 99
+            pylon = None
+            for pyl in properPylons:
+                neighbours = self.ai.structures().filter(lambda unit_: unit_.distance_to(pyl) < 6).amount
+                if neighbours < min_neighbours:
+                    min_neighbours = neighbours
+                    pylon = pyl
+
+            if min_neighbours > max_neighbours:
+                pylons = self.ai.structures().filter(lambda unit_: unit_.type_id == unit.PYLON
+                        and unit_.is_ready and self.building_pylon_max_dist < unit_.distance_to(self.ai.start_location.position) <
+                                         self.building_pylon_max_dist + self.building_pylon_max_dist_increment)
+                if pylons.exists:
+                    self.building_pylon_max_dist += self.building_pylon_max_dist_increment
+                    return self.get_pylon_with_least_neighbours()
+
+            return pylon
+        else:
+            print('No pylons in range {} from main base.'.format(self.building_pylon_max_dist))
+            return None
+
+    def get_super_pylon(self):
+        pylons = self.ai.structures(unit.PYLON).ready
+        if pylons.exists:
+            pylons = pylons.closer_than(45, self.ai.start_location)
+            if pylons.exists:
+                pylons = pylons.sorted_by_distance_to(self.ai.enemy_start_locations[0])
+                warps = self.ai.structures().filter(lambda x: x.type_id in {unit.WARPGATE, unit.NEXUS} and x.is_ready)
+                if warps.exists:
+                    for pylon in pylons:
+                        if warps.closer_than(6.5, pylon).exists:
+                            return pylon
+                return pylons[-1]

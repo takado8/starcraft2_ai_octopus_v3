@@ -5,7 +5,7 @@ from sc2.unit import UnitTypeId as unit
 from .division import Division
 from .soldier import Soldier
 from typing import Dict, List
-from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS
+from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS, AOE_IDS
 
 
 class Army:
@@ -29,6 +29,7 @@ class Army:
             self.defend()
 
         await self.execute_micro()
+        self.avoid_aoe()
 
     async def execute_micro(self):
         for division in self.divisions:
@@ -45,8 +46,6 @@ class Army:
             self.status = ArmyStatus.ENEMY_SCOUT
         elif self.ai.retreat_condition():
             self.status = ArmyStatus.DEFENSE_POSITION
-
-        print('army status: {}'.format(self.status))
 
     def defend(self):
         if self.status == ArmyStatus.DEFENDING_SIEGE:
@@ -224,6 +223,20 @@ class Army:
     async def move_army(self, destination):
         for division_name in self.divisions:
             await self.divisions[division_name].move_division(destination)
+
+    def avoid_aoe(self):
+        purification_novas = self.ai.enemy_units(unit.DISRUPTORPHASED)
+        purification_novas.extend(self.ai.units(unit.DISRUPTORPHASED))
+        for man in self.ai.army:
+            if purification_novas.exists and purification_novas.closer_than(3, man).exists:
+                man.move(man.position.towards(purification_novas.closest_to(man), -4))
+                continue
+            for eff in self.ai.state.effects:
+                if eff.id in AOE_IDS:
+                    positions = eff.positions
+                    for position in positions:
+                        if man.distance_to(position) < eff.radius + 2:
+                            man.move(man.position.towards(position, -3))
 
     def print_divisions_info(self):
         for division_name in self.divisions:

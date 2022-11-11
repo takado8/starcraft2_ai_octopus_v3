@@ -1,4 +1,6 @@
 from sc2.unit import UnitTypeId as unit
+from sc2.ids.effect_id import EffectId as effect
+
 
 ARMY_IDS = {unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
             unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
@@ -18,3 +20,6 @@ ANTI_AIR_IDS = {unit.MISSILETURRET, unit.PHOTONCANNON, unit.WIDOWMINE, unit.SPOR
 
 AIR_PRIORITY_UNITS = {unit.VOIDRAY,unit.WIDOWMINE, unit.BUNKER, unit.VIKING, unit.PHOENIX, unit.THOR,
                       unit.QUEEN, unit.BATTLECRUISER}
+
+AOE_IDS = {effect.RAVAGERCORROSIVEBILECP, effect.PSISTORMPERSISTENT, effect.NUKEPERSISTENT,
+                    effect.LIBERATORTARGETMORPHDELAYPERSISTENT}

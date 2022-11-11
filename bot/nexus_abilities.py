@@ -155,3 +155,22 @@ class Chronobooster:
                         target = random.choice(targets)
                         self.ai.do(nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target))
                         return
+
+
+class ShieldOvercharge:
+    def __init__(self, ai):
+        self.ai = ai
+
+    async def shield_overcharge(self):
+        en = self.ai.enemy_units()
+        if en.exists and en.closer_than(40, self.ai.defend_position).amount > 5:
+            nexus = self.ai.structures(unit.NEXUS).ready.closest_to(self.ai.defend_position)
+            battery = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus) \
+                .sorted(lambda x: x.health, reverse=True)
+            if battery and nexus:
+                battery = battery[0]
+                if nexus.energy >= 50:
+                    abilities = await self.ai.get_available_abilities(nexus)
+                    # print('nexus abilities: {}'.format(abilities))
+                    if ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE in abilities:
+                        nexus(ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE, battery)

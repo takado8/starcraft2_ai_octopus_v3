@@ -3,7 +3,7 @@ from bot.morphing import Morphing
 from economy.workers.distribute_workers import DistributeWorkers
 from .strategyABS import StrategyABS
 from builders.expander import Expander
-from bot.chronobooster import Chronobooster
+from bot.nexus_abilities import Chronobooster
 from builders.build_queues import BuildQueues
 from builders.pylon_builder import PylonBuilder
 from builders.assimilator_builder import AssimilatorBuilder
