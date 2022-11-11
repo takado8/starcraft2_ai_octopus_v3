@@ -35,14 +35,7 @@ class StrategyABS:
         raise NotImplementedError
 
     # =======================================================  Army
-
-    def army_refresh_and_train(self):
-        raise NotImplementedError
-
-    async def army_do_micro(self):
-        raise NotImplementedError
-
-    async def attack(self):
+    def army_execute(self):
         raise NotImplementedError
 
     # ======================================================= Conditions

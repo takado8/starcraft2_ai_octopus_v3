@@ -16,9 +16,9 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from evolution.evo import Evolution
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
-from strategy.blinkers import Blinkers
+# from strategy.blinkers import Blinkers
 # from strategy.stalker_proxy import StalkerProxy
-from strategy.one_base_robo import OneBaseRobo
+# from strategy.one_base_robo import OneBaseRobo
 
 
 class OctopusEvo(sc2.BotAI):
@@ -76,8 +76,7 @@ class OctopusEvo(sc2.BotAI):
         # self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
-        self.strategy.army_refresh_and_train()
-        self.assign_defend_position()
+        await self.strategy.army_execute()
         # await self.distribute_workers()
         self.strategy.distribute_workers()
 
@@ -117,21 +116,21 @@ class OctopusEvo(sc2.BotAI):
             self.retreat = True
             self.attack = False
             self.after_first_attack = True
-        try:
-            if self.attack:
-                await self.strategy.attack()
-            else:
-                await self.defend()
-        except Exception as ex:
-            print(ex)
-            await self.chat_send('on_step error 10')
-            raise ex
-        try:
-            await self.strategy.army_do_micro()
-        except Exception as ex:
-            print(ex)
-            await self.chat_send('on_step error 9')
-            raise ex
+        # try:
+        #     if self.attack:
+        #         await self.strategy.attack()
+        #     else:
+        #         await self.defend()
+        # except Exception as ex:
+        #     print(ex)
+        #     await self.chat_send('on_step error 10')
+        #     raise ex
+        # try:
+        #     await self.strategy.army_do_micro()
+        # except Exception as ex:
+        #     print(ex)
+        #     await self.chat_send('on_step error 9')
+        #     raise ex
         self.avoid_aoe()
         #
         ## build
@@ -159,63 +158,6 @@ class OctopusEvo(sc2.BotAI):
                     placement_step: int = 3, ) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
-
-    async def defend(self):
-        enemy = self.enemy_units()
-        if 3 > enemy.closer_than(70, self.start_location.position).amount > 0:
-            high_mobility = []
-            high_mobility_ids = [unit.STALKER, unit.ADEPT, unit.ZEALOT]
-            # regular = []
-            for man in self.army:
-                if man.is_flying or man.type_id in high_mobility_ids:
-                    high_mobility.append(man)
-                # else:
-                # regular.append(man)
-
-            high_mobility = high_mobility[:5]
-            observer = self.units(unit.OBSERVER).ready
-            if observer.exists:
-                high_mobility.append(observer.random)
-            for unit_ in high_mobility:
-                unit_.attack(enemy.closest_to(unit_))
-
-            # dist = 7
-            # for man in regular:
-            #     position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
-            #         man.type_id == unit.ZEALOT else Point2(self.defend_position)
-            #     if man.distance_to(self.defend_position) > dist:
-            #         self.do(man.move(position.random_on_distance(random.randint(1, 2))))
-        elif enemy.enemy.closer_than(30, self.defend_position).amount > 2:
-            # dist = 12
-            for man in self.army:
-                man.attack(enemy.closest_to(man))
-                # position = Point2(self.defend_position).towards(self.game_info.map_center, 3) if \
-                #     man.type_id == unit.ZEALOT else Point2(self.defend_position)
-                # distance = man.distance_to(self.defend_position)
-                # if distance > dist:
-                #     self.do(man.attack(position.random_on_distance(random.randint(1, 2))))
-        else:
-            dist = 7
-            for man in self.army:
-                position = Point2(self.defend_position).towards(self.game_info.map_center, 5) if \
-                    man.type_id == unit.ZEALOT else Point2(self.defend_position)
-                if man.distance_to(self.defend_position) > dist:
-                    man.move(position.random_on_distance(random.randint(1, 2)))
-
-    def assign_defend_position(self):
-        nexuses = self.structures(unit.NEXUS).ready
-        enemy = self.enemy_units()
-        if enemy.exists:
-            for nexus in nexuses:
-                if enemy.closer_than(25, nexus).amount > 3:
-                    self.defend_position = nexus.position.towards(self.game_info.map_center, 5)
-        elif nexuses.amount < 2:
-            self.defend_position = self.main_base_ramp.top_center.towards(self.main_base_ramp.bottom_center, -2)
-        else:
-            closest_nexuses = nexuses.closest_n_units(self.enemy_start_locations[0].position, n=2)
-            nexus_with_most_workers = max(closest_nexuses, key=lambda x: self.workers.closer_than(15, x).amount)
-            self.defend_position = nexus_with_most_workers.position.towards(
-                self.game_info.map_center, 5)
 
     def get_pylon_with_least_neighbours(self):
         return self.spot_validator.get_pylon_with_least_neighbours()
@@ -322,8 +264,8 @@ def botVsComputer(ai, real_time=1):
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
-    # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Air]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 

@@ -38,8 +38,10 @@ class AirOracle(StrategyABS):
         self.army.create_division('voidrays1', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
+        self.army.create_division('carriers2', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
+        self.army.create_division('tempests3', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
@@ -111,16 +113,8 @@ class AirOracle(StrategyABS):
 
     # =======================================================  Army
 
-    def army_refresh_and_train(self):
-        self.army.refresh_all_soldiers()
-        self.army.train_divisions()
-
-    async def army_do_micro(self):
-        await self.army.execute_divisions_orders()
-        # self.army.print_divisions_info()
-
-    async def attack(self):
-        await self.army.attack()
+    async def army_execute(self):
+        await self.army.execute()
 
     # ======================================================= Conditions
     def attack_condition(self):

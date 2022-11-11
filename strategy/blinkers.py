@@ -107,7 +107,7 @@ class Blinkers(StrategyABS):
         self.army.train_divisions()
 
     async def army_do_micro(self):
-        await self.army.execute_divisions_orders()
+        await self.army.execute_micro()
         # self.army.print_divisions_info()
 
     async def attack(self):
