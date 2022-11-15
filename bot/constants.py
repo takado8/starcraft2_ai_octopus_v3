@@ -23,3 +23,10 @@ AIR_PRIORITY_UNITS = {unit.VOIDRAY,unit.WIDOWMINE, unit.BUNKER, unit.VIKING, uni
 
 AOE_IDS = {effect.RAVAGERCORROSIVEBILECP, effect.PSISTORMPERSISTENT, effect.NUKEPERSISTENT,
                     effect.LIBERATORTARGETMORPHDELAYPERSISTENT}
+
+BUILDING_OF_ORIGIN_DICT = {unit.ZEALOT: unit.GATEWAY, unit.STALKER: unit.GATEWAY, unit.ADEPT: unit.GATEWAY,
+                           unit.SENTRY: unit.GATEWAY, unit.DARKTEMPLAR: unit.GATEWAY, unit.HIGHTEMPLAR: unit.GATEWAY,
+                           unit.OBSERVER: unit.ROBOTICSFACILITY, unit.IMMORTAL: unit.ROBOTICSFACILITY,
+                           unit.COLOSSUS: unit.ROBOTICSFACILITY, unit.DISRUPTOR: unit.ROBOTICSFACILITY,
+                           unit.ORACLE: unit.STARGATE, unit.VOIDRAY: unit.STARGATE, unit.PHOENIX: unit.STARGATE,
+                           unit.TEMPEST: unit.STARGATE, unit.CARRIER: unit.STARGATE}

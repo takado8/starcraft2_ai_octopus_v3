@@ -5,13 +5,10 @@ from sc2.player import Bot, Computer
 from sc2.unit import Unit
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2, Point3
-
 from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
-
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
-
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
 # from strategy.blinkers import Blinkers
@@ -25,7 +22,6 @@ class OctopusV3(sc2.BotAI):
     units_to_ignore = UNITS_TO_IGNORE
     workers_ids = WORKERS_IDS
 
-    # enemy_main_base_down = False
     destination = None
     lost_cost = 0
     killed_cost = 0
@@ -122,9 +118,9 @@ class OctopusV3(sc2.BotAI):
             else:
                 army_priority = True
         lock_spending = await self.lock_spending_condition()
-        if (build_in_progress or build_finished or army_priority or
-                (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
-            await self.strategy.train_units()
+        # if (build_in_progress or build_finished or army_priority or
+        #         (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
+        #     await self.strategy.train_units()
 
         if not army_priority and not build_finished and not lock_spending:
             await self.strategy.build_from_queue()
@@ -225,6 +221,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=1)
+    win, killed, lost = test(real_time=0)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

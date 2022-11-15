@@ -131,67 +131,10 @@ class GateTrainer:
 
 
 class WarpgateTrainer:
-    def __init__(self, ai, units_training_dict=None):
+    def __init__(self, ai):
         self.ai = ai
-        self.units_training_dict = units_training_dict
 
-    async def standard(self):
-        max_stalkers = self.units_training_dict[unit.STALKER]
-        max_zealots = self.units_training_dict[unit.ZEALOT]
-        max_adepts = self.units_training_dict[unit.ADEPT]
-        max_archons = self.units_training_dict[unit.ARCHON]
-        max_sentry = self.units_training_dict[unit.SENTRY]
-
-        if self.ai.attack:
-            prisms = self.ai.units(unit.WARPPRISMPHASING)
-            if prisms.exists:
-                pos = prisms.furthest_to(self.ai.start_location).position
-            else:
-                furthest_pylon = self.ai.structures(unit.PYLON).ready.furthest_to(self.ai.start_location.position)
-                pos = furthest_pylon.position
-        else:
-            if (self.ai.structures(unit.ROBOTICSFACILITY).ready.idle.exists and
-                self.ai.army(unit.IMMORTAL).amount < 5) or not self.ai.structures(
-                unit.WARPGATE).exists:
-                return
-            pos = self.ai.get_super_pylon().position
-        placement = None
-        i = 0
-        while placement is None:
-            i += 1
-            placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
-                                                     max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
-
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.HIGHTEMPLAR) and self.ai.army(unit.ARCHON).amount < max_archons \
-                        and self.ai.structures(unit.TEMPLARARCHIVE).ready.exists:
-                    warpgate.warp_in(unit.HIGHTEMPLAR, placement)
-                elif self.ai.can_afford(unit.SENTRY) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
-                        and self.ai.units(unit.SENTRY).amount < max_sentry and self.ai.state.score.food_used_army > 12:
-                    warpgate.warp_in(unit.SENTRY, placement)
-                elif self.ai.can_afford(unit.STALKER) and self.ai.army(unit.STALKER).amount < max_stalkers:
-                    warpgate.warp_in(unit.STALKER, placement)
-                elif self.ai.can_afford(unit.ADEPT) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
-                        and self.ai.units(unit.ADEPT).amount < max_adepts:
-                    warpgate.warp_in(unit.ADEPT, placement)
-                elif self.ai.minerals > 150 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
-                    warpgate.warp_in(unit.ZEALOT, placement)
-
-
-    async def stalker_power(self):
-        if not self.ai.structures(unit.WARPGATE).exists:
-            return
-
-        max_stalkers = self.units_training_dict[unit.STALKER]
-        max_zealots = self.units_training_dict[unit.ZEALOT]
-        max_sentry = self.units_training_dict[unit.SENTRY]
-
+    async def standard(self, warpgate, unit_id):
         if self.ai.attack:
             prisms = self.ai.units(unit.WARPPRISMPHASING)
             if prisms.exists:
@@ -203,26 +146,15 @@ class WarpgateTrainer:
             pos = self.ai.get_super_pylon().position
         placement = None
         i = 0
-        while placement is None:
+        while placement is None and i < 7:
             i += 1
             placement = await self.ai.find_placement(ability.TRAINWARP_ADEPT, near=pos.random_on_distance(5),
                                                      max_distance=5, placement_step=2, random_alternative=False)
-            if i > 5:
-                print("can't find position for warpin.")
-                return
 
-        for warpgate in self.ai.structures(unit.WARPGATE).ready:
-            abilities = await self.ai.get_available_abilities(warpgate)
-            if ability.WARPGATETRAIN_ZEALOT in abilities:
-                if self.ai.can_afford(unit.STALKER) and self.ai.army(unit.STALKER).amount < max_stalkers \
-                        and self.ai.army(unit.STALKER).amount * 0.3 < self.ai.units(unit.ZEALOT).amount:
-                    warpgate.warp_in(unit.STALKER, placement)
-                elif self.ai.minerals > 150 and \
-                        self.ai.supply_left > 1 and self.ai.units(unit.ZEALOT).amount < max_zealots:
-                    warpgate.warp_in(unit.ZEALOT, placement)
-                elif self.ai.can_afford(unit.SENTRY) and self.ai.structures(unit.CYBERNETICSCORE).ready.exists \
-                        and self.ai.units(unit.SENTRY).amount < max_sentry and self.ai.state.score.food_used_army > 12:
-                    warpgate.warp_in(unit.SENTRY, placement)
+        if placement:
+            warpgate.warp_in(unit_id, placement)
+        else:
+            print("can't find position for warpin.")
 
 
 class StargateTrainer:

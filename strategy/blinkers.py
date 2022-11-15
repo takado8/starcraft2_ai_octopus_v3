@@ -104,7 +104,7 @@ class Blinkers(StrategyABS):
 
     def army_refresh_and_train(self):
         self.army.refresh_all_soldiers()
-        self.army.train_divisions()
+        self.army.create_training_order()
 
     async def army_do_micro(self):
         await self.army.execute_micro()

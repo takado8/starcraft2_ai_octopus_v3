@@ -12,9 +12,10 @@ from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS, AOE_IDS
 
 class Army:
     # TODO try genetic algo to calc army composition accordingly to enemy army type
-    def __init__(self, ai_object, scouting):
+    def __init__(self, ai_object, scouting, trainer):
         self.ai = ai_object
         self.scouting = scouting
+        self.trainer = trainer
         self.status: ArmyStatus = ArmyStatus.DEFENSE_POSITION
         self.divisions: Dict[str, Division] = {}
         self.unassigned_soldiers: List[Soldier] = []
@@ -24,8 +25,9 @@ class Army:
     async def execute(self):
         self.establish_army_status()
         self.refresh_all_soldiers()
-        self.train_divisions()
-
+        training_order = self.create_training_order()
+        self.order_units_training(training_order)
+        await self.trainer.train()
 
         if self.status == ArmyStatus.ATTACKING:
             await self.attack()
@@ -174,32 +176,38 @@ class Army:
             self.divisions[division_name] = new_division
             return new_division
 
-    def train_divisions(self):
+    def create_training_order(self):
         all_missing_units = {}
         for division in self.divisions:
             missing_units = self.divisions[division].get_dict_of_missing_units()
             for unit_id in missing_units:
                 unit_amount = 0
+                assigned_soldiers = []
                 for soldier in self.unassigned_soldiers:
                     if unit_amount < missing_units[unit_id]:
                         if unit_id == soldier.type_id:
                             unit_amount += 1
                             self.divisions[division].add_soldier(soldier)
                             soldier.division_name = division
-                            self.unassigned_soldiers.remove(soldier)
+                            assigned_soldiers.append(soldier)
                             missing_units[unit_id] -= 1
                     else:
                         break
+                for soldier in assigned_soldiers:
+                    self.unassigned_soldiers.remove(soldier)
             for unit_id2 in missing_units:
                 if unit_id2 in all_missing_units:
                     all_missing_units[unit_id2] += missing_units[unit_id2]
                 else:
                     all_missing_units[unit_id2] = missing_units[unit_id2]
+        return all_missing_units
 
-        self.order_unit_training(all_missing_units)
-
-    def order_unit_training(self, units_ids_dict):
-        pass
+    def order_units_training(self, units_ids_dict):
+        list_of_units = []
+        for unit_id in units_ids_dict:
+            for _ in range(units_ids_dict[unit_id]):
+                list_of_units.append(unit_id)
+        self.trainer.add_units_to_training_queue(list_of_units)
 
     def refresh_all_soldiers(self):
         all_units = self.ai.units().filter(lambda x: (x.type_id in ARMY_IDS or x.type_id in SPECIAL_UNITS_IDS)

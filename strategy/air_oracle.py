@@ -1,46 +1,30 @@
 from army.movements import Movements
 from bot.morphing import Morphing
-from economy.workers.distribute_workers import DistributeWorkers
 from .strategyABS import StrategyABS
 from builders.expander import Expander
-from bot.nexus_abilities import Chronobooster
 from builders.build_queues import BuildQueues
-from builders.pylon_builder import PylonBuilder
-from builders.assimilator_builder import AssimilatorBuilder
-from army.army import Army
 from builders.builder import Builder
 from army.micros.micro import AirMicro, ZealotMicro, SentryMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
-from bot.trainers import WarpgateTrainer, GateTrainer, NexusTrainer, RoboticsTrainer, StargateTrainer
-from bot.units_training_dicts import UnitsTrainingDicts
-from army.scouting.scouting import Scouting
-from economy.info.own_economy import OwnEconomy
-from economy.info.enemy_economy import EnemyEconomy
+# from bot.trainers import WarpgateTrainer, GateTrainer, RoboticsTrainer, StargateTrainer
+# from bot.units_training_dicts import UnitsTrainingDicts
 from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x5, SENTRY_x3
-from bot.conditions import *
+
 
 
 class AirOracle(StrategyABS):
     def __init__(self, ai):
-        super().__init__(type='air', name='AirOracle')
+        super().__init__(type='air', name='AirOracle', ai=ai)
         self.morphing_ = Morphing(ai)
-        self.ai = ai
-
-        self.own_economy = OwnEconomy(ai)
-        self.enemy_economy = EnemyEconomy(ai)
-        self.scouting = Scouting(ai, self.enemy_economy)
-
-        self.army = Army(ai, self.scouting)
         # stalker_micro = StalkerMicro(ai)
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
         sentry_micro = SentryMicro(ai)
-        units_training_dict = UnitsTrainingDicts.AIR_ORACLE_CARRIERS
         self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai))
         # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai))
         # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x5, [air_micro], Movements(ai))
-        self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
+        # self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('carriers2', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
@@ -48,33 +32,18 @@ class AirOracle(StrategyABS):
         self.army.create_division('tempests3', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
-        self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
+        # self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
-        self.workers_distribution = DistributeWorkers(ai)
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
-        self.pylon_builder = PylonBuilder(ai)
-        self.assimilator_builder = AssimilatorBuilder(ai)
 
         self.forge_upgrader = ForgeUpgrader(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
 
-        self.nexus_trainer = NexusTrainer(ai)
-        self.gate_trainer = GateTrainer(ai, units_training_dict)
-        self.warpgate_trainer = WarpgateTrainer(ai, units_training_dict)
-        self.robotics_trainer = RoboticsTrainer(ai, units_training_dict)
-        self.stargate_trainer = StargateTrainer(ai, units_training_dict)
-
-        self.condition_attack = ConditionAttack(ai)
-        self.condition_counter_attack = ConditionCounterAttack(ai)
-        self.condition_retreat = ConditionRetreat(ai)
-        self.condition_lock_spending = ConditionLockSpending(ai)
-
-        self.chronobooster = Chronobooster(ai)
 
 
     def distribute_workers(self):
@@ -102,11 +71,6 @@ class AirOracle(StrategyABS):
         await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
-    async def train_units(self):
-        self.gate_trainer.zealots_and_sentry()
-        # await self.warpgate_trainer.standard()
-        self.stargate_trainer.carriers()
-        self.robotics_trainer.observer()
 
     def train_probes(self):
         self.nexus_trainer.probes_standard()
