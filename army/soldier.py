@@ -17,3 +17,6 @@ class Soldier:
 
     def __str__(self):
         return "Soldier(tag={}, type_id={})".format(self.tag, self.type_id)
+
+    def __repr__(self):
+        return str(self)

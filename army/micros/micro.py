@@ -218,9 +218,9 @@ class AirMicro(MicroABS):
         void_rays = all_units.filter(lambda x: x.type_id == unit.VOIDRAY)
         for vr in void_rays:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(vr) < 12 and z.type_id not in self.ai.units_to_ignore)
+                lambda z: z.distance_to(vr.position) < 12 and z.type_id not in self.ai.units_to_ignore)
             threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(vr) < 15 and
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(vr.position) < 15 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
             if threats.exists:
                 # target2 = None

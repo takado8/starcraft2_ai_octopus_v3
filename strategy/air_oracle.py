@@ -8,7 +8,7 @@ from army.micros.micro import AirMicro, ZealotMicro, SentryMicro
 from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
 # from bot.trainers import WarpgateTrainer, GateTrainer, RoboticsTrainer, StargateTrainer
 # from bot.units_training_dicts import UnitsTrainingDicts
-from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x5, SENTRY_x3
+from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
 
 
 
@@ -19,21 +19,22 @@ class AirOracle(StrategyABS):
         # stalker_micro = StalkerMicro(ai)
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
-        sentry_micro = SentryMicro(ai)
-        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai))
+        # sentry_micro = SentryMicro(ai)
+        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
+        self.army.create_division('observer', OBSERVER_x1, [air_micro], Movements(ai))
         # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai))
         # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai))
-        self.army.create_division('voidrays1', VOIDRAY_x5, [air_micro], Movements(ai))
+        self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
         # self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
-        self.army.create_division('carriers2', CARRIER_x8, [air_micro], Movements(ai))
+        # self.army.create_division('carriers2', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
-        self.army.create_division('tempests3', TEMPEST_x5, [air_micro], Movements(ai))
+        # self.army.create_division('tempests3', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
-        self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai))
+        # self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
         # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
 

@@ -13,10 +13,14 @@ SENTRY_x3 = {unit.SENTRY: 3}
 
 ORACLE_x1 = {unit.ORACLE: 1}
 
+OBSERVER_x1 = {unit.OBSERVER: 1}
+
 CARRIER_x8 = {unit.CARRIER: 8}
 
 TEMPEST_x5 = {unit.TEMPEST: 5}
 
 VOIDRAY_x5 = {unit.VOIDRAY: 5}
+
+VOIDRAY_x3 = {unit.VOIDRAY: 3}
 
 IMMORTAL_x5 = {unit.IMMORTAL: 5}

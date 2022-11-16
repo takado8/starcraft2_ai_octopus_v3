@@ -168,27 +168,34 @@ class Army:
         #         destination = self.ai.enemy_start_locations[0].position
         return destination
 
-    def create_division(self, division_name, units_ids_dict, micros: List, movements):
+    def create_division(self, division_name, units_ids_dict, micros: List, movements, lifetime=None):
         if division_name in self.divisions:
             print('Division "{}" already exists.'.format(division_name))
         else:
-            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements)
+            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements, lifetime=lifetime)
             self.divisions[division_name] = new_division
             return new_division
 
     def create_training_order(self):
         all_missing_units = {}
-        for division in self.divisions:
-            missing_units = self.divisions[division].get_dict_of_missing_units()
+        divisions_to_delete = []
+        for division_name in self.divisions:
+            division = self.divisions[division_name]
+            if division.lifetime and division.lifetime < self.ai.time:
+                divisions_to_delete.append(division_name)
+                continue
+            missing_units = division.get_dict_of_missing_units()
             for unit_id in missing_units:
-                unit_amount = 0
+                pending_amount = self.ai.already_pending(unit_id)
+                unit_amount = pending_amount
+                missing_units[unit_id] -= pending_amount
                 assigned_soldiers = []
                 for soldier in self.unassigned_soldiers:
                     if unit_amount < missing_units[unit_id]:
                         if unit_id == soldier.type_id:
                             unit_amount += 1
-                            self.divisions[division].add_soldier(soldier)
-                            soldier.division_name = division
+                            division.add_soldier(soldier)
+                            soldier.division_name = division_name
                             assigned_soldiers.append(soldier)
                             missing_units[unit_id] -= 1
                     else:
@@ -200,6 +207,9 @@ class Army:
                     all_missing_units[unit_id2] += missing_units[unit_id2]
                 else:
                     all_missing_units[unit_id2] = missing_units[unit_id2]
+        for division_name in divisions_to_delete:
+            if not self.divisions[division_name].soldiers:
+                self.divisions.pop(division_name)
         return all_missing_units
 
     def order_units_training(self, units_ids_dict):
@@ -229,7 +239,7 @@ class Army:
                 dead_units_tags.add(unit_tag)
         for dead_unit_tag in dead_units_tags:
             dead_soldier = self.all_soldiers.pop(dead_unit_tag)
-            if dead_soldier.division_name:
+            if dead_soldier.division_name and dead_soldier.division_name in self.divisions:
                 self.divisions[dead_soldier.division_name].remove_soldier(dead_unit_tag)
             else:
                 print('soldier: {} not in division.'.format(str(dead_soldier)))

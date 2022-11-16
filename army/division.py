@@ -6,7 +6,7 @@ from sc2.units import Units
 
 
 class Division:
-    def __init__(self, ai, name, units_ids_dict, micros: List, movements, max_units_distance=20):
+    def __init__(self, ai, name, units_ids_dict, micros: List, movements, max_units_distance=20, lifetime=None):
         self.ai = ai
         self.name = name
         self.units_ids_dict: Dict[UnitTypeId, int] = units_ids_dict
@@ -15,6 +15,7 @@ class Division:
         self.micros = micros
         self.movements = movements
         self.max_units_distance = max_units_distance
+        self.lifetime = lifetime
 
     async def do_micro(self):
         for micro in self.micros:
@@ -48,18 +49,27 @@ class Division:
         max_neighbours = -1
         biggest_group = None
         division_units = self.get_units()
-        for unit in division_units:
-            neighbours = division_units.closer_than(self.max_units_distance, unit)
-            if neighbours.amount > max_neighbours:
-                max_neighbours = neighbours.amount
-                biggest_group = neighbours
+        if division_units.amount > 1:
+            for unit in division_units:
+                neighbours = division_units.closer_than(self.max_units_distance, unit)
+                if neighbours.amount > max_neighbours:
+                    max_neighbours = neighbours.amount
+                    biggest_group = neighbours
 
-        center = biggest_group.center if biggest_group else None
+            center = biggest_group.center if biggest_group else None
+        elif division_units.amount == 1:
+            center = division_units.first.position
+        else:
+            center = None
+
         return center
 
     def __str__(self):
         return 'Division "{}" of count {} with micros "{}":\n{}'.format(self.name, len(self.soldiers),
         [str(m) for m in self.micros], ['{}: {}'.format(s, str(self.soldiers[s])) for s in self.soldiers])
+
+    def __repr__(self):
+        return str(self)
 
     async def move_division(self, destination):
         await self.movements.move_division(self, destination)
