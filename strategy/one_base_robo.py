@@ -89,7 +89,7 @@ class OneBaseRobo(StrategyABS):
         self.forge_upgrader.standard()
 
     def cybernetics_upgrade(self):
-        self.cybernetics_upgrader.standard()
+        self.cybernetics_upgrader.warpgate()
 
     async def twilight_upgrade(self):
         await self.twilight_upgrader.standard()
@@ -129,7 +129,7 @@ class OneBaseRobo(StrategyABS):
     # ======================================================== Buffs
     def chronoboost(self):
         # try:
-        self.chronobooster.standard()
+        self.chronobooster.warpgate()
         # except Exception as ex:
         #     print(ex)
 

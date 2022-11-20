@@ -1,26 +1,21 @@
 from army.movements import Movements
-from bot.morphing import Morphing
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import AirMicro, ZealotMicro, SentryMicro
-from bot.upgraders import ForgeUpgrader, CyberneticsUpgrader, TwilightUpgrader
-# from bot.trainers import WarpgateTrainer, GateTrainer, RoboticsTrainer, StargateTrainer
-# from bot.units_training_dicts import UnitsTrainingDicts
+from army.micros.micro import AirMicro, ZealotMicro
+from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader
 from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
-
 
 
 class AirOracle(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='air', name='AirOracle', ai=ai)
-        self.morphing_ = Morphing(ai)
-        # stalker_micro = StalkerMicro(ai)
+
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
         # sentry_micro = SentryMicro(ai)
-        # self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
+        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
         self.army.create_division('observer', OBSERVER_x1, [air_micro], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
@@ -32,11 +27,8 @@ class AirOracle(StrategyABS):
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
 
-        self.forge_upgrader = ForgeUpgrader(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
-
-
 
     def distribute_workers(self):
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
@@ -51,15 +43,9 @@ class AirOracle(StrategyABS):
     def build_assimilators(self):
         self.assimilator_builder.max_vespene()
 
-
     # =======================================================  Upgraders
-    def forge_upgrade(self):
-        self.forge_upgrader.none()
-
-    def cybernetics_upgrade(self):
+    async def do_upgrades(self):
         self.cybernetics_upgrader.air_dmg()
-
-    async def twilight_upgrade(self):
         await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
@@ -85,7 +71,7 @@ class AirOracle(StrategyABS):
     # ======================================================== Buffs
     def chronoboost(self):
         # try:
-        self.chronobooster.standard()
+        self.chronobooster.warpgate()
         # except Exception as ex:
         #     print(ex)
 
@@ -94,4 +80,3 @@ class AirOracle(StrategyABS):
 
     async def morphing(self):
         await self.morphing_.morph_gates()
-

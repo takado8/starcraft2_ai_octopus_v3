@@ -1,6 +1,7 @@
 from army.army import Army
 from army.scouting.scouting import Scouting
 from bot.conditions import ConditionAttack, ConditionCounterAttack, ConditionRetreat, ConditionLockSpending
+from bot.morphing import Morphing
 from bot.nexus_abilities import Chronobooster
 from bot.trainer import Trainer
 from bot.trainers import NexusTrainer
@@ -33,6 +34,9 @@ class StrategyABS:
         self.chronobooster = Chronobooster(ai)
         self.workers_distribution = DistributeWorkers(ai)
 
+        self.morphing_ = Morphing(ai)
+
+
 
     def distribute_workers(self):
         raise NotImplementedError
@@ -48,13 +52,7 @@ class StrategyABS:
         raise NotImplementedError
 
     # =======================================================  Upgraders
-    def forge_upgrade(self):
-        raise NotImplementedError
-
-    def cybernetics_upgrade(self):
-        raise NotImplementedError
-
-    async def twilight_upgrade(self):
+    async def do_upgrades(self):
         raise NotImplementedError
 
     # =======================================================  Trainers

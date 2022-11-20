@@ -92,7 +92,6 @@ class Scouting:
                         if not scouts.exists:
                             scouts = self.ai.units().closest_n_units(self.ai.enemy_start_locations[0], 3)
         if scouts.exists:
-            print('scouting...')
             self.scouting_positions.clear()
             for exp in self.ai.expansion_locations_list:
                 if not self.ai.structures().closer_than(7, exp).exists:

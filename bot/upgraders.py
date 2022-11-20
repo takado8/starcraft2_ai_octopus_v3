@@ -54,13 +54,13 @@ class CyberneticsUpgrader:
     def __init__(self, ai):
         self.ai = ai
 
-    def standard(self):
+    def warpgate(self):
         cyber = self.ai.structures(unit.CYBERNETICSCORE).ready.idle
         if cyber.exists:
             if upgrade.WARPGATERESEARCH not in self.ai.state.upgrades and \
                     not self.ai.already_pending_upgrade(upgrade.WARPGATERESEARCH) and \
                     self.ai.can_afford(upgrade.WARPGATERESEARCH):
-                self.ai.do(cyber.random.research(upgrade.WARPGATERESEARCH))
+                cyber.random.research(upgrade.WARPGATERESEARCH)
 
     def air_dmg(self):
         if self.ai.units().filter(lambda x: x.type_id in [unit.ORACLE, unit.VOIDRAY, unit.CARRIER,

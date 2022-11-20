@@ -116,11 +116,8 @@ class Chronobooster:
                         if tg.orders:
                             progress = tg.orders[0].progress
                             abil_id = tg.orders[0].ability.id
-                            if abil_id == ability.STARGATETRAIN_CARRIER:
-                                time = 64
-                            elif abil_id == ability.STARGATETRAIN_TEMPEST:
-                                time = 43
-                            elif abil_id == ability.RESEARCH_WARPGATE:
+
+                            if abil_id == ability.RESEARCH_WARPGATE:
                                 time = 110
                             else:
                                 time = 31

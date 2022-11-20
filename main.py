@@ -35,7 +35,7 @@ class OctopusV3(sc2.BotAI):
         self.after_first_attack = False
         self.defend_position = None
         self.army = None
-        self.strategy: AirOracle = None
+        self.strategy: StalkerProxy = None
         self.coords = None
         self.speed_mining: SpeedMining = None
 
@@ -47,7 +47,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = AirOracle(self)
+        self.strategy = StalkerProxy(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -74,9 +74,7 @@ class OctopusV3(sc2.BotAI):
         await self.strategy.build_pylons()
         self.strategy.train_probes()
         self.strategy.build_assimilators()
-        await self.strategy.twilight_upgrade()
-        self.strategy.cybernetics_upgrade()
-        self.strategy.forge_upgrade()
+        await self.strategy.do_upgrades()
         #
         ## scan
         # self.strategy.scouting.scan_middle_game()
@@ -107,8 +105,8 @@ class OctopusV3(sc2.BotAI):
         #
         ## build
         current_building = self.strategy.builder.get_current_building()
-        build_in_progress = self.strategy.builder.is_build_in_progress()
-        build_finished = self.strategy.builder.is_build_finished()
+        # build_in_progress = self.strategy.builder.is_build_in_progress()
+        # build_finished = self.strategy.builder.is_build_finished()
 
         if not isinstance(current_building, unit):
             min_army_supply = current_building
@@ -184,8 +182,8 @@ def botVsComputer(ai, real_time=1):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    # computer_builds = [AIBuild.Timing]
-    computer_builds = [AIBuild.Air]
+    computer_builds = [AIBuild.Timing]
+    # computer_builds = [AIBuild.Air]
     # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
@@ -195,7 +193,7 @@ def botVsComputer(ai, real_time=1):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
