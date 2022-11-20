@@ -7,25 +7,8 @@ from typing import Dict, Set
 class DistributeWorkers:
     def __init__(self, ai):
         self.ai = ai
-        # [base position][mineral position]{workers tags}
-        # self.minerals_mining_dict: Dict[Point2, Dict[Point2, Set[int]]] = Dict[Point2, Dict[Point2, Set[int]]]()
 
-    # def distribute_workers_2(self):
-    #     if not self.ai.mineral_field or not self.ai.workers or not self.ai.townhalls.ready:
-    #         return
-    #     bases = self.ai.townhalls.ready
-    #
-    #     for base in bases:
-    #         if base.position not in self.minerals_mining_dict:
-    #             local_minerals_positions = [mineral.position for mineral in self.ai.mineral_field
-    #                                    if mineral.distance_to(base) <= 10]
-    #             for mineral_position in local_minerals_positions:
-    #                 self.minerals_mining_dict[base.position][mineral_position] = Set[int]()
-
-
-
-
-    def distribute_workers(self, resources_ratio=2):
+    def distribute_workers(self, minerals_to_gas_ratio=2):
         bases = self.ai.townhalls.ready
 
         if not self.ai.mineral_field or not self.ai.workers or not bases:
@@ -63,23 +46,54 @@ class DistributeWorkers:
                 workers_idle.extend(local_workers[:surplus_harvesters])
             else:
                 gas_buildings_with_deficit[gas_building] = -surplus_harvesters
-        prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < resources_ratio
+        prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio
         if prefer_minerals:
             for worker in workers_idle:
                 if len(bases_with_deficit) > 0:
                     self.assign_minerals_mining(bases_with_deficit, worker)
                 elif len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
-                # else:
-                #     self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
-                #                                 worker)
+            #
+            # if len(bases_with_deficit) > 0:
+            #     for base in bases_with_deficit:
+            #         close_gas_buildings = self.ai.gas_buildings.ready.closest_n_units(base, 2)
+            #         close_gas_buildings_tags = {b.tag for b in close_gas_buildings}
+            #         local_workers = self.ai.workers.filter(
+            #             lambda unit: unit.order_target in close_gas_buildings_tags
+            #                          or (unit.is_carrying_vespene and unit.order_target == base.tag))
+            #         if not local_workers:
+            #             continue
+            #         for _ in range(bases_with_deficit[base]):
+            #             worker = local_workers.closest_to(base)
+            #             if worker.is_carrying_vespene:
+            #                 worker.smart(base)
+            #                 worker.gather(self.ai.mineral_field.closest_to(worker), queue=True)
+            #             else:
+            #                 worker.gather(self.ai.mineral_field.closest_to(worker))
         else:
             for worker in workers_idle:
                 if len(gas_buildings_with_deficit) > 0:
                     self.assign_gas_mining(gas_buildings_with_deficit, worker)
                 elif len(bases_with_deficit) > 0:
                     self.assign_minerals_mining(bases_with_deficit, worker)
-                # else:
+            # if len(gas_buildings_with_deficit) > 0:
+            #     for gas_building in gas_buildings_with_deficit:
+            #         closest_base = bases.closest_to(gas_building)
+            #         local_minerals_tags = {mineral.tag for mineral in self.ai.mineral_field
+            #                                if mineral.distance_to(closest_base) <= 12}
+            #         local_workers = self.ai.workers.filter(
+            #             lambda unit: unit.order_target in local_minerals_tags
+            #                          or (unit.is_carrying_minerals and unit.order_target == closest_base.tag))
+            #         if not local_workers:
+            #             continue
+            #         for _ in range(gas_buildings_with_deficit[gas_building]):
+            #             worker = local_workers.closest_to(gas_building)
+            #             if worker.is_carrying_minerals:
+            #                 worker.smart(closest_base)
+            #                 worker.gather(gas_building, queue=True)
+            #             else:
+            #                 worker.gather(gas_building)
+                            # else:
                 #     self.assign_minerals_mining({self.ai.structures(unit.NEXUS).ready.closest_to(worker): 10},
                 #                                 worker)
         # for base in bases_with_deficit:

@@ -20,23 +20,14 @@ class AirOracle(StrategyABS):
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
         # sentry_micro = SentryMicro(ai)
-        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
+        # self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
         self.army.create_division('observer', OBSERVER_x1, [air_micro], Movements(ai))
-        # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai))
-        # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
-        # self.army.create_division('voidrays2', VOIDRAY_x5, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
-        # self.army.create_division('carriers2', CARRIER_x8, [air_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
-        # self.army.create_division('tempests3', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
-        # self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
-        # self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai))
-        # self.army.create_division('zealot1', ZEALOT_x10, [zealot_micro], Movements(ai))
-        # self.army.create_division('zealot2', ZEALOT_x10, [zealot_micro], Movements(ai))
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -48,7 +39,7 @@ class AirOracle(StrategyABS):
 
 
     def distribute_workers(self):
-        self.workers_distribution.distribute_workers(resources_ratio=1.2)
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
 
     # =======================================================  Builders
     async def build_from_queue(self):
@@ -86,7 +77,7 @@ class AirOracle(StrategyABS):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(160)
+        return self.condition_retreat.supply_less_than(80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

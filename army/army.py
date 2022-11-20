@@ -11,7 +11,6 @@ from bot.constants import ARMY_IDS, SPECIAL_UNITS_IDS, AOE_IDS
 
 
 class Army:
-    # TODO try genetic algo to calc army composition accordingly to enemy army type
     def __init__(self, ai_object, scouting, trainer):
         self.ai = ai_object
         self.scouting = scouting
@@ -21,6 +20,7 @@ class Army:
         self.unassigned_soldiers: List[Soldier] = []
         self.all_soldiers: Dict[str, Soldier] = {}
         self.enemy_main_base_down = False
+        self.assign_defend_position()
 
     async def execute(self):
         self.establish_army_status()
@@ -73,11 +73,15 @@ class Army:
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
         elif nexuses.amount < 2:
             self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center, -2)
+        elif nexuses.amount == 2:
+            second_nexus = nexuses.furthest_to(self.ai.start_location.position)
+            self.ai.defend_position = second_nexus.position.towards(
+                self.ai.game_info.map_center, 5)
         else:
             closest_nexuses = nexuses.closest_n_units(self.ai.enemy_start_locations[0].position, n=2)
             nexus_with_most_workers = max(closest_nexuses, key=lambda x: self.ai.workers.closer_than(15, x).amount)
             current_position_workers = self.ai.workers.closer_than(15, self.ai.defend_position)
-            if self.ai.workers.closer_than(15, nexus_with_most_workers).amount - current_position_workers.amount > 5:
+            if self.ai.workers.closer_than(15, nexus_with_most_workers).amount - current_position_workers.amount > 3:
                 self.ai.defend_position = nexus_with_most_workers.position.towards(
                     self.ai.game_info.map_center, 5)
 

@@ -6,8 +6,13 @@ class AssimilatorBuilder:
         self.ai = ai
 
     def max_vespene(self):
+        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1:
+            return
         if self.ai.can_afford(unit.ASSIMILATOR) and self.ai.structures(unit.PYLON).exists:
-            for nexus in self.ai.structures(unit.NEXUS):
+            nexuses = self.ai.structures(unit.NEXUS)
+            if nexuses.amount < 3:
+                nexuses = nexuses.ready
+            for nexus in nexuses:
                 vaspenes = self.ai.vespene_geyser.closer_than(12, nexus)
                 for vaspene in vaspenes:
                     if not (self.ai.already_pending(unit.ASSIMILATOR) or self.ai.already_pending(unit.ASSIMILATORRICH)) \
@@ -47,10 +52,10 @@ class AssimilatorBuilder:
                             self.ai.do(worker.build(unit.ASSIMILATOR, vespene))
                             self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
 
-    def standard(self):
+    def standard(self, minerals_to_gas_ratio=2):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1:
             return
-        if self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.minerals / (self.ai.vespene + 1) < 1:
+        if self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio:
             return
 
         nexuses = self.ai.structures(unit.NEXUS)
@@ -73,9 +78,9 @@ class AssimilatorBuilder:
                             worker = self.ai.select_build_worker(vespene.position)
                             if worker is None:
                                 break
-                            self.ai.do(worker.build(unit.ASSIMILATOR, vespene))
-                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
-                            print("building assimilator.")
+                            worker.build(unit.ASSIMILATOR, vespene)
+                            worker.move(worker.position.random_on_distance(1), queue=True)
+                            # print("building assimilator.")
                             break
 
     def minerals_x4(self):

@@ -27,17 +27,16 @@ class StargateBuilder:
     async def proxy(self):
         pylons = self.ai.structures(unit.PYLON).ready
         if pylons.exists and self.ai.structures(unit.CYBERNETICSCORE).ready.exists:
-            pylon = pylons.further_than(40, self.ai.start_location.position)
+            pylon = pylons.further_than(20, self.ai.start_location.position)
             if pylon.exists:
                 pylon = pylon.furthest_to(self.ai.start_location.position)
                 stargates = self.ai.structures(unit.STARGATE)
 
                 if not stargates.idle.exists and self.ai.can_afford(unit.STARGATE) and not\
-                        self.ai.already_pending(unit.STARGATE) and (self.ai.vespene > 250 or not
-                        stargates.exists):
+                        self.ai.already_pending(unit.STARGATE):
                     worker = self.ai.units(unit.PROBE).closest_to(pylon)
                     await self.ai.build(unit.STARGATE, near=pylon, build_worker=worker)
-                    self.ai.do(worker.hold_position(queue=True))
+                    worker.hold_position(queue=True)
 
     async def none(self):
         pass

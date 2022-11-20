@@ -24,7 +24,7 @@ class Scouting:
                 self.scouting_index += 1
                 if self.scouting_index >= len(self.scouting_positions):
                     self.scouting_index = 0
-                self.ai.do(scout.move(self.scouting_positions[self.scouting_index]))
+                scout.move(self.scouting_positions[self.scouting_index])
         else:
             self.create_scout()
 
@@ -69,7 +69,7 @@ class Scouting:
                     return
             for sentry in sentries:
                 sentry_energy = sentry.energy_percentage
-                self.ai.do(sentry(AbilityId.HALLUCINATION_PHOENIX))
+                sentry(AbilityId.HALLUCINATION_PHOENIX)
                 self.number_of_scoutings_done += 1
                 if sentry_energy < 1:
                     break
@@ -82,7 +82,7 @@ class Scouting:
                 snts = self.ai.army(Unit.SENTRY).filter(lambda z: z.energy >= 75)
                 if snts:
                     for se in snts:
-                        self.ai.do(se(AbilityId.HALLUCINATION_PHOENIX))
+                        se(AbilityId.HALLUCINATION_PHOENIX)
             else:
                 scouts = self.ai.units({Unit.WARPPRISM, Unit.OBSERVER})
                 if not scouts.exists:
@@ -92,6 +92,7 @@ class Scouting:
                         if not scouts.exists:
                             scouts = self.ai.units().closest_n_units(self.ai.enemy_start_locations[0], 3)
         if scouts.exists:
+            print('scouting...')
             self.scouting_positions.clear()
             for exp in self.ai.expansion_locations_list:
                 if not self.ai.structures().closer_than(7, exp).exists:
@@ -99,7 +100,7 @@ class Scouting:
             self.scouting_positions = sorted(self.scouting_positions,
                                                    key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
             for px in scouts.idle:
-                self.ai.do(px.move(self.scouting_positions[self.scouting_index]))
+                px.move(self.scouting_positions[self.scouting_index])
                 self.scouting_index += 1
                 if self.scouting_index == len(self.scouting_positions):
                     self.scouting_index = 0

@@ -28,7 +28,7 @@ class ConditionAttack:
                self.ai.supply_used > 193
 
     def supply_over(self, supply):
-        return self.ai.supply_used > supply
+        return self.ai.supply_army > supply
 
 
 class ConditionCounterAttack:
@@ -54,7 +54,7 @@ class ConditionRetreat:
         return self.ai.attack and self.ai.army.amount < army_count
 
     def supply_less_than(self, supply):
-        return self.ai.supply_used < supply
+        return self.ai.supply_army < supply
 
 
 class ConditionTransform:

@@ -22,8 +22,8 @@ class BuildQueues:
                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.NEXUS]
 
-    AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.STARGATE, unit.NEXUS,
-                            10, unit.FLEETBEACON, unit.NEXUS, 30, unit.STARGATE, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
+    AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,
+                            10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
                            unit.NEXUS, unit.STARGATE, unit.NEXUS, 120, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS,unit.NEXUS, unit.NEXUS]
 
@@ -31,3 +31,5 @@ class BuildQueues:
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
                     unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+
+    ORACLE_PROXY = [unit.GATEWAY, unit.CYBERNETICSCORE]

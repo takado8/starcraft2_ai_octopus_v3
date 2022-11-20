@@ -13,7 +13,6 @@ from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
 # from strategy.blinkers import Blinkers
 from strategy.stalker_proxy import StalkerProxy
-# from strategy.one_base_robo import OneBaseRobo
 
 
 class OctopusV3(sc2.BotAI):
@@ -122,7 +121,7 @@ class OctopusV3(sc2.BotAI):
         #         (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
         #     await self.strategy.train_units()
 
-        if not army_priority and not build_finished and not lock_spending:
+        if not army_priority and not lock_spending:
             await self.strategy.build_from_queue()
 
     def distribute_workers_on_first_step(self):
@@ -153,9 +152,9 @@ class OctopusV3(sc2.BotAI):
 
     def set_game_step(self):
         if self.enemy_units().exists:
-            self._client.game_step = 4
+            self._client.game_step = 2
         else:
-            self._client.game_step = 8
+            self._client.game_step = 4
 
     def get_super_pylon(self):
         return self.spot_validator.get_super_pylon()
@@ -196,7 +195,7 @@ def botVsComputer(ai, real_time=1):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
