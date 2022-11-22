@@ -11,7 +11,7 @@ from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
-# from strategy.blinkers import Blinkers
+from strategy.blinkers import Blinkers
 from strategy.stalker_proxy import StalkerProxy
 
 
@@ -34,8 +34,9 @@ class OctopusV3(sc2.BotAI):
         self.retreat = False
         self.after_first_attack = False
         self.defend_position = None
+        self.army_priority = False
         self.army = None
-        self.strategy: StalkerProxy = None
+        self.strategy: AirOracle = None
         self.coords = None
         self.speed_mining: SpeedMining = None
 
@@ -47,7 +48,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = StalkerProxy(self)
+        self.strategy = AirOracle(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -59,7 +60,7 @@ class OctopusV3(sc2.BotAI):
         else:
             print('getting coords failed')
             # await self.chat_send('getting coords failed')
-        self.distribute_workers_on_first_step()
+        self.strategy.workers_distribution.distribute_workers_on_first_step()
         # for worker in self.workers:
         #     worker.gather(self.mineral_field.closest_to(worker))
 
@@ -67,6 +68,7 @@ class OctopusV3(sc2.BotAI):
         # self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
+        await self.strategy.morphing()
         await self.strategy.army_execute()
         self.strategy.distribute_workers()
         self.speed_mining.execute()
@@ -88,16 +90,17 @@ class OctopusV3(sc2.BotAI):
 
         #
         ## attack
-        army_priority = False
+        # army_priority = False
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
             # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
-            army_priority = True
+            self.army_priority = True
         # retreat
         if self.retreat_condition():
+            self.army_priority = False
             # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
@@ -105,45 +108,30 @@ class OctopusV3(sc2.BotAI):
         #
         ## build
         current_building = self.strategy.builder.get_current_building()
-        # build_in_progress = self.strategy.builder.is_build_in_progress()
-        # build_finished = self.strategy.builder.is_build_finished()
 
         if not isinstance(current_building, unit):
             min_army_supply = current_building
-            if self.state.score.food_used_army > min_army_supply:
+            if self.state.score.food_used_army >= min_army_supply:
                 self.strategy.builder.increment_build_queue_index()
+                self.army_priority = False
             else:
-                army_priority = True
+                self.army_priority = True
         lock_spending = await self.lock_spending_condition()
-        # if (build_in_progress or build_finished or army_priority or
-        #         (self.minerals > 500 and self.vespene > 300)) and not lock_spending:
-        #     await self.strategy.train_units()
 
-        if not army_priority and not lock_spending:
+        if not self.army_priority and not lock_spending:
             await self.strategy.build_from_queue()
-
-    def distribute_workers_on_first_step(self):
-        mineral_fields = self.mineral_field.closer_than(12, self.start_location.position)
-        fields_workers_dict = {}
-        for worker in self.workers:
-            closest_field = mineral_fields.closest_to(worker)
-            if closest_field in fields_workers_dict:
-                fields_workers_dict[closest_field].append(worker)
-            else:
-                fields_workers_dict[closest_field] = [worker]
-        empty_fields = mineral_fields.filter(lambda field: field not in fields_workers_dict)
-        for field in fields_workers_dict:
-            if len(fields_workers_dict[field]) > 2:
-                worker = fields_workers_dict[field].pop(-1)
-                worker.gather(empty_fields.closest_to(worker))
-            for worker in fields_workers_dict[field]:
-                worker.gather(field)
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
+
+    def is_build_in_progress(self):
+        return self.strategy.builder.is_build_in_progress()
+
+    def is_build_finished(self):
+        return self.strategy.builder.is_build_finished()
 
     def get_pylon_with_least_neighbours(self):
         return self.spot_validator.get_pylon_with_least_neighbours()
@@ -170,7 +158,7 @@ class OctopusV3(sc2.BotAI):
         return await self.strategy.lock_spending_condition()
 
 
-def botVsComputer(ai, real_time=1):
+def botVsComputer(ai, real_time=0):
     if real_time:
         real_time = True
     else:
@@ -182,9 +170,9 @@ def botVsComputer(ai, real_time=1):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    computer_builds = [AIBuild.Timing]
+    # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -193,7 +181,7 @@ def botVsComputer(ai, real_time=1):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -218,6 +206,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=0)
+    win, killed, lost = test(real_time=1)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

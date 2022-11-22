@@ -51,9 +51,9 @@ class Army:
             self.status = ArmyStatus.ATTACKING
         elif enemy.closer_than(30, self.ai.defend_position).amount > 3:
             self.status = ArmyStatus.DEFENDING_SIEGE
-        elif self.status != ArmyStatus.ATTACKING and 4 > enemy.closer_than(70, self.ai.start_location.position).amount > 0:
+        elif self.status != ArmyStatus.ATTACKING and any([4 > enemy.closer_than(30, townhall).amount > 0 for townhall in self.ai.townhalls.ready]):
             self.status = ArmyStatus.ENEMY_SCOUT
-        elif self.ai.retreat_condition():
+        elif self.ai.retreat_condition() or self.status in {ArmyStatus.ENEMY_SCOUT, ArmyStatus.DEFENDING_SIEGE}:
             self.status = ArmyStatus.DEFENSE_POSITION
 
     def defend(self):

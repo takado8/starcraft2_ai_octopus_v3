@@ -123,3 +123,20 @@ class DistributeWorkers:
             gas_buildings_with_deficit[closest_place] -= 1
             if gas_buildings_with_deficit[closest_place] <= 0:
                 gas_buildings_with_deficit.pop(closest_place)
+
+    def distribute_workers_on_first_step(self):
+        mineral_fields = self.ai.mineral_field.closer_than(12, self.ai.start_location.position)
+        fields_workers_dict = {}
+        for worker in self.ai.workers:
+            closest_field = mineral_fields.closest_to(worker)
+            if closest_field in fields_workers_dict:
+                fields_workers_dict[closest_field].append(worker)
+            else:
+                fields_workers_dict[closest_field] = [worker]
+        empty_fields = mineral_fields.filter(lambda field: field not in fields_workers_dict)
+        for field in fields_workers_dict:
+            if len(fields_workers_dict[field]) > 2:
+                worker = fields_workers_dict[field].pop(-1)
+                worker.gather(empty_fields.closest_to(worker))
+            for worker in fields_workers_dict[field]:
+                worker.gather(field)

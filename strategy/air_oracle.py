@@ -71,7 +71,7 @@ class AirOracle(StrategyABS):
     # ======================================================== Buffs
     def chronoboost(self):
         # try:
-        self.chronobooster.warpgate()
+        self.chronobooster.standard()
         # except Exception as ex:
         #     print(ex)
 

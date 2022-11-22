@@ -53,7 +53,7 @@ class PylonBuilder:
 
     async def proxy(self):
         pylons = self.ai.structures(unit.PYLON)
-        if not self.is_proxy_pylon_built and pylons.exists and\
+        if not self.is_proxy_pylon_built and pylons.exists and self.ai.structures(unit.CYBERNETICSCORE).exists and\
                 self.ai.can_afford(unit.PYLON):
             if pylons.further_than(40, self.ai.start_location.position).amount == 0:
                 if not self.ai.already_pending(unit.PYLON):
@@ -75,8 +75,8 @@ class PylonBuilder:
                     if placement is not None:
                         worker = self.ai.units(unit.PROBE).closest_to(placement)
                         done = await self.ai.build(unit.PYLON, near=placement, build_worker=worker)
-                        if done:
-                            self.ai.do(worker.hold_position(queue=True))
+                        # if done:
+                        #     self.ai.do(worker.hold_position(queue=True))
             else:
                 self.is_proxy_pylon_built = True
 
