@@ -8,13 +8,6 @@ class BuildQueues:
                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    STALKER_MID = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY,
-                     unit.NEXUS, unit.FORGE, unit.GATEWAY,  unit.GATEWAY, 7, unit.TWILIGHTCOUNCIL, unit.FORGE,
-                     unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS, unit.FORGE,
-                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, 45,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.NEXUS]
-
     STALKER_BLINKERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
                         unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS,
                    unit.GATEWAY, unit.GATEWAY, 20, unit.NEXUS,
@@ -27,9 +20,9 @@ class BuildQueues:
                            unit.NEXUS, unit.STARGATE, unit.NEXUS, 120, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS,unit.NEXUS, unit.NEXUS]
 
-    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, 8, unit.ROBOTICSFACILITY, 30,  unit.NEXUS,
-                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-                    unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 20,  unit.NEXUS, unit.FORGE,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
+                    unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     ORACLE_PROXY = [unit.GATEWAY, unit.CYBERNETICSCORE]

@@ -24,3 +24,5 @@ VOIDRAY_x5 = {unit.VOIDRAY: 5}
 VOIDRAY_x3 = {unit.VOIDRAY: 3}
 
 IMMORTAL_x5 = {unit.IMMORTAL: 5}
+
+IMMORTAL_x2 = {unit.IMMORTAL: 2}

@@ -3,25 +3,30 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import StalkerMicro
+from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro
 from bot.upgraders import CyberneticsUpgrader
-from army.divisions import STALKER_x10
+from army.divisions import STALKER_x10, IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, STALKER_x5, ZEALOT_x10
 
 
 
-class StalkerProxy(StrategyABS):
+class OneBaseRobo(StrategyABS):
     def __init__(self, ai):
-        super().__init__(type='rush', name='StalkerProxy', ai=ai)
+        super().__init__(type='rush', name='OneBaseRobo', ai=ai)
 
         stalker_micro = StalkerMicro(ai)
+        sentry_micro = SentryMicro(ai)
+        immortal_micro = ImmortalMicro(ai)
+        zealot_micro = ZealotMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
-        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
+        self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('immortals2', IMMORTAL_x5, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('zealots', ZEALOT_x10, [zealot_micro], Movements(ai, 0.33))
+        self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2))
+        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
 
-        build_queue = BuildQueues.STALKER_RUSH
+        build_queue = BuildQueues.ONE_BASE_ROBO
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
@@ -36,7 +41,6 @@ class StalkerProxy(StrategyABS):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
-        await self.pylon_builder.proxy()
 
     def build_assimilators(self):
         self.assimilator_builder.standard(minerals_to_gas_ratio=1)
@@ -57,10 +61,10 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(2)
+        return self.condition_attack.supply_over(190)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(3)
+        return self.condition_retreat.supply_less_than(50)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
