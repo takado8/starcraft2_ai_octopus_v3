@@ -20,9 +20,8 @@ class BuildQueues:
                            unit.NEXUS, unit.STARGATE, unit.NEXUS, 120, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS,unit.NEXUS, unit.NEXUS]
 
-    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 20,  unit.NEXUS, unit.FORGE,
-                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
-                    unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 16,  unit.NEXUS, unit.FORGE,
+                    unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, unit.GATEWAY, unit.TWILIGHTCOUNCIL, 50, unit.NEXUS,
+                     unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, 120, unit.NEXUS, unit.GATEWAY, 140,
+                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS,  unit.GATEWAY, unit.GATEWAY,unit.NEXUS]
 
-    ORACLE_PROXY = [unit.GATEWAY, unit.CYBERNETICSCORE]

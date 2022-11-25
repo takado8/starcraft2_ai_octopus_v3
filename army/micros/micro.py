@@ -298,7 +298,7 @@ class StalkerMicro(MicroABS):
 
                 if stalker.shield_percentage < 0.4:
                     if stalker.health_percentage < 0.35:
-                        self.ai.do(stalker.move(self.find_back_out_position(stalker, closest_enemy.position)))
+                        stalker.move(self.find_back_out_position(stalker, closest_enemy.position))
                         continue
                     d = 4
                 else:
@@ -310,20 +310,20 @@ class StalkerMicro(MicroABS):
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
                         await self.blink(stalker, back_out_position)
                     else:
-                        self.ai.do(stalker.attack(target))
+                        stalker.attack(target)
                 else:
                     back_out_position = self.find_back_out_position(stalker, closest_enemy.position)
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
-                        self.ai.do(stalker.move(stalker.position.towards(back_out_position, d)))
+                        stalker.move(stalker.position.towards(back_out_position, d))
                     else:
-                        self.ai.do(stalker.attack(target))
+                        stalker.attack(target)
 
     async def is_blink_available(self, stalker):
         abilities = await self.ai.get_available_abilities(stalker)
         return ability.EFFECT_BLINK_STALKER in abilities
 
     async def blink(self, stalker, target):
-        self.ai.do(stalker(ability.EFFECT_BLINK_STALKER, target))
+        stalker(ability.EFFECT_BLINK_STALKER, target)
 
 
     def find_blink_out_position(self, stalker, closest_enemy_position):
@@ -408,7 +408,7 @@ class ImmortalMicro(MicroABS):
 
                 if immortal.shield_percentage < 0.4:
                     if immortal.health_percentage < 0.35:
-                        self.ai.do(immortal.move(self.find_back_out_position(immortal, closest_enemy.position)))
+                        immortal.move(self.find_back_out_position(immortal, closest_enemy.position))
                         continue
                     d = 4
                 else:
@@ -417,9 +417,9 @@ class ImmortalMicro(MicroABS):
 
                 back_out_position = self.find_back_out_position(immortal, closest_enemy.position)
                 if back_out_position is not None and immortal.weapon_cooldown > 0:
-                    self.ai.do(immortal.move(immortal.position.towards(back_out_position, d)))
+                    immortal.move(immortal.position.towards(back_out_position, d))
                 else:
-                    self.ai.do(immortal.attack(target))
+                    immortal.attack(target)
 
     def find_back_out_position(self, immortal, closest_enemy_position):
         i = 6
@@ -457,8 +457,10 @@ class ZealotMicro(MicroABS):
                 else:
                     target = threats[0]
                 if ability.EFFECT_CHARGE in await self.ai.get_available_abilities(zl):
-                    self.ai.do(zl(ability.EFFECT_CHARGE, target))
-                self.ai.do(zl.attack(target))
+                    zl(ability.EFFECT_CHARGE, target)
+                    zl.attack(target, queue=True)
+                else:
+                    zl.attack(target)
 
 
 class SentryMicro(MicroABS):
@@ -504,15 +506,15 @@ class SentryMicro(MicroABS):
                 abilities = await self.ai.get_available_abilities(se)
                 if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities \
                         and se.distance_to(threats.closest_to(se)) < 7:
-                    self.ai.do(se(ability.GUARDIANSHIELD_GUARDIANSHIELD))
+                    se(ability.GUARDIANSHIELD_GUARDIANSHIELD)
                     guardian_shield_on = True
                 if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
-                    self.ai.do(se(ability.FORCEFIELD_FORCEFIELD, points.pop(0)))
+                    se(ability.FORCEFIELD_FORCEFIELD, points.pop(0))
                 else:
                     army_nearby = self.ai.army.closer_than(9, se)
                     if army_nearby.exists:
                         if threats.exists:
-                            self.ai.do(se.move(army_nearby.center.towards(threats.closest_to(se), -4)))
+                            se.move(army_nearby.center.towards(threats.closest_to(se), -4))
 
 
 class WarpPrismMicro(MicroABS):

@@ -13,6 +13,8 @@ SENTRY_x3 = {unit.SENTRY: 3}
 
 ORACLE_x1 = {unit.ORACLE: 1}
 
+WARPPRISM_x1 = {unit.WARPPRISM: 1}
+
 OBSERVER_x1 = {unit.OBSERVER: 1}
 
 CARRIER_x8 = {unit.CARRIER: 8}

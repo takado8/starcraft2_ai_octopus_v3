@@ -49,9 +49,9 @@ class Army:
         if (not self.ai.retreat_condition()) and (
                 self.ai.counter_attack_condition() or self.ai.attack_condition() or self.ai.attack):
             self.status = ArmyStatus.ATTACKING
-        elif enemy.closer_than(30, self.ai.defend_position).amount > 3:
+        elif enemy.closer_than(30, self.ai.defend_position).amount > 1:
             self.status = ArmyStatus.DEFENDING_SIEGE
-        elif self.status != ArmyStatus.ATTACKING and any([4 > enemy.closer_than(30, townhall).amount > 0 for townhall in self.ai.townhalls.ready]):
+        elif self.status != ArmyStatus.ATTACKING and any([3 > enemy.closer_than(30, townhall).amount > 0 for townhall in self.ai.townhalls.ready]):
             self.status = ArmyStatus.ENEMY_SCOUT
         elif self.ai.retreat_condition() or self.status in {ArmyStatus.ENEMY_SCOUT, ArmyStatus.DEFENDING_SIEGE}:
             self.status = ArmyStatus.DEFENSE_POSITION
@@ -185,9 +185,12 @@ class Army:
         divisions_to_delete = []
         for division_name in self.divisions:
             division = self.divisions[division_name]
-            if division.lifetime and division.lifetime < self.ai.time:
-                divisions_to_delete.append(division_name)
-                continue
+            if division.lifetime:
+                if 0 < division.lifetime < self.ai.time:
+                        divisions_to_delete.append(division_name)
+                        continue
+                elif -division.lifetime > self.ai.time:
+                    continue
             missing_units = division.get_dict_of_missing_units()
             for unit_id in missing_units:
                 pending_amount = self.ai.already_pending(unit_id)

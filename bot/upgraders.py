@@ -144,7 +144,7 @@ class TwilightUpgrader:
                 tc = tc.random
                 research = None
                 abilities = await self.ai.get_available_abilities(tc)
-                if self.ai.army(unit.STALKER).amount > 2 and upgrade.BLINKTECH not in self.ai.state.upgrades:
+                if self.ai.army(unit.STALKER).amount > 4 and upgrade.BLINKTECH not in self.ai.state.upgrades:
                     if ability.RESEARCH_BLINK in abilities:
                         research = ability.RESEARCH_BLINK
                 elif upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
