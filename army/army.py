@@ -121,14 +121,14 @@ class Army:
 
     def select_targets_to_attack(self):
         enemy_units = self.ai.enemy_units()
-        enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore
+        enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore and not x.is_hallucination
                                              and (x.can_attack_ground or x.can_attack_air))
         enemy.extend(self.ai.enemy_structures().filter(lambda b: #b.type_id in self.ai.bases_ids or
                          b.can_attack_ground or b.can_attack_air or b.type_id == unit.BUNKER))
         if self.enemy_main_base_down or (
-                self.ai.army.closer_than(30, self.ai.enemy_start_locations[0]).amount > 5 and
-                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(20,
-                                                                    self.ai.enemy_start_locations[0]).amount < 5)):
+                self.ai.army.closer_than(15, self.ai.enemy_start_locations[0]).amount > 7 and
+                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(15,
+                                                                    self.ai.enemy_start_locations[0]).amount < 1)):
             if not self.enemy_main_base_down:
                 # await self.ai.chat_send('enemy main base down.')
                 print('enemy main base down.')

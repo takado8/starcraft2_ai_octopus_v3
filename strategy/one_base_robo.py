@@ -72,10 +72,10 @@ class OneBaseRobo(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.supply_over(190)
+        return self.condition_attack.total_supply_over(193)
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(15 if self.ai.time < 400 else 50)
+        return self.condition_retreat.supply_less_than(18 if self.ai.time < 400 else 50)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

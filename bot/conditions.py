@@ -27,8 +27,11 @@ class ConditionAttack:
         return upgrade.PROTOSSAIRWEAPONSLEVEL2 in self.ai.state.upgrades and \
                self.ai.supply_used > 193
 
-    def supply_over(self, supply):
+    def army_supply_over(self, supply):
         return self.ai.supply_army > supply
+
+    def total_supply_over(self, supply):
+        return self.ai.supply_used > supply
 
 
 class ConditionCounterAttack:

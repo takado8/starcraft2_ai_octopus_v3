@@ -166,10 +166,15 @@ class AirMicro(MicroABS):
         carriers = all_units(unit.CARRIER)#and not x.is_attacking)
         for carrier in carriers:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(carrier) < 10 and z.type_id not in self.ai.units_to_ignore)
+                lambda z: z.distance_to(carrier) < 10 and z.type_id not in self.ai.units_to_ignore
+                          and not z.is_hallucination)
+            can_attack_air = threats.filter(lambda x: x.can_attack_air)
+            if can_attack_air.exists:
+                threats = can_attack_air
             threats.extend(
                 self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier) < 10 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
+
             if threats.exists:
                 if threats.closer_than(8, carrier).exists:
                     carrier.move(carrier.position.towards(threats.closest_to(carrier), -3))
@@ -193,7 +198,11 @@ class AirMicro(MicroABS):
         tempests = all_units(unit.TEMPEST)  # and not x.is_attacking)
         for tempest in tempests:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(tempest) < 16 and z.type_id not in self.ai.units_to_ignore and z.can_attack_air)
+                lambda z: z.distance_to(tempest) < 16 and z.type_id not in self.ai.units_to_ignore
+                          and not z.is_hallucination)
+            can_attack_air = threats.filter(lambda x: x.can_attack_air)
+            if can_attack_air.exists:
+                threats = can_attack_air
             threats.extend(
                 self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest) < 11 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
@@ -218,7 +227,11 @@ class AirMicro(MicroABS):
         void_rays = all_units.filter(lambda x: x.type_id == unit.VOIDRAY)
         for vr in void_rays:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(vr.position) < 12 and z.type_id not in self.ai.units_to_ignore)
+                lambda z: z.distance_to(vr.position) < 12 and z.type_id not in self.ai.units_to_ignore
+            and not z.is_hallucination)
+            can_attack_air = threats.filter(lambda x: x.can_attack_air)
+            if can_attack_air.exists:
+                threats = can_attack_air
             threats.extend(
                 self.ai.enemy_structures().filter(lambda z: z.distance_to(vr.position) < 15 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
@@ -276,7 +289,7 @@ class StalkerMicro(MicroABS):
         for stalker in stalkers:
             threats = enemy.filter(
                 lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore)
+                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
             if threats.exists:
@@ -386,7 +399,7 @@ class ImmortalMicro(MicroABS):
         for immortal in immortals:
             threats = enemy.filter(
                 lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore)
+                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
             if threats.exists:
@@ -448,7 +461,7 @@ class ZealotMicro(MicroABS):
 
         for zl in zealots:
             threats = self.ai.enemy_units().filter(lambda x2: x2.distance_to(zl.position) < 9 and not x2.is_flying and
-                          x2.type_id not in self.ai.units_to_ignore).sorted(lambda _x: _x.health + _x.shield)
+                          x2.type_id not in self.ai.units_to_ignore and not x2.is_hallucination).sorted(lambda _x: _x.health + _x.shield)
             if threats.exists:
                 closest = threats.closest_to(zl)
                 if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl) > \
@@ -489,7 +502,8 @@ class SentryMicro(MicroABS):
                     guardian_shield_on = True
             threats = self.ai.enemy_units().filter(
                 lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry) <= 9 and
-                              unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids)
+                              unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids
+            and not unit_.is_hallucination)
             has_energy_amount = sentries.filter(lambda x2: x2.energy >= 50).amount
             points = []
 
