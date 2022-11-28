@@ -474,7 +474,7 @@ class ColossusMicro(MicroABS):
             return
 
         colossi = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.COLOSSUS]
-        dist = 9
+        dist = 10
         for colossus in colossi:
             threats = enemy.filter(
                 lambda unit_: unit_.can_attack_ground and unit_.distance_to(colossus) <= dist and

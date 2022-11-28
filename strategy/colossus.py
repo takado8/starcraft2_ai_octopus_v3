@@ -5,10 +5,8 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro, WarpPrismMicro, ColossusMicro
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
-from army.divisions import COLOSSUS_x2, IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1,\
+from army.divisions import COLOSSUS_x2, IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
     STALKER_x5, ZEALOT_x10, WARPPRISM_x1
-
-
 
 
 class Colossus(StrategyABS):
@@ -29,7 +27,7 @@ class Colossus(StrategyABS):
         self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
         self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
         self.army.create_division('stalkers4', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        # self.army.create_division('immortals3', IMMORTAL_x5, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('immortals3', IMMORTAL_x5, [immortal_micro], Movements(ai, 0.2))
         self.army.create_division('zealots', ZEALOT_x10, [zealot_micro], Movements(ai, 0.33))
         self.army.create_division('zealots2', ZEALOT_x10, [zealot_micro], Movements(ai, 0.33))
         self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
@@ -93,7 +91,7 @@ class Colossus(StrategyABS):
 
     async def lock_spending_condition(self):
         return await self.condition_lock_spending.forge() and \
-            self.condition_lock_spending.thermal_lances()
+         self.condition_lock_spending.thermal_lances()
 
     async def morphing(self):
         await self.morphing_.morph_gates()

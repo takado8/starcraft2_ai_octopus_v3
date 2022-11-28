@@ -144,7 +144,7 @@ class ConditionLockSpending:
 
     def thermal_lances(self):
         return upgrade.EXTENDEDTHERMALLANCE not in self.ai.state.upgrades and \
-               self.ai.structures(unit.ROBOTICSBAY).ready.idle.exists
+               self.ai.structures(unit.ROBOTICSBAY).ready.idle.exists and self.ai.units(unit.COLOSSUS).exists
 
     async def forge(self):
         upgrades_abilities_ids = [AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL1,

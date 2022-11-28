@@ -51,7 +51,7 @@ class Division:
         division_units = self.get_units()
         if division_units.amount > 1:
             for unit in division_units:
-                neighbours = division_units.closer_than(self.max_units_distance, unit)
+                neighbours = division_units.closer_than(self.max_units_distance, unit.position)
                 if neighbours.amount > max_neighbours:
                     max_neighbours = neighbours.amount
                     biggest_group = neighbours

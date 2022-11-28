@@ -73,7 +73,7 @@ class Army:
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
         elif nexuses.amount < 2:
             self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center, -2)
-        elif nexuses.amount == 2:
+        elif 4 > nexuses.amount > 1:
             second_nexus = nexuses.furthest_to(self.ai.start_location.position)
             self.ai.defend_position = second_nexus.position.towards(
                 self.ai.game_info.map_center, 5)
