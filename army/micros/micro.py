@@ -451,6 +451,85 @@ class ImmortalMicro(MicroABS):
         return position
 
 
+class ColossusMicro(MicroABS):
+    def __init__(self, ai):
+        self.name = 'ColossusMicro'
+        super().__init__(self.name, ai)
+
+    def select_target(self, targets, colossus):
+        if self.ai.enemy_race == Race.Protoss:
+            a = targets[0].shield_percentage
+        else:
+            a = 1
+        if targets[0].health_percentage * a == 1:
+            target = targets.closest_to(colossus)
+        else:
+            target = targets[0]
+        return target
+
+    async def do_micro(self, soldiers):
+
+        enemy = self.ai.enemy_units()
+        if not enemy.exists:
+            return
+
+        colossi = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.COLOSSUS]
+        dist = 9
+        for colossus in colossi:
+            threats = enemy.filter(
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(colossus) <= dist and
+                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
+            if self.ai.attack:
+                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+            if threats.exists:
+                closest_enemy = threats.closest_to(colossus)
+                priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
+                                                                    unit.QUEEN, unit.GHOST})
+                if priority.exists:
+                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, colossus)
+                else:
+                    targets = threats.filter(lambda x: x.is_light)
+                    if not targets.exists:
+                        targets = threats
+                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, colossus)
+
+                # if target.distance_to(stalker) > dist:
+                #     target = closest_enemy
+
+                if colossus.shield_percentage < 0.45:
+                    if colossus.health_percentage < 0.45:
+                        colossus.move(self.find_back_out_position(colossus, closest_enemy.position))
+                        continue
+                    d = 5
+                else:
+                    d = 3
+
+
+                back_out_position = self.find_back_out_position(colossus, closest_enemy.position)
+                if back_out_position is not None and colossus.weapon_cooldown > 0:
+                    colossus.move(colossus.position.towards(back_out_position, d))
+                else:
+                    colossus.attack(target)
+
+    def find_back_out_position(self, colossus, closest_enemy_position):
+        i = 6
+        position = colossus.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = colossus.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
+                    k += 1
+                    position = position.random_on_distance(distance)
+                j += 1
+        return position
+
+
 class ZealotMicro(MicroABS):
     def __init__(self, ai):
         self.name = 'ZealotMicro'

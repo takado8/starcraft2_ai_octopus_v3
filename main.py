@@ -12,6 +12,7 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from strategy.air_oracle import AirOracle
 from economy.workers.speed_mining import SpeedMining
 from strategy.blinkers import Blinkers
+from strategy.colossus import Colossus
 from strategy.one_base_robo import OneBaseRobo
 from strategy.stalker_proxy import StalkerProxy
 
@@ -49,7 +50,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = OneBaseRobo(self)
+        self.strategy = Colossus(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -171,9 +172,9 @@ def botVsComputer(ai, real_time=0):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    # computer_builds = [AIBuild.Timing]
+    computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -182,7 +183,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

@@ -109,7 +109,7 @@ class TwilightUpgrader:
                 tc = tc.random
                 abilities = await self.ai.get_available_abilities(tc)
                 if ability.RESEARCH_CHARGE in abilities:
-                    self.ai.do(tc(ability.RESEARCH_CHARGE))
+                    tc(ability.RESEARCH_CHARGE)
 
     async def blink(self):
         if upgrade.BLINKTECH not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
@@ -118,7 +118,7 @@ class TwilightUpgrader:
                 tc = tc.random
                 abilities = await self.ai.get_available_abilities(tc)
                 if ability.RESEARCH_BLINK in abilities:
-                    self.ai.do(tc(ability.RESEARCH_BLINK))
+                    tc(ability.RESEARCH_BLINK)
 
     async def both(self):
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
@@ -128,14 +128,14 @@ class TwilightUpgrader:
                     tc = tc.random
                     abilities = await self.ai.get_available_abilities(tc)
                     if ability.RESEARCH_CHARGE in abilities:
-                        self.ai.do(tc(ability.RESEARCH_CHARGE))
+                        tc(ability.RESEARCH_CHARGE)
             elif upgrade.BLINKTECH not in self.ai.state.upgrades:
                 tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
                 if tc.exists:
                     tc = tc.random
                     abilities = await self.ai.get_available_abilities(tc)
                     if ability.RESEARCH_BLINK in abilities:
-                        self.ai.do(tc(ability.RESEARCH_BLINK))
+                        tc(ability.RESEARCH_BLINK)
 
     async def standard(self):
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
@@ -154,7 +154,7 @@ class TwilightUpgrader:
                         ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
                     research = ability.RESEARCH_ADEPTRESONATINGGLAIVES
                 if research:
-                    self.ai.do(tc(research))
+                    tc(research)
 
 
 class TemplarArchiveUpgrader:
@@ -171,7 +171,7 @@ class TemplarArchiveUpgrader:
                 tc = tc.random
                 abilities = await self.ai.get_available_abilities(tc)
                 if ability.RESEARCH_PSISTORM in abilities:
-                    self.ai.do(tc(ability.RESEARCH_PSISTORM))
+                    tc(ability.RESEARCH_PSISTORM)
 
 
 class FleetBeaconUpgrader:
@@ -183,4 +183,16 @@ class FleetBeaconUpgrader:
         if fleet.exists:
             fleet = fleet.random
             if ability.FLEETBEACONRESEARCH_RESEARCHVOIDRAYSPEEDUPGRADE in await self.ai.get_available_abilities(fleet):
-                self.ai.do(fleet(ability.FLEETBEACONRESEARCH_RESEARCHVOIDRAYSPEEDUPGRADE))
+                fleet(ability.FLEETBEACONRESEARCH_RESEARCHVOIDRAYSPEEDUPGRADE)
+
+
+class RoboticsBayUpgrader:
+    def __init__(self, ai):
+        self.ai = ai
+
+    async def thermal_lances(self):
+        bay = self.ai.structures(unit.ROBOTICSBAY).ready
+        if bay.exists:
+            bay = bay.first
+            if ability.RESEARCH_EXTENDEDTHERMALLANCE in await self.ai.get_available_abilities(bay):
+                bay(ability.RESEARCH_EXTENDEDTHERMALLANCE)
