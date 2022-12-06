@@ -38,7 +38,7 @@ class OctopusV3(sc2.BotAI):
         self.defend_position = None
         self.army_priority = False
         self.army = None
-        self.strategy: OneBaseRobo = None
+        self.strategy: AirOracle = None
         self.coords = None
         self.speed_mining: SpeedMining = None
 
@@ -48,9 +48,10 @@ class OctopusV3(sc2.BotAI):
 
     async def on_unit_destroyed(self, unit_tag: int):
         self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
+        self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = Colossus(self)
+        self.strategy = AirOracle(self)
         self.speed_mining = SpeedMining(self)
         self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
@@ -62,9 +63,9 @@ class OctopusV3(sc2.BotAI):
         else:
             print('getting coords failed')
             # await self.chat_send('getting coords failed')
-        self.strategy.workers_distribution.distribute_workers_on_first_step()
-        # for worker in self.workers:
-        #     worker.gather(self.mineral_field.closest_to(worker))
+        # self.strategy.workers_distribution.distribute_workers_on_first_step()
+        for worker in self.workers:
+            worker.stop()
 
     async def on_step(self, iteration: int):
         # self.save_stats()
@@ -73,12 +74,13 @@ class OctopusV3(sc2.BotAI):
         await self.strategy.morphing()
         await self.strategy.army_execute()
         self.strategy.distribute_workers()
-        self.speed_mining.execute()
+        # self.speed_mining.execute()
         self.strategy.chronoboost()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
         self.strategy.build_assimilators()
         await self.strategy.do_upgrades()
+
         #
         ## scan
         # self.strategy.scouting.scan_middle_game()
@@ -142,7 +144,7 @@ class OctopusV3(sc2.BotAI):
         if self.enemy_units().exists:
             self._client.game_step = 4
         else:
-            self._client.game_step = 6
+            self._client.game_step = 5
 
     def get_super_pylon(self):
         return self.spot_validator.get_super_pylon()
@@ -173,9 +175,9 @@ def botVsComputer(ai, real_time=0):
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
-    # computer_builds = [AIBuild.Air]
+    computer_builds = [AIBuild.Air]
     # computer_builds = [AIBuild.Power]
-    computer_builds = [AIBuild.Macro]
+    # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 5)
@@ -183,7 +185,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -208,6 +210,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=0)
+    win, killed, lost = test(real_time=1)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

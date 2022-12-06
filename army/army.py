@@ -49,7 +49,7 @@ class Army:
         if (not self.ai.retreat_condition()) and (
                 self.ai.counter_attack_condition() or self.ai.attack_condition() or self.ai.attack):
             self.status = ArmyStatus.ATTACKING
-        elif enemy.closer_than(30, self.ai.defend_position).amount > 1:
+        elif enemy.closer_than(40, self.ai.defend_position).amount > 1:
             self.status = ArmyStatus.DEFENDING_SIEGE
         elif self.status != ArmyStatus.ATTACKING and any([3 > enemy.closer_than(30, townhall).amount > 0 for townhall in self.ai.townhalls.ready]):
             self.status = ArmyStatus.ENEMY_SCOUT
@@ -69,7 +69,7 @@ class Army:
         enemy = self.ai.enemy_units()
         if enemy.exists:
             for nexus in nexuses:
-                if enemy.closer_than(25, nexus).amount > 3:
+                if enemy.closer_than(35, nexus).amount > 1:
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
         elif nexuses.amount < 2:
             self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center, -2)

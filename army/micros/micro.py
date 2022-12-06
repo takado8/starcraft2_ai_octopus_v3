@@ -63,14 +63,14 @@ class AirMicro(MicroABS):
         for oracle in oracles:
             if self.oracle_on_harassment:
                 abilities = await self.ai.get_available_abilities(oracle)
-                workers = self.ai.enemy_units().filter(lambda x: x.distance_to(oracle) < 15 and x.type_id in
+                workers = self.ai.enemy_units().filter(lambda x: x.distance_to(oracle.position) < 15 and x.type_id in
                                                                  self.ai.workers_ids)
-                threats = self.ai.enemy_units().filter(lambda x: x.distance_to(oracle) < 10 and (x.can_attack_air or
+                threats = self.ai.enemy_units().filter(lambda x: x.distance_to(oracle.position) < 10 and (x.can_attack_air or
                                                  x.type_id in [unit.SENTRY,unit.WIDOWMINE,unit.VOIDRAY]))
                 threats.extend(self.ai.enemy_structures().filter(
-                    lambda x: x.distance_to(oracle) < 11 and x.can_attack_air and x.is_ready))
+                    lambda x: x.distance_to(oracle.position) < 11 and x.can_attack_air and x.is_ready))
                 if threats.amount > 0 and threats.filter(lambda x: x.type_id in ANTI_AIR_IDS).amount > 0 and \
-                        oracle.distance_to(self.mineral_lines[self.enemy_base_idx]) < 19:
+                        oracle.distance_to(self.mineral_lines[self.enemy_base_idx].position) < 19:
                     print('anti-air detected')
                     if len(self.mineral_lines) > 1:
                         print('removing mineral line: ' + str(self.mineral_lines[self.enemy_base_idx]))
@@ -91,7 +91,7 @@ class AirMicro(MicroABS):
                     if workers.amount < 1:
                         if self.enemy_base_idx >= len(self.mineral_lines):
                             self.enemy_base_idx = 0
-                        if oracle.distance_to(self.mineral_lines[self.enemy_base_idx]) < 7:
+                        if oracle.distance_to(self.mineral_lines[self.enemy_base_idx].position) < 7:
                             # print('close!')
                             if self.ai.enemy_structures().filter(lambda x1: x1.type_id in self.ai.bases_ids and
                                                                  x1.distance_to(oracle) < 10).amount < 1:
@@ -105,7 +105,7 @@ class AirMicro(MicroABS):
                             dist = oracle.distance_to(self.oracle_first_position)
                             if dist > 60 or (self.oracle_last_dist and dist < self.oracle_last_dist):
                                 # print('going first pos dist: ' + str(dist) + '  pos: ' + str(self.oracle_first_position))
-                                self.ai.do(oracle.move(self.oracle_first_position))
+                                oracle.move(self.oracle_first_position)
                                 self.oracle_last_dist = dist
                             else:
                                 self.oracle_first_position_visited = True
@@ -116,35 +116,51 @@ class AirMicro(MicroABS):
                             attack_position = self.mineral_lines[self.enemy_base_idx].towards(self.oracle_first_position, 3)
                             if oracle.distance_to(attack_position) > 17 and\
                                     self.mineral_lines[self.enemy_base_idx].distance_to(self.ai.enemy_start_locations[0]) < 7:
-                                self.ai.do(oracle.move(self.mineral_lines[self.enemy_base_idx].towards(self.ai.enemy_start_locations[0], -22)))
+                                oracle.move(self.mineral_lines[self.enemy_base_idx].towards(self.ai.enemy_start_locations[0], -22))
                             else:
-                                self.ai.do(oracle.move(attack_position))
+                                oracle.move(attack_position)
                     elif workers.amount > 1 and oracle.is_idle:
                         self.oracle_first_position_visited = False
-                        workers_in_range = workers.closer_than(5,oracle)
-                        if workers_in_range.exists:
-                            workers_in_range = sorted(workers_in_range,key=lambda x1: x1.health + x1.shield)
-                            target3 = workers_in_range[0]
-                        else:
-                            target3 = workers.closest_to(oracle)
-                        if target3.distance_to(oracle) < 5:
-                            if ability.BEHAVIOR_PULSARBEAMON in abilities:
-                                self.ai.do(oracle(ability.BEHAVIOR_PULSARBEAMON))
-                                self.ai.do(oracle.attack(target3, queue=True))
+                        target = None
+                        if self.ai.enemy_race == Race.Terran:
+                            anti_air_in_build = self.ai.enemy_structures().filter(
+                            lambda x: x.distance_to(oracle) < 15 and x.type_id in ANTI_AIR_IDS and not x.is_ready)
+                            if anti_air_in_build.exists:
+                                print('anti_air_in_build.exists!')
+                                min_dist = 999
+                                for anti_air in anti_air_in_build:
+                                    closest_worker = workers.closest_to(anti_air)
+                                    dist = closest_worker.distance_to(anti_air)
+                                    if dist < min_dist:
+                                        min_dist = dist
+                                        target = closest_worker
+                                print('target {}'.format(target))
+                        if target is None:
+                            workers_in_range = workers.closer_than(5,oracle.position)
+                            if workers_in_range.exists:
+                                workers_in_range = sorted(workers_in_range,key=lambda x1: x1.health + x1.shield)
+                                target = workers_in_range[0]
                             else:
-                                self.ai.do(oracle.attack(target3))
+                                target = workers.closest_to(oracle)
+                        # if target.distance_to(oracle) <= 5:
+                        if ability.BEHAVIOR_PULSARBEAMON in abilities:
+                            oracle(ability.BEHAVIOR_PULSARBEAMON)
+                            oracle.attack(target, queue=True)
                         else:
-                            self.ai.do(oracle.move(oracle.position.towards(target3,5)))
+                            oracle.attack(target)
+                        # else:
+                        #     oracle.move(oracle.position.towards(target, 3))
+                        #     oracle.attack(target, queue=True)
                 else:  # go safe
                     dist = oracle.distance_to(self.oracle_first_position)
                     # print('want go safe')
                     if dist > 30 or dist < self.oracle_last_dist:
                         # print('go safe')
                         if ability.BEHAVIOR_PULSARBEAMOFF in abilities:
-                            self.ai.do(oracle(ability.BEHAVIOR_PULSARBEAMOFF))
-                            self.ai.do(oracle.move(self.oracle_first_position, queue=True))
+                            oracle(ability.BEHAVIOR_PULSARBEAMOFF)
+                            oracle.move(self.oracle_first_position, queue=True)
                         else:
-                            self.ai.do(oracle.move(self.oracle_first_position))
+                            oracle.move(self.oracle_first_position)
                         self.oracle_last_dist = dist
                     else:     # is in safe
                         if self.set_new_first_pos:
@@ -160,23 +176,23 @@ class AirMicro(MicroABS):
                             self.oracle_on_harassment = False
                         self.oracle_first_position_visited = False
             else:       # end of harassment
-                self.ai.do(oracle.move(self.ai.defend_position))
+                oracle.move(self.ai.defend_position)
 
         # Carrier
         carriers = all_units(unit.CARRIER)#and not x.is_attacking)
         for carrier in carriers:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(carrier) < 10 and z.type_id not in self.ai.units_to_ignore
+                lambda z: z.distance_to(carrier.position) < 10 and z.type_id not in self.ai.units_to_ignore
                           and not z.is_hallucination)
             can_attack_air = threats.filter(lambda x: x.can_attack_air)
             if can_attack_air.exists:
                 threats = can_attack_air
             threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier) < 10 and
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier.position) < 10 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
 
             if threats.exists:
-                if threats.closer_than(8, carrier).exists:
+                if threats.closer_than(8, carrier.position).exists:
                     carrier.move(carrier.position.towards(threats.closest_to(carrier), -3))
                     continue
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
@@ -198,16 +214,16 @@ class AirMicro(MicroABS):
         tempests = all_units(unit.TEMPEST)  # and not x.is_attacking)
         for tempest in tempests:
             threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(tempest) < 16 and z.type_id not in self.ai.units_to_ignore
+                lambda z: z.distance_to(tempest.position) < 16 and z.type_id not in self.ai.units_to_ignore
                           and not z.is_hallucination)
             can_attack_air = threats.filter(lambda x: x.can_attack_air)
             if can_attack_air.exists:
                 threats = can_attack_air
             threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest) < 11 and
+                self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest.position) < 11 and
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
             if threats.exists:
-                if threats.closer_than(9, tempest).exists:
+                if threats.closer_than(9, tempest.position).exists:
                     tempest.move(tempest.position.towards(threats.closest_to(tempest), -5))
                     continue
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
@@ -250,15 +266,15 @@ class AirMicro(MicroABS):
                 else:
                     target2 = threats.sorted(lambda z: z.health + z.shield)[0]
                 if target2 is not None:
-                    if target2.is_armored and target2.distance_to(vr) < 7:
+                    if target2.is_armored and target2.distance_to(vr.position) < 7:
                         queue = False
                         abilities = await self.ai.get_available_abilities(vr)
                         if ability.EFFECT_VOIDRAYPRISMATICALIGNMENT in abilities:
-                            self.ai.do(vr(ability.EFFECT_VOIDRAYPRISMATICALIGNMENT))
+                            vr(ability.EFFECT_VOIDRAYPRISMATICALIGNMENT)
                             queue = True
-                        self.ai.do(vr.attack(target2, queue=queue))
+                        vr.attack(target2, queue=queue)
                     elif not vr.is_attacking:
-                        self.ai.do(vr.attack(target2))
+                        vr.attack(target2)
 
 
 class StalkerMicro(MicroABS):
@@ -288,7 +304,7 @@ class StalkerMicro(MicroABS):
         dist = 9
         for stalker in stalkers:
             threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker) <= dist and
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
                               unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
@@ -398,7 +414,7 @@ class ImmortalMicro(MicroABS):
         dist = 8
         for immortal in immortals:
             threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal) <= dist and
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal.position) <= dist and
                               unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
@@ -477,7 +493,7 @@ class ColossusMicro(MicroABS):
         dist = 10
         for colossus in colossi:
             threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(colossus) <= dist and
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(colossus.position) <= dist and
                               unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
@@ -543,8 +559,8 @@ class ZealotMicro(MicroABS):
                           x2.type_id not in self.ai.units_to_ignore and not x2.is_hallucination).sorted(lambda _x: _x.health + _x.shield)
             if threats.exists:
                 closest = threats.closest_to(zl)
-                if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl) > \
-                    closest.distance_to(zl) + 5 or not self.ai.in_pathing_grid(threats[0]):
+                if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl.position) > \
+                    closest.distance_to(zl.position) + 5 or not self.ai.in_pathing_grid(threats[0]):
                     target = closest
                 else:
                     target = threats[0]
@@ -568,7 +584,7 @@ class SentryMicro(MicroABS):
             m = -1
             sentry = None
             for se in sentries:
-                close = sentries.closer_than(7, se).amount
+                close = sentries.closer_than(7, se.position).amount
                 if close > m:
                     m = close
                     sentry = se
@@ -580,7 +596,7 @@ class SentryMicro(MicroABS):
                 elif not guardian_shield_on and eff.id == effect.GUARDIANSHIELDPERSISTENT:
                     guardian_shield_on = True
             threats = self.ai.enemy_units().filter(
-                lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry) <= 9 and
+                lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry.position) <= 9 and
                               unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids
             and not unit_.is_hallucination)
             has_energy_amount = sentries.filter(lambda x2: x2.energy >= 50).amount
@@ -598,13 +614,13 @@ class SentryMicro(MicroABS):
             for se in self.ai.units(unit.SENTRY):
                 abilities = await self.ai.get_available_abilities(se)
                 if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities \
-                        and se.distance_to(threats.closest_to(se)) < 7:
+                        and se.distance_to(threats.closest_to(se).position) < 7:
                     se(ability.GUARDIANSHIELD_GUARDIANSHIELD)
                     guardian_shield_on = True
                 if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
                     se(ability.FORCEFIELD_FORCEFIELD, points.pop(0))
                 else:
-                    army_nearby = self.ai.army.closer_than(9, se)
+                    army_nearby = self.ai.army.closer_than(9, se.position)
                     if army_nearby.exists:
                         if threats.exists:
                             se.move(army_nearby.center.towards(threats.closest_to(se), -4))
@@ -621,9 +637,9 @@ class WarpPrismMicro(MicroABS):
                 if warp.distance_to(self.ai.enemy_start_locations[0]) <= dist:
                     abilities = await self.ai.get_available_abilities(warp)
                     if ability.MORPH_WARPPRISMPHASINGMODE in abilities:
-                        self.ai.do(warp(ability.MORPH_WARPPRISMPHASINGMODE))
+                        warp(ability.MORPH_WARPPRISMPHASINGMODE)
         else:
             for warp in self.ai.units(unit.WARPPRISMPHASING):
                 abilities = await self.ai.get_available_abilities(warp)
                 if ability.MORPH_WARPPRISMTRANSPORTMODE in abilities:
-                    self.ai.do(warp(ability.MORPH_WARPPRISMTRANSPORTMODE))
+                    warp(ability.MORPH_WARPPRISMTRANSPORTMODE)

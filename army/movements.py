@@ -41,7 +41,7 @@ class Movements:
                     # go help someone who is fighting
                     attacking_friend = division_units.filter(lambda x: x.is_attacking)
                     if attacking_friend.exists:
-                        man.attack(enemy.closest_to(attacking_friend.closest_to(man)))
+                        man.attack(enemy.closest_to(attacking_friend.closest_to(man.position).position).position)
             elif man.type_id not in {unit.ZEALOT, unit.DARKTEMPLAR} or not man.is_attacking:  # away. join army
                 man.attack(self.position)
 

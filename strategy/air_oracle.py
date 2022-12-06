@@ -15,7 +15,7 @@ class AirOracle(StrategyABS):
         air_micro = AirMicro(ai)
         zealot_micro = ZealotMicro(ai)
         # sentry_micro = SentryMicro(ai)
-        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=220)
+        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=240)
         self.army.create_division('observer', OBSERVER_x1, [air_micro], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
         self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
@@ -31,7 +31,7 @@ class AirOracle(StrategyABS):
         self.twilight_upgrader = TwilightUpgrader(ai)
 
     def distribute_workers(self):
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
+        self.workers_distribution.distribute_workers_new()
 
     # =======================================================  Builders
     async def build_from_queue(self):
