@@ -30,8 +30,9 @@ class AirOracle(StrategyABS):
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
 
-    def distribute_workers(self):
-        self.workers_distribution.distribute_workers_new()
+    def handle_workers(self):
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
+        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):

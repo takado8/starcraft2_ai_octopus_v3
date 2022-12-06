@@ -27,8 +27,8 @@ class Blinkers(StrategyABS):
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
 
-    def distribute_workers(self):
-        self.workers_distribution.distribute_workers()
+    def handle_workers(self):
+        self.workers_distribution.handle_workers()
 
     # =======================================================  Builders
     async def build_from_queue(self):

@@ -9,6 +9,7 @@ from builders import PylonBuilder, AssimilatorBuilder
 from economy.info.enemy_economy import EnemyEconomy
 from economy.info.own_economy import OwnEconomy
 from economy.workers.distribute_workers import DistributeWorkers
+from economy.workers.speed_mining import SpeedMining
 
 
 class StrategyABS:
@@ -33,12 +34,13 @@ class StrategyABS:
 
         self.chronobooster = Chronobooster(ai)
         self.workers_distribution = DistributeWorkers(ai)
+        self.speed_mining = SpeedMining(ai)
 
         self.morphing_ = Morphing(ai)
 
 
 
-    def distribute_workers(self):
+    def handle_workers(self):
         raise NotImplementedError
 
     # =======================================================  Builders

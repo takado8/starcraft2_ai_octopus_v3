@@ -10,7 +10,6 @@ from typing import Optional, Union
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from strategy.air_oracle import AirOracle
-from economy.workers.speed_mining import SpeedMining
 from strategy.blinkers import Blinkers
 from strategy.colossus import Colossus
 from strategy.one_base_robo import OneBaseRobo
@@ -40,7 +39,7 @@ class OctopusV3(sc2.BotAI):
         self.army = None
         self.strategy: AirOracle = None
         self.coords = None
-        self.speed_mining: SpeedMining = None
+
 
     # async def on_unit_created(self, unit: Unit):
     #     if unit.is_mine and unit.type_id in self.army_ids:
@@ -52,8 +51,6 @@ class OctopusV3(sc2.BotAI):
 
     async def on_start(self):
         self.strategy = AirOracle(self)
-        self.speed_mining = SpeedMining(self)
-        self.speed_mining.calculate_targets()
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -73,8 +70,7 @@ class OctopusV3(sc2.BotAI):
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         await self.strategy.morphing()
         await self.strategy.army_execute()
-        self.strategy.distribute_workers()
-        # self.speed_mining.execute()
+        self.strategy.handle_workers()
         self.strategy.chronoboost()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
@@ -210,6 +206,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=1)
+    win, killed, lost = test(real_time=0)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

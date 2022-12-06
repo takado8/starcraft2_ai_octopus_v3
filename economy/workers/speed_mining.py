@@ -19,11 +19,11 @@ class SpeedMining:
         self.enable_on_return = enable_on_return
         self.enable_on_mine = enable_on_mine
         self.mineral_target_dict: Dict[Point2, Point2] = {}
+        self.calculate_targets()
 
-    def execute(self):
-        if self.ai.townhalls.ready.amount < 3:
-            workers = self.get_mineral_workers()
-            self.speedmine(workers)
+    def execute(self, mineral_workers_tags):
+        mineral_workers = self.ai.workers.filter(lambda x: x.tag in mineral_workers_tags)
+        self.speedmine(mineral_workers)
 
     def get_mineral_workers(self) -> List:
         bases = self.ai.townhalls.ready
