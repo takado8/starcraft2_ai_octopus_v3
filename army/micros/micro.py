@@ -224,7 +224,7 @@ class AirMicro(MicroABS):
                                                             (z.can_attack_air or z.type_id == unit.BUNKER)))
             if threats.exists:
                 if threats.closer_than(9, tempest.position).exists:
-                    tempest.move(tempest.position.towards(threats.closest_to(tempest), -5))
+                    tempest.move(tempest.position.towards(threats.closest_to(tempest.position).position, -5))
                     continue
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
                     lambda z: z.health + z.shield, reverse=False)

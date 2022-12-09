@@ -22,23 +22,39 @@ class Army:
         self.enemy_main_base_down = False
         self.assign_defend_position()
 
+    def debug(self):
+        print('\n----------------------------------------------------')
+        print('all soldiers:')
+        for soldier_tag in self.all_soldiers:
+            soldier = self.all_soldiers[soldier_tag]
+            print('{} {} {} {}'.format(soldier_tag,  soldier.type_id, soldier.unit.type_id, soldier.division_name))
+        print('\ndivisions:')
+        for division_name in self.divisions:
+            print(self.divisions[division_name])
+
+
+
     async def execute(self):
-        self.establish_army_status()
-        self.refresh_all_soldiers()
-        training_order = self.create_training_order()
-        self.order_units_training(training_order)
-        await self.trainer.train()
+        try:
+            self.establish_army_status()
+            self.refresh_all_soldiers()
+            training_order = self.create_training_order()
+            self.order_units_training(training_order)
+            await self.trainer.train()
 
-        if self.status == ArmyStatus.ATTACKING:
-            await self.attack()
-        else:
-            self.assign_defend_position()
-            self.defend()
+            if self.status == ArmyStatus.ATTACKING:
+                await self.attack()
+            else:
+                self.assign_defend_position()
+                self.defend()
 
-        await self.execute_micro()
-        self.avoid_aoe()
-        if self.enemy_main_base_down:
-            self.scouting.scan_on_end()
+            await self.execute_micro()
+            self.avoid_aoe()
+            if self.enemy_main_base_down:
+                self.scouting.scan_on_end()
+        except Exception as ex:
+            self.debug()
+            raise ex
 
     async def execute_micro(self):
         for division in self.divisions:
@@ -217,6 +233,7 @@ class Army:
         for division_name in divisions_to_delete:
             if not self.divisions[division_name].soldiers:
                 self.divisions.pop(division_name)
+        self.unassigned_soldiers.clear()
         return all_missing_units
 
     def order_units_training(self, units_ids_dict):

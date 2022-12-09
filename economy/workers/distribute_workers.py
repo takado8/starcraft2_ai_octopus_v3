@@ -1,5 +1,5 @@
 from sc2.unit import UnitTypeId as unit
-from typing import Dict, List, Set
+from typing import Dict, List
 
 
 class DistributeWorkers:

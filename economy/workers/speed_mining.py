@@ -2,12 +2,8 @@ from typing import List
 import math
 from sc2 import AbilityId, Dict
 from sc2.position import Point2
-from sc2.unit import Unit
-# from sc2.units import Units
-from sc2.unit import UnitTypeId
-# from sharpy.interfaces import IZoneManager
-# from sharpy.managers.core.roles import UnitTask
-# from sharpy.plans.acts import ActBase
+from sc2.unit import Unit, UnitTypeId
+
 
 MINING_RADIUS = 1.325
 
