@@ -8,6 +8,8 @@ class Movements:
         self.units_ratio_before_next_step = units_ratio_before_next_step
 
     async def move_division(self, division, destination):
+        if destination is None:
+            return
         division_units = division.get_units()
 
         if self.position is None:

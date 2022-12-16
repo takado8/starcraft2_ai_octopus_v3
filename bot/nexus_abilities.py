@@ -19,7 +19,13 @@ class Chronobooster:
 
     def standard(self):
         if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
-            nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
+            nexuses = self.ai.structures().filter(
+                lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50).sorted(key=lambda x:
+                                                                                            x.energy)
+            if nexuses and nexuses.amount > 1:
+                nexuses.pop(0)
+            elif self.ai.structures(unit.SHIELDBATTERY).amount > 0:
+                return
             # starting_nexus = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location.position)
             i = 0
             for nexus in nexuses:
@@ -39,12 +45,16 @@ class Chronobooster:
                                 time = 64
                             elif abil_id == ability.STARGATETRAIN_TEMPEST:
                                 time = 43
+                            elif abil_id == ability.STARGATETRAIN_ORACLE:
+                                time = 1500
                             elif abil_id == ability.RESEARCH_WARPGATE:
                                 time = 150
                             elif abil_id == ability.RESEARCH_BLINK:
                                 time = 121
                             elif abil_id == ability.RESEARCH_CHARGE:
                                 time = 100
+                            elif abil_id == ability.ROBOTICSFACILITYTRAIN_OBSERVER:
+                                time = 1
                             elif abil_id == ability.RESEARCH_PROTOSSGROUNDWEAPONS:
                                             #
                                             # ability.RESEARCH_PROTOSSSHIELDS:
@@ -88,19 +98,9 @@ class Chronobooster:
                     target = targets_filtered.random
                     if target.type_id in [unit.NEXUS, unit.GATEWAY]:
                         self.standard_chrono_queue.remove(target.type_id)
-                    self.ai.do(nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target))
+                    nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target)
                     return
-                # else:
-                # #     warpgates = self.ai.structures(unit.WARPGATE).ready
-                # #     targets = []
-                # #     for warpgate in warpgates:
-                # #         abilities = await self.ai.get_available_abilities(warpgate)
-                # #         if ability.WARPGATETRAIN_STALKER in abilities:
-                # #             targets.append(warpgate)
-                #     if targets:
-                #         target = random.choice(targets)
-                #         self.ai.do(nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target))
-                #         return
+
 
     async def stalker_proxy(self):
         if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
@@ -160,7 +160,7 @@ class ShieldOvercharge:
 
     async def shield_overcharge(self):
         en = self.ai.enemy_units()
-        if en.exists and en.closer_than(40, self.ai.defend_position).amount > 5:
+        if en.exists and en.closer_than(14, self.ai.defend_position).amount > 5:
             nexus = self.ai.structures(unit.NEXUS).ready.closest_to(self.ai.defend_position)
             battery = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus) \
                 .sorted(lambda x: x.health, reverse=True)

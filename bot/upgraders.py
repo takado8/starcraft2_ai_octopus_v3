@@ -14,40 +14,55 @@ class ForgeUpgrader:
         for forge in self.ai.structures(unit.FORGE).ready.idle:
             if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL1):
-                self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1))
+                forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1)
             elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and \
                     self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
-                self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2))
+                forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2)
             elif self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDWEAPONSLEVEL2) or \
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in self.ai.state.upgrades or \
                     not self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
                 if upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in \
                         self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDWEAPONSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL3):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL3))
+                    forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL3)
                 elif upgrade.PROTOSSGROUNDARMORSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSGROUNDARMORSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL1):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL1))
+                    forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL1)
                 elif upgrade.PROTOSSSHIELDSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSSHIELDSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL1):
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL1))
+                    forge.research(upgrade.PROTOSSSHIELDSLEVEL1)
                 elif upgrade.PROTOSSGROUNDARMORSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSGROUNDARMORSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL2):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL2))
+                    forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL2)
                 elif upgrade.PROTOSSGROUNDARMORSLEVEL2 in \
                         self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                     upgrade.PROTOSSGROUNDARMORSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL3):
-                    self.ai.do(forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL3))
+                    forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL3)
                 elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSSHIELDSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL2) and \
                         upgrade.PROTOSSSHIELDSLEVEL1 in self.ai.state.upgrades and self.ai.structures(
                     unit.TWILIGHTCOUNCIL).ready.exists:
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL2))
+                    forge.research(upgrade.PROTOSSSHIELDSLEVEL2)
                 elif upgrade.PROTOSSSHIELDSLEVEL3 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
                         upgrade.PROTOSSSHIELDSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL3) and \
                         upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades:
-                    self.ai.do(forge.research(upgrade.PROTOSSSHIELDSLEVEL3))
+                    forge.research(upgrade.PROTOSSSHIELDSLEVEL3)
+
+    def shield(self):
+        for forge in self.ai.structures(unit.FORGE).ready.idle:
+            if upgrade.PROTOSSSHIELDSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL1):
+                forge.research(upgrade.PROTOSSSHIELDSLEVEL1)
+            elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL2) and \
+                     upgrade.PROTOSSSHIELDSLEVEL1 in self.ai.state.upgrades and self.ai.structures(
+                    unit.TWILIGHTCOUNCIL).ready.exists:
+                forge.research(upgrade.PROTOSSSHIELDSLEVEL2)
+            elif upgrade.PROTOSSSHIELDSLEVEL3 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL3) and \
+                    upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades:
+                forge.research(upgrade.PROTOSSSHIELDSLEVEL3)
 
 
 class CyberneticsUpgrader:
@@ -70,28 +85,29 @@ class CyberneticsUpgrader:
                 if upgrade.PROTOSSAIRWEAPONSLEVEL1 not in self.ai.state.upgrades and self.ai.can_afford(
                         upgrade.PROTOSSAIRWEAPONSLEVEL1) and \
                         not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRWEAPONSLEVEL1):
-                    self.ai.do(cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL1))
+                    cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL1)
                 elif upgrade.PROTOSSAIRWEAPONSLEVEL2 not in self.ai.state.upgrades and self.ai.can_afford(
                         upgrade.PROTOSSAIRWEAPONSLEVEL2) and \
                         not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRWEAPONSLEVEL2):
-                    self.ai.do(cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL2))
+                    cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL2)
                 elif upgrade.PROTOSSAIRWEAPONSLEVEL3 not in self.ai.state.upgrades and self.ai.can_afford(
                         upgrade.PROTOSSAIRWEAPONSLEVEL3) and \
                         not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRWEAPONSLEVEL3):
-                    self.ai.do(cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL3))
-                elif upgrade.PROTOSSAIRWEAPONSLEVEL3 in self.ai.state.upgrades:
+                    cyber.random.research(upgrade.PROTOSSAIRWEAPONSLEVEL3)
+                elif upgrade.PROTOSSAIRWEAPONSLEVEL3 in self.ai.state.upgrades or\
+                    (self.ai.structures(unit.CYBERNETICSCORE).ready.amount > 1 and cyber.amount < 2):
                     if upgrade.PROTOSSAIRARMORSLEVEL1 not in self.ai.state.upgrades and self.ai.can_afford(
                             upgrade.PROTOSSAIRARMORSLEVEL1) and \
                             not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRARMORSLEVEL1):
-                        self.ai.do(cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL1))
+                        cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL1)
                     elif upgrade.PROTOSSAIRARMORSLEVEL2 not in self.ai.state.upgrades and self.ai.can_afford(
                             upgrade.PROTOSSAIRARMORSLEVEL2) and \
                             not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRARMORSLEVEL2):
-                        self.ai.do(cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL2))
+                        cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL2)
                     elif upgrade.PROTOSSAIRARMORSLEVEL3 not in self.ai.state.upgrades and self.ai.can_afford(
                             upgrade.PROTOSSAIRARMORSLEVEL3) and \
                             not self.ai.already_pending_upgrade(upgrade.PROTOSSAIRARMORSLEVEL3):
-                        self.ai.do(cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL3))
+                        cyber.random.research(upgrade.PROTOSSAIRARMORSLEVEL3)
 
 
 class TwilightUpgrader:
@@ -191,8 +207,10 @@ class RoboticsBayUpgrader:
         self.ai = ai
 
     async def thermal_lances(self):
-        bay = self.ai.structures(unit.ROBOTICSBAY).ready
-        if bay.exists:
-            bay = bay.first
-            if ability.RESEARCH_EXTENDEDTHERMALLANCE in await self.ai.get_available_abilities(bay):
-                bay(ability.RESEARCH_EXTENDEDTHERMALLANCE)
+        colossi = self.ai.army(unit.COLOSSUS).ready
+        if colossi.exists:
+            bay = self.ai.structures(unit.ROBOTICSBAY).ready
+            if bay.exists:
+                bay = bay.first
+                if ability.RESEARCH_EXTENDEDTHERMALLANCE in await self.ai.get_available_abilities(bay):
+                    bay(ability.RESEARCH_EXTENDEDTHERMALLANCE)

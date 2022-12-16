@@ -163,8 +163,10 @@ class Army:
                 #     destination = enemy.closest_to(self.ai.start_location).position
                 else:
                     destination = self.ai.enemy_start_locations[0].position
-        else:
+        elif not self.enemy_main_base_down:
             destination = self.ai.enemy_start_locations[0].position
+        else:
+            destination = None
         # elif self.ai.enemy_structures().exists:
         #     enemy = self.ai.enemy_structures()
         #     destination = enemy.closest_to(self.ai.start_location).position
@@ -209,9 +211,7 @@ class Army:
                     continue
             missing_units = division.get_dict_of_missing_units()
             for unit_id in missing_units:
-                pending_amount = self.ai.already_pending(unit_id)
-                unit_amount = pending_amount
-                missing_units[unit_id] -= pending_amount
+                unit_amount = 0
                 assigned_soldiers = []
                 for soldier in self.unassigned_soldiers:
                     if unit_amount < missing_units[unit_id]:
@@ -225,15 +225,22 @@ class Army:
                         break
                 for soldier in assigned_soldiers:
                     self.unassigned_soldiers.remove(soldier)
-            for unit_id2 in missing_units:
-                if unit_id2 in all_missing_units:
-                    all_missing_units[unit_id2] += missing_units[unit_id2]
+            for unit_id in missing_units:
+                if unit_id in all_missing_units:
+                    all_missing_units[unit_id] += missing_units[unit_id]
                 else:
-                    all_missing_units[unit_id2] = missing_units[unit_id2]
+                    all_missing_units[unit_id] = missing_units[unit_id]
+
+        for unit_id in all_missing_units:
+            all_missing_units[unit_id] -= self.ai.already_pending(unit_id)
+
+
         for division_name in divisions_to_delete:
             if not self.divisions[division_name].soldiers:
                 self.divisions.pop(division_name)
         self.unassigned_soldiers.clear()
+        print('all missing units: ')
+        print(all_missing_units)
         return all_missing_units
 
     def order_units_training(self, units_ids_dict):

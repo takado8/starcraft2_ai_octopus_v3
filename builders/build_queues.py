@@ -17,7 +17,8 @@ class BuildQueues:
 
     AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,
                            10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
-                           unit.NEXUS, unit.STARGATE, unit.NEXUS, 120, unit.STARGATE, unit.STARGATE, unit.NEXUS,
+                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 16, unit.NEXUS,
@@ -29,6 +30,6 @@ class BuildQueues:
 
     COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE,  unit.NEXUS, unit.ROBOTICSFACILITY, 4,
                 unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                unit.TWILIGHTCOUNCIL, 50, unit.NEXUS, unit.ROBOTICSFACILITY, 80,
-                unit.GATEWAY, unit.GATEWAY,  120,  unit.NEXUS, unit.GATEWAY, 140,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+                unit.TWILIGHTCOUNCIL, 50, unit.NEXUS, unit.ROBOTICSFACILITY, 80,  unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY,  120,  unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, 140, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY,unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]

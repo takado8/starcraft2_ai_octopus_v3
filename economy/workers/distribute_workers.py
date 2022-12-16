@@ -50,6 +50,8 @@ class DistributeWorkers:
                         worker.gather(target, queue=True)
                     else:
                         worker.gather(target)
+            else:
+                worker.gather(self.ai.mineral_field.closest_n_units(worker, 5).random)
 
     def assign_workers(self, minerals_to_gas_ratio=2):
         prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio

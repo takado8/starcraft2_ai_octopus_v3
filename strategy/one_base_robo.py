@@ -81,7 +81,7 @@ class OneBaseRobo(StrategyABS):
         return self.condition_counter_attack.counter_attack()
 
     # ======================================================== Buffs
-    def chronoboost(self):
+    def nexus_abilities(self):
         # try:
         self.chronobooster.standard()
         # except Exception as ex:

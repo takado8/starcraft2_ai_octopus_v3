@@ -79,7 +79,7 @@ class StrategyABS:
         raise NotImplementedError
 
     # ======================================================== Buffs
-    def chronoboost(self):
+    async def nexus_abilities(self):
         raise NotImplementedError
 
     async def morphing(self):

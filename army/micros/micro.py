@@ -181,6 +181,7 @@ class AirMicro(MicroABS):
         # Carrier
         carriers = all_units(unit.CARRIER)#and not x.is_attacking)
         for carrier in carriers:
+
             threats = self.ai.enemy_units().filter(
                 lambda z: z.distance_to(carrier.position) < 10 and z.type_id not in self.ai.units_to_ignore
                           and not z.is_hallucination)

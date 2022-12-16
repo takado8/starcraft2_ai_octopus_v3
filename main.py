@@ -37,7 +37,7 @@ class OctopusV3(sc2.BotAI):
         self.defend_position = None
         self.army_priority = False
         self.army = None
-        self.strategy: AirOracle = None
+        self.strategy = None
         self.coords = None
 
 
@@ -50,7 +50,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = AirOracle(self)
+        self.strategy = Colossus(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -71,29 +71,14 @@ class OctopusV3(sc2.BotAI):
         await self.strategy.morphing()
         await self.strategy.army_execute()
         self.strategy.handle_workers()
-        self.strategy.chronoboost()
+        await self.strategy.nexus_abilities()
         await self.strategy.build_pylons()
         self.strategy.train_probes()
         self.strategy.build_assimilators()
         await self.strategy.do_upgrades()
 
-        #
-        ## scan
-        # self.strategy.scouting.scan_middle_game()
-        # self.strategy.scouting.gather_enemy_info()
-        # self.strategy.own_economy.calculate_units_report()
-        # self.strategy.enemy_economy.calculate_enemy_units_report()
-        # if iteration % 30 == 0:
-        #     self.strategy.enemy_economy.print_enemy_info()
-        #     self.strategy.own_economy.print_own_economy_info()
-        ##
-
-        #
-        ## attack
-        # army_priority = False
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
-            # await self.chat_send('Attack!  army len: ' + str(len(self.army)))
             self.first_attack = True
             self.attack = True
             self.retreat = False
@@ -101,7 +86,6 @@ class OctopusV3(sc2.BotAI):
         # retreat
         if self.retreat_condition():
             self.army_priority = False
-            # await self.chat_send('Retreat! army len: ' + str(len(self.army)))
             self.retreat = True
             self.attack = False
             self.after_first_attack = True
@@ -171,8 +155,8 @@ def botVsComputer(ai, real_time=0):
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
-    computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Air]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -181,7 +165,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

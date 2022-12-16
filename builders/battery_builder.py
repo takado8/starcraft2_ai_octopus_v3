@@ -7,16 +7,16 @@ class BatteryBuilder:
 
     async def build_batteries(self):
         nexuses = self.ai.structures(unit.NEXUS).ready
-        if nexuses.amount > 1:
+        if nexuses.amount > 1 and self.ai.minerals > 1000:
             start_nexus = nexuses.closest_to(self.ai.start_location.position)
             nexuses.remove(start_nexus)
             for nexus in nexuses:
-                pylon = self.ai.structures(unit.PYLON).ready.closer_than(11, nexus)
+                pylon = self.ai.structures(unit.PYLON).ready.closer_than(12, nexus)
                 if pylon.exists:
-                    pylon = pylon.furthest_to(nexus)
-                    if self.ai.structures(unit.SHIELDBATTERY).closer_than(5, pylon.position).amount < 2 \
+                    pylon = pylon.furthest_to(self.ai.start_location.position)
+                    if self.ai.structures(unit.SHIELDBATTERY).closer_than(7, pylon.position).amount < 2 \
                             and self.ai.already_pending(unit.SHIELDBATTERY) < 2:
-                        await self.ai.build(unit.SHIELDBATTERY, pylon.position, max_distance=5,
+                        await self.ai.build(unit.SHIELDBATTERY, pylon.position.towards(self.ai.game_info.map_center, 3), max_distance=5,
                                          random_alternative=False, placement_step=2)
                 elif self.ai.already_pending(unit.PYLON) < 1:
                     minerals = self.ai.mineral_field.closest_to(nexus.position)

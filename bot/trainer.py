@@ -11,6 +11,8 @@ class Trainer:
         self.warp_gate_trainer = WarpgateTrainer(ai)
 
     async def train(self):
+        print('\n\ntraining queue: ')
+        print(self.training_queue)
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
                 or self.ai.is_build_in_progress() or self.ai.army_priority):
             i = 0

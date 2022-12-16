@@ -89,12 +89,19 @@ class PylonBuilder:
             #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
             #                             random_alternative=False)
             # else:
-            if self.ai.supply_cap < 130:
+            if self.ai.supply_cap < 80:
                 pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 4).random_on_distance(5)
                 max_d = 25
                 pending = 2 if self.ai.time > 180 else 1
                 left = 5
                 step = 7
+            elif self.ai.supply_cap < 120:
+                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 5).random_on_distance(
+                    7)
+                max_d = 32
+                pending = 2
+                left = 7
+                step = 5
             else:
                 pos = self.ai.structures(unit.NEXUS).ready
                 if pos.exists:

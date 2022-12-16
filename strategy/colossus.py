@@ -1,4 +1,6 @@
 from army.movements import Movements
+from bot.nexus_abilities import ShieldOvercharge
+from builders.battery_builder import BatteryBuilder
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -36,6 +38,8 @@ class Colossus(StrategyABS):
 
         build_queue = BuildQueues.COLOSSUS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
+        self.battery_builder = BatteryBuilder(ai)
+        self.shield_overcharge = ShieldOvercharge(ai)
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
@@ -43,11 +47,13 @@ class Colossus(StrategyABS):
         self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
 
     def handle_workers(self):
-        self.workers_distribution.handle_workers()
+        self.workers_distribution.distribute_workers()
+        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
+        await self.battery_builder.build_batteries()
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
@@ -83,11 +89,9 @@ class Colossus(StrategyABS):
         return self.condition_counter_attack.counter_attack()
 
     # ======================================================== Buffs
-    def chronoboost(self):
-        # try:
+    async def nexus_abilities(self):
         self.chronobooster.standard()
-        # except Exception as ex:
-        #     print(ex)
+        await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
         return await self.condition_lock_spending.forge() and \
