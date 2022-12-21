@@ -43,6 +43,8 @@ class Builder:
                         if pylon:
                             await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
                                             random_alternative=True)
+                        # else:
+                            # print("pylon is none")
         if all_done:
             # print('all done.')
             if self.build_queue_index + 1 < len(self.build_queue):

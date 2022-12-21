@@ -6,10 +6,15 @@ class Movements:
         self.ai = ai
         self.position = None
         self.units_ratio_before_next_step = units_ratio_before_next_step
+        self.destination = None
 
     async def move_division(self, division, destination):
         if destination is None:
+            self.destination = None
             return
+        if self.destination is None or destination.distance_to(self.destination) > 15:
+            self.destination = destination
+            self.position = None
         division_units = division.get_units()
 
         if self.position is None:
@@ -25,7 +30,6 @@ class Movements:
 
             self.position = await self.find_placement_for_army(point)
 
-        # if everybody's here, we can go
         _range = 7 if division_units.amount < 27 else 14
         units_in_position_count = 0
 
@@ -33,7 +37,7 @@ class Movements:
         division_position = division.get_position()
         if division_position:
             enemy = self.ai.enemy_units().filter(
-                    lambda unit_: unit_.can_attack_ground and
+                    lambda unit_: (unit_.can_attack_ground or unit_.can_attack_air)and
                                   unit_.distance_to(division_position) <= division.max_units_distance and
                                   unit_.type_id not in self.ai.units_to_ignore)
         for man in division_units:

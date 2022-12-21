@@ -1,3 +1,4 @@
+# from sc2.constants import PROTOSS_TECH_REQUIREMENT
 from sc2.unit import UnitTypeId
 from bot.constants import BUILDING_OF_ORIGIN_DICT
 from bot.trainers import WarpgateTrainer
@@ -11,21 +12,24 @@ class Trainer:
         self.warp_gate_trainer = WarpgateTrainer(ai)
 
     async def train(self):
-        print('\n\ntraining queue: ')
-        print(self.training_queue)
+        # print('\n\ntraining queue: ')
+        # print(self.training_queue)
+        # print('\n condition: {}'.format((self.ai.is_build_finished()
+        #         or self.ai.is_build_in_progress() or self.ai.army_priority)))
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
                 or self.ai.is_build_in_progress() or self.ai.army_priority):
+            # print("training")
             i = 0
             buildings = None
             unit_id = None
             while not buildings and i < len(self.training_queue):
                 unit_id = self.training_queue[i]
                 i += 1
-                if not self.ai.can_afford(unit_id):
-                    return
                 if not self.is_tech_requirement_met(unit_id):
                     unit_id = None
                     continue
+                if not self.ai.can_afford(unit_id):
+                    return
                 building_id = BUILDING_OF_ORIGIN_DICT[unit_id]
                 buildings = self.ai.structures(building_id).ready.idle
                 if building_id == UnitTypeId.GATEWAY:
@@ -38,6 +42,7 @@ class Trainer:
 
             if buildings and unit_id:
                 building = buildings.random
+                # print('building: {}, unit: {}'.format(building.type_id, unit_id))
                 if building.type_id == UnitTypeId.WARPGATE:
                     await self.warp_gate_trainer.standard(building, unit_id)
                 else:

@@ -64,6 +64,47 @@ class ForgeUpgrader:
                     upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades:
                 forge.research(upgrade.PROTOSSSHIELDSLEVEL3)
 
+    def armor_first(self):
+        for forge in self.ai.structures(unit.FORGE).ready.idle:
+            if upgrade.PROTOSSGROUNDARMORSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSGROUNDARMORSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL1):
+                forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL1)
+            elif upgrade.PROTOSSSHIELDSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL1):
+                forge.research(upgrade.PROTOSSSHIELDSLEVEL1)
+            elif upgrade.PROTOSSGROUNDARMORSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSGROUNDARMORSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL2) and \
+                    self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
+                forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL2)
+            elif upgrade.PROTOSSSHIELDSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL2) and \
+                    self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
+                forge.research(upgrade.PROTOSSSHIELDSLEVEL2)
+            elif (self.ai.already_pending_upgrade(upgrade.PROTOSSSHIELDSLEVEL2) and upgrade.PROTOSSGROUNDARMORSLEVEL2
+                  in self.ai.state.upgrades) or (self.ai.already_pending_upgrade(upgrade.PROTOSSGROUNDARMORSLEVEL2) and
+                  upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades) or \
+                    (upgrade.PROTOSSGROUNDARMORSLEVEL2 in self.ai.state.upgrades and
+                     upgrade.PROTOSSSHIELDSLEVEL2 in self.ai.state.upgrades) or \
+                    not self.ai.structures(unit.TWILIGHTCOUNCIL).exists:
+                if upgrade.PROTOSSGROUNDARMORSLEVEL2 in \
+                        self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSGROUNDARMORSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDARMORSLEVEL3):
+                    forge.research(upgrade.PROTOSSGROUNDARMORSLEVEL3)
+                elif upgrade.PROTOSSSHIELDSLEVEL2 in \
+                        self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSSHIELDSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSSHIELDSLEVEL3):
+                    forge.research(upgrade.PROTOSSSHIELDSLEVEL3)
+                elif upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                        upgrade.PROTOSSGROUNDWEAPONSLEVEL1) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL1):
+                    forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL1)
+                elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                        upgrade.PROTOSSGROUNDWEAPONSLEVEL2) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL2):
+                    forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL2)
+                elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 in \
+                        self.ai.state.upgrades and not self.ai.already_pending_upgrade(
+                    upgrade.PROTOSSGROUNDWEAPONSLEVEL3) and self.ai.can_afford(upgrade.PROTOSSGROUNDWEAPONSLEVEL3):
+                    forge.research(upgrade.PROTOSSGROUNDWEAPONSLEVEL3)
+
 
 class CyberneticsUpgrader:
     def __init__(self, ai):
@@ -160,13 +201,13 @@ class TwilightUpgrader:
                 tc = tc.random
                 research = None
                 abilities = await self.ai.get_available_abilities(tc)
-                if self.ai.army(unit.STALKER).amount > 4 and upgrade.BLINKTECH not in self.ai.state.upgrades:
+                if self.ai.army(unit.STALKER).amount > 6 and upgrade.BLINKTECH not in self.ai.state.upgrades:
                     if ability.RESEARCH_BLINK in abilities:
                         research = ability.RESEARCH_BLINK
                 elif upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
                     if ability.RESEARCH_CHARGE in abilities:
                         research = ability.RESEARCH_CHARGE
-                elif self.ai.army(unit.ADEPT).amount > 4 and \
+                elif self.ai.army(unit.ADEPT).amount > 2 and \
                         ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
                     research = ability.RESEARCH_ADEPTRESONATINGGLAIVES
                 if research:

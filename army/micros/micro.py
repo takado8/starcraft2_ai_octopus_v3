@@ -302,17 +302,20 @@ class StalkerMicro(MicroABS):
             return
 
         stalkers = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.STALKER]
+        priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
+                    unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
+                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
         dist = 9
         for stalker in stalkers:
             threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
+                lambda unit_: ((unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
+                              unit_.type_id not in self.ai.units_to_ignore) or unit_.type_id in priority_ids)
+                              and not unit_.is_hallucination)
             if self.ai.attack:
                 threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
             if threats.exists:
                 closest_enemy = threats.closest_to(stalker)
-                priority = threats.filter(lambda x1: x1.type_id in [unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
-                    unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.THOR, unit.BUNKER, unit.QUEEN])
+                priority = threats.filter(lambda x1: x1.type_id in priority_ids)
                 if priority.exists:
                     targets = priority.sorted(lambda x1: x1.health + x1.shield)
                     target = self.select_target(targets, stalker)
@@ -376,6 +379,194 @@ class StalkerMicro(MicroABS):
         position = stalker.position.towards(closest_enemy_position, -i)
         while not in_grid(self.ai, position) and i < 12:
             position = stalker.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
+                    k += 1
+                    position = position.random_on_distance(distance)
+                j += 1
+        return position
+
+
+class AdeptMicro(MicroABS):
+
+    def __init__(self, ai):
+        self.name = 'AdeptMicro'
+        super().__init__(self.name, ai)
+        self.enemy_base_idx = 0
+        expansions = sorted(self.ai.expansion_locations,
+                            key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
+        self.mineral_lines = [self.ai.mineral_field.closer_than(9, exp).center.towards(exp, -3)
+                              for exp in expansions][:5]
+
+    def select_target(self, targets, adept):
+        if self.ai.enemy_race == Race.Protoss:
+            a = targets[0].shield_percentage
+        else:
+            a = 1
+        if targets[0].health_percentage * a == 1:
+            target = targets.closest_to(adept)
+        else:
+            target = targets[0]
+        return target
+
+    async def do_micro(self, soldiers):
+        enemy = self.ai.enemy_units()
+        if not enemy.exists:
+            return
+
+        adepts = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ADEPT]
+        dist = 7
+        # if self.ai.attack:
+        #     for ad in adepts:
+        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 17 and x.type_id in
+        #                                                          self.ai.workers_ids)
+        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 9 and x.type_id not in
+        #                                                          self.ai.workers_ids)
+        #         if workers.amount < 3 or threats.amount > 3:
+        #             if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(ad):
+        #                 self.ai.do(ad(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, ad.position))
+        #         elif workers.amount > 2:
+        #             workers_in_range = workers.closer_than(5, ad)
+        #             if workers_in_range.exists:
+        #                 workers_in_range = sorted(workers_in_range, key=lambda x: x.health + x.shield)
+        #                 target3 = workers_in_range[0]
+        #             else:
+        #                 target3 = workers.closest_to(ad)
+        #             if ad.weapon_cooldown == 0:
+        #                 self.ai.do(ad.attack(target3))
+        #     for shadow in self.ai.units(unit.ADEPTPHASESHIFT):
+        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 12 and x.type_id in
+        #                                                          self.ai.workers_ids)
+        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 9 and x.type_id not in
+        #                                                          self.ai.workers_ids)
+        #         if workers.amount > 3 and threats.amount < 5:
+        #             workers = sorted(workers, key=lambda x: x.health + x.shield)
+        #             self.ai.do(shadow.move(workers[0]))
+        #         else:
+        #             self.ai.do(shadow.move(self.mineral_lines[self.enemy_base_idx]))
+        #             if shadow.distance_to(self.mineral_lines[self.enemy_base_idx]) < 2:
+        #                 self.enemy_base_idx += 1
+        #                 if self.enemy_base_idx > 2:
+        #                     self.enemy_base_idx = 0
+        #
+        # else:
+        for adept in adepts:
+            threats = enemy.filter(
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(adept.position) <= dist and
+                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination and
+            not unit_.is_flying)
+            if self.ai.attack:
+                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+            if threats.exists:
+                closest_enemy = threats.closest_to(adept)
+                priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
+                    unit.QUEEN})
+                if priority.exists:
+                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, adept)
+                else:
+                    targets = threats.filter(lambda x: x.is_light)
+                    if not targets.exists:
+                        targets = threats
+                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, adept)
+
+                if adept.shield_percentage < 0.4:
+                    if adept.health_percentage < 0.35:
+                        adept.move(self.find_back_out_position(adept, closest_enemy.position))
+                        continue
+                    d = 4
+                else:
+                    d = 2
+
+                back_out_position = self.find_back_out_position(adept, closest_enemy.position)
+                if back_out_position is not None and adept.weapon_cooldown > 0:
+                    adept.move(adept.position.towards(back_out_position, d))
+                else:
+                    adept.attack(target)
+
+    def find_back_out_position(self, adept, closest_enemy_position):
+        i = 6
+        position = adept.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = adept.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
+                    k += 1
+                    position = position.random_on_distance(distance)
+                j += 1
+        return position
+
+
+class ArchonMicro(MicroABS):
+
+    def __init__(self, ai):
+        self.name = 'ArchonMicro'
+        super().__init__(self.name, ai)
+
+    def select_target(self, targets, archon):
+        if self.ai.enemy_race == Race.Protoss:
+            a = targets[0].shield_percentage
+        else:
+            a = 1
+        if targets[0].health_percentage * a == 1:
+            target = targets.closest_to(archon)
+        else:
+            target = targets[0]
+        return target
+
+    async def do_micro(self, soldiers):
+
+        enemy = self.ai.enemy_units()
+        if not enemy.exists:
+            return
+
+        archons = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ARCHON]
+        dist = 6
+        for archon in archons:
+            threats = enemy.filter(
+                lambda unit_: unit_.can_attack_ground and unit_.distance_to(archon.position) <= dist and
+                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
+            if self.ai.attack:
+                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+            if threats.exists:
+                closest_enemy = threats.closest_to(archon)
+                priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
+                    unit.QUEEN, unit.MUTALISK, unit.VIPER})
+                if priority.exists:
+                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, archon)
+                else:
+                    targets = threats.filter(lambda x: x.is_biological)
+                    if not targets.exists:
+                        targets = threats
+                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                    target = self.select_target(targets, archon)
+
+                if archon.shield_percentage < 0.2:
+                    archon.move(self.find_back_out_position(archon, closest_enemy.position))
+                    continue
+
+                if self.ai.army().closer_than(5, archon).amount < 4:
+                    back_out_position = self.find_back_out_position(archon, closest_enemy.position)
+                    if back_out_position is not None and archon.weapon_cooldown > 0:
+                        archon.move(archon.position.towards(back_out_position, 4))
+                        continue
+                archon.attack(target)
+
+    def find_back_out_position(self, adept, closest_enemy_position):
+        i = 6
+        position = adept.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = adept.position.towards(closest_enemy_position, -i)
             i += 1
             j = 1
             while not in_grid(self.ai, position) and j < 5:

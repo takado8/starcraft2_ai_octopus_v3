@@ -3,6 +3,8 @@ from sc2.unit import UnitTypeId as unit
 
 STALKER_x5 = {unit.STALKER: 5}
 
+ADEPT_x5 = {unit.ADEPT: 5}
+
 STALKER_x10 = {unit.STALKER: 10}
 
 ZEALOT_x5 = {unit.ZEALOT: 5}
@@ -10,6 +12,8 @@ ZEALOT_x5 = {unit.ZEALOT: 5}
 ZEALOT_x10 = {unit.ZEALOT: 10}
 
 SENTRY_x3 = {unit.SENTRY: 3}
+
+SENTRY_x1 = {unit.SENTRY: 1}
 
 ORACLE_x1 = {unit.ORACLE: 1}
 
@@ -30,3 +34,5 @@ IMMORTAL_x5 = {unit.IMMORTAL: 5}
 IMMORTAL_x2 = {unit.IMMORTAL: 2}
 
 COLOSSUS_x2 = {unit.COLOSSUS: 2}
+
+ARCHONS_x5 = {unit.ARCHON: 5}

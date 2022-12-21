@@ -10,6 +10,9 @@ class ConditionAttack:
     def none(self):
         pass
 
+    def adepts_more_than(self, amount):
+        return self.ai.army(unit.ADEPT).ready.amount > amount and not self.ai.after_first_attack
+
     def stalkers_more_than(self, amount):
         return self.ai.army(unit.STALKER).ready.amount > amount and not self.ai.after_first_attack
 

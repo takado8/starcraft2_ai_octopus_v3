@@ -56,7 +56,6 @@ class AirOracle(StrategyABS):
         self.forge_upgrader.shield()
         await self.twilight_upgrader.charge()
 
-
     # =======================================================  Trainers
 
     def train_probes(self):

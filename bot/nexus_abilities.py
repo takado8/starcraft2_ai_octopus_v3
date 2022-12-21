@@ -3,6 +3,7 @@ from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.buff_id import BuffId as buff
 from sc2.units import Units
+from bot.constants import ABILITIES_TIME
 import random
 
 
@@ -41,23 +42,9 @@ class Chronobooster:
                             progress = tg.orders[0].progress
                             abil_id = tg.orders[0].ability.id
                             # print('ability id: {}'.format(abil_id))
-                            if abil_id == ability.STARGATETRAIN_CARRIER:
-                                time = 64
-                            elif abil_id == ability.STARGATETRAIN_TEMPEST:
-                                time = 43
-                            elif abil_id == ability.STARGATETRAIN_ORACLE:
-                                time = 1500
-                            elif abil_id == ability.RESEARCH_WARPGATE:
-                                time = 150
-                            elif abil_id == ability.RESEARCH_BLINK:
-                                time = 121
-                            elif abil_id == ability.RESEARCH_CHARGE:
-                                time = 100
-                            elif abil_id == ability.ROBOTICSFACILITYTRAIN_OBSERVER:
-                                time = 1
+                            if abil_id in ABILITIES_TIME:
+                                time = ABILITIES_TIME[abil_id]
                             elif abil_id == ability.RESEARCH_PROTOSSGROUNDWEAPONS:
-                                            #
-                                            # ability.RESEARCH_PROTOSSSHIELDS:
                                 if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades:
                                     time = 129
                                 elif upgrade.PROTOSSGROUNDWEAPONSLEVEL2 not in self.ai.state.upgrades:

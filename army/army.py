@@ -32,8 +32,6 @@ class Army:
         for division_name in self.divisions:
             print(self.divisions[division_name])
 
-
-
     async def execute(self):
         try:
             self.establish_army_status()
@@ -52,6 +50,8 @@ class Army:
             self.avoid_aoe()
             if self.enemy_main_base_down:
                 self.scouting.scan_on_end()
+            # self.debug()
+
         except Exception as ex:
             self.debug()
             raise ex
@@ -110,8 +110,7 @@ class Army:
         enemy = self.ai.enemy_units()
         if enemy:
             high_mobility = []
-            high_mobility_ids = [unit.STALKER, unit.ADEPT, unit.ZEALOT]
-            # regular = []
+            high_mobility_ids = {unit.STALKER, unit.ADEPT, unit.ZEALOT}
             for man in self.ai.army:
                 if man.is_flying or man.type_id in high_mobility_ids:
                     high_mobility.append(man)
@@ -167,27 +166,7 @@ class Army:
             destination = self.ai.enemy_start_locations[0].position
         else:
             destination = None
-        # elif self.ai.enemy_structures().exists:
-        #     enemy = self.ai.enemy_structures()
-        #     destination = enemy.closest_to(self.ai.start_location).position
-        # else:
-        #     if self.ai.enemy_main_base_down:
-        #         if len(self.ai.observer_scouting_points) == 0:
-        #             for exp in self.ai.expansion_locations:
-        #                 if not self.ai.structures().closer_than(7, exp).exists:
-        #                     self.ai.observer_scouting_points.append(exp)
-        #             self.ai.observer_scouting_points = sorted(self.ai.observer_scouting_points,
-        #                                                       key=lambda x: self.ai.enemy_start_locations[
-        #                                                           0].distance_to(x))
-        #         if self.ai.army() and self.ai.army().closer_than(12, self.ai.observer_scouting_points[
-        #             self.ai.observer_scouting_index]).amount > 12 \
-        #                 and self.ai.enemy_structures().amount < 1:
-        #             self.ai.observer_scouting_index += 1
-        #             if self.ai.observer_scouting_index == len(self.ai.observer_scouting_points):
-        #                 self.ai.observer_scouting_index = 0
-        #         destination = self.ai.observer_scouting_points[self.ai.observer_scouting_index]
-        #     else:
-        #         destination = self.ai.enemy_start_locations[0].position
+
         return destination
 
     def create_division(self, division_name, units_ids_dict, micros: List, movements, lifetime=None):
@@ -196,6 +175,7 @@ class Army:
         else:
             new_division = Division(self.ai, division_name, units_ids_dict, micros, movements, lifetime=lifetime)
             self.divisions[division_name] = new_division
+            print("division created: {}".format(new_division))
             return new_division
 
     def create_training_order(self):
@@ -231,10 +211,19 @@ class Army:
                 else:
                     all_missing_units[unit_id] = missing_units[unit_id]
 
+        units_id_to_remove = []
         for unit_id in all_missing_units:
             all_missing_units[unit_id] -= self.ai.already_pending(unit_id)
+            if all_missing_units[unit_id] < 1:
+                units_id_to_remove.append(unit_id)
 
-
+        for unit_id in units_id_to_remove:
+            all_missing_units.pop(unit_id)
+        # exceptions for warpprism
+        if unit.WARPPRISM in all_missing_units:
+            all_missing_units[unit.WARPPRISM] -= self.ai.units(unit.WARPPRISMPHASING).amount
+            if all_missing_units[unit.WARPPRISM] < 1:
+                all_missing_units.pop(unit.WARPPRISM)
         for division_name in divisions_to_delete:
             if not self.divisions[division_name].soldiers:
                 self.divisions.pop(division_name)
@@ -246,7 +235,10 @@ class Army:
     def order_units_training(self, units_ids_dict):
         list_of_units = []
         for unit_id in units_ids_dict:
-            for _ in range(units_ids_dict[unit_id]):
+            # for _ in range(units_ids_dict[unit_id]):
+            if unit_id == unit.ARCHON:
+                list_of_units.append(unit.HIGHTEMPLAR)
+            else:
                 list_of_units.append(unit_id)
         self.trainer.add_units_to_training_queue(list_of_units)
 

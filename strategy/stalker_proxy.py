@@ -28,7 +28,8 @@ class StalkerProxy(StrategyABS):
         # self.twilight_upgrader = TwilightUpgrader(ai)
 
     def handle_workers(self):
-        self.workers_distribution.handle_workers()
+        self.workers_distribution.distribute_workers()
+        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):
@@ -66,7 +67,7 @@ class StalkerProxy(StrategyABS):
         return self.condition_counter_attack.counter_attack()
 
     # ======================================================== Buffs
-    def nexus_abilities(self):
+    async def nexus_abilities(self):
         # try:
         self.chronobooster.standard()
         # except Exception as ex:
