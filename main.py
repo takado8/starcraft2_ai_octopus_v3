@@ -93,7 +93,7 @@ class OctopusV3(sc2.BotAI):
         #
         ## build
         current_building = self.strategy.builder.get_current_building()
-        print('current building: {}'.format(current_building))
+        # print('current building: {}'.format(current_building))
         if not isinstance(current_building, unit):
             min_army_supply = current_building
             if self.state.score.food_used_army >= min_army_supply:
@@ -102,9 +102,9 @@ class OctopusV3(sc2.BotAI):
             else:
                 self.army_priority = True
         lock_spending = await self.lock_spending_condition()
-        print('army priority: {}'.format(self.army_priority))
-        if not self.army_priority and not lock_spending:
-            print('build from main.')
+        # print('army priority: {}'.format(self.army_priority))
+        if (not self.army_priority or self.minerals > 700) and not lock_spending:
+            # print('build from main.')
             await self.strategy.build_from_queue()
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
@@ -167,7 +167,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

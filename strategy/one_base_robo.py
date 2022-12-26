@@ -6,10 +6,10 @@ from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro, WarpPrismMicro, \
-    ColossusMicro
+    ColossusMicro, AirMicro
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
 from army.divisions import IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
-    STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2
+    STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2, VOIDRAY_x3, CARRIER_x8, TEMPEST_x5
 
 
 class OneBaseRobo(StrategyABS):
@@ -17,25 +17,26 @@ class OneBaseRobo(StrategyABS):
         super().__init__(type='defend', name='OneBaseRobo', ai=ai)
 
         stalker_micro = StalkerMicro(ai)
-        sentry_micro = SentryMicro(ai)
+        # sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
-        warpprism_micro = WarpPrismMicro(ai)
-        colossus_micro = ColossusMicro(ai)
+        air_micro = AirMicro(ai)
+        #
+        # warpprism_micro = WarpPrismMicro(ai)
+        # colossus_micro = ColossusMicro(ai)
         # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        self.army.create_division('colossi1', COLOSSUS_x2, [colossus_micro], Movements(ai, 0.2))
-        self.army.create_division('colossi2', COLOSSUS_x2, [colossus_micro], Movements(ai, 0.2))
-        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers4', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('immortals3', IMMORTAL_x5, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6), lifetime=600)
+        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6), lifetime=600)
+        self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2), lifetime=500)
+        self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2), lifetime=500)
+        self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
+        self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
+        self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
+        self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
         self.army.create_division('zealots', ZEALOT_x10, [zealot_micro], Movements(ai, 0.33))
-        self.army.create_division('zealots2', ZEALOT_x10, [zealot_micro], Movements(ai, 0.33))
-        self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
+        # self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
         self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
+        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
 
         build_queue = BuildQueues.ONE_BASE_ROBO
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -60,14 +61,14 @@ class OneBaseRobo(StrategyABS):
         await self.pylon_builder.new_standard()
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=2.5)
+        self.assimilator_builder.max_vespene()
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
-        self.forge_upgrader.standard()
-        await self.twilight_upgrader.standard()
-        await self.robotics_bay_upgrader.thermal_lances()
+        self.cybernetics_upgrader.air_dmg()
+        self.forge_upgrader.shield()
+        await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
 
@@ -81,10 +82,10 @@ class OneBaseRobo(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.total_supply_over(193)
+        return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(18 if self.ai.time < 400 else 50)
+        return self.condition_retreat.supply_less_than(80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

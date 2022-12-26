@@ -28,23 +28,23 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.NEXUS, 16,
-                unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                unit.TWILIGHTCOUNCIL, 50, unit.NEXUS, unit.ROBOTICSFACILITY, 80,  unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY,  110,  unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, 110, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY,unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, 32, unit.STARGATE,
+                            unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 40, unit.STARGATE,
+                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                           unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 4,
+    COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 12,
                 unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                unit.TWILIGHTCOUNCIL, 50, unit.NEXUS, unit.ROBOTICSFACILITY, 80, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, 110, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, 110, unit.GATEWAY,
+                unit.TWILIGHTCOUNCIL, unit.NEXUS, 50, unit.ROBOTICSFACILITY, 80, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
 
     ARCHONS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.TWILIGHTCOUNCIL, unit.NEXUS, 4,
                 unit.TEMPLARARCHIVE, unit.GATEWAY, unit.GATEWAY, 14, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
                  50, unit.NEXUS, unit.ROBOTICSFACILITY, 80, unit.GATEWAY, unit.FORGE,
-                unit.GATEWAY, unit.GATEWAY, 120, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, 140, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
 

@@ -35,4 +35,6 @@ IMMORTAL_x2 = {unit.IMMORTAL: 2}
 
 COLOSSUS_x2 = {unit.COLOSSUS: 2}
 
+COLOSSUS_x2_STALKER_x12 = {unit.COLOSSUS: 2, unit.STALKER: 12}
+
 ARCHONS_x5 = {unit.ARCHON: 5}
