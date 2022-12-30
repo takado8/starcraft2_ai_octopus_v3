@@ -513,16 +513,29 @@ class ArchonMicro(MicroABS):
         self.name = 'ArchonMicro'
         super().__init__(self.name, ai)
 
-    def select_target(self, targets, archon):
-        if self.ai.enemy_race == Race.Protoss:
-            a = targets[0].shield_percentage
-        else:
-            a = 1
-        if targets[0].health_percentage * a == 1:
-            target = targets.closest_to(archon)
-        else:
-            target = targets[0]
-        return target
+    def select_target(self, targets):
+        total_hp_in_range_of_fire = {}
+        _range = 1
+        for target in targets:
+            enemy_in_range = self.ai.enemy_units.filter(lambda x: x.distance_to(target) <= _range and\
+                                                        x.type_id not in self.ai.units_to_ignore)
+            total_hp_in_range_of_fire[target] = \
+                (enemy_in_range.amount, sum([enemy.health + enemy.shield for enemy in enemy_in_range]))
+        max_targets = max(total_hp_in_range_of_fire, key=lambda x: total_hp_in_range_of_fire[x][0])
+
+        targets_with_max_count = {}
+        for target in total_hp_in_range_of_fire:
+            if total_hp_in_range_of_fire[target][0] == max_targets:
+                targets_with_max_count[target] = total_hp_in_range_of_fire[target]
+
+        min_hp = 99999999
+        final_target = None
+        for target in targets_with_max_count:
+            if targets_with_max_count[target][1] < min_hp:
+                min_hp = targets_with_max_count[target][1]
+                final_target = target
+
+        return final_target
 
     async def do_micro(self, soldiers):
 
@@ -541,33 +554,35 @@ class ArchonMicro(MicroABS):
             if threats.exists:
                 closest_enemy = threats.closest_to(archon)
                 priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
-                    unit.QUEEN, unit.MUTALISK, unit.VIPER})
+                    unit.QUEEN, unit.MUTALISK, unit.VIPER, unit.GHOST, unit.INFESTOR, unit.CORRUPTOR})
                 if priority.exists:
                     targets = priority.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, archon)
+                    target = self.select_target(targets)
                 else:
                     targets = threats.filter(lambda x: x.is_biological)
                     if not targets.exists:
                         targets = threats
                     targets = targets.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, archon)
+                    target = self.select_target(targets)
 
-                if archon.shield_percentage < 0.2:
+                if archon.shield_percentage < 0.25:
                     archon.move(self.find_back_out_position(archon, closest_enemy.position))
                     continue
 
-                if self.ai.army().closer_than(5, archon).amount < 4:
-                    back_out_position = self.find_back_out_position(archon, closest_enemy.position)
-                    if back_out_position is not None and archon.weapon_cooldown > 0:
-                        archon.move(archon.position.towards(back_out_position, 4))
-                        continue
+                # if self.ai.army().closer_than(5, archon).amount < 4:
+                #     back_out_position = self.find_back_out_position(archon, closest_enemy.position)
+                #     if back_out_position is not None and archon.weapon_cooldown > 0:
+                #         archon.move(archon.position.towards(back_out_position, 4))
+                #         continue
+                if target is None:
+                    target = closest_enemy
                 archon.attack(target)
 
-    def find_back_out_position(self, adept, closest_enemy_position):
+    def find_back_out_position(self, archon, closest_enemy_position):
         i = 6
-        position = adept.position.towards(closest_enemy_position, -i)
+        position = archon.position.towards(closest_enemy_position, -i)
         while not in_grid(self.ai, position) and i < 12:
-            position = adept.position.towards(closest_enemy_position, -i)
+            position = archon.position.towards(closest_enemy_position, -i)
             i += 1
             j = 1
             while not in_grid(self.ai, position) and j < 5:
@@ -730,7 +745,6 @@ class ColossusMicro(MicroABS):
                 else:
                     d = 3
 
-
                 back_out_position = self.find_back_out_position(colossus, closest_enemy.position)
                 if back_out_position is not None and colossus.weapon_cooldown > 0:
                     colossus.move(colossus.position.towards(back_out_position, d))
@@ -757,9 +771,9 @@ class ColossusMicro(MicroABS):
             if colossi_threats:
                 threats = colossi_threats
                 # print(colossi_threats)
-            elif not any([stalker.distance_to(colossus) < 5 for colossus in colossi]):
+            elif colossi and not any([stalker.distance_to(colossus) < 4 for colossus in colossi]):
                 if upgrade.BLINKTECH in self.ai.state.upgrades and \
-                    self.is_blink_available(stalker):
+                    await self.is_blink_available(stalker):
                     await self.blink(stalker, colossi.closest_to(stalker).position)
                 else:
                     stalker.move(colossi.closest_to(stalker))
@@ -802,7 +816,7 @@ class ColossusMicro(MicroABS):
 
 
                 if stalker.shield_percentage < 0.4 and upgrade.BLINKTECH in self.ai.state.upgrades and \
-                        self.is_blink_available(stalker):
+                        await self.is_blink_available(stalker):
                     back_out_position = self.find_blink_out_position(stalker, closest_enemy.position)
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
                         await self.blink(stalker, back_out_position)
@@ -814,7 +828,6 @@ class ColossusMicro(MicroABS):
                         stalker.move(stalker.position.towards(back_out_position, d))
                     else:
                         stalker.attack(target)
-
 
     def select_stalker_target(self, targets, stalker):
         if targets[0].shield_health_percentage == 1:
@@ -892,7 +905,7 @@ class ZealotMicro(MicroABS):
             if threats.exists:
                 closest = threats.closest_to(zl)
                 if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zl.position) > \
-                    closest.distance_to(zl.position) + 2 or not self.ai.in_pathing_grid(threats[0]):
+                    closest.distance_to(zl.position) + 1 or not self.ai.in_pathing_grid(threats[0]):
                     target = closest
                 else:
                     target = threats[0]
@@ -975,3 +988,95 @@ class WarpPrismMicro(MicroABS):
                 abilities = await self.ai.get_available_abilities(warp)
                 if ability.MORPH_WARPPRISMTRANSPORTMODE in abilities:
                     warp(ability.MORPH_WARPPRISMTRANSPORTMODE)
+            for warp in self.ai.units(unit.WARPPRISM):
+                if warp.distance_to(self.ai.start_location) > 5:
+                    warp.move(self.ai.start_location)
+
+
+class DisruptorMicro(MicroABS):
+
+    def __init__(self, ai):
+        self.name = 'DisruptorMicro'
+        super().__init__(self.name, ai)
+
+    async def do_micro(self, soldiers):
+
+        enemy = self.ai.enemy_units()
+        if not enemy.exists:
+            return
+
+        disruptors = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.DISRUPTOR]
+        # Disruptor
+        # zealots = self.ai.army(unit.ZEALOT)
+        for disruptor in disruptors:
+            # Cast spells   ---> look for group of enemy
+            abilities = await self.ai.get_available_abilities(disruptor)
+            if ability.EFFECT_PURIFICATIONNOVA in abilities:
+                spell_target = enemy.filter(
+                    lambda unit_: unit_.distance_to(disruptor) < 12 and unit_.type_id not in self.ai.units_to_ignore
+                                  and not unit_.is_flying)
+                target = None
+                if spell_target.amount > 2:
+                    tanks = spell_target.filter(lambda x: x.type_id in {unit.SIEGETANKSIEGED, unit.SIEGETANK,
+                                                                        unit.DISRUPTOR})
+                    if tanks.amount > 1:
+                        spell_target = tanks
+
+                    maxNeighbours = 0
+                    for en in spell_target:
+                        neighbours = enemy.filter(lambda unit_: not unit_.is_flying and unit_.distance_to(en) <= 1.5
+                                                  and unit_.type_id not in self.ai.units_to_ignore)
+                        if neighbours.amount > maxNeighbours:
+                            maxNeighbours = neighbours.amount
+                            target = en
+                    if target is not None and self.ai.army.closer_than(2, target).amount < 1:
+                        dist = await self.ai._client.query_pathing(disruptor.position, target.position)
+                        if dist is not None and dist <= 13:
+                            # print("Casting Purification nova on " + str(maxNeighbours + 1) + " units.")
+                            # self.ai.nova_wait = self.ai.time
+                            disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
+            else:
+                threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
+                if threat.exists:
+                    retreat_position = self.find_back_out_position(disruptor, threat.closest_to(disruptor))
+                    disruptor.move(retreat_position)
+        # Disruptor purification nova
+        # if self.ai.time - self.ai.nova_wait > 0.4:
+        for nova in self.ai.units(unit.DISRUPTORPHASED):
+            spell_target = enemy.filter(lambda unit_: unit_.distance_to(nova) < 9
+                                 and unit_.type_id not in self.ai.units_to_ignore and not unit_.is_flying)
+            target = None
+            if spell_target.amount > 0:
+                tanks = spell_target.filter(lambda x: x.type_id in {unit.SIEGETANKSIEGED, unit.SIEGETANK})
+                if tanks.amount > 0:
+                    spell_target = tanks
+                maxNeighbours = 0
+                for en in spell_target:
+                    neighbours = enemy.filter(
+                        lambda unit_: unit_.distance_to(nova) <= 1.5
+                                      and unit_.type_id not in self.ai.units_to_ignore and not unit_.is_flying)
+                    if neighbours.amount > maxNeighbours:
+                        maxNeighbours = neighbours.amount
+                        target = en
+
+                # ability.PURIFICATIONNOVAMORPHBACK_PURIFICATIONNOVA
+                if target is not None and self.ai.army.closer_than(2, target).amount < 1:
+                    # if self.ai.army.closer_than(3,target).amount < 2:
+                    # print("Steering Purification nova to " + str(maxNeighbours + 1) + " units.")
+                    nova.move(target.position.towards(nova, -1))
+
+    def find_back_out_position(self, disruptor, closest_enemy_position):
+        i = 6
+        position = disruptor.position.towards(closest_enemy_position, -i)
+        while not in_grid(self.ai, position) and i < 12:
+            position = disruptor.position.towards(closest_enemy_position, -i)
+            i += 1
+            j = 1
+            while not in_grid(self.ai, position) and j < 5:
+                k = 0
+                distance = j * 2
+                while not in_grid(self.ai, position) and k < 20:
+                    k += 1
+                    position = position.random_on_distance(distance)
+                j += 1
+        return position

@@ -51,7 +51,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = Colossus(self)
+        self.strategy = OneBaseRobo(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -61,7 +61,6 @@ class OctopusV3(sc2.BotAI):
         else:
             print('getting coords failed')
             # await self.chat_send('getting coords failed')
-        # self.strategy.workers_distribution.distribute_workers_on_first_step()
         for worker in self.workers:
             worker.stop()
 
@@ -154,11 +153,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -167,7 +166,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[0], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

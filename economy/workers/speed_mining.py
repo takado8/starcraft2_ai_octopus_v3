@@ -40,7 +40,7 @@ class SpeedMining:
     def speedmine_single(self, worker: Unit):
         townhall = self.ai.townhalls.closest_to(worker)
 
-        if self.enable_on_return and worker.is_returning and len(worker.orders) == 1:
+        if self.enable_on_return and worker.is_returning and len(worker.orders) == 1 and worker.is_carrying_minerals:
             target: Point2 = townhall.position
             target = target.towards(worker, townhall.radius + worker.radius)
             if 0.75 < worker.distance_to(target) < 2:
