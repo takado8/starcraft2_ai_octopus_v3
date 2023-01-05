@@ -59,7 +59,7 @@ class ConditionRetreat:
     def army_count_less_than(self, army_count):
         return self.ai.attack and self.ai.army.amount < army_count
 
-    def supply_less_than(self, supply):
+    def army_supply_less_than(self, supply):
         return self.ai.supply_army < supply
 
 

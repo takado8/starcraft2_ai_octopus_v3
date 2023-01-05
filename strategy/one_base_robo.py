@@ -11,6 +11,7 @@ from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, 
 from army.divisions import IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
     STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2, VOIDRAY_x3, CARRIER_x8, TEMPEST_x5
 from sc2.unit import UnitTypeId as unit
+from sc2 import Race
 
 
 class OneBaseRobo(StrategyABS):
@@ -27,8 +28,13 @@ class OneBaseRobo(StrategyABS):
         disruptor_micro = DisruptorMicro(ai)
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
-        main_division_units = {unit.ZEALOT: 3, unit.STALKER: 7, unit.IMMORTAL: 7, unit.COLOSSUS: 3, unit.ARCHON: 8,
-                               unit.DISRUPTOR: 4}
+        if self.ai.enemy_race == Race.Protoss:
+            main_division_units = {unit.ZEALOT: 3, unit.STALKER: 7, unit.IMMORTAL: 8, unit.COLOSSUS: 3, unit.ARCHON: 8,
+                                   unit.DISRUPTOR: 5}
+            print("Enemy race Protoss.")
+        else:
+            main_division_units = {unit.ZEALOT: 7, unit.STALKER: 7, unit.IMMORTAL: 7, unit.COLOSSUS: 3, unit.ARCHON: 8,
+                                   unit.DISRUPTOR: 4}
         # self.sentry_micro = SentryMicro(ai)
         self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
         self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
@@ -85,10 +91,10 @@ class OneBaseRobo(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.air_dmg_lvl2_full_supply()
+        return self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(80)
+        return self.condition_retreat.army_supply_less_than(80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

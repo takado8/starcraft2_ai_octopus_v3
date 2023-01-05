@@ -40,18 +40,16 @@ class SpeedMining:
     def speedmine_single(self, worker: Unit):
         townhall = self.ai.townhalls.closest_to(worker)
 
-        if self.enable_on_return and worker.is_returning and len(worker.orders) == 1 and worker.is_carrying_minerals:
+        if len(worker.orders) == 1 and worker.is_carrying_minerals:
             target: Point2 = townhall.position
-            target = target.towards(worker, townhall.radius + worker.radius)
+            target = target.towards(worker, townhall.radius + worker.radius + 0.5)
             if 0.75 < worker.distance_to(target) < 2:
                 worker.move(target)
-                worker(AbilityId.SMART, townhall, True)
+                worker(AbilityId.HARVEST_RETURN_PROBE, queue=True)
                 return
 
         if (
-            self.enable_on_mine
-            and not worker.is_returning
-            and len(worker.orders) == 1
+            len(worker.orders) == 1
             and isinstance(worker.order_target, int)
         ):
             mineral_field = self.ai.mineral_field.find_by_tag(worker.order_target)

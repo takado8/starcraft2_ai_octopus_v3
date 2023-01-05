@@ -71,7 +71,7 @@ class AirOracle(StrategyABS):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(80)
+        return self.condition_retreat.army_supply_less_than(80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

@@ -30,7 +30,6 @@ class Colossus(StrategyABS):
                                unit.DISRUPTOR: 4}
         # self.sentry_micro = SentryMicro(ai)
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
                                 immortal_micro, archon_micro, disruptor_micro],
@@ -87,7 +86,7 @@ class Colossus(StrategyABS):
         return self.condition_attack.total_supply_over(193)
 
     def retreat_condition(self):
-        return self.condition_retreat.supply_less_than(18 if self.ai.time < 400 else 60)
+        return self.condition_retreat.army_supply_less_than(18 if self.ai.time < 400 else 60)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

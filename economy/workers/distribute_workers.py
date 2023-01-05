@@ -30,7 +30,7 @@ class DistributeWorkers:
                         self.gas_dict[g.tag] = []
 
     def distribute_idle_workers(self):
-        for worker in self.ai.units(unit.PROBE).filter(lambda x: x.is_gathering or x.is_idle):
+        for worker in self.ai.units(unit.PROBE).filter(lambda x: x.is_carrying_minerals or x.is_idle):
             if worker.tag in self.all_workers:
                 target_tag = self.all_workers[worker.tag]
                 target = None

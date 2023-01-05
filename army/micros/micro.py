@@ -421,74 +421,74 @@ class AdeptMicro(MicroABS):
 
         adepts = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ADEPT]
         dist = 7
-        # if self.ai.attack:
-        #     for ad in adepts:
-        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 17 and x.type_id in
-        #                                                          self.ai.workers_ids)
-        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 9 and x.type_id not in
-        #                                                          self.ai.workers_ids)
-        #         if workers.amount < 3 or threats.amount > 3:
-        #             if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(ad):
-        #                 self.ai.do(ad(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, ad.position))
-        #         elif workers.amount > 2:
-        #             workers_in_range = workers.closer_than(5, ad)
-        #             if workers_in_range.exists:
-        #                 workers_in_range = sorted(workers_in_range, key=lambda x: x.health + x.shield)
-        #                 target3 = workers_in_range[0]
-        #             else:
-        #                 target3 = workers.closest_to(ad)
-        #             if ad.weapon_cooldown == 0:
-        #                 self.ai.do(ad.attack(target3))
-        #     for shadow in self.ai.units(unit.ADEPTPHASESHIFT):
-        #         workers = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 12 and x.type_id in
-        #                                                          self.ai.workers_ids)
-        #         threats = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 9 and x.type_id not in
-        #                                                          self.ai.workers_ids)
-        #         if workers.amount > 3 and threats.amount < 5:
-        #             workers = sorted(workers, key=lambda x: x.health + x.shield)
-        #             self.ai.do(shadow.move(workers[0]))
-        #         else:
-        #             self.ai.do(shadow.move(self.mineral_lines[self.enemy_base_idx]))
-        #             if shadow.distance_to(self.mineral_lines[self.enemy_base_idx]) < 2:
-        #                 self.enemy_base_idx += 1
-        #                 if self.enemy_base_idx > 2:
-        #                     self.enemy_base_idx = 0
-        #
-        # else:
-        for adept in adepts:
-            threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(adept.position) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination and
-            not unit_.is_flying)
-            if self.ai.attack:
-                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
-            if threats.exists:
-                closest_enemy = threats.closest_to(adept)
-                priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
-                    unit.QUEEN})
-                if priority.exists:
-                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, adept)
+        if self.ai.attack:
+            for ad in adepts:
+                workers = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 17 and x.type_id in
+                                                                 self.ai.workers_ids)
+                threats = self.ai.enemy_units().filter(lambda x: x.distance_to(ad) < 9 and x.type_id not in
+                                                                 self.ai.workers_ids)
+                if workers.amount < 3 or threats.amount > 3:
+                    if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(ad):
+                        self.ai.do(ad(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, ad.position))
+                elif workers.amount > 2:
+                    workers_in_range = workers.closer_than(5, ad)
+                    if workers_in_range.exists:
+                        workers_in_range = sorted(workers_in_range, key=lambda x: x.health + x.shield)
+                        target3 = workers_in_range[0]
+                    else:
+                        target3 = workers.closest_to(ad)
+                    if ad.weapon_cooldown == 0:
+                        self.ai.do(ad.attack(target3))
+            for shadow in self.ai.units(unit.ADEPTPHASESHIFT):
+                workers = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 12 and x.type_id in
+                                                                 self.ai.workers_ids)
+                threats = self.ai.enemy_units().filter(lambda x: x.distance_to(shadow) < 9 and x.type_id not in
+                                                                 self.ai.workers_ids)
+                if workers.amount > 3 and threats.amount < 5:
+                    workers = sorted(workers, key=lambda x: x.health + x.shield)
+                    self.ai.do(shadow.move(workers[0]))
                 else:
-                    targets = threats.filter(lambda x: x.is_light)
-                    if not targets.exists:
-                        targets = threats
-                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, adept)
+                    self.ai.do(shadow.move(self.mineral_lines[self.enemy_base_idx]))
+                    if shadow.distance_to(self.mineral_lines[self.enemy_base_idx]) < 2:
+                        self.enemy_base_idx += 1
+                        if self.enemy_base_idx > 2:
+                            self.enemy_base_idx = 0
 
-                if adept.shield_percentage < 0.4:
-                    if adept.health_percentage < 0.35:
-                        adept.move(self.find_back_out_position(adept, closest_enemy.position))
-                        continue
-                    d = 4
-                else:
-                    d = 2
+        else:
+            for adept in adepts:
+                threats = enemy.filter(
+                    lambda unit_: unit_.can_attack_ground and unit_.distance_to(adept.position) <= dist and
+                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination and
+                not unit_.is_flying)
+                if self.ai.attack:
+                    threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+                if threats.exists:
+                    closest_enemy = threats.closest_to(adept)
+                    priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
+                        unit.QUEEN})
+                    if priority.exists:
+                        targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                        target = self.select_target(targets, adept)
+                    else:
+                        targets = threats.filter(lambda x: x.is_light)
+                        if not targets.exists:
+                            targets = threats
+                        targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                        target = self.select_target(targets, adept)
 
-                back_out_position = self.find_back_out_position(adept, closest_enemy.position)
-                if back_out_position is not None and adept.weapon_cooldown > 0:
-                    adept.move(adept.position.towards(back_out_position, d))
-                else:
-                    adept.attack(target)
+                    if adept.shield_percentage < 0.4:
+                        if adept.health_percentage < 0.35:
+                            adept.move(self.find_back_out_position(adept, closest_enemy.position))
+                            continue
+                        d = 4
+                    else:
+                        d = 2
+
+                    back_out_position = self.find_back_out_position(adept, closest_enemy.position)
+                    if back_out_position is not None and adept.weapon_cooldown > 0:
+                        adept.move(adept.position.towards(back_out_position, d))
+                    else:
+                        adept.attack(target)
 
     def find_back_out_position(self, adept, closest_enemy_position):
         i = 6

@@ -42,16 +42,15 @@ class Movements:
                                   unit_.type_id not in self.ai.units_to_ignore)
 
         for man in division_units:
+
+            if man.distance_to(self.position) <= _range:  # in position
+                units_in_position_count += 1
             if enemy and man.distance_to(enemy.closest_to(man)) < division.max_units_distance:
                 if enemy and not enemy.closer_than(man.ground_range + man.radius, man.position).exists:
                     # go help someone who is fighting
                     attacking_friend = division_units.filter(lambda x: x.is_attacking)
                     if attacking_friend.exists:
                         man.attack(enemy.closest_to(attacking_friend.closest_to(man.position).position).position)
-                continue
-            if man.distance_to(self.position) <= _range:  # in position
-                units_in_position_count += 1
-
             elif man.type_id not in {unit.ZEALOT, unit.DARKTEMPLAR} or not man.is_attacking:  # away. join army
                 man.attack(self.position)
 
