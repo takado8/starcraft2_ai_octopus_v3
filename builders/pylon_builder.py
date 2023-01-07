@@ -124,3 +124,48 @@ class PylonBuilder:
                         i += 1
                         pos = pos.random_on_distance(7)
                         result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
+
+    async def new_standard_upper_wall(self):
+        if self.ai.supply_cap < 200 and self.ai.structures(unit.PYLON).exists:
+            # if self.ai.structures(unit.PYLON).amount < 1:
+            #     if not self.ai.already_pending(unit.PYLON):
+            #         placement = self.ai.main_base_ramp.protoss_wall_pylon
+            #
+            #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
+            #                             random_alternative=False)
+            # else:
+            if self.ai.supply_cap < 80:
+                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 4).random_on_distance(5)
+                max_d = 25
+                pending = 2 if self.ai.time > 180 else 1
+                left = 5
+                step = 7
+            elif self.ai.supply_cap < 120:
+                pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center, 5).random_on_distance(
+                    7)
+                max_d = 32
+                pending = 2
+                left = 7
+                step = 5
+            else:
+                pos = self.ai.structures(unit.NEXUS).ready
+                if pos.exists:
+                    pos = pos.random.position
+                else:
+                    return
+                minerals = self.ai.mineral_field.closest_to(pos)
+                if minerals.distance_to(pos) < 12:
+                    pos = pos.towards(minerals, -7).random_on_distance(2)
+                max_d = 45
+                pending = 3
+                left = 9
+                step = 5
+            if self.ai.supply_left < left:  # or (pylons.amount < 1 and self.ai.structures(unit.GATEWAY).exists):
+                if self.ai.already_pending(unit.PYLON) < pending:
+                    # pos = pos.random_on_distance(7)
+                    result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
+                    i = 0
+                    while not result and i < 12:
+                        i += 1
+                        pos = pos.random_on_distance(7)
+                        result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)

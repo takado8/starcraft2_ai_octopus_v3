@@ -6,12 +6,13 @@ from bot.building_spot_validator import BuildingSpotValidator
 
 
 class Builder:
-    def __init__(self, ai, build_queue, expander):
+    def __init__(self, ai, build_queue, expander, special_building_locations=None):
         self.ai = ai
         self.expander = expander
         self.validator = BuildingSpotValidator(ai)
         self.build_queue = build_queue
         self.build_queue_index = 0
+        self.special_building_locations = special_building_locations
 
     async def build_from_queue(self):
         order_dict = {}
@@ -38,11 +39,23 @@ class Builder:
                         (2 if building == unit.GATEWAY else 1):
                     if building == unit.NEXUS:
                         await self.expander.expand()
-                    else:
-                        pylon = self.ai.get_pylon_with_least_neighbours()
-                        if pylon:
-                            await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
-                                            random_alternative=True)
+                        return
+                    elif self.special_building_locations and building in self.special_building_locations:
+                        all_building_types = None
+                        if building == unit.GATEWAY:
+                            all_building_types = {unit.GATEWAY, unit.WARPGATE}
+                        location = self.special_building_locations[building]
+                        if not self.ai.structures(all_building_types if all_building_types else building)\
+                                .closer_than(1, location).exists:
+                            await self.ai.build(building, near=location,
+                                            placement_step=1, max_distance=1,
+                                            random_alternative=False)
+                            return
+
+                    pylon = self.ai.get_pylon_with_least_neighbours()
+                    if pylon:
+                        await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
+                                        random_alternative=True)
                         # else:
                             # print("pylon is none")
         if all_done:

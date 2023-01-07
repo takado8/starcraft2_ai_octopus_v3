@@ -8,12 +8,12 @@ class BuildQueues:
                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    ADEPT_DEFENSE = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, 4, unit.GATEWAY, unit.GATEWAY,
-                     unit.TWILIGHTCOUNCIL, 30,
+    ADEPT_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, 4, unit.GATEWAY, unit.GATEWAY,
+                     unit.TWILIGHTCOUNCIL, 16,
                      unit.NEXUS, unit.TEMPLARARCHIVE,
-                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY,
-                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                    unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE,                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 40,
+                    unit.GATEWAY, unit.ROBOTICSBAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     STALKER_BLINKERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
@@ -29,17 +29,17 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    ONE_BASE_ROBO = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 16, unit.NEXUS,
+    ONE_BASE_ROBO = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY, 16, unit.NEXUS,
                      unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, 32, unit.NEXUS, unit.GATEWAY, unit.FORGE,
                 unit.TWILIGHTCOUNCIL, unit.NEXUS, 50, unit.TEMPLARARCHIVE, unit.ROBOTICSFACILITY, 60, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
 
     COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 6,
                 unit.ROBOTICSBAY,12, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, unit.GATEWAY, unit.FORGE,
                 unit.TWILIGHTCOUNCIL, unit.NEXUS, 40, unit.TEMPLARARCHIVE, unit.ROBOTICSFACILITY, 60, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
 

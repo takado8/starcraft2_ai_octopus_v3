@@ -1,13 +1,17 @@
 from army.movements import Movements
+from bot.nexus_abilities import ShieldOvercharge
+from builders.battery_builder import BatteryBuilder
+from builders.special_building_locations import UpperWall
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from army.micros.micro import AdeptMicro, ZealotMicro, StalkerMicro, SentryMicro, ImmortalMicro, WarpPrismMicro, \
-    ArchonMicro
-from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader
+    ArchonMicro, DisruptorMicro, ColossusMicro, WallGuardZealotMicro
+from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader
 from army.divisions import ADEPT_x5, ZEALOT_x10, OBSERVER_x1, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTRY_x1, \
     IMMORTAL_x2, ZEALOT_x5
+from sc2.unit import UnitTypeId as unit
 
 
 class AdeptRushDefense(StrategyABS):
@@ -19,17 +23,23 @@ class AdeptRushDefense(StrategyABS):
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
+        wall_guard_zealot_micro = WallGuardZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
         archon_micro = ArchonMicro(ai)
+        disruptor_micro = DisruptorMicro(ai)
+        colossus_micro = ColossusMicro(ai)
 
         # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('zealots', ZEALOT_x5, [zealot_micro], Movements(ai, 0.33))
-        self.army.create_division('adepts1', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
-        self.army.create_division('adepts2', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
-        self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
-        self.army.create_division('adepts4', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
-        self.army.create_division('adepts5', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
-        self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                  Movements(ai, 0.33), lifetime=300)
+        self.army.create_division('zealots', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.33),
+                                  lifetime=-300)
+        # self.army.create_division('adepts1', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
+        self.army.create_division('adepts2', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        self.army.create_division('adepts4', ADEPT_x5, [adept_micro], Movements(ai, 0.2), lifetime=600)
+        # self.army.create_division('adepts5', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        # self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2))
         self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2),lifetime=-300)
@@ -45,16 +55,25 @@ class AdeptRushDefense(StrategyABS):
         self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-460)
         # self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-460)
+        self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-720)
+        self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-720)
 
         build_queue = BuildQueues.ADEPT_DEFENSE
-        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
+        upper_wall = UpperWall(ai)
+        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
+                               special_building_locations=upper_wall.locations_dict)
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
+        self.forge_upgrader = ForgeUpgrader(ai)
+        self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
+
+        self.battery_builder = BatteryBuilder(ai)
+        self.shield_overcharge = ShieldOvercharge(ai)
 
 
     def handle_workers(self):
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=4)
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=3)
         self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
 
@@ -62,19 +81,18 @@ class AdeptRushDefense(StrategyABS):
     async def build_from_queue(self):
         await self.builder.build_from_queue()
 
-
     async def build_pylons(self):
-        await self.pylon_builder.new_standard()
-        # await self.pylon_builder.proxy()
-
+        await self.pylon_builder.new_standard_upper_wall()
+        await self.battery_builder.build_batteries()
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=4)
+        self.assimilator_builder.standard(minerals_to_gas_ratio=3)
 
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
+        self.forge_upgrader.armor_first()
         await self.twilight_upgrader.standard()
 
 
@@ -92,11 +110,11 @@ class AdeptRushDefense(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.adepts_more_than(10) or self.condition_attack.total_supply_over(195)
+        return self.condition_attack.total_supply_over(195)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(10)
+        return self.condition_retreat.army_supply_less_than(15 if self.ai.time < 480 else 40)
 
 
     def counter_attack_condition(self):
@@ -105,14 +123,14 @@ class AdeptRushDefense(StrategyABS):
 
     # ======================================================== Buffs
     async def nexus_abilities(self):
-        # try:
         self.chronobooster.standard()
-        # except Exception as ex:
-        #     print(ex)
+        await self.shield_overcharge.shield_overcharge()
 
 
     async def lock_spending_condition(self):
-        pass
+        return await self.condition_lock_spending.twilight_council_glaives() or \
+               await self.condition_lock_spending.forge() or \
+               self.condition_lock_spending.thermal_lances()
 
 
     async def morphing(self):

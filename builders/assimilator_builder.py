@@ -55,7 +55,7 @@ class AssimilatorBuilder:
     def standard(self, minerals_to_gas_ratio=2):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1:
             return
-        if self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio:
+        if (self.ai.minerals + 50) / (self.ai.vespene + 50) < minerals_to_gas_ratio:
             return
 
         nexuses = self.ai.structures(unit.NEXUS)
@@ -83,30 +83,3 @@ class AssimilatorBuilder:
                             # print("building assimilator.")
                             break
 
-    def minerals_x4(self):
-        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1:
-            return
-        if self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.minerals / (self.ai.vespene + 1) < 4:
-            return
-
-        nexuses = self.ai.structures(unit.NEXUS)
-        if nexuses.amount < 4:
-            nexuses = nexuses.ready
-        probes = self.ai.units(unit.PROBE)
-        if probes.exists:
-            for nexus in nexuses:
-                vespenes = self.ai.vespene_geyser.closer_than(9, nexus)
-                workers = probes.closer_than(12, nexus)
-                if workers.amount > 14 or nexuses.amount > 3:
-                    for vespene in vespenes:
-                        if (not self.ai.already_pending(unit.ASSIMILATOR)) \
-                                and (not self.ai.structures(unit.ASSIMILATOR).exists or not self.ai.structures(
-                            unit.ASSIMILATOR).closer_than(3, vespene).exists):
-                            if not self.ai.can_afford(unit.ASSIMILATOR):
-                                return
-                            worker = self.ai.select_build_worker(vespene.position)
-                            if worker is None:
-                                break
-                            self.ai.do(worker.build(unit.ASSIMILATOR, vespene))
-                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
-                            break

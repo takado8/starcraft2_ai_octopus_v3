@@ -916,6 +916,21 @@ class ZealotMicro(MicroABS):
                     zl.attack(target)
 
 
+class WallGuardZealotMicro(MicroABS):
+    def __init__(self, ai):
+        self.name = 'ZealotMicro'
+        super().__init__(self.name, ai)
+
+    async def do_micro(self, soldiers):
+        zealots = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ZEALOT]
+        location = self.ai.main_base_ramp.protoss_wall_warpin
+        for zl in zealots:
+            if not any([zealot.distance_to(location) < 1 for zealot in zealots]):
+                zl.move(location)
+            if self.ai.enemy_units().closer_than(10, location):
+                zl.hold_position(queue=True)
+
+
 class SentryMicro(MicroABS):
     def __init__(self, ai):
         super().__init__('SentryMicro', ai)

@@ -1,6 +1,7 @@
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
+from builders.special_building_locations import UpperWall
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -48,7 +49,9 @@ class OneBaseRobo(StrategyABS):
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
 
         build_queue = BuildQueues.ONE_BASE_ROBO
-        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
+        upper_wall = UpperWall(ai)
+        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
+                               special_building_locations=upper_wall.locations_dict)
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
 
@@ -67,7 +70,7 @@ class OneBaseRobo(StrategyABS):
         await self.battery_builder.build_batteries()
 
     async def build_pylons(self):
-        await self.pylon_builder.new_standard()
+        await self.pylon_builder.new_standard_upper_wall()
 
     def build_assimilators(self):
         self.assimilator_builder.standard()
@@ -105,7 +108,7 @@ class OneBaseRobo(StrategyABS):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.forge() and \
+        return await self.condition_lock_spending.forge() or \
          self.condition_lock_spending.thermal_lances()
 
     async def morphing(self):

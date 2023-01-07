@@ -22,10 +22,10 @@ class Colossus(StrategyABS):
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
-        colossus_micro = ColossusMicro(ai)
         archon_micro = ArchonMicro(ai)
         stalker_micro = StalkerMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
+        colossus_micro = ColossusMicro(ai)
         main_division_units = {unit.ZEALOT: 7, unit.STALKER: 7, unit.IMMORTAL: 7, unit.COLOSSUS: 3, unit.ARCHON: 8,
                                unit.DISRUPTOR: 4}
         # self.sentry_micro = SentryMicro(ai)
@@ -97,7 +97,7 @@ class Colossus(StrategyABS):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.forge() and \
+        return await self.condition_lock_spending.forge() or \
          self.condition_lock_spending.thermal_lances()
 
     async def morphing(self):

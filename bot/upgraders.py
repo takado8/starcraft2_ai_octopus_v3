@@ -204,12 +204,13 @@ class TwilightUpgrader:
                 if self.ai.army(unit.STALKER).amount > 6 and upgrade.BLINKTECH not in self.ai.state.upgrades:
                     if ability.RESEARCH_BLINK in abilities:
                         research = ability.RESEARCH_BLINK
-                elif upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
-                    if ability.RESEARCH_CHARGE in abilities:
-                        research = ability.RESEARCH_CHARGE
                 elif self.ai.army(unit.ADEPT).amount > 2 and \
                         ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
                     research = ability.RESEARCH_ADEPTRESONATINGGLAIVES
+                elif upgrade.CHARGE not in self.ai.state.upgrades and self.ai.army(unit.ZEALOT).amount > 4:
+                    if ability.RESEARCH_CHARGE in abilities:
+                        research = ability.RESEARCH_CHARGE
+
                 if research:
                     tc(research)
 

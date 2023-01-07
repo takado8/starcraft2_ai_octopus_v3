@@ -84,7 +84,7 @@ class OctopusV3(sc2.BotAI):
             self.retreat = False
             self.army_priority = True
         # retreat
-        if self.retreat_condition():
+        if self.attack and self.retreat_condition():
             self.army_priority = False
             self.retreat = True
             self.attack = False
@@ -191,6 +191,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=0)
+    win, killed, lost = test(real_time=1)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
