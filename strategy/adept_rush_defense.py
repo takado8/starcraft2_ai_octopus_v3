@@ -9,8 +9,7 @@ from builders.builder import Builder
 from army.micros.micro import AdeptMicro, ZealotMicro, StalkerMicro, SentryMicro, ImmortalMicro, WarpPrismMicro, \
     ArchonMicro, DisruptorMicro, ColossusMicro, WallGuardZealotMicro
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader
-from army.divisions import ADEPT_x5, ZEALOT_x10, OBSERVER_x1, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTRY_x1, \
-    IMMORTAL_x2, ZEALOT_x5
+from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTRY_x1, IMMORTAL_x2
 from sc2.unit import UnitTypeId as unit
 
 
@@ -37,7 +36,7 @@ class AdeptRushDefense(StrategyABS):
         # self.army.create_division('adepts1', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
         self.army.create_division('adepts2', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
-        self.army.create_division('adepts4', ADEPT_x5, [adept_micro], Movements(ai, 0.2), lifetime=600)
+        # self.army.create_division('adepts4', ADEPT_x5, [adept_micro], Movements(ai, 0.2), lifetime=600)
         # self.army.create_division('adepts5', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         # self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2))
@@ -48,7 +47,7 @@ class AdeptRushDefense(StrategyABS):
         self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
         self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
 
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5), lifetime=-460)
+        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5), lifetime=-260)
         self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5), lifetime=-460)
 
         self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-460)

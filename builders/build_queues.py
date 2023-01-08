@@ -11,7 +11,8 @@ class BuildQueues:
     ADEPT_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, 4, unit.GATEWAY, unit.GATEWAY,
                      unit.TWILIGHTCOUNCIL, 16,
                      unit.NEXUS, unit.TEMPLARARCHIVE,
-                    unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE,                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 40,
+                    unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE,
+                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 40, unit.FORGE,
                     unit.GATEWAY, unit.ROBOTICSBAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY,
                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
@@ -50,3 +51,10 @@ class BuildQueues:
                 unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
 
+    DTS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL, unit.DARKSHRINE, 4,
+           unit.NEXUS, 16, unit.TEMPLARARCHIVE, unit.GATEWAY,  unit.NEXUS, unit.GATEWAY,
+                    unit.FORGE,
+                unit.GATEWAY, unit.NEXUS, 50, unit.GATEWAY, unit.ROBOTICSFACILITY, 60, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
+                unit.GATEWAY, unit.NEXUS]

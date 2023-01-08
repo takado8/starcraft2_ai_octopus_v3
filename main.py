@@ -14,6 +14,7 @@ from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
 from strategy.blinkers import Blinkers
 from strategy.colossus import Colossus
+from strategy.dts import DTs
 from strategy.one_base_robo import OneBaseRobo
 from strategy.stalker_proxy import StalkerProxy
 
@@ -51,7 +52,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = AdeptRushDefense(self)
+        self.strategy = DTs(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -153,11 +154,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -166,7 +167,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -191,6 +192,6 @@ if __name__ == '__main__':
     import time
 
     start = time.time()
-    win, killed, lost = test(real_time=1)
+    win, killed, lost = test(real_time=0)
     stop = time.time()
     print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

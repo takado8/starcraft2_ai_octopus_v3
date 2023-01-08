@@ -64,7 +64,7 @@ class Defense:
         for man in self.ai.army:
             position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
                 man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
-            if man.distance_to(self.ai.defend_position) > dist:
+            if man.distance_to(self.ai.defend_position) > dist and man.type_id != unit.DARKTEMPLAR:
                 man.move(position.random_on_distance(random.randint(1, 2)))
 
     def avoid_aoe(self):
