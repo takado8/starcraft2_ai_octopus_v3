@@ -10,7 +10,7 @@ import random
 class Chronobooster:
     def __init__(self,ai):
         self.ai = ai
-        self.standard_chrono_queue = [unit.NEXUS,
+        self.standard_chrono_queue = [unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSBAY,
                                       unit.STARGATE, unit.ROBOTICSFACILITY,
                                       unit.CYBERNETICSCORE, unit.FORGE, unit.TWILIGHTCOUNCIL]
         self.stalker_proxy_chrono_queue = [unit.NEXUS, unit.CYBERNETICSCORE]
@@ -147,7 +147,7 @@ class ShieldOvercharge:
 
     async def shield_overcharge(self):
         en = self.ai.enemy_units()
-        if en.exists and en.closer_than(14, self.ai.defend_position).amount > 5:
+        if en.exists and en.closer_than(14, self.ai.defend_position).amount > (5 if self.ai.time > 360 else 2):
             nexus = self.ai.structures(unit.NEXUS).ready.closest_to(self.ai.defend_position)
             battery = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus) \
                 .sorted(lambda x: x.health, reverse=True)

@@ -7,10 +7,10 @@ from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro, WarpPrismMicro, \
-    ColossusMicro, AirMicro, ArchonMicro, DisruptorMicro, DarkTemplarMicro, WallGuardZealotMicro
+    ColossusMicro, AirMicro, ArchonMicro, DisruptorMicro, DarkTemplarMicro, WallGuardZealotMicro, AdeptMicro
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
 from army.divisions import IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
-    STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2, VOIDRAY_x3, CARRIER_x8, TEMPEST_x5
+    STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2, VOIDRAY_x3, CARRIER_x8, TEMPEST_x5, ADEPT_x5
 from sc2.unit import UnitTypeId as unit
 from sc2 import Race
 
@@ -29,15 +29,17 @@ class DTs(StrategyABS):
         disruptor_micro = DisruptorMicro(ai)
         dt_micro = DarkTemplarMicro(ai)
         wall_guard_zealot_micro = WallGuardZealotMicro(ai)
+        adept_micro = AdeptMicro(ai)
 
-        self.army.create_division('dts', {unit.DARKTEMPLAR: 3}, [dt_micro], Movements(ai, 0.1))
+
+        self.army.create_division('dts', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=300)
-        main_division_units = {unit.ZEALOT: 5, unit.STALKER: 5, unit.IMMORTAL: 7, unit.COLOSSUS: 3, unit.ARCHON: 8,
+        main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.COLOSSUS: 2, unit.ARCHON: 5,
                                    unit.DISRUPTOR: 4}
         # self.sentry_micro = SentryMicro(ai)
         # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
+        self.army.create_division('stalkers3', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
                                                                      immortal_micro, archon_micro, disruptor_micro],
@@ -60,7 +62,7 @@ class DTs(StrategyABS):
         self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
 
     def handle_workers(self):
-        self.workers_distribution.distribute_workers()
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=1)
         self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
@@ -72,7 +74,7 @@ class DTs(StrategyABS):
         await self.pylon_builder.new_standard_upper_wall()
 
     def build_assimilators(self):
-        self.assimilator_builder.standard()
+        self.assimilator_builder.max_vespene()
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
@@ -93,10 +95,10 @@ class DTs(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.total_supply_over(195)
+        return self.condition_attack.total_supply_over(190)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(80)
+        return self.condition_retreat.army_supply_less_than(70)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

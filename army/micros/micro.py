@@ -923,12 +923,32 @@ class WallGuardZealotMicro(MicroABS):
 
     async def do_micro(self, soldiers):
         zealots = [soldiers[tag].unit for tag in soldiers if soldiers[tag].unit.type_id == unit.ZEALOT]
-        location = self.ai.main_base_ramp.protoss_wall_warpin
-        for zl in zealots:
-            if not any([zealot.distance_to(location) < 1 for zealot in zealots]):
-                zl.move(location)
-            if self.ai.enemy_units().closer_than(10, location):
-                zl.hold_position(queue=True)
+        if self.ai.time < 400:
+            location = self.ai.main_base_ramp.protoss_wall_warpin
+            for zl in zealots:
+                if not any([zealot.distance_to(location) < 1 for zealot in zealots]):
+                    zl.move(location)
+                if self.ai.enemy_units().closer_than(10, location):
+                    zl.hold_position(queue=True)
+        else:
+            for zl in zealots:
+                threats = self.ai.enemy_units().filter(
+                    lambda x2: x2.distance_to(zl.position) < 9 and not x2.is_flying and
+                               x2.type_id not in self.ai.units_to_ignore and not x2.is_hallucination).sorted(
+                    lambda _x: _x.health + _x.shield)
+                if threats.exists:
+                    closest = threats.closest_to(zl)
+                    if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(
+                            zl.position) > \
+                            closest.distance_to(zl.position) + 1 or not self.ai.in_pathing_grid(threats[0]):
+                        target = closest
+                    else:
+                        target = threats[0]
+                    if ability.EFFECT_CHARGE in await self.ai.get_available_abilities(zl):
+                        zl(ability.EFFECT_CHARGE, target)
+                        zl.attack(target, queue=True)
+                    else:
+                        zl.attack(target)
 
 
 class DarkTemplarMicro(MicroABS):
@@ -977,7 +997,7 @@ class DarkTemplarMicro(MicroABS):
                 dt.attack(target)
             else:
                 dt.move(self.mineral_lines[self.enemy_base_idx])
-                if dt.distance_to(self.mineral_lines[self.enemy_base_idx]) < 5:
+                if dt.distance_to(self.mineral_lines[self.enemy_base_idx]) < 3:
                     self.enemy_base_idx += 1
                     if self.enemy_base_idx > 2:
                         self.enemy_base_idx = 0
