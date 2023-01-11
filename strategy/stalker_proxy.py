@@ -1,31 +1,33 @@
-from army.movements import Movements
+from bot.nexus_abilities import ShieldOvercharge
+from builders.battery_builder import BatteryBuilder
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import StalkerMicro
+from army.micros.stalker import StalkerMicro
 from bot.upgraders import CyberneticsUpgrader
 from army.divisions import STALKER_x10
-
 
 
 class StalkerProxy(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='rush', name='StalkerProxy', ai=ai)
 
-        stalker_micro = StalkerMicro(ai)
-        # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
-        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai, 0.2))
+        stalker_micro = StalkerMicro(ai, min_units_in_position_ratio=0.4)
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro])
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro])
+        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro])
+        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro])
+        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro])
 
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
-
+        self.battery_builder = BatteryBuilder(ai)
+        self.shield_overcharge = ShieldOvercharge(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         # self.twilight_upgrader = TwilightUpgrader(ai)
+
+
 
     def handle_workers(self):
         self.workers_distribution.distribute_workers()
@@ -34,6 +36,7 @@ class StalkerProxy(StrategyABS):
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
+        await self.battery_builder.build_batteries()
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
@@ -68,10 +71,8 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================== Buffs
     async def nexus_abilities(self):
-        # try:
-        self.chronobooster.standard()
-        # except Exception as ex:
-        #     print(ex)
+        await self.chronobooster.stalker_proxy()
+        await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
         pass

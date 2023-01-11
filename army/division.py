@@ -4,25 +4,23 @@ from sc2.unit import UnitTypeId
 from sc2.units import Units
 
 
-
 class Division:
-    def __init__(self, ai, name, units_ids_dict, micros: List, movements, max_units_distance=20, lifetime=None):
+    def __init__(self, ai, name, units_ids_dict, micros: List, max_units_distance=10,
+                 lifetime=None):
         self.ai = ai
         self.name = name
         self.units_ids_dict: Dict[UnitTypeId, int] = units_ids_dict
         self.soldiers: Dict[str, Soldier] = {}
         self.policy = None
         self.micros = micros
-        self.movements = movements
         self.max_units_distance = max_units_distance
         self.lifetime = lifetime
 
-    async def do_micro(self):
+    async def do_micro(self, destination):
         for micro in self.micros:
-            await micro.do_micro(self.soldiers)
+            await micro.do_micro(self, destination)
 
     def add_soldier(self, soldier):
-        # if soldier.tag not in self.soldiers:
         self.soldiers[soldier.tag] = soldier
 
     def remove_soldier(self, soldier_tag):
@@ -47,22 +45,18 @@ class Division:
 
     def get_position(self):
         max_neighbours = -1
-        biggest_group = None
+        position = None
         division_units = self.get_units()
         if division_units.amount > 1:
             for unit in division_units:
                 neighbours = division_units.closer_than(self.max_units_distance, unit.position)
                 if neighbours.amount > max_neighbours:
                     max_neighbours = neighbours.amount
-                    biggest_group = neighbours
-
-            center = biggest_group.center if biggest_group else None
+                    position = unit.position
         elif division_units.amount == 1:
-            center = division_units.first.position
-        else:
-            center = None
+            position = division_units.first.position
 
-        return center
+        return position
 
     def __str__(self):
         return 'Division "{}" of count {} with micros "{}":\n{}'.format(self.name, len(self.soldiers),
@@ -70,6 +64,3 @@ class Division:
 
     def __repr__(self):
         return str(self)
-
-    async def move_division(self, destination):
-        await self.movements.move_division(self, destination)

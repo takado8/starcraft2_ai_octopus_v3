@@ -25,14 +25,15 @@ class Army:
             self.training.order_units_training(training_order)
             await self.training.train()
 
+            destination = None
             if self.army_status.status == ArmyStatus.ATTACKING:
-                target = self.attack.select_targets_to_attack()
-                await self.move_army(target)
+                destination = self.attack.select_targets_to_attack()
+                # await self.move_army(target)
             else:
                 self.defense.assign_defend_position()
                 self.defense.defend(self.army_status)
 
-            await self.execute_micro()
+            await self.execute_micro(destination)
             self.defense.avoid_aoe()
             if self.attack.enemy_main_base_down:
                 self.scouting.scan_on_end()
@@ -41,22 +42,22 @@ class Army:
             self.training.debug()
             raise ex
 
-    async def execute_micro(self):
+    async def execute_micro(self, destination):
         for division in self.divisions:
-            await self.divisions[division].do_micro()
+            await self.divisions[division].do_micro(destination)
 
-    def create_division(self, division_name, units_ids_dict, micros: List, movements, lifetime=None):
+    def create_division(self, division_name, units_ids_dict, micros: List, lifetime=None):
         if division_name in self.divisions:
             print('Division "{}" already exists.'.format(division_name))
         else:
-            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements, lifetime=lifetime)
+            new_division = Division(self.ai, division_name, units_ids_dict, micros, lifetime=lifetime)
             self.divisions[division_name] = new_division
             print("division created: {}".format(new_division))
             return new_division
-
-    async def move_army(self, destination):
-        for division_name in self.divisions:
-            await self.divisions[division_name].move_division(destination)
+    #
+    # async def move_army(self, destination):
+    #     for division_name in self.divisions:
+    #         await self.divisions[division_name].move_division(destination)
 
     def print_divisions_info(self):
         for division_name in self.divisions:
