@@ -1,14 +1,17 @@
 from typing import Dict, List
+
+from army.movements import Movements
 from army.soldier import Soldier
 from sc2.unit import UnitTypeId
 from sc2.units import Units
 
 
 class Division:
-    def __init__(self, ai, name, units_ids_dict, micros: List, max_units_distance=10,
+    def __init__(self, ai, name, units_ids_dict, micros: List, movements: Movements, max_units_distance=12,
                  lifetime=None):
         self.ai = ai
         self.name = name
+        self.movements = movements
         self.units_ids_dict: Dict[UnitTypeId, int] = units_ids_dict
         self.soldiers: Dict[str, Soldier] = {}
         self.policy = None
@@ -17,8 +20,10 @@ class Division:
         self.lifetime = lifetime
 
     async def do_micro(self, destination):
+        units_in_position = 0
         for micro in self.micros:
-            await micro.do_micro(self, destination)
+            units_in_position += await micro.do_micro(self)
+        self.movements.move_division(self, destination, units_in_position)
 
     def add_soldier(self, soldier):
         self.soldiers[soldier.tag] = soldier
@@ -40,8 +45,15 @@ class Division:
                 missing_units[unit_id] = desired_amount - unit_amount
         return missing_units
 
-    def get_units(self):
+    def get_units(self, unit_type_id=None):
+        if unit_type_id:
+            return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
+                          if self.soldiers[soldier_tag].type_id == unit_type_id], self.ai)
         return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers], self.ai)
+
+    def get_attacking_units(self):
+        return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
+                          if self.soldiers[soldier_tag].unit.is_attacking], self.ai)
 
     def get_position(self):
         max_neighbours = -1
@@ -57,6 +69,9 @@ class Division:
             position = division_units.first.position
 
         return position
+
+    def get_units_amount(self):
+        return len(self.soldiers)
 
     def __str__(self):
         return 'Division "{}" of count {} with micros "{}":\n{}'.format(self.name, len(self.soldiers),

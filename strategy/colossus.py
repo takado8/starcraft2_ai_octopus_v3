@@ -1,3 +1,13 @@
+from army.micros.adept import AdeptMicro
+from army.micros.archon import ArchonMicro
+from army.micros.colossus import ColossusMicro
+from army.micros.disruptor import DisruptorMicro
+from army.micros.immortal import ImmortalMicro
+from army.micros.sentry import SentryMicro
+from army.micros.stalker import StalkerMicro
+from army.micros.warpprism import WarpPrismMicro
+from army.micros.zealot import ZealotMicro
+
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -5,11 +15,10 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro, WarpPrismMicro, ColossusMicro, \
-    ArchonMicro, DisruptorMicro, AirMicro
+
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
 from army.divisions import COLOSSUS_x2_STALKER_x12, IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
-    ZEALOT_x10, WARPPRISM_x1, SENTRY_x1, STALKER_x5
+    ZEALOT_x10, WARPPRISM_x1, SENTRY_x1, STALKER_x5, ADEPT_x5
 from sc2.unit import UnitTypeId as unit
 
 
@@ -17,23 +26,21 @@ class Colossus(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='mid', name='Colossus', ai=ai)
 
-        # stalker_micro = StalkerMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
         archon_micro = ArchonMicro(ai)
-        stalker_micro = StalkerMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         colossus_micro = ColossusMicro(ai)
-        main_division_units = {unit.ZEALOT: 7, unit.STALKER: 7, unit.IMMORTAL: 7, unit.COLOSSUS: 3, unit.ARCHON: 8,
-                               unit.DISRUPTOR: 4}
-        # self.sentry_micro = SentryMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
+        adept_micro = AdeptMicro(ai)
+        main_division_units = {unit.ZEALOT: 5, unit.STALKER: 7, unit.IMMORTAL: 7, unit.ARCHON: 8,
+                               unit.DISRUPTOR: 4, unit.COLOSSUS: 3}
+        self.army.create_division('stalkers1', ADEPT_x5, [adept_micro], Movements(ai, 0.3))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
                                 immortal_micro, archon_micro, disruptor_micro],
-                                  Movements(ai, 0.7))
+                                  Movements(ai, 0.85))
 
         self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
         self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))

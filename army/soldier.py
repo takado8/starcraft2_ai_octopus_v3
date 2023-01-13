@@ -4,9 +4,15 @@ from sc2.unit import Unit
 class Soldier:
     def __init__(self, unit: Unit, division_name=None):
         self.unit: Unit = unit
-        self.tag = unit.tag
-        self.type_id = unit.type_id
         self.division_name = division_name
+
+    @property
+    def tag(self):
+        return self.unit.tag
+
+    @property
+    def type_id(self):
+        return self.unit.type_id
 
     def __eq__(self, other):
         if not isinstance(other, Soldier):

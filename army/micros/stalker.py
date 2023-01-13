@@ -6,9 +6,8 @@ from .microABS import MicroABS
 
 
 class StalkerMicro(MicroABS):
-    def __init__(self, ai, min_units_in_position_ratio=0.6):
+    def __init__(self, ai):
         self.name = 'StalkerMicro'
-        self.min_units_in_position_ratio = min_units_in_position_ratio
         super().__init__(self.name, ai)
 
     def select_target(self, targets, stalker):
@@ -22,20 +21,14 @@ class StalkerMicro(MicroABS):
             target = targets[0]
         return target
 
-    async def do_micro(self, division, destination):
-
-        enemy = self.ai.enemy_units()
-        # if not enemy.exists:
-        #     return
-
-        stalkers = division.get_units()
+    async def do_micro(self, division):
+        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
+        stalkers = division.get_units(unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
                         unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
-        dist = 9
-        movements_step = 25
-        division_position = division.get_position() if destination else None
-        # print("destination is: {} position is: {}".format(destination, division_position))
+        dist = 6
+
         units_in_position = 0
         for stalker in stalkers:
             threats = enemy.filter(
@@ -43,7 +36,9 @@ class StalkerMicro(MicroABS):
                               unit_.type_id not in self.ai.units_to_ignore) or unit_.type_id in priority_ids)
                               and not unit_.is_hallucination)
             if self.ai.attack:
-                threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
+                threats.extend(self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER)
+                               and _x.distance_to(stalker) <= dist))
+
             if threats.exists:
                 closest_enemy = threats.closest_to(stalker)
                 priority = threats.filter(lambda x1: x1.type_id in priority_ids)
@@ -57,9 +52,6 @@ class StalkerMicro(MicroABS):
                     targets = targets.sorted(lambda x1: x1.health + x1.shield)
                     target = self.select_target(targets, stalker)
 
-                # if target.distance_to(stalker) > dist:
-                #     target = closest_enemy
-
                 if stalker.shield_percentage < 0.4:
                     if stalker.health_percentage < 0.35:
                         stalker.move(self.find_back_out_position(stalker, closest_enemy.position))
@@ -69,7 +61,7 @@ class StalkerMicro(MicroABS):
                     d = 2
 
                 if stalker.shield_percentage < 0.4 and upgrade.BLINKTECH in self.ai.state.upgrades and \
-                        self.is_blink_available(stalker):
+                        await self.is_blink_available(stalker):
                     back_out_position = self.find_blink_out_position(stalker, closest_enemy.position)
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
                         await self.blink(stalker, back_out_position)
@@ -82,32 +74,15 @@ class StalkerMicro(MicroABS):
                     else:
                         stalker.attack(target)
             else:
-                attacking_friends = stalkers.filter(lambda x: x.is_attacking)
+                attacking_friends = division.get_attacking_units()
+                division_position = division.get_position()
                 if attacking_friends.exists and enemy.exists:
                     stalker.attack(enemy.closest_to(attacking_friends.closest_to(stalker)))
                 elif division_position and stalker.distance_to(division_position) > division.max_units_distance:
                     stalker.attack(division_position)
-                    # print('move to div')
                 else:
                     units_in_position += 1
-                    # print('in pos')
-
-        if units_in_position > stalkers.amount * self.min_units_in_position_ratio:
-            # print('yup')
-            if division_position and division_position.distance_to(destination) > movements_step:
-                # print('nup')
-                position = self.find_placement_for_units(division_position.towards(destination, movements_step))
-            elif destination:
-                position = self.find_placement_for_units(destination)
-            else:
-                position = None
-            if position:
-                for stalker in stalkers:
-                    stalker.attack(position)
-                # else:
-                #     print("cannot find position for army.")
-        # else:
-        #     print('nope.')
+        return units_in_position
 
     async def is_blink_available(self, stalker):
         abilities = await self.ai.get_available_abilities(stalker)

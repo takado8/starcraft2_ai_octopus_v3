@@ -12,7 +12,7 @@ class Morphing:
         for gateway in self.ai.structures(unit.GATEWAY).ready:
             abilities = await self.ai.get_available_abilities(gateway)
             if AbilityId.MORPH_WARPGATE in abilities and self.ai.can_afford(AbilityId.MORPH_WARPGATE):
-                self.ai.do(gateway(AbilityId.MORPH_WARPGATE))
+                gateway(AbilityId.MORPH_WARPGATE)
 
     async def morph_Archons(self):
         if upgrade.PSISTORMTECH is self.ai.state.upgrades or self.ai.already_pending_upgrade(upgrade.PSISTORMTECH):
@@ -31,11 +31,11 @@ class Morphing:
                         self.ai.army.remove(ht)
                 if ht1.distance_to(ht2) > 4:
                     if ht1.distance_to(self.ai.main_base_ramp.bottom_center) > 30:
-                        self.ai.do(ht1.move(ht2))
-                        self.ai.do(ht2.move(ht1))
+                        ht1.move(ht2)
+                        ht2.move(ht1)
                     else:
-                        self.ai.do(ht1.move(self.ai.main_base_ramp.bottom_center))
-                        self.ai.do(ht2.move(self.ai.main_base_ramp.bottom_center))
+                        ht1.move(self.ai.main_base_ramp.bottom_center)
+                        ht2.move(self.ai.main_base_ramp.bottom_center)
                 else:
                     # print('morphing!')
                     from s2clientprotocol import raw_pb2 as raw_pb

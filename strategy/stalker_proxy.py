@@ -1,3 +1,4 @@
+from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from .strategyABS import StrategyABS
@@ -13,12 +14,12 @@ class StalkerProxy(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='rush', name='StalkerProxy', ai=ai)
 
-        stalker_micro = StalkerMicro(ai, min_units_in_position_ratio=0.4)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro])
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro])
-        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro])
-        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro])
-        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro])
+        stalker_micro = StalkerMicro(ai)
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
+        self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
+        self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai))
+        self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
 
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -26,8 +27,6 @@ class StalkerProxy(StrategyABS):
         self.shield_overcharge = ShieldOvercharge(ai)
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         # self.twilight_upgrader = TwilightUpgrader(ai)
-
-
 
     def handle_workers(self):
         self.workers_distribution.distribute_workers()

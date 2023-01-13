@@ -1,5 +1,6 @@
 from army.attack.attack import Attack
 from army.defense.defense import Defense
+from army.movements import Movements
 from army.status.army_status import ArmyStatus
 from army.training.training import Training
 from .division import Division
@@ -46,18 +47,14 @@ class Army:
         for division in self.divisions:
             await self.divisions[division].do_micro(destination)
 
-    def create_division(self, division_name, units_ids_dict, micros: List, lifetime=None):
+    def create_division(self, division_name, units_ids_dict, micros: List, movements: Movements, lifetime=None):
         if division_name in self.divisions:
             print('Division "{}" already exists.'.format(division_name))
         else:
-            new_division = Division(self.ai, division_name, units_ids_dict, micros, lifetime=lifetime)
+            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements, lifetime=lifetime)
             self.divisions[division_name] = new_division
             print("division created: {}".format(new_division))
             return new_division
-    #
-    # async def move_army(self, destination):
-    #     for division_name in self.divisions:
-    #         await self.divisions[division_name].move_division(destination)
 
     def print_divisions_info(self):
         for division_name in self.divisions:

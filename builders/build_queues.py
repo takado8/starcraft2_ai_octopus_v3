@@ -40,8 +40,8 @@ class BuildQueues:
                 unit.GATEWAY, unit.NEXUS]
 
     COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 6,
-                unit.ROBOTICSBAY,12, unit.GATEWAY, unit.GATEWAY, 24, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                unit.TWILIGHTCOUNCIL, unit.NEXUS, 40, unit.TEMPLARARCHIVE, unit.ROBOTICSFACILITY, 60, unit.GATEWAY,
+                unit.ROBOTICSBAY, 12, unit.GATEWAY, 24, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY,
+                unit.TEMPLARARCHIVE, unit.NEXUS, 40, unit.FORGE, unit.GATEWAY, 60,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]
