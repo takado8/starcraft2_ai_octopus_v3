@@ -48,4 +48,4 @@ class WallGuardZealotMicro(MicroABS):
                     else:
                         units_in_position += 1
 
-            return units_in_position
+        return units_in_position

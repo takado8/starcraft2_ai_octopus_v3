@@ -13,9 +13,10 @@ class DisruptorMicro(MicroABS):
         units_in_position = 0
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
-            if ability.EFFECT_PURIFICATIONNOVA in abilities and enemy.closer_than(10, disruptor).exists:
+            if self.ai.units(unit.DISRUPTORPHASED).amount < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
+                    and enemy.closer_than(10, disruptor).exists:
                 spell_target = enemy.filter(
-                    lambda unit_: unit_.distance_to(disruptor) < 12 and unit_.type_id not in self.ai.units_to_ignore
+                    lambda unit_: unit_.distance_to(disruptor) < 10 and unit_.type_id not in self.ai.units_to_ignore
                                   and not unit_.is_flying)
                 target = None
                 if spell_target.amount > 2:
@@ -52,7 +53,7 @@ class DisruptorMicro(MicroABS):
         # Disruptor purification nova
         # if self.ai.time - self.ai.nova_wait > 0.4:
         for nova in self.ai.units(unit.DISRUPTORPHASED):
-            spell_target = enemy.filter(lambda unit_: unit_.distance_to(nova) < 9
+            spell_target = enemy.filter(lambda unit_: unit_.distance_to(nova) < 10
                                  and unit_.type_id not in self.ai.units_to_ignore and not unit_.is_flying)
             target = None
             if spell_target.amount > 0:

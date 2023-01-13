@@ -96,7 +96,7 @@ class ColossusMicro(MicroABS):
                 colossi_threats_set.add(threat)
 
         colossi_threats = Units(colossi_threats_set, self.ai)
-        dist = 6
+        dist = 9
         threats = None
         for stalker in stalkers:
             if colossi_threats:

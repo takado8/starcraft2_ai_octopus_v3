@@ -1,3 +1,13 @@
+from army.micros.adept import AdeptMicro
+from army.micros.archon import ArchonMicro
+from army.micros.colossus import ColossusMicro
+from army.micros.disruptor import DisruptorMicro
+from army.micros.immortal import ImmortalMicro
+from army.micros.sentry import SentryMicro
+from army.micros.stalker import StalkerMicro
+from army.micros.wall_guard_zealot import WallGuardZealotMicro
+from army.micros.warpprism import WarpPrismMicro
+from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -6,8 +16,7 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import AdeptMicro, ZealotMicro, StalkerMicro, SentryMicro, ImmortalMicro, WarpPrismMicro, \
-    ArchonMicro, DisruptorMicro, ColossusMicro, WallGuardZealotMicro
+
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader
 from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTRY_x1, IMMORTAL_x2
 from sc2.unit import UnitTypeId as unit

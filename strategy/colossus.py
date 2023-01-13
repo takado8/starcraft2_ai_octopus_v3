@@ -26,6 +26,7 @@ class Colossus(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='mid', name='Colossus', ai=ai)
 
+        stalker_micro = StalkerMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
@@ -33,10 +34,10 @@ class Colossus(StrategyABS):
         archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         colossus_micro = ColossusMicro(ai)
-        adept_micro = AdeptMicro(ai)
+        # adept_micro = AdeptMicro(ai)
         main_division_units = {unit.ZEALOT: 5, unit.STALKER: 7, unit.IMMORTAL: 7, unit.ARCHON: 8,
                                unit.DISRUPTOR: 4, unit.COLOSSUS: 3}
-        self.army.create_division('stalkers1', ADEPT_x5, [adept_micro], Movements(ai, 0.3))
+        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
                                 immortal_micro, archon_micro, disruptor_micro],

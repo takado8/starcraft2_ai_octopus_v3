@@ -1,3 +1,13 @@
+from army.micros.adept import AdeptMicro
+from army.micros.archon import ArchonMicro
+from army.micros.colossus import ColossusMicro
+from army.micros.dark_templar import DarkTemplarMicro
+from army.micros.disruptor import DisruptorMicro
+from army.micros.immortal import ImmortalMicro
+from army.micros.sentry import SentryMicro
+from army.micros.wall_guard_zealot import WallGuardZealotMicro
+from army.micros.warpprism import WarpPrismMicro
+from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -6,13 +16,9 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import StalkerMicro, ImmortalMicro, SentryMicro, ZealotMicro, WarpPrismMicro, \
-    ColossusMicro, AirMicro, ArchonMicro, DisruptorMicro, DarkTemplarMicro, WallGuardZealotMicro, AdeptMicro
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
-from army.divisions import IMMORTAL_x2, IMMORTAL_x5, SENTRY_x3, OBSERVER_x1, \
-    STALKER_x5, ZEALOT_x10, WARPPRISM_x1, COLOSSUS_x2, VOIDRAY_x3, CARRIER_x8, TEMPEST_x5, ADEPT_x5
+from army.divisions import SENTRY_x3, OBSERVER_x1, WARPPRISM_x1, ADEPT_x5
 from sc2.unit import UnitTypeId as unit
-from sc2 import Race
 
 
 class DTs(StrategyABS):
@@ -25,7 +31,7 @@ class DTs(StrategyABS):
         warpprism_micro = WarpPrismMicro(ai)
         colossus_micro = ColossusMicro(ai)
         archon_micro = ArchonMicro(ai)
-        stalker_micro = StalkerMicro(ai)
+        # stalker_micro = StalkerMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         dt_micro = DarkTemplarMicro(ai)
         wall_guard_zealot_micro = WallGuardZealotMicro(ai)
@@ -35,8 +41,8 @@ class DTs(StrategyABS):
         self.army.create_division('dts', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=300)
-        main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.COLOSSUS: 2, unit.ARCHON: 5,
-                                   unit.DISRUPTOR: 4}
+        main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.ARCHON: 5,
+                                   unit.DISRUPTOR: 4, unit.COLOSSUS: 2}
         # self.sentry_micro = SentryMicro(ai)
         # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
         self.army.create_division('stalkers3', ADEPT_x5, [adept_micro], Movements(ai, 0.6))

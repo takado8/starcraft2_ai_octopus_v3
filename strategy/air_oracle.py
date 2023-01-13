@@ -1,3 +1,8 @@
+from army.micros.carrier import CarrierMicro
+from army.micros.oracle import OracleMicro
+from army.micros.tempest import TempestMicro
+from army.micros.voidray import VoidrayMicro
+from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -5,7 +10,6 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from army.micros.micro import AirMicro, ZealotMicro
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
 from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
 
@@ -14,15 +18,18 @@ class AirOracle(StrategyABS):
     def __init__(self, ai):
         super().__init__(type='air', name='AirOracle', ai=ai)
 
-        air_micro = AirMicro(ai)
+        oracle_micro = OracleMicro(ai)
+        voidray_micro = VoidrayMicro(ai)
+        carrier_micro = CarrierMicro(ai)
+        tempest_micro = TempestMicro(ai)
         zealot_micro = ZealotMicro(ai)
         # sentry_micro = SentryMicro(ai)
-        self.army.create_division('oracle', ORACLE_x1, [air_micro], Movements(ai), lifetime=240)
-        self.army.create_division('observer', OBSERVER_x1, [air_micro], Movements(ai))
-        self.army.create_division('voidrays1', VOIDRAY_x3, [air_micro], Movements(ai))
-        self.army.create_division('carriers1', CARRIER_x8, [air_micro], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [air_micro], Movements(ai))
-        self.army.create_division('tempests2', TEMPEST_x5, [air_micro], Movements(ai))
+        self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=240)
+        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai))
+        self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
+        self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
+        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
+        self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
 
@@ -78,11 +85,8 @@ class AirOracle(StrategyABS):
 
     # ======================================================== Buffs
     async def nexus_abilities(self):
-        # try:
         self.chronobooster.standard()
         await self.shield_overcharge.shield_overcharge()
-        # except Exception as ex:
-        #     print(ex)
 
     async def lock_spending_condition(self):
         return await self.condition_lock_spending.is_oracle_ready()

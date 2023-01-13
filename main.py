@@ -10,12 +10,12 @@ from typing import Optional, Union
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 # from strategy.Archons import Archons
-# from strategy.adept_rush_defense import AdeptRushDefense
-# from strategy.air_oracle import AirOracle
+from strategy.adept_rush_defense import AdeptRushDefense
+from strategy.air_oracle import AirOracle
 # from strategy.blinkers import Blinkers
 from strategy.colossus import Colossus
-# from strategy.dts import DTs
-# from strategy.one_base_robo import OneBaseRobo
+from strategy.dts import DTs
+from strategy.one_base_robo import OneBaseRobo
 from strategy.stalker_proxy import StalkerProxy
 
 
@@ -52,7 +52,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = Colossus(self)
+        self.strategy = DTs(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -113,6 +113,13 @@ class OctopusV3(sc2.BotAI):
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
 
+    def in_pathing_grid(self, pos: Union[Point2, Unit]):
+        if isinstance(pos, Unit):
+            pos = pos.position
+        if pos.x < 0 or pos.y < 0:
+            return
+        return super().in_pathing_grid(pos)
+
     def is_build_in_progress(self):
         return self.strategy.builder.is_build_in_progress()
 
@@ -167,7 +174,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

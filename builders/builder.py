@@ -54,7 +54,7 @@ class Builder:
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
-                        await self.ai.build(building, near=pylon, placement_step=3, max_distance=45,
+                        await self.ai.build(building, near=pylon, placement_step=4, max_distance=47,
                                         random_alternative=True)
                         # else:
                             # print("pylon is none")
@@ -66,7 +66,7 @@ class Builder:
     def get_current_building(self):
         return self.build_queue[self.build_queue_index]
 
-    async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
+    async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 45, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
                     placement_step: int = 3, ) -> bool:
         assert isinstance(near, (Unit, Point2, Point3))

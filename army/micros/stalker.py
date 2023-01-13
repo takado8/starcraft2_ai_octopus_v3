@@ -27,7 +27,7 @@ class StalkerMicro(MicroABS):
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
                         unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
-        dist = 6
+        dist = 9
 
         units_in_position = 0
         for stalker in stalkers:
