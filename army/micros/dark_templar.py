@@ -36,7 +36,7 @@ class DarkTemplarMicro(MicroABS):
                 else:
                     target = workers[0]
                 dt.attack(target)
-            elif (self.ai.attack or self.ai.enemy_units().closer_than(15, self.ai.defend_position))and threats.exists:
+            elif (self.ai.attack or self.ai.enemy_units().closer_than(17, self.ai.defend_position))and threats.exists:
                 closest = threats.closest_to(dt)
                 if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(dt.position) > \
                     closest.distance_to(dt.position) + 1 or not self.ai.in_pathing_grid(threats[0]):

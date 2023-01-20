@@ -11,7 +11,7 @@ class ImmortalMicro(MicroABS):
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
         immortals = division.get_units(unit.IMMORTAL)
-        dist = 8
+        dist = 7
         units_in_position = 0
         for immortal in immortals:
             threats = enemy.filter(

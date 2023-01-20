@@ -1,4 +1,5 @@
 from army.micros.carrier import CarrierMicro
+from army.micros.observer import ObserverMicro
 from army.micros.oracle import OracleMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
@@ -23,10 +24,12 @@ class AirOracle(StrategyABS):
         carrier_micro = CarrierMicro(ai)
         tempest_micro = TempestMicro(ai)
         zealot_micro = ZealotMicro(ai)
+
         # sentry_micro = SentryMicro(ai)
         self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=240)
-        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai))
-        self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
+        self.army.create_division('oracle2', ORACLE_x1, [OracleMicro(ai)], Movements(ai), lifetime=260)
+        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
+        self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai), lifetime=-240)
         self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))

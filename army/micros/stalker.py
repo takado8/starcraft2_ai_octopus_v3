@@ -27,7 +27,7 @@ class StalkerMicro(MicroABS):
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
                         unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
-        dist = 9
+        dist = 7
 
         units_in_position = 0
         for stalker in stalkers:
@@ -90,7 +90,6 @@ class StalkerMicro(MicroABS):
 
     async def blink(self, stalker, target):
         stalker(ability.EFFECT_BLINK_STALKER, target)
-
 
     def find_blink_out_position(self, stalker, closest_enemy_position):
         i = 8

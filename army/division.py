@@ -7,7 +7,7 @@ from sc2.units import Units
 
 
 class Division:
-    def __init__(self, ai, name, units_ids_dict, micros: List, movements: Movements, max_units_distance=12,
+    def __init__(self, ai, name, units_ids_dict, micros: List, movements: Movements, max_units_distance=10,
                  lifetime=None):
         self.ai = ai
         self.name = name

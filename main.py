@@ -9,10 +9,8 @@ from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
-# from strategy.Archons import Archons
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
-# from strategy.blinkers import Blinkers
 from strategy.colossus import Colossus
 from strategy.dts import DTs
 from strategy.one_base_robo import OneBaseRobo
@@ -52,7 +50,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = DTs(self)
+        self.strategy = AirOracle(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -77,6 +75,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.train_probes()
         self.strategy.build_assimilators()
         await self.strategy.do_upgrades()
+
 
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
@@ -116,7 +115,7 @@ class OctopusV3(sc2.BotAI):
     def in_pathing_grid(self, pos: Union[Point2, Unit]):
         if isinstance(pos, Unit):
             pos = pos.position
-        if pos.x < 0 or pos.y < 0:
+        if not self.in_map_bounds(pos):
             return
         return super().in_pathing_grid(pos)
 

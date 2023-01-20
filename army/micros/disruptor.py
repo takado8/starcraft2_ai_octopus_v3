@@ -14,9 +14,9 @@ class DisruptorMicro(MicroABS):
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
             if self.ai.units(unit.DISRUPTORPHASED).amount < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
-                    and enemy.closer_than(10, disruptor).exists:
+                    and enemy.closer_than(12, disruptor).exists:
                 spell_target = enemy.filter(
-                    lambda unit_: unit_.distance_to(disruptor) < 10 and unit_.type_id not in self.ai.units_to_ignore
+                    lambda unit_: unit_.distance_to(disruptor) < 12 and unit_.type_id not in self.ai.units_to_ignore
                                   and not unit_.is_flying)
                 target = None
                 if spell_target.amount > 2:
@@ -40,15 +40,16 @@ class DisruptorMicro(MicroABS):
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
-                if threat.exists:
-                    retreat_position = self.find_back_out_position(disruptor, threat.closest_to(disruptor))
-                    disruptor.move(retreat_position)
+                division_position = division.get_position()
+                if division_position and disruptor.distance_to(division_position) > division.max_units_distance:
+                    disruptor.move(division_position)
                 else:
-                    division_position = division.get_position()
-                    if division_position and disruptor.distance_to(division_position) > division.max_units_distance:
-                        disruptor.move(division_position)
-                    else:
-                        units_in_position += 1
+                    units_in_position += 1
+                    if threat.exists:
+                        retreat_position = self.find_back_out_position(disruptor, threat.closest_to(disruptor))
+                        disruptor.move(retreat_position)
+                # else:
+
 
         # Disruptor purification nova
         # if self.ai.time - self.ai.nova_wait > 0.4:

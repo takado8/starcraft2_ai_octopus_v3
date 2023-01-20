@@ -27,7 +27,7 @@ class Defense:
             self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
                                                                                 -2)
         elif 4 > nexuses.amount > 1:
-            second_nexus = nexuses.furthest_to(self.ai.start_location.position)
+            second_nexus = nexuses.closest_to(self.ai.game_info.map_center)
             self.ai.defend_position = second_nexus.position.towards(
                 self.ai.game_info.map_center, 5)
         else:

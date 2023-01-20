@@ -37,7 +37,7 @@ class ColossusMicro(MicroABS):
     async def do_micro(self, division):
         enemy = self.ai.enemy_units()
         colossi = division.get_units(unit.COLOSSUS)
-        dist = 10
+        dist = 11
         units_in_position = 0
         for colossus in colossi:
             threats = enemy.filter(
@@ -96,7 +96,7 @@ class ColossusMicro(MicroABS):
                 colossi_threats_set.add(threat)
 
         colossi_threats = Units(colossi_threats_set, self.ai)
-        dist = 9
+        dist = 7.5
         threats = None
         for stalker in stalkers:
             if colossi_threats:

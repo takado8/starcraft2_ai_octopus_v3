@@ -9,12 +9,10 @@ class BuildQueues:
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     ADEPT_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.SHIELDBATTERY, 4,
-                     unit.GATEWAY, unit.GATEWAY,
-                     unit.TWILIGHTCOUNCIL, 16,
-                     unit.NEXUS, unit.TEMPLARARCHIVE,
-                    unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE,
+                     unit.GATEWAY, unit.GATEWAY, unit.TWILIGHTCOUNCIL, 16, unit.NEXUS, unit.TEMPLARARCHIVE,
+                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS, 30, unit.DARKSHRINE, unit.FORGE,
                      unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 40, unit.FORGE,
-                    unit.GATEWAY, unit.ROBOTICSBAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY,
+                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY,
                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 

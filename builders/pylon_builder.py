@@ -60,17 +60,16 @@ class PylonBuilder:
                     if self.ai.coords is None:
                         enemy_expansions = sorted(self.ai.expansion_locations_list,
                                                   key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
-                        if len(enemy_expansions) > 3:
-                            pos = enemy_expansions[3]
-                        else:
-                            pos = enemy_expansions[2]
+
+                        position = enemy_expansions[4]
+                        position = self.ai.mineral_field.closer_than(9, position).center.towards(position, -3)
                     else:
-                        pos = Point2(self.ai.coords['proxy'])
+                        position = Point2(self.ai.coords['proxy'])
                     c = 0
                     placement = None
                     while placement is None and c < 10:
                         c += 1
-                        placement = await self.ai.find_placement(unit.PYLON, near=pos, max_distance=20, placement_step=2,
+                        placement = await self.ai.find_placement(unit.PYLON, near=position, max_distance=12, placement_step=2,
                                                          random_alternative=False)
                     if placement is not None:
                         worker = self.ai.units(unit.PROBE).closest_to(placement)

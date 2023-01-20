@@ -4,6 +4,7 @@ from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
+from army.micros.wall_guard_zealot import WallGuardZealotMicro
 from army.micros.warpprism import WarpPrismMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
@@ -29,11 +30,15 @@ class OneBaseRobo(StrategyABS):
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
+        wall_guard_zealot_micro = WallGuardZealotMicro(ai)
+
         warpprism_micro = WarpPrismMicro(ai)
         colossus_micro = ColossusMicro(ai)
         archon_micro = ArchonMicro(ai)
         stalker_micro = StalkerMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                  Movements(ai, 0.33), lifetime=420)
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
         if self.ai.enemy_race == Race.Protoss:
