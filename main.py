@@ -9,6 +9,7 @@ from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
 from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
+from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
 from strategy.colossus import Colossus
@@ -50,7 +51,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = AirOracle(self)
+        self.strategy = AdeptProxy(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -162,16 +163,16 @@ def botVsComputer(ai, real_time=0):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    # computer_builds = [AIBuild.Timing]
+    computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
+    result = run_game(map_settings=maps.get(maps_list[0]), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
