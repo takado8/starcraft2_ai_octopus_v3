@@ -194,6 +194,15 @@ class TwilightUpgrader:
                     if ability.RESEARCH_BLINK in abilities:
                         tc(ability.RESEARCH_BLINK)
 
+    async def glaives(self):
+        if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
+            tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
+            if tc.exists:
+                tc = tc.random
+                abilities = await self.ai.get_available_abilities(tc)
+                if ability.RESEARCH_ADEPTRESONATINGGLAIVES in abilities:
+                    tc(ability.RESEARCH_ADEPTRESONATINGGLAIVES)
+
     async def standard(self):
         if self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
             tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
