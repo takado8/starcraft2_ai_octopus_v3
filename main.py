@@ -24,13 +24,15 @@ class OctopusV3(sc2.BotAI):
     units_to_ignore = UNITS_TO_IGNORE
     workers_ids = WORKERS_IDS
 
-    destination = None
-    lost_cost = 0
-    killed_cost = 0
+    # destination = None
+    lost_minerals = 0
+    lost_gas = 0
+    killed_minerals = 0
+    killed_gas = 0
+    structures_amount = 0
 
     def __init__(self):
         super().__init__()
-        self.structures_amount = 0
         self.spot_validator = BuildingSpotValidator(self)
         self.attack = False
         self.first_attack = False
@@ -51,7 +53,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = StalkerProxy(self)
+        self.strategy = Colossus(self)
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -65,7 +67,7 @@ class OctopusV3(sc2.BotAI):
             worker.stop()
 
     async def on_step(self, iteration: int):
-        # self.save_stats()
+        self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         await self.strategy.morphing()
@@ -76,7 +78,6 @@ class OctopusV3(sc2.BotAI):
         self.strategy.train_probes()
         self.strategy.build_assimilators()
         await self.strategy.do_upgrades()
-
 
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
@@ -150,6 +151,13 @@ class OctopusV3(sc2.BotAI):
     async def lock_spending_condition(self):
         return await self.strategy.lock_spending_condition()
 
+    def save_stats(self):
+        self.killed_minerals = self.state.score.killed_minerals_army
+        self.killed_gas = self.state.score.killed_vespene_army
+        self.lost_minerals = self.state.score.lost_minerals_army
+        self.lost_gas = self.state.score.lost_vespene_army
+        self.structures_amount = self.structures.amount
+
 
 def botVsComputer(ai, real_time=0):
     if real_time:
@@ -174,7 +182,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -192,13 +200,28 @@ def test(real_time=1):
         win = 1
     else:
         win = 0
-    return win, ai.killed_cost, ai.lost_cost
+    return win, ai.killed_minerals, ai.killed_gas, ai.lost_minerals, ai.lost_gas
 
 
 if __name__ == '__main__':
     import time
+    results = []
+    for i in range(1, 11):
+        print('\n---------------------- game {} -----------------------------\n'.format(i))
+        start = time.time()
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
+        stop = time.time()
+        results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
+        print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
+        print('killed minerals: {}\nkilled gas: {}\n\nlost minerals: {}\nlost gas {}\n'.format(
+            killed_minerals, killed_gas, lost_minerals, lost_gas))
 
-    start = time.time()
-    win, killed, lost = test(real_time=0)
-    stop = time.time()
-    print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))
+    avg_killed_minerals = sum([result[1] for result in results]) / len(results)
+    avg_killed_gas = sum([result[2] for result in results]) / len(results)
+    avg_lost_minerals = sum([result[3] for result in results]) / len(results)
+    avg_lost_gas = sum([result[4] for result in results]) / len(results)
+    wins = sum([result[0] for result in results])
+
+    print('\n----------------------------- results ---------------------------\n')
+    print('wins: {}/{}\navg killed minerals: {}\navg killed gas: {}\n\navg lost minerals: {}\navg lost gas {}\n'.format(
+        wins, len(results), avg_killed_minerals, avg_killed_gas, avg_lost_minerals, avg_lost_gas))

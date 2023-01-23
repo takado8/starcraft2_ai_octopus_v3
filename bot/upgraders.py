@@ -258,7 +258,7 @@ class RoboticsBayUpgrader:
         self.ai = ai
 
     async def thermal_lances(self):
-        colossi = self.ai.army(unit.COLOSSUS).ready
+        colossi = self.ai.army(unit.COLOSSUS)
         if colossi.exists:
             bay = self.ai.structures(unit.ROBOTICSBAY).ready
             if bay.exists:

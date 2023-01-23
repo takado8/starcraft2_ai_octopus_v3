@@ -75,7 +75,7 @@ class Colossus(StrategyABS):
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
-        self.forge_upgrader.armor_first()
+        self.forge_upgrader.standard()
         await self.twilight_upgrader.standard()
         await self.robotics_bay_upgrader.thermal_lances()
 
