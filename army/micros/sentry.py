@@ -12,7 +12,7 @@ class SentryMicro(MicroABS):
 
     async def do_micro(self, division):
         #  Sentry region  #
-        sentries = division.get_units(unit.SENTRY)
+        sentries = division.get_units(self.ai.iteration, unit.SENTRY)
         # sentries = self.ai.army(unit.SENTRY)
         in_position = 0
         if sentries.exists:

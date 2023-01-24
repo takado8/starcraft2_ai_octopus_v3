@@ -9,7 +9,7 @@ class ObserverMicro(MicroABS):
         super().__init__('ObserverMicro', ai)
 
     async def do_micro(self, division):
-        observers = division.get_units(unit.OBSERVER)
+        observers = division.get_units(self.ai.iteration, unit.OBSERVER)
         for observer in observers:
             detectors = self.ai.enemy_units().filter(lambda x: x.is_detector and
                                                 x.distance_to(observer.position) < x.detect_range + x.radius + 3)

@@ -23,23 +23,27 @@ class StalkerMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
-        stalkers = division.get_units(unit.STALKER)
+        stalkers = division.get_units(self.ai.iteration, unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
                         unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
-        dist = 7
 
+        attacking_friends = None
+        division_position = None
+        dist = 6
         units_in_position = 0
         for stalker in stalkers:
-            threats = enemy.filter(
-                lambda unit_: ((unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore) or unit_.type_id in priority_ids)
-                              and not unit_.is_hallucination)
-            if self.ai.attack:
-                threats.extend(self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER)
-                               and _x.distance_to(stalker) <= dist))
-
-            if threats.exists:
+            if enemy.exists:
+                threats = enemy.filter(
+                    lambda unit_: ((unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
+                                  unit_.type_id not in self.ai.units_to_ignore) or unit_.type_id in priority_ids)
+                                  and not unit_.is_hallucination)
+                if self.ai.attack:
+                    threats.extend(self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER)
+                                   and _x.distance_to(stalker) <= dist))
+            else:
+                threats = None
+            if threats:
                 closest_enemy = threats.closest_to(stalker)
                 priority = threats.filter(lambda x1: x1.type_id in priority_ids)
                 if priority.exists:
@@ -74,12 +78,13 @@ class StalkerMicro(MicroABS):
                     else:
                         stalker.attack(target)
             else:
-                attacking_friends = division.get_attacking_units()
-                division_position = division.get_position()
-                if attacking_friends.exists and enemy.exists:
-                    stalker.attack(enemy.closest_to(attacking_friends.closest_to(stalker)))
-                elif division_position and stalker.distance_to(division_position) > division.max_units_distance:
+                if attacking_friends is None:
+                    attacking_friends = division.get_attacking_units(iteration=self.ai.iteration)
+                    division_position = division.get_position(iteration=self.ai.iteration)
+                if division_position and stalker.distance_to(division_position) > division.max_units_distance:
                     stalker.attack(division_position)
+                elif attacking_friends.exists and enemy.exists:
+                    stalker.attack(enemy.closest_to(attacking_friends.closest_to(stalker)))
                 else:
                     units_in_position += 1
         return units_in_position

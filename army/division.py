@@ -18,6 +18,12 @@ class Division:
         self.micros = micros
         self.max_units_distance = max_units_distance
         self.lifetime = lifetime
+        self.attacking_units = None
+        self.attacking_units_last_fetch = -1
+        self.position = None
+        self.position_last_fetch = -1
+        self.units = None
+        self.units_last_fetch = -1
 
     async def do_micro(self, destination):
         units_in_position = 0
@@ -45,30 +51,39 @@ class Division:
                 missing_units[unit_id] = desired_amount - unit_amount
         return missing_units
 
-    def get_units(self, unit_type_id=None):
+    def get_units(self, iteration, unit_type_id=None):
         if unit_type_id:
             return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
                           if self.soldiers[soldier_tag].type_id == unit_type_id], self.ai)
-        return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers], self.ai)
+        if self.units_last_fetch != iteration:
+            self.units = Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers], self.ai)
+            self.units_last_fetch = iteration
+        return self.units
 
-    def get_attacking_units(self):
-        return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
-                          if self.soldiers[soldier_tag].unit.is_attacking], self.ai)
+    def get_attacking_units(self, iteration):
+        if self.attacking_units_last_fetch != iteration:
+            self.attacking_units = Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
+                                          if self.soldiers[soldier_tag].unit.is_attacking], self.ai)
+            self.attacking_units_last_fetch = iteration
 
-    def get_position(self):
-        max_neighbours = -1
-        position = None
-        division_units = self.get_units()
-        if division_units.amount > 1:
-            for unit in division_units:
-                neighbours = division_units.closer_than(self.max_units_distance, unit.position)
-                if neighbours.amount > max_neighbours:
-                    max_neighbours = neighbours.amount
-                    position = unit.position
-        elif division_units.amount == 1:
-            position = division_units.first.position
+        return self.attacking_units
 
-        return position
+    def get_position(self, iteration):
+        if self.position_last_fetch != iteration:
+            max_neighbours = -1
+            position = None
+            division_units = self.get_units(iteration)
+            if division_units.amount > 1:
+                for unit in division_units:
+                    neighbours = division_units.closer_than(self.max_units_distance, unit.position)
+                    if neighbours.amount > max_neighbours:
+                        max_neighbours = neighbours.amount
+                        position = unit.position
+            elif division_units.amount == 1:
+                position = division_units.first.position
+            self.position = position
+            self.position_last_fetch = iteration
+        return self.position
 
     def get_units_amount(self):
         return len(self.soldiers)

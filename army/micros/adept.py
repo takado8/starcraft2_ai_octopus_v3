@@ -18,8 +18,6 @@ class AdeptMicro(MicroABS):
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
         adepts = division.get_units(unit.ADEPT)
-        dist = 7
-        units_in_position = 0
         if self.ai.attack:
             for adept in adepts:
                 workers = self.ai.enemy_units().filter(lambda x: x.distance_to(adept) < 17 and x.type_id in
@@ -84,51 +82,8 @@ class AdeptMicro(MicroABS):
                         self.enemy_base_idx += 1
                         if self.enemy_base_idx > 2:
                             self.enemy_base_idx = 0
-        else:
-            for adept in adepts:
-                threats = enemy.filter(
-                    lambda unit_: unit_.can_attack_ground and unit_.distance_to(adept.position) <= dist and
-                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination and
-                not unit_.is_flying)
-                if self.ai.attack:
-                    threats.extend(self.ai.enemy_structures().filter(lambda _x: _x.can_attack_ground or _x.type_id == unit.BUNKER))
-                if threats.exists:
-                    closest_enemy = threats.closest_to(adept)
-                    priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
-                        unit.QUEEN})
-                    if priority.exists:
-                        targets = priority.sorted(lambda x1: x1.health + x1.shield)
-                        target = self.select_target(targets, adept)
-                    else:
-                        targets = threats.filter(lambda x: x.is_light)
-                        if not targets.exists:
-                            targets = threats
-                        targets = targets.sorted(lambda x1: x1.health + x1.shield)
-                        target = self.select_target(targets, adept)
 
-                    if adept.shield_percentage < 0.4:
-                        if adept.health_percentage < 0.35:
-                            adept.move(self.find_back_out_position(adept, closest_enemy.position))
-                            continue
-                        d = 4
-                    else:
-                        d = 2
-
-                    back_out_position = self.find_back_out_position(adept, closest_enemy.position)
-                    if back_out_position is not None and adept.weapon_cooldown > 0:
-                        adept.move(adept.position.towards(back_out_position, d))
-                    else:
-                        adept.attack(target)
-                else:
-                    attacking_friends = division.get_attacking_units()
-                    division_position = division.get_position()
-                    if attacking_friends.exists and enemy.exists:
-                        adept.attack(enemy.closest_to(attacking_friends.closest_to(adept)))
-                    elif division_position and adept.distance_to(division_position) > division.max_units_distance:
-                        adept.attack(division_position)
-                    else:
-                        units_in_position += 1
-        return units_in_position
+        return adepts.amount
 
     def select_target(self, targets, adept):
         if self.ai.enemy_race == Race.Protoss:

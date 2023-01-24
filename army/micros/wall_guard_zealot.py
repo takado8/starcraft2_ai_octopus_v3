@@ -8,7 +8,7 @@ class WallGuardZealotMicro(MicroABS):
         super().__init__('ZealotMicro', ai)
 
     async def do_micro(self, division):
-        zealots = division.get_units(unit.ZEALOT)
+        zealots = division.get_units(self.ai.iteration, unit.ZEALOT)
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
         units_in_position = 0
 
@@ -39,8 +39,8 @@ class WallGuardZealotMicro(MicroABS):
                     else:
                         zealot.attack(target)
                 else:
-                    attacking_friends = division.get_attacking_units()
-                    division_position = division.get_position()
+                    attacking_friends = division.get_attacking_units(self.ai.iteration)
+                    division_position = division.get_position(self.ai.iteration)
                     if attacking_friends.exists and enemy.exists:
                         zealot.attack(enemy.closest_to(attacking_friends.closest_to(zealot)))
                     elif division_position and zealot.distance_to(division_position) > division.max_units_distance:

@@ -1,4 +1,5 @@
 from sc2.unit import UnitTypeId as unit
+from bot.constants import BASES_IDS
 
 
 class Attack:
@@ -10,7 +11,7 @@ class Attack:
         enemy_units = self.ai.enemy_units()
         enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore and not x.is_hallucination
                                              and (x.can_attack_ground or x.can_attack_air))
-        enemy.extend(self.ai.enemy_structures().filter(lambda b: #b.type_id in self.ai.bases_ids or
+        enemy.extend(self.ai.enemy_structures().filter(lambda b: b.type_id in BASES_IDS or
                          b.can_attack_ground or b.can_attack_air or b.type_id == unit.BUNKER))
         if self.enemy_main_base_down or (
                 self.ai.army.closer_than(15, self.ai.enemy_start_locations[0]).amount > 7 and
@@ -26,7 +27,7 @@ class Attack:
             if enemy.closer_than(50, self.ai.start_location).amount > 3:
                 destination = enemy.closest_to(self.ai.start_location).position
             else:
-                destination = enemy.further_than(30, self.ai.start_location)
+                destination = enemy.further_than(45, self.ai.start_location)
                 if destination:
                     destination = destination.closest_to(self.ai.start_location).position
                 # elif self.ai.enemy_structures().exists:

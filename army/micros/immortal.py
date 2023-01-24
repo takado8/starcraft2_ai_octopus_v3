@@ -10,18 +10,23 @@ class ImmortalMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
-        immortals = division.get_units(unit.IMMORTAL)
-        dist = 7
+        immortals = division.get_units(self.ai.iteration, unit.IMMORTAL)
+        dist = 6
         units_in_position = 0
+        attacking_friends = None
+        division_position = None
         for immortal in immortals:
-            threats = enemy.filter(
-                lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal.position) <= dist and
-                              unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
-            if self.ai.attack:
-                threats.extend(
-                    self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER) and
-                                                      _x.distance_to(immortal) <= dist))
-            if threats.exists:
+            if enemy.exists:
+                threats = enemy.filter(
+                    lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal.position) <= dist and
+                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
+                if self.ai.attack:
+                    threats.extend(
+                        self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER) and
+                                                          _x.distance_to(immortal) <= dist))
+            else:
+                threats = None
+            if threats:
                 closest_enemy = threats.closest_to(immortal)
                 priority = threats.filter(
                     lambda x1: x1.type_id in [unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
@@ -53,12 +58,13 @@ class ImmortalMicro(MicroABS):
                 else:
                     immortal.attack(target)
             else:
-                attacking_friends = division.get_attacking_units()
-                division_position = division.get_position()
-                if attacking_friends.exists and enemy.exists:
-                    immortal.attack(enemy.closest_to(attacking_friends.closest_to(immortal)))
-                elif division_position and immortal.distance_to(division_position) > division.max_units_distance:
+                if attacking_friends is None:
+                    attacking_friends = division.get_attacking_units(iteration=self.ai.iteration)
+                    division_position = division.get_position(iteration=self.ai.iteration)
+                if division_position and immortal.distance_to(division_position) > division.max_units_distance:
                     immortal.attack(division_position)
+                elif attacking_friends.exists and enemy.exists:
+                    immortal.attack(enemy.closest_to(attacking_friends.closest_to(immortal)))
                 else:
                     units_in_position += 1
         return units_in_position

@@ -99,7 +99,7 @@ class Scouting:
             self.scouting_positions = sorted(self.scouting_positions,
                                                    key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
             for px in scouts.idle:
-                px.move(self.scouting_positions[self.scouting_index])
-                self.scouting_index += 1
                 if self.scouting_index == len(self.scouting_positions):
                     self.scouting_index = 0
+                px.move(self.scouting_positions[self.scouting_index])
+                self.scouting_index += 1

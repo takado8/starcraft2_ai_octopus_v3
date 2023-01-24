@@ -3,6 +3,7 @@ from army.micros.archon import ArchonMicro
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
+from army.micros.observer import ObserverMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
 from army.micros.warpprism import WarpPrismMicro
@@ -35,17 +36,17 @@ class Colossus(StrategyABS):
         disruptor_micro = DisruptorMicro(ai)
         colossus_micro = ColossusMicro(ai)
         # adept_micro = AdeptMicro(ai)
-        main_division_units = {unit.ZEALOT: 5, unit.STALKER: 7, unit.IMMORTAL: 7, unit.ARCHON: 8,
-                               unit.DISRUPTOR: 4, unit.COLOSSUS: 3}
-        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
+        main_division_units = {unit.ZEALOT: 5, unit.STALKER: 12, unit.IMMORTAL: 7, unit.ARCHON: 8, unit.SENTRY: 3,
+                               unit.DISRUPTOR: 4, unit.COLOSSUS: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
-        self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
-                                immortal_micro, archon_micro, disruptor_micro],
-                                  Movements(ai, 0.85))
+        self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro, stalker_micro,
+                ObserverMicro(ai), immortal_micro, archon_micro, disruptor_micro, sentry_micro, warpprism_micro],
+                                  Movements(ai, 0.75))
 
-        self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
-        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
+        # self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
+        # self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai, 0.2))
+        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
 
         build_queue = BuildQueues.COLOSSUS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -106,7 +107,7 @@ class Colossus(StrategyABS):
 
     async def lock_spending_condition(self):
         return await self.condition_lock_spending.forge() or \
-         self.condition_lock_spending.thermal_lances()
+               self.condition_lock_spending.thermal_lances()
 
     async def morphing(self):
         await self.morphing_.morph_gates()

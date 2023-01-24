@@ -9,7 +9,7 @@ class DisruptorMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
-        disruptors = division.get_units(unit.DISRUPTOR)
+        disruptors = division.get_units(self.ai.iteration, unit.DISRUPTOR)
         units_in_position = 0
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
@@ -40,7 +40,7 @@ class DisruptorMicro(MicroABS):
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
-                division_position = division.get_position()
+                division_position = division.get_position(self.ai.iteration)
                 if division_position and disruptor.distance_to(division_position) > division.max_units_distance:
                     disruptor.move(division_position)
                 else:

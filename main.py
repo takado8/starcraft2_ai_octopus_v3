@@ -43,6 +43,7 @@ class OctopusV3(sc2.BotAI):
         self.army = None
         self.strategy = None
         self.coords = None
+        self.iteration = -2
 
     # async def on_unit_created(self, unit: Unit):
     #     if unit.is_mine and unit.type_id in self.army_ids:
@@ -54,6 +55,7 @@ class OctopusV3(sc2.BotAI):
 
     async def on_start(self):
         self.strategy = Colossus(self)
+        print('strategy: {}'.format(self.strategy.name))
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
@@ -67,6 +69,7 @@ class OctopusV3(sc2.BotAI):
             worker.stop()
 
     async def on_step(self, iteration: int):
+        self.iteration = iteration
         self.save_stats()
         self.set_game_step()
         self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)

@@ -42,14 +42,15 @@ class Morphing:
                         if self.ai.attack:
                             if ht1.distance_to(self.ai.main_base_ramp.top_center) > 30:
                                 # ht1.move(ht2)
-                                ht2.move(ht1)
+                                ht2.move(ht1.position)
                                 # queue_merge = True
                             else:
                                 ht1.move(self.ai.defend_position)
                                 ht2.move(self.ai.defend_position)
                         else:
-                            ht1.move(self.ai.defend_position)
-                            ht2.move(self.ai.defend_position)
+                            position = self.ai.defend_position
+                            ht1.move(position)
+                            ht2.move(position)
                             # queue_merge = True
                 else:
                     # print('morphing!')
@@ -64,3 +65,18 @@ class Morphing:
                     await self.ai._client._execute(action=sc_pb.RequestAction(
                         actions=[sc_pb.Action(action_raw=action)]
                     ))
+
+    #
+    # def find_placement_for_unit(self, position):
+    #     i = 3
+    #     while not self.ai.in_pathing_grid(position) and i < 6:
+    #         position = position.random_on_distance(i)
+    #         i += 1
+    #         j = 1
+    #         while not self.ai.in_pathing_grid(position) and j < 5:
+    #             k = 0
+    #             while not self.ai.in_pathing_grid(position) and k < 12:
+    #                 position = position.random_on_distance(j * 2)
+    #                 k+=1
+    #             j += 1
+    #     return position if self.ai.in_pathing_grid(position) else None
