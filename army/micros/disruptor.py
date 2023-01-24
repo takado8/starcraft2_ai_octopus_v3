@@ -11,12 +11,13 @@ class DisruptorMicro(MicroABS):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
         disruptors = division.get_units(self.ai.iteration, unit.DISRUPTOR)
         units_in_position = 0
+        novas_casted = self.ai.units(unit.DISRUPTORPHASED).amount
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
-            if self.ai.units(unit.DISRUPTORPHASED).amount < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
-                    and enemy.closer_than(12, disruptor).exists:
+            if novas_casted < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
+                    and enemy.closer_than(15, disruptor).exists:
                 spell_target = enemy.filter(
-                    lambda unit_: unit_.distance_to(disruptor) < 12 and unit_.type_id not in self.ai.units_to_ignore
+                    lambda unit_: unit_.distance_to(disruptor) < 15 and unit_.type_id not in self.ai.units_to_ignore
                                   and not unit_.is_flying)
                 target = None
                 if spell_target.amount > 2:
@@ -38,6 +39,7 @@ class DisruptorMicro(MicroABS):
                             # print("Casting Purification nova on " + str(maxNeighbours + 1) + " units.")
                             # self.ai.nova_wait = self.ai.time
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
+                            novas_casted += 1
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
                 division_position = division.get_position(self.ai.iteration)
@@ -47,7 +49,7 @@ class DisruptorMicro(MicroABS):
                     units_in_position += 1
                     if threat.exists:
                         retreat_position = self.find_back_out_position(disruptor, threat.closest_to(disruptor))
-                        disruptor.move(retreat_position)
+                        disruptor.move(disruptor.position.towards(retreat_position, 2))
                 # else:
 
 

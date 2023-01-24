@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 import sc2
 from sc2 import run_game, maps, Race, Difficulty, AIBuild, Result
 from sc2.player import Bot, Computer
@@ -7,8 +8,8 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
-from bot.coords import coords
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
+from bot.enemy_data import EnemyInfo
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
@@ -23,8 +24,6 @@ class OctopusV3(sc2.BotAI):
     bases_ids = BASES_IDS
     units_to_ignore = UNITS_TO_IGNORE
     workers_ids = WORKERS_IDS
-
-    # destination = None
     lost_minerals = 0
     lost_gas = 0
     killed_minerals = 0
@@ -43,6 +42,8 @@ class OctopusV3(sc2.BotAI):
         self.army = None
         self.strategy = None
         self.coords = None
+        self.enemy_info: EnemyInfo = None
+        self.starting_strategy = None
         self.iteration = -2
 
     # async def on_unit_created(self, unit: Unit):
@@ -54,19 +55,45 @@ class OctopusV3(sc2.BotAI):
         self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
 
     async def on_start(self):
-        self.strategy = Colossus(self)
-        print('strategy: {}'.format(self.strategy.name))
+        print('----------------------- new game ---------------------------------')
+        now = datetime.now()
+        current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+        print(current_time)
+        print('getting enemy info...')
+        self.enemy_info = EnemyInfo(self)
+        strategy_name = await self.enemy_info.pre_analysis()
+        print('getting enemy info done.')
+        if not strategy_name:
+            print('enemy is None. default strategy')
+            strategy_name = 'StalkerProxy'
+        print('setting strategy: ' + str(strategy_name))
+        self.starting_strategy = strategy_name
+        self.set_strategy(strategy_name)
+        await self.chat_send('{}{}'.format(strategy_name[0], strategy_name[-1]))
         map_name = str(self.game_info.map_name)
         print('map_name: ' + map_name)
         print('start location: ' + str(self.start_location.position))
-        if map_name in coords and self.start_location.position in coords[map_name]:
-            self.coords = coords[map_name][self.start_location.position]
-            print('getting coords successful.')
-        else:
-            print('getting coords failed')
-            # await self.chat_send('getting coords failed')
+        # if map_name in coords and self.start_location.position in coords[map_name]:
+        #     self.coords = coords[map_name][self.start_location.position]
+        #     print('getting coords successful.')
+        # else:
+        #     print('getting coords failed')
+        #     # await self.chat_send('getting coords failed')
         for worker in self.workers:
             worker.stop()
+
+    async def on_end(self, game_result: Result):
+        try:
+            print('starting post-analysis...')
+            if game_result == Result.Victory:
+                score = 1
+            else:
+                score = 0
+            # plot(self.times,self.y1,self.y2)
+            self.enemy_info.post_analysis(score)
+            print('done.')
+        except Exception as ex:
+            print(ex)
 
     async def on_step(self, iteration: int):
         self.iteration = iteration
@@ -107,7 +134,7 @@ class OctopusV3(sc2.BotAI):
                 self.army_priority = True
         lock_spending = await self.lock_spending_condition()
         # print('army priority: {}'.format(self.army_priority))
-        if (not self.army_priority or self.minerals > 700) and not lock_spending:
+        if (not self.army_priority or (self.minerals > 700 and self.vespene > 200)) and not lock_spending:
             # print('build from main.')
             await self.strategy.build_from_queue()
 
@@ -116,6 +143,19 @@ class OctopusV3(sc2.BotAI):
                     placement_step: int = 3, ) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
+
+    def set_strategy(self, strategy_name):
+        strategy_name_dict = {
+            'StalkerProxy': StalkerProxy,
+            'AdeptProxy': AdeptProxy,
+            'AdeptRushDefense': AdeptRushDefense,
+            'OneBaseRobo': OneBaseRobo,
+            'DTs': DTs,
+            'Colossus': Colossus,
+            'AirOracle': AirOracle
+        }
+        self.strategy = strategy_name_dict[strategy_name](self)
+
 
     def in_pathing_grid(self, pos: Union[Point2, Unit]):
         if isinstance(pos, Unit):
@@ -137,7 +177,7 @@ class OctopusV3(sc2.BotAI):
         if self.enemy_units().exists:
             self._client.game_step = 4
         else:
-            self._client.game_step = 5
+            self._client.game_step = 8
 
     def get_super_pylon(self):
         return self.spot_validator.get_super_pylon()
@@ -172,11 +212,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 

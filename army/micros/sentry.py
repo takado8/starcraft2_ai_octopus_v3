@@ -60,5 +60,5 @@ class SentryMicro(MicroABS):
                     army_nearby = self.ai.army.closer_than(9, se.position)
                     if army_nearby.exists:
                         if threats.exists:
-                            se.move(army_nearby.center.towards(threats.closest_to(se), -4))
+                            se.move(army_nearby.center.towards(threats.closest_to(se), -2))
         return in_position

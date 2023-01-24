@@ -45,7 +45,7 @@ class OracleMicro(MicroABS):
 
     async def do_micro(self, division):
         # Oracle
-        oracles = division.get_units(unit.ORACLE)
+        oracles = division.get_units(self.ai.iteration, unit.ORACLE)
         all_oracles = self.ai.units(unit.ORACLE).ready
         multiple_oracles = all_oracles.amount > 1
         for oracle in oracles:

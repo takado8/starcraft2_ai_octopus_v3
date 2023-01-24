@@ -22,13 +22,12 @@ class WarpPrismMicro(MicroABS):
                     abilities = await self.ai.get_available_abilities(warp)
                     if ability.MORPH_WARPPRISMPHASINGMODE in abilities:
                         warp(ability.MORPH_WARPPRISMPHASINGMODE)
-
         else:
             for warp in self.ai.units(unit.WARPPRISMPHASING):
                 abilities = await self.ai.get_available_abilities(warp)
                 if ability.MORPH_WARPPRISMTRANSPORTMODE in abilities:
                     warp(ability.MORPH_WARPPRISMTRANSPORTMODE)
-            for warp in division.get_units(self.ai.iteration, unit.WARPPRISM):
-                if warp.distance_to(self.ai.start_location) > 5:
-                    warp.move(self.ai.start_location, queue=True)
+            # for warp in division.get_units(self.ai.iteration, unit.WARPPRISM):
+            #     if warp.distance_to(self.ai.start_location) > 5:
+            #         warp.move(self.ai.start_location, queue=True)
         return 1

@@ -53,6 +53,9 @@ class ColossusMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(4, colossus)
+                if close_threats.amount > 0:
+                    threats = close_threats
                 closest_enemy = threats.closest_to(colossus)
                 priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
                                                                     unit.QUEEN, unit.GHOST})

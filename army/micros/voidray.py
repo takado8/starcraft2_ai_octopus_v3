@@ -9,19 +9,24 @@ class VoidrayMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
-        void_rays = division.get_units(unit.VOIDRAY)
+        void_rays = division.get_units(self.ai.iteration, unit.VOIDRAY)
         units_in_position = 0
+        attacking_friends = None
+        division_position = None
         for voidray in void_rays:
-            threats = self.ai.enemy_units().filter(
-                lambda z: z.distance_to(voidray.position) < 12 and z.type_id not in self.ai.units_to_ignore
-                          and not z.is_hallucination)
-            can_attack_air = threats.filter(lambda x: x.can_attack_air)
-            if can_attack_air.exists:
-                threats = can_attack_air
-            threats.extend(
-                self.ai.enemy_structures().filter(lambda z: z.distance_to(voidray.position) < 15 and
-                                                            (z.can_attack_air or z.type_id == unit.BUNKER)))
-            if threats.exists:
+            if enemy.exists:
+                threats = self.ai.enemy_units().filter(
+                    lambda z: z.distance_to(voidray.position) < 12 and z.type_id not in self.ai.units_to_ignore
+                              and not z.is_hallucination)
+                can_attack_air = threats.filter(lambda x: x.can_attack_air)
+                if can_attack_air.exists:
+                    threats = can_attack_air
+                threats.extend(
+                    self.ai.enemy_structures().filter(lambda z: z.distance_to(voidray.position) < 15 and
+                                                                (z.can_attack_air or z.type_id == unit.BUNKER)))
+            else:
+                threats = None
+            if threats:
                 priority = threats.filter(lambda z: z.can_attack_air and z.is_armored) \
                     .sorted(lambda z: z.health + z.shield)
                 if priority.exists:
@@ -39,12 +44,13 @@ class VoidrayMicro(MicroABS):
                     elif not voidray.is_attacking:
                         voidray.attack(target2)
             else:
-                attacking_friends = division.get_attacking_units()
-                division_position = division.get_position()
-                if attacking_friends.exists and enemy.exists:
-                    voidray.attack(enemy.closest_to(attacking_friends.closest_to(voidray)))
-                elif division_position and voidray.distance_to(division_position) > division.max_units_distance:
+                if attacking_friends is None:
+                    attacking_friends = division.get_attacking_units(self.ai.iteration)
+                    division_position = division.get_position(self.ai.iteration)
+                if division_position and voidray.distance_to(division_position) > division.max_units_distance:
                     voidray.attack(division_position)
+                elif attacking_friends.exists and enemy.exists:
+                    voidray.attack(enemy.closest_to(attacking_friends.closest_to(voidray)))
                 else:
                     units_in_position += 1
         return units_in_position

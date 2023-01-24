@@ -25,6 +25,9 @@ class ArchonMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(2, archon)
+                if close_threats.amount > 0:
+                    threats = close_threats
                 closest_enemy = threats.closest_to(archon)
                 priority = threats.filter(lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
                     unit.QUEEN, unit.MUTALISK, unit.VIPER, unit.GHOST, unit.INFESTOR, unit.CORRUPTOR})

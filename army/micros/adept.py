@@ -17,7 +17,7 @@ class AdeptMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
-        adepts = division.get_units(unit.ADEPT)
+        adepts = division.get_units(self.ai.iteration, unit.ADEPT)
         if self.ai.attack:
             for adept in adepts:
                 workers = self.ai.enemy_units().filter(lambda x: x.distance_to(adept) < 17 and x.type_id in

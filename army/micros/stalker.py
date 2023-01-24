@@ -44,6 +44,9 @@ class StalkerMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(4, stalker)
+                if close_threats.amount > 0:
+                    threats = close_threats
                 closest_enemy = threats.closest_to(stalker)
                 priority = threats.filter(lambda x1: x1.type_id in priority_ids)
                 if priority.exists:

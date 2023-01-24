@@ -27,6 +27,9 @@ class ImmortalMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(4, immortal)
+                if close_threats.amount > 0:
+                    threats = close_threats
                 closest_enemy = threats.closest_to(immortal)
                 priority = threats.filter(
                     lambda x1: x1.type_id in [unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,

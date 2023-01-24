@@ -51,7 +51,7 @@ class Division:
                 missing_units[unit_id] = desired_amount - unit_amount
         return missing_units
 
-    def get_units(self, iteration, unit_type_id=None):
+    def get_units(self, iteration: int, unit_type_id: UnitTypeId=None):
         if unit_type_id:
             return Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
                           if self.soldiers[soldier_tag].type_id == unit_type_id], self.ai)

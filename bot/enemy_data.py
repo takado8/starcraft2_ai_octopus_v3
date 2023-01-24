@@ -1,8 +1,8 @@
+from typing import Dict
 import argparse
 import json
 import os
 import sys
-from sc2 import Race
 
 
 class EnemyInfo:
@@ -11,7 +11,7 @@ class EnemyInfo:
         self.opponent_id = None
         self.dir_path = None
         self.opponent_file_path = None
-        self.enemy = None
+        self.enemy_info_dict: Dict[str] = None
 
     async def get_opponent_id(self):
         try:
@@ -21,11 +21,10 @@ class EnemyInfo:
             if args.OpponentId:
                 return str(args.OpponentId)
             else:
-                print('opponent id is none.')
                 await self.ai.chat_send('opponent id is none.')
                 return None
         except Exception as ex:
-            print('error: Cannot read opponent id.')
+            await self.ai.chat_send('Cannot read opponent id.')
             print(ex)
             return None
 
@@ -33,35 +32,29 @@ class EnemyInfo:
         try:
             self.opponent_id = await self.get_opponent_id()
             if self.opponent_id:
-                self.opponent_id = self.opponent_id[:7]
                 dir_ = os.path.realpath(sys.argv[0]) if sys.argv[0] else None
                 if dir_:
                     self.dir_path = os.path.dirname(os.path.abspath(dir_))
                 else:
-                    print('dir error')
+                    await self.ai.chat_send('dir error')
                     return
                 print('opponent id: '+ str(self.opponent_id))
+                await self.ai.chat_send('opponent id: '+ str(self.opponent_id))
                 self.opponent_file_path = os.path.join(self.dir_path,'data','enemy_info',self.opponent_id + '.json')
-                print('opponent_file_path: ' + self.opponent_file_path)
                 if os.path.isfile(self.opponent_file_path):
-                    print('file exists.')
                     # enemy = None
                     with open(self.opponent_file_path, 'r') as file:
-                        self.enemy = json.load(file)
+                        self.enemy_info_dict = json.load(file)
                     # await self.ai.chat_send(str(self.enemy))
-                    if self.enemy['last_game']['result'] is 1:   # last game won, play the same strategy
-                        strategy_chosen = self.enemy['last_game']['strategy']
-                    else:    # last game lost
-                        if self.ai.enemy_race == Race.Zerg:
-                            available_strats = ['adept_defend', 'adept_proxy', 'air']
-                        else:
-                            available_strats = ['stalker_proxy', 'air']
+                    if self.enemy_info_dict['last_game']['result'] is 1:
+                        strategy_chosen = self.enemy_info_dict['last_game']['strategy']
+                    else:
                         max_ = -1
                         strategy_chosen = None
-                        for strategy in self.enemy['scoreboard']:
-                            if strategy != self.enemy['last_game']['strategy'] and strategy in available_strats:
-                                win = self.enemy['scoreboard'][strategy]['win']
-                                total = self.enemy['scoreboard'][strategy]['total']
+                        for strategy in self.enemy_info_dict['scoreboard']:
+                            if strategy != self.enemy_info_dict['last_game']['strategy']:
+                                win = self.enemy_info_dict['scoreboard'][strategy]['win']
+                                total = self.enemy_info_dict['scoreboard'][strategy]['total']
                                 if total == 0:
                                     win_rate = 1
                                 elif win == 0:
@@ -73,11 +66,8 @@ class EnemyInfo:
                                     strategy_chosen = strategy
                     return strategy_chosen
                 else:
-                    print('file does not exist')
-                    print('new opponent')
                     await self.ai.chat_send("new opponent.")
             else:
-                print("opponent_id is None")
                 await self.ai.chat_send("opponent_id is None")
         except Exception as ex:
             print('error.')
@@ -85,21 +75,18 @@ class EnemyInfo:
             print(ex)
 
     def post_analysis(self, score):
-        if self.enemy is None:
-            self.enemy = {
+        if self.enemy_info_dict is None:
+            self.enemy_info_dict = {
                 'id': self.opponent_id,
                 'last_game': {'strategy': '', 'result': 0},
                 'scoreboard': {
-                    'stalker_proxy': {'win': 0,'total': 0},
-                    'adept_defend': {'win': 0,'total': 0},
-                    '2b_archons': {'win': 0,'total': 0},
-                    'adept_proxy': {'win': 0,'total': 0},
-                    'air': {'win': 0,'total': 0},
-                    '2b_colossus': {'win': 0,'total': 0},
-                    'macro': {'win': 0,'total': 0},
-                    'bio': {'win': 0,'total': 0},
-                    'dt': {'win': 0,'total': 0},
-                    'stalker_defend': {'win': 0,'total': 0}
+                    'StalkerProxy': {'win': 0,'total': 0},
+                    'AdeptProxy': {'win': 0,'total': 0},
+                    'OneBaseRobo': {'win': 0,'total': 0},
+                    'AdeptRushDefense': {'win': 0,'total': 0},
+                    'DTs': {'win': 0,'total': 0},
+                    'Colossus': {'win': 0,'total': 0},
+                    'AirOracle': {'win': 0,'total': 0}
                 }
             }
         # load general stats file
@@ -110,33 +97,28 @@ class EnemyInfo:
         else:
             general_stats = {
                     'total': {'win': 0,'total': 0},
-                    'stalker_proxy': {'win': 0,'total': 0},
-                    'adept_defend': {'win': 0,'total': 0},
-                    '2b_archons': {'win': 0,'total': 0},
-                    'adept_proxy': {'win': 0,'total': 0},
-                    'air': {'win': 0,'total': 0},
-                    '2b_colossus': {'win': 0,'total': 0},
-                    'macro': {'win': 0,'total': 0},
-                    'bio': {'win': 0,'total': 0},
-                    'dt': {'win': 0,'total': 0},
-                    'stalker_defend': {'win': 0,'total': 0}
+                    'StalkerProxy': {'win': 0,'total': 0},
+                    'AdeptProxy': {'win': 0,'total': 0},
+                    'OneBaseRobo': {'win': 0,'total': 0},
+                    'AdeptRushDefense': {'win': 0,'total': 0},
+                    'DTs': {'win': 0,'total': 0},
+                    'Colossus': {'win': 0,'total': 0},
+                    'AirOracle': {'win': 0,'total': 0}
             }
         # update scoreboard
-        self.enemy['scoreboard'][self.ai.starting_strategy]['total'] += 1
+        self.enemy_info_dict['scoreboard'][self.ai.starting_strategy]['total'] += 1
         general_stats[self.ai.starting_strategy]['total'] += 1
         general_stats['total']['total'] += 1
         if score:
-            self.enemy['scoreboard'][self.ai.starting_strategy]['win'] += 1
+            self.enemy_info_dict['scoreboard'][self.ai.starting_strategy]['win'] += 1
             general_stats[self.ai.starting_strategy]['win'] += 1
             general_stats['total']['win'] += 1
 
-        self.enemy['last_game']['strategy'] = self.ai.starting_strategy
-        self.enemy['last_game']['result'] = score
-        print('writing enemy info to ' + self.opponent_file_path)
+        self.enemy_info_dict['last_game']['strategy'] = self.ai.starting_strategy
+        self.enemy_info_dict['last_game']['result'] = score
+
         with open(self.opponent_file_path,'w+') as file:
-            json.dump(self.enemy, file)
-        print('done.')
-        print('writing general stats to ' + general_stats_path)
+            json.dump(self.enemy_info_dict, file)
+
         with open(general_stats_path,'w+') as file:
             json.dump(general_stats, file)
-        print('done.')

@@ -37,7 +37,7 @@ class Colossus(StrategyABS):
         colossus_micro = ColossusMicro(ai)
         # adept_micro = AdeptMicro(ai)
         main_division_units = {unit.ZEALOT: 5, unit.STALKER: 12, unit.IMMORTAL: 7, unit.ARCHON: 8, unit.SENTRY: 3,
-                               unit.DISRUPTOR: 4, unit.COLOSSUS: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+                               unit.DISRUPTOR: 4, unit.COLOSSUS: 3, unit.OBSERVER: 1}
         # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro, stalker_micro,
@@ -46,7 +46,7 @@ class Colossus(StrategyABS):
 
         # self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
         # self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai, 0.2))
-        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
+        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-400)
 
         build_queue = BuildQueues.COLOSSUS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))

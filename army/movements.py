@@ -8,7 +8,7 @@ class Movements:
     def move_division(self, division, destination, units_in_position):
         if destination and units_in_position:
             if units_in_position > division.get_units_amount() * self.units_ratio_before_next_step:
-                if self.last_position and self.last_position.distance_to(destination) < 12:
+                if self.last_position and self.last_position.distance_to(destination) < 8:
                     position = self.last_position
                 else:
                     division_position = division.get_position(self.ai.iteration)

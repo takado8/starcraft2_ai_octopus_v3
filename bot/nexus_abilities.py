@@ -148,7 +148,11 @@ class ShieldOvercharge:
     async def shield_overcharge(self):
         en = self.ai.enemy_units()
         if en.exists and en.closer_than(14, self.ai.defend_position).amount > (5 if self.ai.time > 360 else 2):
-            nexus = self.ai.structures(unit.NEXUS).ready.closest_to(self.ai.defend_position)
+            nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
+            if nexuses:
+                nexus = nexuses.first
+            else:
+                return
             battery = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexus) \
                 .sorted(lambda x: x.health, reverse=True)
             if battery and nexus:

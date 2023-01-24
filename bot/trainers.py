@@ -9,6 +9,8 @@ class NexusTrainer:
 
     def probes_standard(self):
         workers = self.ai.workers.amount
+        if workers > 60:
+            return
         nex = self.ai.structures(unit.NEXUS).amount
         if not self.ai.structures(unit.PYLON).exists and workers == 14:
             return

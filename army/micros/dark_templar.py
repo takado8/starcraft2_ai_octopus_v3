@@ -12,7 +12,7 @@ class DarkTemplarMicro(MicroABS):
                               for exp in expansions][:5]
 
     async def do_micro(self, division):
-        dts = division.get_units(unit.DARKTEMPLAR)
+        dts = division.get_units(self.ai.iteration, unit.DARKTEMPLAR)
         for dt in dts:
             detectors = self.ai.enemy_units().filter(lambda x: x.is_detector and
                             x.distance_to(dt.position) < x.detect_range + 1)
