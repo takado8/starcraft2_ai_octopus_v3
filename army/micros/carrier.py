@@ -13,16 +13,17 @@ class CarrierMicro(MicroABS):
         units_in_position = 0
         attacking_friends = None
         division_position = None
+        dist = 10
         for carrier in carriers:
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
-                    lambda z: z.distance_to(carrier.position) < 10 and z.type_id not in self.ai.units_to_ignore
+                    lambda z: z.distance_to(carrier.position) < dist and z.type_id not in self.ai.units_to_ignore
                               and not z.is_hallucination)
                 can_attack_air = threats.filter(lambda x: x.can_attack_air)
                 if can_attack_air.exists:
                     threats = can_attack_air
                 threats.extend(
-                    self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier.position) < 10 and
+                    self.ai.enemy_structures().filter(lambda z: z.distance_to(carrier.position) < dist and
                                                                 (z.can_attack_air or z.type_id == unit.BUNKER)))
             else:
                 threats = None
@@ -30,6 +31,9 @@ class CarrierMicro(MicroABS):
                 if threats.closer_than(8, carrier.position).exists:
                     carrier.move(carrier.position.towards(threats.closest_to(carrier), -3))
                     continue
+                close_threats = threats.closer_than(7.5, carrier)
+                if close_threats.exists:
+                    threats = close_threats
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
                     lambda z: z.health + z.shield,reverse=False)
                 if priority.exists:

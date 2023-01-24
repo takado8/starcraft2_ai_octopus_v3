@@ -12,7 +12,7 @@ class ArchonMicro(MicroABS):
         archons = division.get_units(self.ai.iteration, unit.ARCHON)
         attacking_friends = None
         division_position = None
-        dist = 4
+        dist = 8
         units_in_position = 0
         for archon in archons:
             if enemy.exists:
@@ -25,7 +25,7 @@ class ArchonMicro(MicroABS):
             else:
                 threats = None
             if threats:
-                close_threats = threats.closer_than(2, archon)
+                close_threats = threats.closer_than(3, archon)
                 if close_threats.amount > 0:
                     threats = close_threats
                 closest_enemy = threats.closest_to(archon)

@@ -13,16 +13,17 @@ class TempestMicro(MicroABS):
         units_in_position = 0
         attacking_friends = None
         division_position = None
+        dist = 18
         for tempest in tempests:
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
-                    lambda z: z.distance_to(tempest.position) < 16 and z.type_id not in self.ai.units_to_ignore
+                    lambda z: z.distance_to(tempest.position) < dist and z.type_id not in self.ai.units_to_ignore
                               and not z.is_hallucination)
                 can_attack_air = threats.filter(lambda x: x.can_attack_air)
                 if can_attack_air.exists:
                     threats = can_attack_air
                 threats.extend(
-                    self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest.position) < 11 and
+                    self.ai.enemy_structures().filter(lambda z: z.distance_to(tempest.position) < 14 and
                                                                 (z.can_attack_air or z.type_id == unit.BUNKER)))
             else:
                 threats = None
@@ -30,6 +31,9 @@ class TempestMicro(MicroABS):
                 if threats.closer_than(9, tempest.position).exists:
                     tempest.move(tempest.position.towards(threats.closest_to(tempest.position).position, -5))
                     continue
+                close_threats = threats.closer_than(8, tempest)
+                if close_threats.exists:
+                    threats = close_threats
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
                     lambda z: z.health + z.shield, reverse=False)
                 if priority.exists:

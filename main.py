@@ -51,36 +51,50 @@ class OctopusV3(sc2.BotAI):
     #         self.strategy.army.add_unassigned_soldier(unit)
 
     async def on_unit_destroyed(self, unit_tag: int):
-        self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
-        self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
+        try:
+            self.strategy.enemy_economy.on_unit_destroyed(unit_tag)
+            self.strategy.workers_distribution.on_unit_destroyed(unit_tag)
+        except Exception as ex:
+            try:
+                await self.chat_send('Error 11')
+            except:
+                pass
+            print(ex)
 
     async def on_start(self):
         print('----------------------- new game ---------------------------------')
-        now = datetime.now()
-        current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        print(current_time)
-        print('getting enemy info...')
-        self.enemy_info = EnemyInfo(self)
-        strategy_name = await self.enemy_info.pre_analysis()
-        print('getting enemy info done.')
-        if not strategy_name:
-            print('enemy is None. default strategy')
-            strategy_name = 'StalkerProxy'
-        print('setting strategy: ' + str(strategy_name))
-        self.starting_strategy = strategy_name
-        self.set_strategy(strategy_name)
-        await self.chat_send('{}{}'.format(strategy_name[0], strategy_name[-1]))
-        map_name = str(self.game_info.map_name)
-        print('map_name: ' + map_name)
-        print('start location: ' + str(self.start_location.position))
-        # if map_name in coords and self.start_location.position in coords[map_name]:
-        #     self.coords = coords[map_name][self.start_location.position]
-        #     print('getting coords successful.')
-        # else:
-        #     print('getting coords failed')
-        #     # await self.chat_send('getting coords failed')
-        for worker in self.workers:
-            worker.stop()
+        try:
+            now = datetime.now()
+            current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+            print(current_time)
+            print('getting enemy info...')
+            self.enemy_info = EnemyInfo(self)
+            strategy_name = await self.enemy_info.pre_analysis()
+            print('getting enemy info done.')
+            if not strategy_name:
+                print('enemy is None. default strategy')
+                strategy_name = 'StalkerProxy'
+            print('setting strategy: ' + str(strategy_name))
+            self.starting_strategy = strategy_name
+            self.set_strategy(strategy_name)
+            await self.chat_send('{}{}'.format(strategy_name[0], strategy_name[-1]))
+            map_name = str(self.game_info.map_name)
+            print('map_name: ' + map_name)
+            print('start location: ' + str(self.start_location.position))
+            # if map_name in coords and self.start_location.position in coords[map_name]:
+            #     self.coords = coords[map_name][self.start_location.position]
+            #     print('getting coords successful.')
+            # else:
+            #     print('getting coords failed')
+            #     # await self.chat_send('getting coords failed')
+            for worker in self.workers:
+                worker.stop()
+        except Exception as ex:
+            try:
+                await self.chat_send('Error 10')
+            except:
+                pass
+            print(ex)
 
     async def on_end(self, game_result: Result):
         try:
@@ -93,21 +107,57 @@ class OctopusV3(sc2.BotAI):
             self.enemy_info.post_analysis(score)
             print('done.')
         except Exception as ex:
+            try:
+                await self.chat_send('Error 09')
+            except:
+                pass
             print(ex)
 
     async def on_step(self, iteration: int):
-        self.iteration = iteration
-        self.save_stats()
-        self.set_game_step()
-        self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
-        await self.strategy.morphing()
-        await self.strategy.army_execute()
-        self.strategy.handle_workers()
-        await self.strategy.nexus_abilities()
-        await self.strategy.build_pylons()
-        self.strategy.train_probes()
-        self.strategy.build_assimilators()
-        await self.strategy.do_upgrades()
+        try:
+            self.iteration = iteration
+            # self.save_stats()
+            self.set_game_step()
+            self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
+        except Exception as ex:
+            await self.chat_send('Error 00')
+            print(ex)
+        try:
+            await self.strategy.morphing()
+        except Exception as ex:
+            await self.chat_send('Error 01')
+            print(ex)
+        try:
+            await self.strategy.army_execute()
+        except Exception as ex:
+            await self.chat_send('Error 02')
+            print(ex)
+        try:
+            self.strategy.handle_workers()
+        except Exception as ex:
+            await self.chat_send('Error 03')
+            print(ex)
+        try:
+            await self.strategy.nexus_abilities()
+        except Exception as ex:
+            await self.chat_send('Error 04')
+            print(ex)
+        try:
+            await self.strategy.build_pylons()
+        except Exception as ex:
+            await self.chat_send('Error 05')
+            print(ex)
+        try:
+            self.strategy.train_probes()
+            self.strategy.build_assimilators()
+        except Exception as ex:
+            await self.chat_send('Error 06')
+            print(ex)
+        try:
+            await self.strategy.do_upgrades()
+        except Exception as ex:
+            await self.chat_send('Error 07')
+            print(ex)
 
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
@@ -123,20 +173,24 @@ class OctopusV3(sc2.BotAI):
             self.after_first_attack = True
         #
         ## build
-        current_building = self.strategy.builder.get_current_building()
-        # print('current building: {}'.format(current_building))
-        if not isinstance(current_building, unit):
-            min_army_supply = current_building
-            if self.state.score.food_used_army >= min_army_supply:
-                self.strategy.builder.increment_build_queue_index()
-                self.army_priority = False
-            else:
-                self.army_priority = True
-        lock_spending = await self.lock_spending_condition()
-        # print('army priority: {}'.format(self.army_priority))
-        if (not self.army_priority or (self.minerals > 700 and self.vespene > 200)) and not lock_spending:
-            # print('build from main.')
-            await self.strategy.build_from_queue()
+        try:
+            current_building = self.strategy.builder.get_current_building()
+            # print('current building: {}'.format(current_building))
+            if not isinstance(current_building, unit):
+                min_army_supply = current_building
+                if self.state.score.food_used_army >= min_army_supply:
+                    self.strategy.builder.increment_build_queue_index()
+                    self.army_priority = False
+                else:
+                    self.army_priority = True
+            lock_spending = await self.lock_spending_condition()
+            # print('army priority: {}'.format(self.army_priority))
+            if (not self.army_priority or (self.minerals > 700 and self.vespene > 200)) and not lock_spending:
+                # print('build from main.')
+                await self.strategy.build_from_queue()
+        except Exception as ex:
+            await self.chat_send('Error 08')
+            print(ex)
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -225,7 +279,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[0], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -252,7 +306,7 @@ if __name__ == '__main__':
     for i in range(1, 11):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

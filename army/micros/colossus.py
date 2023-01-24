@@ -37,7 +37,7 @@ class ColossusMicro(MicroABS):
     async def do_micro(self, division):
         enemy = self.ai.enemy_units()
         colossi = division.get_units(self.ai.iteration, unit.COLOSSUS)
-        dist = 9
+        dist = 12
         units_in_position = 0
         attacking_friends = None
         division_position = None
@@ -53,7 +53,7 @@ class ColossusMicro(MicroABS):
             else:
                 threats = None
             if threats:
-                close_threats = threats.closer_than(4, colossus)
+                close_threats = threats.closer_than(5, colossus)
                 if close_threats.amount > 0:
                     threats = close_threats
                 closest_enemy = threats.closest_to(colossus)

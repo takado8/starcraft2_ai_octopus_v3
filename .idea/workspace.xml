@@ -2,31 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/enemy_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/division.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/division.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/adept.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/adept.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/archon.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/archon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/carrier.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/carrier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/colossus.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/colossus.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/dark_templar.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/dark_templar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/disruptor.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/disruptor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/immortal.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/immortal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/observer.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/observer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/oracle.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/oracle.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/sentry.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/sentry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/stalker.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/stalker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/tempest.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/tempest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/voidray.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/voidray.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/army/micros/wall_guard_zealot.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/wall_guard_zealot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/warpprism.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/warpprism.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/movements.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/movements.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/enemy_info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/nexus_abilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/nexus_abilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/trainers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/trainers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/micros/zealot.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/zealot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/colossus.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/colossus.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -87,14 +74,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="117" />
-          <entry key="py" value="61829" />
+          <entry key="py" value="62185" />
           <entry key="pyi" value="171" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="117" />
-          <entry key="Python" value="61829" />
+          <entry key="Python" value="62185" />
           <entry key="PythonStub" value="171" />
         </counts>
       </usages-collector>
@@ -102,7 +89,7 @@
         <counts>
           <entry key="gitignore" value="4" />
           <entry key="md" value="1" />
-          <entry key="py" value="833" />
+          <entry key="py" value="849" />
           <entry key="pyi" value="5" />
         </counts>
       </usages-collector>
@@ -110,7 +97,7 @@
         <counts>
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Python" value="833" />
+          <entry key="Python" value="849" />
           <entry key="PythonStub" value="5" />
         </counts>
       </usages-collector>
@@ -121,37 +108,94 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2020">
-              <caret line="154" column="22" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="22" />
+            <state relative-caret-position="1040">
+              <caret line="121" column="31" selection-start-line="121" selection-start-column="31" selection-end-line="121" selection-end-column="31" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#2850#2927#0" />
-                <marker date="1674594660148" expanded="true" signature="6060:6435" ph="..." />
+                <marker date="1674600368804" expanded="true" signature="7737:8112" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bot/enemy_data.py">
+        <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="400">
+              <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/strategy/stalker_proxy.py">
+        <entry file="file://$PROJECT_DIR$/army/micros/archon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#42#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="520">
+              <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/carrier.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="660">
+              <caret line="35" column="43" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="35" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/colossus.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="517">
+              <caret line="55" column="53" selection-start-line="55" selection-start-column="53" selection-end-line="55" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/immortal.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/tempest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-40">
+              <caret line="25" column="100" selection-start-line="25" selection-start-column="100" selection-end-line="25" selection-end-column="100" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/voidray.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/wall_guard_zealot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="600">
+              <caret line="32" column="57" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/zealot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="20">
+              <caret line="10" column="56" selection-start-line="10" selection-start-column="56" selection-end-line="10" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -234,33 +278,33 @@
         <option value="$PROJECT_DIR$/strategy/adept_proxy.py" />
         <option value="$PROJECT_DIR$/army/attack/attack.py" />
         <option value="$PROJECT_DIR$/army/scouting/scouting.py" />
-        <option value="$PROJECT_DIR$/army/micros/zealot.py" />
         <option value="$PROJECT_DIR$/bot/morphing.py" />
         <option value="$PROJECT_DIR$/bot/nexus_abilities.py" />
         <option value="$PROJECT_DIR$/army/movements.py" />
-        <option value="$PROJECT_DIR$/army/micros/stalker.py" />
-        <option value="$PROJECT_DIR$/army/micros/archon.py" />
-        <option value="$PROJECT_DIR$/army/micros/colossus.py" />
-        <option value="$PROJECT_DIR$/army/micros/immortal.py" />
         <option value="$PROJECT_DIR$/builders/build_queues.py" />
         <option value="$PROJECT_DIR$/army/micros/warpprism.py" />
         <option value="$PROJECT_DIR$/strategy/colossus.py" />
         <option value="$PROJECT_DIR$/bot/trainers.py" />
         <option value="$PROJECT_DIR$/army/division.py" />
-        <option value="$PROJECT_DIR$/army/micros/adept.py" />
-        <option value="$PROJECT_DIR$/army/micros/carrier.py" />
         <option value="$PROJECT_DIR$/army/micros/dark_templar.py" />
         <option value="$PROJECT_DIR$/army/micros/disruptor.py" />
         <option value="$PROJECT_DIR$/army/micros/observer.py" />
         <option value="$PROJECT_DIR$/army/micros/oracle.py" />
+        <option value="$PROJECT_DIR$/bot/enemy_info.py" />
+        <option value="$PROJECT_DIR$/strategy/stalker_proxy.py" />
+        <option value="$PROJECT_DIR$/bot/enemy_data.py" />
         <option value="$PROJECT_DIR$/army/micros/sentry.py" />
+        <option value="$PROJECT_DIR$/army/micros/stalker.py" />
+        <option value="$PROJECT_DIR$/army/micros/archon.py" />
+        <option value="$PROJECT_DIR$/army/micros/adept.py" />
+        <option value="$PROJECT_DIR$/army/micros/carrier.py" />
+        <option value="$PROJECT_DIR$/army/micros/colossus.py" />
+        <option value="$PROJECT_DIR$/army/micros/immortal.py" />
         <option value="$PROJECT_DIR$/army/micros/tempest.py" />
         <option value="$PROJECT_DIR$/army/micros/voidray.py" />
         <option value="$PROJECT_DIR$/army/micros/wall_guard_zealot.py" />
-        <option value="$PROJECT_DIR$/bot/enemy_info.py" />
-        <option value="$PROJECT_DIR$/strategy/stalker_proxy.py" />
+        <option value="$PROJECT_DIR$/army/micros/zealot.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/bot/enemy_data.py" />
       </list>
     </option>
   </component>
@@ -301,16 +345,6 @@
             <path>
               <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
               <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
-              <item name="bot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="starcraft2_ai_octopus_v3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="starcraft2_ai_octopus_v3" type="462c0819:PsiDirectoryNode" />
-              <item name="strategy" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -574,20 +608,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/army/defense/defense.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="29" column="74" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/position.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3180">
-          <caret line="152" column="6" selection-start-line="152" selection-start-column="6" selection-end-line="152" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
@@ -736,20 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/immortal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="29" column="63" selection-start-line="29" selection-start-column="63" selection-end-line="29" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/colossus.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="55" column="63" selection-start-line="55" selection-start-column="63" selection-end-line="55" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/strategy/colossus.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1260">
@@ -811,13 +817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/adept.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1240">
-          <caret line="69" column="45" lean-forward="true" selection-start-line="69" selection-start-column="45" selection-end-line="69" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/strategy/adept_proxy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -825,20 +824,6 @@
           <folding>
             <element signature="e#0#40#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="31" column="32" lean-forward="true" selection-start-line="30" selection-start-column="8" selection-end-line="31" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/disruptor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -853,65 +838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2140">
           <caret line="47" column="56" selection-start-line="47" selection-start-column="56" selection-end-line="47" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/sentry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1240">
-          <caret line="62" column="89" selection-start-line="62" selection-start-column="89" selection-end-line="62" selection-end-column="89" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/tempest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/voidray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="50" column="53" selection-start-line="50" selection-start-column="53" selection-end-line="50" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/archon.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="27" column="61" selection-start-line="27" selection-start-column="61" selection-end-line="27" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/wall_guard_zealot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="51" column="93" selection-start-line="51" selection-start-column="93" selection-end-line="51" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/zealot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="10" column="56" selection-start-line="10" selection-start-column="56" selection-end-line="10" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/carrier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="14" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/dark_templar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="14" column="52" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -934,24 +860,130 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/neural/deep_craft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-320">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/bot/enemy_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+        <state relative-caret-position="720">
+          <caret line="36" column="71" selection-start-line="36" selection-start-column="71" selection-end-line="36" selection-end-column="71" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/sentry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="23" column="29" lean-forward="true" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/archon.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/adept.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="36" column="50" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/carrier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="35" column="43" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="35" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/dark_templar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="14" column="52" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/disruptor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/colossus.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="55" column="53" selection-start-line="55" selection-start-column="53" selection-end-line="55" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/immortal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/tempest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-40">
+          <caret line="25" column="100" selection-start-line="25" selection-start-column="100" selection-end-line="25" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/voidray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/zealot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="10" column="56" selection-start-line="10" selection-start-column="56" selection-end-line="10" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/wall_guard_zealot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="32" column="57" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2020">
-          <caret line="154" column="22" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="22" />
+        <state relative-caret-position="1040">
+          <caret line="121" column="31" selection-start-line="121" selection-start-column="31" selection-end-line="121" selection-end-column="31" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
             <element signature="e#2850#2927#0" />
-            <marker date="1674594660148" expanded="true" signature="6060:6435" ph="..." />
+            <marker date="1674600368804" expanded="true" signature="7737:8112" ph="..." />
           </folding>
         </state>
       </provider>

@@ -25,6 +25,9 @@ class ZealotMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(4, zealot)
+                if close_threats.exists:
+                    threats = close_threats
                 closest = threats.closest_to(zealot)
                 if threats[0].health_percentage * threats[0].shield_percentage == 1 or threats[0].distance_to(zealot.position) > \
                     closest.distance_to(zealot.position) + 1 or not self.ai.in_pathing_grid(threats[0]):

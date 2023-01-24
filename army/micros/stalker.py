@@ -30,7 +30,7 @@ class StalkerMicro(MicroABS):
 
         attacking_friends = None
         division_position = None
-        dist = 6
+        dist = 10
         units_in_position = 0
         for stalker in stalkers:
             if enemy.exists:

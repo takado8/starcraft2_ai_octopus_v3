@@ -31,7 +31,7 @@ class SentryMicro(MicroABS):
                 elif not guardian_shield_on and eff.id == effect.GUARDIANSHIELDPERSISTENT:
                     guardian_shield_on = True
             threats = self.ai.enemy_units().filter(
-                lambda unit_: unit_.can_attack_ground or unit_.can_attack_air and unit_.distance_to(sentry.position) <= 9 and
+                lambda unit_: (unit_.can_attack_ground or unit_.can_attack_air) and unit_.distance_to(sentry.position) <= 9 and
                               unit_.type_id not in self.ai.units_to_ignore and unit_.type_id not in self.ai.workers_ids
             and not unit_.is_hallucination)
             if not threats:

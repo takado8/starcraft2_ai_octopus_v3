@@ -22,11 +22,14 @@ class VoidrayMicro(MicroABS):
                 if can_attack_air.exists:
                     threats = can_attack_air
                 threats.extend(
-                    self.ai.enemy_structures().filter(lambda z: z.distance_to(voidray.position) < 15 and
+                    self.ai.enemy_structures().filter(lambda z: z.distance_to(voidray.position) < 12 and
                                                                 (z.can_attack_air or z.type_id == unit.BUNKER)))
             else:
                 threats = None
             if threats:
+                close_threats = threats.closer_than(4, voidray)
+                if close_threats.exists:
+                    threats = close_threats
                 priority = threats.filter(lambda z: z.can_attack_air and z.is_armored) \
                     .sorted(lambda z: z.health + z.shield)
                 if priority.exists:

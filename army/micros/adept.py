@@ -32,6 +32,9 @@ class AdeptMicro(MicroABS):
                         adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, adept.position)
                         queue = True
                     if threats.exists:
+                        closer_enemy = threats.closer_than(3, adept)
+                        if closer_enemy:
+                            threats = closer_enemy
                         closest_enemy = threats.closest_to(adept)
                         priority = threats.filter(
                             lambda x1: x1.type_id in {unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE,
