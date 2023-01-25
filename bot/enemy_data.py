@@ -21,10 +21,10 @@ class EnemyInfo:
             if args.OpponentId:
                 return str(args.OpponentId)
             else:
-                await self.ai.chat_send('opponent id is none.')
+                print('opponent id is none.')
                 return None
         except Exception as ex:
-            await self.ai.chat_send('Cannot read opponent id.')
+            await self.ai.chat_send('Error 020')
             print(ex)
             return None
 
@@ -36,10 +36,10 @@ class EnemyInfo:
                 if dir_:
                     self.dir_path = os.path.dirname(os.path.abspath(dir_))
                 else:
-                    await self.ai.chat_send('dir error')
+                    print('dir error')
                     return
                 print('opponent id: '+ str(self.opponent_id))
-                await self.ai.chat_send('opponent id: '+ str(self.opponent_id))
+                # await self.ai.chat_send('opponent id: '+ str(self.opponent_id))
                 self.opponent_file_path = os.path.join(self.dir_path,'data','enemy_info',self.opponent_id + '.json')
                 if os.path.isfile(self.opponent_file_path):
                     # enemy = None
@@ -66,12 +66,11 @@ class EnemyInfo:
                                     strategy_chosen = strategy
                     return strategy_chosen
                 else:
-                    await self.ai.chat_send("new opponent.")
+                    print("new opponent.")
             else:
-                await self.ai.chat_send("opponent_id is None")
+                print("opponent_id is None")
         except Exception as ex:
-            print('error.')
-            await self.ai.chat_send('recognition error')
+            print('recognition error')
             print(ex)
 
     def post_analysis(self, score):
