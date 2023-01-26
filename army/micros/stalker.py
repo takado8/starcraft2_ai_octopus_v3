@@ -7,8 +7,7 @@ from .microABS import MicroABS
 
 class StalkerMicro(MicroABS):
     def __init__(self, ai):
-        self.name = 'StalkerMicro'
-        super().__init__(self.name, ai)
+        super().__init__('StalkerMicro', ai)
 
     def select_target(self, targets, stalker):
         if self.ai.enemy_race == Race.Protoss:
@@ -41,6 +40,27 @@ class StalkerMicro(MicroABS):
                 if self.ai.attack:
                     threats.extend(self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER)
                                    and _x.distance_to(stalker) <= dist))
+                    enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
+                    wall_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in {unit.SUPPLYDEPOT,
+                                                                                               unit.BARRACKS,
+                                                                                               unit.BARRACKSREACTOR} and x.distance_to(
+                        enemy_main_ramp) < 5 and
+                                                                                 x.distance_to(stalker) < dist)
+                    workers = enemy.filter(lambda x: x.type_id == unit.SCV)
+
+                    if wall_buildings:
+                        workers_near_wall = workers.filter(lambda x:
+                                                           any([x.distance_to(building) < 3 for building in
+                                                                wall_buildings]))
+                        threats.extend(workers_near_wall)
+                        threats.extend(wall_buildings)
+
+                    bunkers = enemy().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
+                    if bunkers:
+                        workers_near_bunkers = workers.filter(lambda x:
+                                                              any([x.distance_to(building) < 3 for building in
+                                                                   bunkers]))
+                        threats.extend(workers_near_bunkers)
             else:
                 threats = None
             if threats:

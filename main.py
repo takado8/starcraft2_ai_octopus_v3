@@ -45,6 +45,7 @@ class OctopusV3(sc2.BotAI):
         self.enemy_info: EnemyInfo = None
         self.starting_strategy = None
         self.iteration = -2
+        self.enemy_main_base_ramp = None
 
     # async def on_unit_created(self, unit: Unit):
     #     if unit.is_mine and unit.type_id in self.army_ids:
@@ -77,7 +78,6 @@ class OctopusV3(sc2.BotAI):
             print('setting strategy: ' + str(strategy_name))
             self.starting_strategy = strategy_name
             self.set_strategy(strategy_name)
-            await self.chat_send('{}{}'.format(strategy_name[0], strategy_name[-1]))
             map_name = str(self.game_info.map_name)
             print('map_name: ' + map_name)
             print('start location: ' + str(self.start_location.position))
@@ -89,6 +89,10 @@ class OctopusV3(sc2.BotAI):
             #     # await self.chat_send('getting coords failed')
             for worker in self.workers:
                 worker.stop()
+
+            self.enemy_main_base_ramp = min(self.game_info.map_ramps, key=lambda ramp:
+                        self.enemy_start_locations[0].position.distance_to(ramp.top_center))
+
         except Exception as ex:
             try:
                 await self.chat_send('Error 10')
@@ -114,6 +118,9 @@ class OctopusV3(sc2.BotAI):
             print(ex)
 
     async def on_step(self, iteration: int):
+        if self.iteration == 10:
+            await self.chat_send('{}{}'.format(self.strategy.name[0], self.strategy.name[-1]))
+
         try:
             self.iteration = iteration
             # self.save_stats()
@@ -266,11 +273,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -279,7 +286,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[0], difficulty=Difficulty.CheatMoney, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
@@ -306,7 +313,7 @@ if __name__ == '__main__':
     for i in range(1, 11):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

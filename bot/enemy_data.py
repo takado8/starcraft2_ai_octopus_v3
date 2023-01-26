@@ -80,12 +80,14 @@ class EnemyInfo:
                 'last_game': {'strategy': '', 'result': 0},
                 'scoreboard': {
                     'StalkerProxy': {'win': 0,'total': 0},
-                    'AdeptProxy': {'win': 0,'total': 0},
+                    'AdeptRushDefense': {'win': 0, 'total': 0},
+                    'AirOracle': {'win': 0, 'total': 0},
+                    'Colossus': {'win': 0, 'total': 0,
+                    'DTs': {'win': 0, 'total': 0},
                     'OneBaseRobo': {'win': 0,'total': 0},
-                    'AdeptRushDefense': {'win': 0,'total': 0},
-                    'DTs': {'win': 0,'total': 0},
-                    'Colossus': {'win': 0,'total': 0},
-                    'AirOracle': {'win': 0,'total': 0}
+                    'AdeptProxy': {'win': 0, 'total': 0}
+                    }
+
                 }
             }
         # load general stats file
