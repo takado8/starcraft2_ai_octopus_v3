@@ -17,7 +17,8 @@ class Trainer:
         # print('\n condition: {}'.format((self.ai.is_build_finished()
         #         or self.ai.is_build_in_progress() or self.ai.army_priority)))
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
-                or self.ai.is_build_in_progress() or self.ai.army_priority):
+                or self.ai.is_build_in_progress() or self.ai.army_priority or (self.ai.minerals > 550
+                                                                               and self.ai.vespene > 250)):
             # print("training")
             i = 0
             buildings = None

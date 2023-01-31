@@ -10,6 +10,7 @@ from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from bot.enemy_data import EnemyInfo
+from bot.strategy_manager import StrategyManager
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
@@ -42,10 +43,12 @@ class OctopusV3(sc2.BotAI):
         self.army = None
         self.strategy = None
         self.coords = None
+        self.strategy_manager: StrategyManager = None
         self.enemy_info: EnemyInfo = None
         self.starting_strategy = None
         self.iteration = -2
         self.enemy_main_base_ramp = None
+
 
     # async def on_unit_created(self, unit: Unit):
     #     if unit.is_mine and unit.type_id in self.army_ids:
@@ -70,6 +73,8 @@ class OctopusV3(sc2.BotAI):
             print(current_time)
             print('getting enemy info...')
             self.enemy_info = EnemyInfo(self)
+            self.strategy_manager = StrategyManager(self.enemy_info)
+
             strategy_name = await self.enemy_info.pre_analysis()
             print('getting enemy info done.')
             if not strategy_name:
@@ -204,19 +209,6 @@ class OctopusV3(sc2.BotAI):
                     placement_step: int = 3, ) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative)
-
-    def set_strategy(self, strategy_name):
-        strategy_name_dict = {
-            'StalkerProxy': StalkerProxy,
-            'AdeptProxy': AdeptProxy,
-            'AdeptRushDefense': AdeptRushDefense,
-            'OneBaseRobo': OneBaseRobo,
-            'DTs': DTs,
-            'Colossus': Colossus,
-            'AirOracle': AirOracle
-        }
-        self.strategy = strategy_name_dict[strategy_name](self)
-
 
     def in_pathing_grid(self, pos: Union[Point2, Unit]):
         if isinstance(pos, Unit):
