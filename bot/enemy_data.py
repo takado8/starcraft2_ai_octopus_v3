@@ -5,12 +5,13 @@ import os
 import sys
 
 
-class EnemyInfo:
+class EnemyData:
     def __init__(self, ai):
         self.ai = ai
         self.opponent_id = None
         self.dir_path = None
         self.opponent_file_path = None
+        self.general_stats_filepath = None
         self.enemy_info_dict: Dict[str] = None
 
     async def get_opponent_id(self):
@@ -28,7 +29,7 @@ class EnemyInfo:
             print(ex)
             return None
 
-    async def pre_analysis(self):
+    async def load_enemy_data_dict(self):
         try:
             self.opponent_id = await self.get_opponent_id()
             if self.opponent_id:
@@ -39,87 +40,40 @@ class EnemyInfo:
                     print('dir error')
                     return
                 print('opponent id: '+ str(self.opponent_id))
-                # await self.ai.chat_send('opponent id: '+ str(self.opponent_id))
                 self.opponent_file_path = os.path.join(self.dir_path,'data','enemy_info',self.opponent_id + '.json')
                 if os.path.isfile(self.opponent_file_path):
-                    # enemy = None
                     with open(self.opponent_file_path, 'r') as file:
                         self.enemy_info_dict = json.load(file)
-                    # await self.ai.chat_send(str(self.enemy))
-                    if self.enemy_info_dict['last_game']['result'] is 1:
-                        strategy_chosen = self.enemy_info_dict['last_game']['strategy']
-                    else:
-                        max_ = -1
-                        strategy_chosen = None
-                        for strategy in self.enemy_info_dict['scoreboard']:
-                            if strategy != self.enemy_info_dict['last_game']['strategy']:
-                                win = self.enemy_info_dict['scoreboard'][strategy]['win']
-                                total = self.enemy_info_dict['scoreboard'][strategy]['total']
-                                if total == 0:
-                                    win_rate = 1
-                                elif win == 0:
-                                    win_rate = 0.3 / total
-                                else:
-                                    win_rate = win / total
-                                if win_rate > max_:
-                                    max_ = win_rate
-                                    strategy_chosen = strategy
-                    return strategy_chosen
                 else:
                     print("new opponent.")
             else:
                 print("opponent_id is None")
         except Exception as ex:
-            print('recognition error')
+            print('load_enemy_data_dict error')
             print(ex)
 
-    def post_analysis(self, score):
-        if self.enemy_info_dict is None:
-            self.enemy_info_dict = {
-                'id': self.opponent_id,
-                'last_game': {'strategy': '', 'result': 0},
-                'scoreboard': {
-                    'StalkerProxy': {'win': 0,'total': 0},
-                    'AdeptRushDefense': {'win': 0, 'total': 0},
-                    'AirOracle': {'win': 0, 'total': 0},
-                    'Colossus': {'win': 0, 'total': 0,
-                    'DTs': {'win': 0, 'total': 0},
-                    'OneBaseRobo': {'win': 0,'total': 0},
-                    'AdeptProxy': {'win': 0, 'total': 0}
-                    }
+    def save_enemy_data_dict(self):
+        with open(self.opponent_file_path, 'w+') as file:
+            json.dump(self.enemy_info_dict, file)
 
-                }
-            }
-        # load general stats file
-        general_stats_path = os.path.join(self.dir_path,'data','enemy_info','general_stats.json')
-        if os.path.isfile(general_stats_path):
-            with open(general_stats_path,'r') as file:
+    def load_general_stats_dict(self):
+        self.general_stats_filepath = os.path.join(self.dir_path, 'data', 'enemy_info', 'general_stats.json')
+        if os.path.isfile(self.general_stats_filepath):
+            with open(self.general_stats_filepath, 'r') as file:
                 general_stats = json.load(file)
         else:
             general_stats = {
-                    'total': {'win': 0,'total': 0},
-                    'StalkerProxy': {'win': 0,'total': 0},
-                    'AdeptProxy': {'win': 0,'total': 0},
-                    'OneBaseRobo': {'win': 0,'total': 0},
-                    'AdeptRushDefense': {'win': 0,'total': 0},
-                    'DTs': {'win': 0,'total': 0},
-                    'Colossus': {'win': 0,'total': 0},
-                    'AirOracle': {'win': 0,'total': 0}
+                'total': {'win': 0, 'total': 0},
+                'StalkerProxy': {'win': 0, 'total': 0},
+                'AdeptProxy': {'win': 0, 'total': 0},
+                'OneBaseRobo': {'win': 0, 'total': 0},
+                'AdeptRushDefense': {'win': 0, 'total': 0},
+                'DTs': {'win': 0, 'total': 0},
+                'Colossus': {'win': 0, 'total': 0},
+                'AirOracle': {'win': 0, 'total': 0}
             }
-        # update scoreboard
-        self.enemy_info_dict['scoreboard'][self.ai.starting_strategy]['total'] += 1
-        general_stats[self.ai.starting_strategy]['total'] += 1
-        general_stats['total']['total'] += 1
-        if score:
-            self.enemy_info_dict['scoreboard'][self.ai.starting_strategy]['win'] += 1
-            general_stats[self.ai.starting_strategy]['win'] += 1
-            general_stats['total']['win'] += 1
+        return general_stats
 
-        self.enemy_info_dict['last_game']['strategy'] = self.ai.starting_strategy
-        self.enemy_info_dict['last_game']['result'] = score
-
-        with open(self.opponent_file_path,'w+') as file:
-            json.dump(self.enemy_info_dict, file)
-
-        with open(general_stats_path,'w+') as file:
+    def save_general_stats_dict(self, general_stats):
+        with open(self.general_stats_filepath, 'w+') as file:
             json.dump(general_stats, file)

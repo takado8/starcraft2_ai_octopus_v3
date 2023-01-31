@@ -9,7 +9,7 @@ from sc2.position import Point2, Point3
 from bot.building_spot_validator import BuildingSpotValidator
 from typing import Optional, Union
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
-from bot.enemy_data import EnemyInfo
+from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
@@ -44,7 +44,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy = None
         self.coords = None
         self.strategy_manager: StrategyManager = None
-        self.enemy_info: EnemyInfo = None
+        self.enemy_info: EnemyData = None
         self.starting_strategy = None
         self.iteration = -2
         self.enemy_main_base_ramp = None
@@ -72,7 +72,7 @@ class OctopusV3(sc2.BotAI):
             current_time = now.strftime("%Y-%m-%d %H:%M:%S")
             print(current_time)
             print('getting enemy info...')
-            self.enemy_info = EnemyInfo(self)
+            self.enemy_info = EnemyData(self)
             self.strategy_manager = StrategyManager(self.enemy_info)
 
             strategy_name = await self.enemy_info.pre_analysis()
