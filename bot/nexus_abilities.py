@@ -25,11 +25,12 @@ class Chronobooster:
             nexuses = self.ai.structures().filter(
                 lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50).sorted(key=lambda x:
                                                                                             x.energy)
-            if nexuses and nexuses.amount > 1:
-                nexuses.pop(0)
-            elif self.ai.structures(unit.SHIELDBATTERY).amount > 0:
+            if not nexuses:
                 return
-            # starting_nexus = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location.position)
+            if nexuses.amount > 1:
+                nexuses.pop(0)
+            elif self.ai.structures(unit.SHIELDBATTERY).amount > 0 and nexuses.first.energy < 100:
+                return
             i = 0
             for nexus in nexuses:
                 # if nexus != starting_nexus and nexus.energy < 100:
@@ -96,9 +97,11 @@ class Chronobooster:
             nexuses = self.ai.structures().filter(
                 lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50).sorted(key=lambda x:
                                                                                             x.energy)
-            if nexuses and nexuses.amount > 1:
+            if not nexuses:
+                return
+            if nexuses.amount > 1:
                 nexuses.pop(0)
-            elif self.ai.structures(unit.SHIELDBATTERY).amount > 0:
+            elif self.ai.structures(unit.SHIELDBATTERY).amount > 0 and nexuses.first.energy < 100:
                 return
             i = 0
             for nexus in nexuses:
@@ -113,8 +116,11 @@ class Chronobooster:
                             # print('ability id: {}'.format(abil_id))
                             if abil_id in ABILITIES_TIME:
                                 time = ABILITIES_TIME[abil_id]
-                            elif abil_id == ability.GATEWAYTRAIN_ZEALOT:
+                            elif abil_id in {ability.GATEWAYTRAIN_ZEALOT, ability.GATEWAYTRAIN_STALKER,
+                                             ability.TRAIN_ADEPT, ability.GATEWAYTRAIN_SENTRY}:
                                 time = 800
+                            elif abil_id in {ability.MORPH_GATEWAY, ability.MORPH_WARPGATE}:
+                                continue
                             elif abil_id == ability.RESEARCH_PROTOSSGROUNDWEAPONS:
                                 if upgrade.PROTOSSGROUNDWEAPONSLEVEL1 not in self.ai.state.upgrades:
                                     time = 129
@@ -218,18 +224,28 @@ class ShieldOvercharge:
     async def shield_overcharge(self):
         en = self.ai.enemy_units()
         if en.exists and en.closer_than(15, self.ai.defend_position).amount > (5 if self.ai.time > 460 else 2):
+            print("enemy close to defend position")
             nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
             if nexuses:
                 nexus = nexuses.first
             else:
+                print('no nexus with energy to cast overcharge')
                 return
 
-            batteries = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(10, nexuses.closest_to(self.ai.defend_position)) \
+            batteries = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(15, nexuses.closest_to(self.ai.defend_position)) \
                 .sorted(lambda x: x.health, reverse=True)
+            if not batteries:
+                print("no batteries in range")
             if batteries and nexus and self.ai.army().filter(lambda x: x.distance_to(batteries[0]) <= 6
                                                                      and x.shield_percentage < 0.6).exists:
+                print('want to cast overcharge...')
                 batteries = batteries[0]
                 abilities = await self.ai.get_available_abilities(nexus)
                 # print('nexus abilities: {}'.format(abilities))
                 if ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE in abilities:
                     nexus(ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE, batteries)
+                    print('overcharge casted.')
+                else:
+                    print('no overcharge in abilities.')
+            else:
+                print('no units to cast overcharge for.')

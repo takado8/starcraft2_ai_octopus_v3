@@ -1,5 +1,3 @@
-# from sc2.constants import PROTOSS_TECH_REQUIREMENT
-from sc2.constants import PROTOSS_TECH_REQUIREMENT
 from sc2.unit import UnitTypeId
 from bot.constants import BUILDING_OF_ORIGIN_DICT
 from bot.trainers import WarpgateTrainer
@@ -14,12 +12,12 @@ class Trainer:
 
     async def train(self):
         # print('\n\ntraining queue: ')
-        print(self.training_queue)
+        # print(self.training_queue)
 
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
                 or self.ai.is_build_in_progress() or self.ai.army_priority or (self.ai.minerals > 550
                                                                                and self.ai.vespene > 250)):
-            print("training")
+            # print("training")
             i = 0
             buildings = None
             unit_id = None
@@ -30,7 +28,9 @@ class Trainer:
                     unit_id = None
                     continue
                 building_id = BUILDING_OF_ORIGIN_DICT[unit_id]
-                buildings = self.ai.structures(building_id).ready.idle
+
+                buildings = self.ai.structures({building_id, UnitTypeId.WARPGATE} if building_id == UnitTypeId.GATEWAY
+                                               else building_id).ready.idle
                 if not buildings.exists:
                     unit_id = None
                     continue
@@ -46,7 +46,7 @@ class Trainer:
 
             if buildings and unit_id:
                 building = buildings.random
-                print('building: {}, unit: {}'.format(building.type_id, unit_id))
+                # print('building: {}, unit: {}'.format(building.type_id, unit_id))
                 if building.type_id == UnitTypeId.WARPGATE:
                     await self.warp_gate_trainer.standard(building, unit_id)
                 else:
@@ -61,7 +61,7 @@ class Trainer:
 
     def is_tech_requirement_met(self, unit_type):
         if self.ai.tech_requirement_progress(unit_type) < 1:
-            unit_info_id = PROTOSS_TECH_REQUIREMENT[unit_type]
-            print("cannot produce unit {} tech requirement is not met: {}".format(unit_type, unit_info_id))
+            # unit_info_id = PROTOSS_TECH_REQUIREMENT[unit_type]
+            # print("cannot produce unit {} tech requirement is not met: {}".format(unit_type, unit_info_id))
             return False
         return True

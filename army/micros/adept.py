@@ -26,9 +26,11 @@ class AdeptMicro(MicroABS):
                     lambda unit_: unit_.can_attack_ground and unit_.distance_to(adept.position) <= 9 and
                                   unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination and
                                   not unit_.is_flying)
-                if workers.amount < 3 or threats.amount > 2:
+                if workers.amount < 3 or threats.amount > 0:
                     queue = False
-                    if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept):
+                    if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept) and \
+                            adept.distance_to(self.ai.enemy_start_locations[0]) < \
+                        self.ai.start_location.position.distance_to(self.ai.enemy_start_locations[0]) * 0.4:
                         adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, adept.position)
                         queue = True
                     if threats.exists:

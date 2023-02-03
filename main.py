@@ -183,7 +183,7 @@ class OctopusV3(sc2.BotAI):
                     self.army_priority = True
             lock_spending = await self.lock_spending_condition()
             # print('army priority: {}'.format(self.army_priority))
-            if (not self.army_priority or (self.minerals > 700 and self.vespene > 200)) and not lock_spending:
+            if (not self.army_priority or (self.minerals > 700 and self.vespene > 350)) and not lock_spending:
                 # print('build from main.')
                 await self.strategy.build_from_queue()
         except Exception as ex:
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     for i in range(1, 11):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

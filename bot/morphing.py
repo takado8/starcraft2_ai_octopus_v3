@@ -10,7 +10,7 @@ class Morphing:
     async def morph_gates(self):
         for gateway in self.ai.structures(unit.GATEWAY).ready:
             abilities = await self.ai.get_available_abilities(gateway)
-            if AbilityId.MORPH_WARPGATE in abilities and self.ai.can_afford(AbilityId.MORPH_WARPGATE):
+            if AbilityId.MORPH_WARPGATE in abilities:
                 gateway(AbilityId.MORPH_WARPGATE)
 
     async def morph_Archons(self):

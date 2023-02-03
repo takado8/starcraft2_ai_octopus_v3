@@ -25,11 +25,11 @@ class BuildQueues:
                      unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     ZERG_RUSH_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.SHIELDBATTERY, 6,
-                     unit.GATEWAY, 8, unit.GATEWAY, 12, unit.TWILIGHTCOUNCIL, 16, unit.NEXUS, unit.TEMPLARARCHIVE,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, 30, unit.DARKSHRINE, unit.FORGE,
-                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 40, unit.FORGE,
+                     unit.GATEWAY, unit.GATEWAY, 12, unit.GATEWAY, 24, unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                     unit.TEMPLARARCHIVE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, 40, unit.FORGE, unit.GATEWAY,
+                     unit.GATEWAY, unit.NEXUS, unit.GATEWAY, 50, unit.FORGE,
                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSBAY,
                      unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,

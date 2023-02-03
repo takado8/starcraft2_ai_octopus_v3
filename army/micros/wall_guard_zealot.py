@@ -13,13 +13,16 @@ class WallGuardZealotMicro(MicroABS):
         units_in_position = 0
         attacking_friends = None
         division_position = None
-        if self.ai.time < 400:
+        if self.ai.time < 480:
             location = self.ai.main_base_ramp.protoss_wall_warpin
             for zealot in zealots:
                 if not any([zealot.distance_to(location) < 1 for zealot in zealots]):
                     zealot.move(location)
                 if self.ai.enemy_units().closer_than(10, location):
                     zealot.hold_position(queue=True)
+                elif self.ai.units().closer_than(3, location) and zealot.is_using_ability(ability.HOLDPOSITION):
+                    zealot.stop()
+
         else:
             for zealot in zealots:
                 if enemy.exists:

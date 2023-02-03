@@ -35,38 +35,40 @@ class ZergRushDefense(StrategyABS):
         wall_guard_zealot_micro = WallGuardZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
         archon_micro = ArchonMicro(ai)
-        # disruptor_micro = DisruptorMicro(ai)
-        # colossus_micro = ColossusMicro(ai)
-        dt_micro = DarkTemplarMicro(ai)
-        # self.sentry_micro = SentryMicro(ai)
+        disruptor_micro = DisruptorMicro(ai)
+        colossus_micro = ColossusMicro(ai)
+        # dt_micro = DarkTemplarMicro(ai)
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 3}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=400)
         self.army.create_division('zealots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1))
         self.army.create_division('zealots2', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.1))
 
-        self.army.create_division('adepts2', ADEPT_x5, [adept_micro], Movements(ai, 0.2),lifetime=-300)
-        self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2),lifetime=-300)
+        self.army.create_division('adepts2', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
 
         # self.army.create_division('dt', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         # self.army.create_division('dt', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         # self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2))
-        self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2),lifetime=-600)
+        # self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
+        # self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
+        # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
 
         # self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
         # self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
 
-        # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5), lifetime=-260)
-        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5), lifetime=-560)
+        self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
+        self.army.create_division('stalkers4', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
 
-        self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-460)
-        self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-460)
-        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-460)
-        # self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-720)
-        # self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-720)
+        self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
+        self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
+        # self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
+        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
+        # self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-420)
+        # self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-420)
 
         build_queue = BuildQueues.ZERG_RUSH_DEFENSE
         upper_wall = UpperWall(ai)
@@ -83,7 +85,7 @@ class ZergRushDefense(StrategyABS):
 
 
     def handle_workers(self):
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=6)
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=4)
         self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
@@ -95,7 +97,7 @@ class ZergRushDefense(StrategyABS):
         await self.battery_builder.build_batteries()
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=6)
+        self.assimilator_builder.standard(minerals_to_gas_ratio=5)
 
 
     # =======================================================  Upgraders
