@@ -11,13 +11,6 @@ from typing import Optional, Union
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
-from strategy.adept_proxy import AdeptProxy
-from strategy.adept_rush_defense import AdeptRushDefense
-from strategy.air_oracle import AirOracle
-from strategy.colossus import Colossus
-from strategy.dts import DTs
-from strategy.one_base_robo import OneBaseRobo
-from strategy.stalker_proxy import StalkerProxy
 
 
 class OctopusV3(sc2.BotAI):
@@ -44,7 +37,7 @@ class OctopusV3(sc2.BotAI):
         self.strategy = None
         self.coords = None
         self.strategy_manager: StrategyManager = None
-        self.enemy_info: EnemyData = None
+        self.enemy_data: EnemyData = None
         self.starting_strategy = None
         self.iteration = -2
         self.enemy_main_base_ramp = None
@@ -71,27 +64,19 @@ class OctopusV3(sc2.BotAI):
             now = datetime.now()
             current_time = now.strftime("%Y-%m-%d %H:%M:%S")
             print(current_time)
-            print('getting enemy info...')
-            self.enemy_info = EnemyData(self)
-            self.strategy_manager = StrategyManager(self.enemy_info)
+            print('getting enemy data...')
+            self.enemy_data = EnemyData(self)
+            self.strategy_manager = StrategyManager(self.enemy_data)
 
-            strategy_name = await self.enemy_info.pre_analysis()
-            print('getting enemy info done.')
-            if not strategy_name:
-                print('enemy is None. default strategy')
-                strategy_name = 'StalkerProxy'
-            print('setting strategy: ' + str(strategy_name))
-            self.starting_strategy = strategy_name
-            self.set_strategy(strategy_name)
+            strategy = await self.strategy_manager.choose_get_strategy()
+            self.strategy = strategy(self)
+            print('getting enemy data done.')
+            print('setting strategy: ' + str(self.strategy.name))
+            self.starting_strategy = self.strategy.name
             map_name = str(self.game_info.map_name)
             print('map_name: ' + map_name)
             print('start location: ' + str(self.start_location.position))
-            # if map_name in coords and self.start_location.position in coords[map_name]:
-            #     self.coords = coords[map_name][self.start_location.position]
-            #     print('getting coords successful.')
-            # else:
-            #     print('getting coords failed')
-            #     # await self.chat_send('getting coords failed')
+
             for worker in self.workers:
                 worker.stop()
 
@@ -113,7 +98,7 @@ class OctopusV3(sc2.BotAI):
             else:
                 score = 0
             # plot(self.times,self.y1,self.y2)
-            self.enemy_info.post_analysis(score)
+            self.strategy_manager.update_and_save_enemy_data(score)
             print('done.')
         except Exception as ex:
             try:
@@ -153,6 +138,7 @@ class OctopusV3(sc2.BotAI):
             await self.strategy.nexus_abilities()
         except Exception as ex:
             await self.chat_send('Error 04')
+            raise ex
             print(ex)
         try:
             await self.strategy.build_pylons()
@@ -265,11 +251,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -278,7 +264,7 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.CheatMoney, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

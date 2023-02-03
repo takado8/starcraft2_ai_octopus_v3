@@ -1,3 +1,4 @@
+from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle import OracleMicro
@@ -11,6 +12,7 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
+from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
 from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
 
@@ -33,8 +35,9 @@ class AirOracle(StrategyABS):
         self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai))
-        self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai))
+        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
+        self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
