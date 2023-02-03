@@ -12,7 +12,7 @@ from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
-from builders.special_building_locations import UpperWall
+from builders.special_building_locations import UpperWall, UpperWallGates
 from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -23,9 +23,9 @@ from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTR
 from sc2.unit import UnitTypeId as unit
 
 
-class ZergRushDefense(StrategyABS):
+class ZealotRushDefense(StrategyABS):
     def __init__(self, ai):
-        super().__init__(type='defense', name='ZergRushDefense', ai=ai)
+        super().__init__(type='defense', name='ZealotRushDefense', ai=ai)
 
         adept_micro = AdeptMicro(ai)
         stalker_micro = StalkerMicro(ai)
@@ -50,13 +50,13 @@ class ZergRushDefense(StrategyABS):
         # self.army.create_division('dt', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         # self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2))
-        # self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        # self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
+        self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
 
-        # self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
-        # self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
+        self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
+        self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
 
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
         self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
@@ -65,13 +65,13 @@ class ZergRushDefense(StrategyABS):
 
         self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
         self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
-        # self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
-        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
-        # self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-420)
-        # self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-420)
+        self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
+        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
+        self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-420)
+        self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-420)
 
-        build_queue = BuildQueues.ZERG_RUSH_DEFENSE
-        upper_wall = UpperWall(ai)
+        build_queue = BuildQueues.ZEALOT_RUSH_DEFENSE
+        upper_wall = UpperWallGates(ai)
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
                                special_building_locations=upper_wall.locations_dict)
 

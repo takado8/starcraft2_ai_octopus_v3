@@ -6,7 +6,7 @@ from strategy.colossus import Colossus
 from strategy.dts import DTs
 from strategy.one_base_robo import OneBaseRobo
 from strategy.stalker_proxy import StalkerProxy
-from strategy.zerg_rush_defense import ZergRushDefense
+from strategy.zealot_rush_defense import ZealotRushDefense
 
 
 class StrategyManager:
@@ -15,16 +15,15 @@ class StrategyManager:
         'AdeptProxy': AdeptProxy,
         'AdeptRushDefense': AdeptRushDefense,
         'OneBaseRobo': OneBaseRobo,
-        'ZergRushDefense': ZergRushDefense,
+        'ZealotRushDefense': ZealotRushDefense,
         'DTs': DTs,
         'Colossus': Colossus,
         'AirOracle': AirOracle
-
     }
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = ZealotRushDefense
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

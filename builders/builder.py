@@ -44,13 +44,14 @@ class Builder:
                         all_building_types = None
                         if building == unit.GATEWAY:
                             all_building_types = {unit.GATEWAY, unit.WARPGATE}
-                        location = self.special_building_locations[building]
-                        if not self.ai.structures(all_building_types if all_building_types else building)\
-                                .closer_than(1, location).exists:
-                            await self.ai.build(building, near=location,
-                                            placement_step=1, max_distance=1,
-                                            random_alternative=False)
-                            return
+                        locations = self.special_building_locations[building]
+                        for location in locations:
+                            if not self.ai.structures(all_building_types if all_building_types else building)\
+                                    .closer_than(1, location).exists:
+                                await self.ai.build(building, near=location,
+                                                placement_step=1, max_distance=1,
+                                                random_alternative=False)
+                                return
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
