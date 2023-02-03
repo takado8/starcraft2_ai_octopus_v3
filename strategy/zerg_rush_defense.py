@@ -125,7 +125,7 @@ class ZergRushDefense(StrategyABS):
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(17 if self.ai.time < 480 else 40)
+        return self.condition_retreat.army_supply_less_than(24 if self.ai.time < 480 else 40)
 
 
     def counter_attack_condition(self):

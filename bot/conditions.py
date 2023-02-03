@@ -43,7 +43,7 @@ class ConditionCounterAttack:
 
     def counter_attack(self):
         en = self.ai.enemy_units()
-        return en.exists and en.closer_than(35, self.ai.defend_position).amount > 5
+        return en.exists and en.closer_than(18, self.ai.defend_position).amount > 5
 
 
 class ConditionRetreat:

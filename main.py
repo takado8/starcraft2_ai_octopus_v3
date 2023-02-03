@@ -139,7 +139,6 @@ class OctopusV3(sc2.BotAI):
         except Exception as ex:
             await self.chat_send('Error 04')
             raise ex
-            print(ex)
         try:
             await self.strategy.build_pylons()
         except Exception as ex:
@@ -291,7 +290,7 @@ if __name__ == '__main__':
     for i in range(1, 11):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

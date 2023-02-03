@@ -224,28 +224,28 @@ class ShieldOvercharge:
     async def shield_overcharge(self):
         en = self.ai.enemy_units()
         if en.exists and en.closer_than(15, self.ai.defend_position).amount > (5 if self.ai.time > 460 else 2):
-            print("enemy close to defend position")
+            # print("enemy close to defend position")
             nexuses = self.ai.structures().filter(lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50)
             if nexuses:
                 nexus = nexuses.first
             else:
-                print('no nexus with energy to cast overcharge')
+                # print('no nexus with energy to cast overcharge')
                 return
 
             batteries = self.ai.structures(unit.SHIELDBATTERY).ready.closer_than(15, nexuses.closest_to(self.ai.defend_position)) \
                 .sorted(lambda x: x.health, reverse=True)
-            if not batteries:
-                print("no batteries in range")
+            # if not batteries:
+            #     print("no batteries in range")
             if batteries and nexus and self.ai.army().filter(lambda x: x.distance_to(batteries[0]) <= 6
                                                                      and x.shield_percentage < 0.6).exists:
-                print('want to cast overcharge...')
+                # print('want to cast overcharge...')
                 batteries = batteries[0]
                 abilities = await self.ai.get_available_abilities(nexus)
                 # print('nexus abilities: {}'.format(abilities))
                 if ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE in abilities:
                     nexus(ability.BATTERYOVERCHARGE_BATTERYOVERCHARGE, batteries)
-                    print('overcharge casted.')
-                else:
-                    print('no overcharge in abilities.')
-            else:
-                print('no units to cast overcharge for.')
+                    # print('overcharge casted.')
+                # else:
+                #     print('no overcharge in abilities.')
+            # else:
+            #     print('no units to cast overcharge for.')
