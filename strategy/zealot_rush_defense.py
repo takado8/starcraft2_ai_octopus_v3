@@ -144,3 +144,4 @@ class ZealotRushDefense(StrategyABS):
     async def morphing(self):
         await self.morphing_.morph_gates()
         await self.morphing_.morph_Archons()
+        await self.morphing_.set_wall_gates_resp_inside_base()

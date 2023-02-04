@@ -25,7 +25,7 @@ class BuildQueues:
                      unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     ZEALOT_RUSH_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 4, unit.SHIELDBATTERY, 6,
-                           unit.GATEWAY, unit.GATEWAY, 12, unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                           unit.GATEWAY, unit.GATEWAY, 8, unit.NEXUS, unit.TWILIGHTCOUNCIL,
                            unit.TEMPLARARCHIVE, unit.GATEWAY, unit.NEXUS, 20, unit.FORGE, unit.GATEWAY,
                            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, 30, unit.FORGE,
                            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,

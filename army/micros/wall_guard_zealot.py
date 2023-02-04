@@ -18,8 +18,8 @@ class WallGuardZealotMicro(MicroABS):
             for zealot in zealots:
                 if not any([zealot.distance_to(location) < 1 for zealot in zealots]):
                     zealot.move(location)
-                if self.ai.enemy_units().closer_than(10, location):
-                    zealot.hold_position(queue=True)
+                if self.ai.enemy_units().closer_than(10, location) and zealot.distance_to(location) < 1:
+                    zealot.hold_position(queue=False)
                 elif self.ai.units().closer_than(3, location) and zealot.is_using_ability(ability.HOLDPOSITION):
                     zealot.stop()
 

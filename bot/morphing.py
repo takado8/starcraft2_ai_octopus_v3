@@ -66,17 +66,7 @@ class Morphing:
                         actions=[sc_pb.Action(action_raw=action)]
                     ))
 
-    #
-    # def find_placement_for_unit(self, position):
-    #     i = 3
-    #     while not self.ai.in_pathing_grid(position) and i < 6:
-    #         position = position.random_on_distance(i)
-    #         i += 1
-    #         j = 1
-    #         while not self.ai.in_pathing_grid(position) and j < 5:
-    #             k = 0
-    #             while not self.ai.in_pathing_grid(position) and k < 12:
-    #                 position = position.random_on_distance(j * 2)
-    #                 k+=1
-    #             j += 1
-    #     return position if self.ai.in_pathing_grid(position) else None
+    async def set_wall_gates_resp_inside_base(self):
+        gates = self.ai.structures(unit.GATEWAY).closer_than(4, self.ai.main_base_ramp.protoss_wall_buildings[0])
+        for gate in gates:
+            gate.smart(gate.position.towards(self.ai.main_base_ramp.bottom_center, -4))
