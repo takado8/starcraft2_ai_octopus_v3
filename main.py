@@ -109,8 +109,8 @@ class OctopusV3(sc2.BotAI):
 
     async def on_step(self, iteration: int):
         if self.iteration == 10:
-            await self.chat_send('{}{}'.format(self.strategy.name[0], self.strategy.name[-1]))
-
+            strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
+            await self.chat_send('{}'.format(strategy_tag))
         try:
             self.iteration = iteration
             # self.save_stats()
@@ -250,11 +250,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 

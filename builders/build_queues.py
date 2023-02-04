@@ -38,6 +38,13 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
+    SKYTOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
+                           10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
+                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
+
     ONE_BASE_ROBO = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY,
                      unit.SHIELDBATTERY, 16, unit.NEXUS,
                      unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, 32, unit.NEXUS, unit.GATEWAY, unit.FORGE,
@@ -50,6 +57,13 @@ class BuildQueues:
     COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 6,
                 unit.ROBOTICSBAY, 12, unit.GATEWAY, 20, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY,
                 unit.TEMPLARARCHIVE, unit.FORGE, unit.NEXUS, 40, unit.GATEWAY, 60,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
+                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
+                unit.GATEWAY, unit.NEXUS]
+
+    RAPID_EXPANSION = [unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.NEXUS,
+                unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                unit.TEMPLARARCHIVE, unit.FORGE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS]

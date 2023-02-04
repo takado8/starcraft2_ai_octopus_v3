@@ -5,9 +5,10 @@ class BatteryBuilder:
     def __init__(self, ai):
         self.ai = ai
 
-    async def build_batteries(self):
+    async def build_batteries(self, when_minerals_more_than=None):
         nexuses = self.ai.structures(unit.NEXUS).ready
-        if nexuses.amount > 1 and self.ai.minerals > 1000:
+        if nexuses.amount > 1 and self.ai.minerals > 1000 if when_minerals_more_than is None\
+                else when_minerals_more_than:
             start_nexus = nexuses.closest_to(self.ai.start_location.position)
             nexuses.remove(start_nexus)
             for nexus in nexuses:
