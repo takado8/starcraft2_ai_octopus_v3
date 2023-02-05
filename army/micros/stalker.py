@@ -34,50 +34,60 @@ class StalkerMicro(MicroABS):
         for stalker in stalkers:
             if enemy.exists:
                 threats = enemy.filter(
-                    lambda unit_: ((unit_.can_attack_ground and unit_.distance_to(stalker.position) <= dist and
-                                  unit_.type_id not in self.ai.units_to_ignore) or unit_.type_id in priority_ids)
-                                  and not unit_.is_hallucination)
+                    lambda unit_: (unit_.can_attack_ground or unit_.type_id in priority_ids) and
+                                  unit_.distance_to(stalker.position) < dist and
+                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
                 if self.ai.attack:
-                    threats.extend(self.ai.enemy_structures().filter(lambda _x: (_x.can_attack_ground or _x.type_id == unit.BUNKER)
-                                   and _x.distance_to(stalker) <= dist))
-                    enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
-                    wall_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in {unit.SUPPLYDEPOT,
-                                                                                               unit.BARRACKS,
-                                                                                               unit.BARRACKSREACTOR} and x.distance_to(
-                        enemy_main_ramp) < 5 and
-                                                                                 x.distance_to(stalker) < dist)
-                    workers = enemy.filter(lambda x: x.type_id == unit.SCV)
+                    threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground
+                                                                               and x.distance_to(stalker) < dist))
+                    if self.ai.enemy_race == Race.Terran:
+                        # deal with terran bunkers
+                        bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
+                        if bunkers and not threats or not any([t.target_in_range(stalker) for t in threats]):
+                            workers_near_bunkers = enemy.filter(lambda x: x.type_id == unit.SCV and
+                                                                  any([x.distance_to(building) < 3 for building in
+                                                                       bunkers]))
+                            if workers_near_bunkers:
+                                threats = workers_near_bunkers
+                            else:
+                                threats = bunkers
+                        # deal with terran ramp
+                        if not threats or threats.exists and not threats.in_attack_range_of(stalker):
+                            enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
 
-                    if wall_buildings:
-                        workers_near_wall = workers.filter(lambda x:
-                                                           any([x.distance_to(building) < 3 for building in
-                                                                wall_buildings]))
-                        threats.extend(workers_near_wall)
-                        threats.extend(wall_buildings)
-
-                    bunkers = enemy().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
-                    if bunkers:
-                        workers_near_bunkers = workers.filter(lambda x:
-                                                              any([x.distance_to(building) < 3 for building in
-                                                                   bunkers]))
-                        threats.extend(workers_near_bunkers)
+                            wall_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in {unit.SUPPLYDEPOT,
+                                    unit.BARRACKS,unit.BARRACKSREACTOR} and x.distance_to(enemy_main_ramp) < 5 and
+                                                                                         x.distance_to(stalker) < dist)
+                            if wall_buildings:
+                                workers_near_wall = enemy.filter(lambda x: x.type_id == unit.SCV and
+                                                                   any([x.distance_to(building) < 3 for building in
+                                                                        wall_buildings]))
+                                if workers_near_wall:
+                                    threats = workers_near_wall
+                                else:
+                                    threats = wall_buildings
             else:
                 threats = None
             if threats:
-                close_threats = threats.closer_than(4, stalker)
-                if close_threats.amount > 0:
-                    threats = close_threats
-                closest_enemy = threats.closest_to(stalker)
-                priority = threats.filter(lambda x1: x1.type_id in priority_ids)
-                if priority.exists:
-                    targets = priority.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, stalker)
-                else:
-                    targets = threats.filter(lambda x: x.is_armored)
-                    if not targets.exists:
-                        targets = threats
-                    targets = targets.sorted(lambda x1: x1.health + x1.shield)
-                    target = self.select_target(targets, stalker)
+                closest_enemy = None
+                target = None
+                for i in range(2, dist + 4, 2):
+                    close_threats = threats.closer_than(i, stalker)
+                    if not close_threats:
+                        continue
+                    closest_enemy = close_threats.closest_to(stalker)
+                    priority = close_threats.filter(lambda x1: x1.type_id in priority_ids)
+                    if priority.exists:
+                        targets = priority.sorted(lambda x1: x1.health + x1.shield)
+                        target = self.select_target(targets, stalker)
+                    else:
+                        targets = close_threats.filter(lambda x: x.is_armored)
+                        if not targets.exists:
+                            targets = close_threats
+                        targets = targets.sorted(lambda x1: x1.health + x1.shield)
+                        target = self.select_target(targets, stalker)
+                    if target:
+                        break
 
                 if stalker.shield_percentage < 0.4:
                     if stalker.health_percentage < 0.35:
