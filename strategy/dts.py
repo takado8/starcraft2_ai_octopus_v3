@@ -41,11 +41,11 @@ class DTs(StrategyABS):
         self.army.create_division('dts', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=300)
-        main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.ARCHON: 5,
+        main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.ARCHON: 8,
                                    unit.DISRUPTOR: 4, unit.COLOSSUS: 2}
         # self.sentry_micro = SentryMicro(ai)
         # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('stalkers3', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
+        self.army.create_division('adepts', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
 
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
                                                                      immortal_micro, archon_micro, disruptor_micro],

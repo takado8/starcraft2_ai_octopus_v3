@@ -72,7 +72,7 @@ class BuildQueues:
            unit.DARKSHRINE, 4,
            unit.NEXUS, 16, unit.ROBOTICSFACILITY, unit.TEMPLARARCHIVE, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
            unit.FORGE,
-           unit.GATEWAY, unit.NEXUS, 50, unit.GATEWAY, unit.ROBOTICSFACILITY, 60, unit.GATEWAY,
+           unit.GATEWAY, unit.NEXUS, 50, unit.GATEWAY, unit.ROBOTICSBAY, 60, unit.GATEWAY,
            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
            unit.GATEWAY, unit.NEXUS]
