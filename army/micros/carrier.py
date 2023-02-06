@@ -13,7 +13,7 @@ class CarrierMicro(MicroABS):
         units_in_position = 0
         attacking_friends = None
         division_position = None
-        dist = 10
+        dist = 12
         for carrier in carriers:
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
@@ -27,15 +27,19 @@ class CarrierMicro(MicroABS):
                                                                 (z.can_attack_air or z.type_id == unit.BUNKER)))
             else:
                 threats = None
+
             if threats:
-                if threats.closer_than(8, carrier.position).exists:
-                    carrier.move(carrier.position.towards(threats.closest_to(carrier), -3))
+                closest = threats.closest_to(carrier)
+                if threats.closer_than(9, carrier.position).amount > 2:
+                    carrier.move(carrier.position.towards(closest.position, -5))
+                    continue
+                if closest.distance_to(carrier) < 12 and carrier.is_moving:
                     continue
                 close_threats = threats.closer_than(7.5, carrier)
                 if close_threats.exists:
                     threats = close_threats
                 priority = threats.filter(lambda z: z.can_attack_air or z.type_id in AIR_PRIORITY_UNITS).sorted(
-                    lambda z: z.health + z.shield,reverse=False)
+                    lambda z: (z.shield_max + z.health_max,  1 - z.shield_health_percentage), reverse=True)
                 if priority.exists:
                     air_priority = priority.filter(lambda z: z.type_id in AIR_PRIORITY_UNITS)
                     if air_priority.exists:
@@ -43,7 +47,8 @@ class CarrierMicro(MicroABS):
                     else:
                         target2 = priority[0]
                 else:
-                    target2 = threats.sorted(lambda z: z.health + z.shield)[0]
+                    target2 = threats.sorted(
+                    lambda z: (z.shield_max + z.health_max,  1 - z.shield_health_percentage), reverse=True)[0]
                 if target2 is not None:
                     # queue = False
                     # if threats.closer_than(8, carrier).exists:

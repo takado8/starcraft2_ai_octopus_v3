@@ -24,9 +24,10 @@ class SkyToss(StrategyABS):
         voidray_micro = VoidrayMicro(ai)
         carrier_micro = CarrierMicro(ai)
         tempest_micro = TempestMicro(ai)
-        # zealot_micro = ZealotMicro(ai)
+        zealot_micro = ZealotMicro(ai)
 
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('zealots', {unit.ZEALOT: 7}, [zealot_micro], Movements(ai), lifetime=-380)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
@@ -54,7 +55,7 @@ class SkyToss(StrategyABS):
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
-        await self.battery_builder.build_batteries(when_minerals_more_than=600)
+        await self.battery_builder.build_batteries(when_minerals_more_than=800)
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
@@ -66,7 +67,7 @@ class SkyToss(StrategyABS):
     async def do_upgrades(self):
         self.cybernetics_upgrader.air_dmg()
         self.forge_upgrader.shield()
-        # await self.twilight_upgrader.charge()
+        await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
 
