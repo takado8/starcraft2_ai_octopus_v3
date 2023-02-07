@@ -3,6 +3,7 @@ from army.micros.carrier import CarrierMicro
 from army.micros.observer import ObserverMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
+from army.micros.wall_guard_zealot import WallGuardZealotMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
@@ -27,6 +28,7 @@ class SkyToss(StrategyABS):
         zealot_micro = ZealotMicro(ai)
 
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [WallGuardZealotMicro(ai)], Movements(ai))
         self.army.create_division('zealots', {unit.ZEALOT: 7}, [zealot_micro], Movements(ai), lifetime=-380)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
@@ -55,7 +57,7 @@ class SkyToss(StrategyABS):
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
-        await self.battery_builder.build_batteries(when_minerals_more_than=800)
+        await self.battery_builder.build_batteries(when_minerals_more_than=700)
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
