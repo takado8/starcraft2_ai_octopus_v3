@@ -3,6 +3,7 @@ from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
 from army.micros.sentry import SentryMicro
 from army.micros.warpprism import WarpPrismMicro
+from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -12,7 +13,7 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from army.micros.stalker import StalkerMicro
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
-from army.divisions import STALKER_x10
+from army.divisions import STALKER_x10, ZEALOT_x10
 from sc2.unit import UnitTypeId as unit
 
 
@@ -21,15 +22,17 @@ class StalkerProxy(StrategyABS):
         super().__init__(type='rush', name='StalkerProxy', ai=ai)
 
         stalker_micro = StalkerMicro(ai)
+        self.army.create_division('zealots', ZEALOT_x10, [ZealotMicro(ai)], Movements(ai, 0.1), lifetime=-420)
         self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
         self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
         # self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
         # self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai))
         # self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
-        main_army = {unit.IMMORTAL: 4, unit.ARCHON: 6, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        main_army = {unit.IMMORTAL: 7, unit.ARCHON: 8, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
         self.army.create_division('main_army', main_army, [stalker_micro, ArchonMicro(ai), SentryMicro(ai),
                                                            ImmortalMicro(ai), ObserverMicro(ai), WarpPrismMicro(ai)],
                                   Movements(ai, 0.7), lifetime=-380)
+
         build_queue = BuildQueues.STALKER_RUSH
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
         self.battery_builder = BatteryBuilder(ai)
@@ -72,10 +75,10 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.total_supply_over(195)
+        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.total_supply_over(192)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(3)
+        return self.condition_retreat.army_count_less_than(3 if self.ai.time < 300 else 7)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
