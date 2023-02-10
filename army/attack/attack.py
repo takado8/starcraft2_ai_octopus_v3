@@ -16,9 +16,9 @@ class Attack:
         if not enemy:
             enemy = self.ai.enemy_structures()
         if self.enemy_main_base_down or (
-                self.ai.army.closer_than(15, self.ai.enemy_start_locations[0]).amount > 7 and
-                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(15,
-                                                                    self.ai.enemy_start_locations[0]).amount < 4)):
+                self.ai.army.closer_than(17, self.ai.enemy_start_locations[0]).amount > 7 and
+                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(20,
+                                                                    self.ai.enemy_start_locations[0]).amount < 3)):
             if not self.enemy_main_base_down:
                 # await self.ai.chat_send('enemy main base down.')
                 print('enemy main base down.')
@@ -26,10 +26,11 @@ class Attack:
             enemy.extend(self.ai.enemy_structures())
 
         if enemy.exists:
-            if enemy.closer_than(50, self.ai.start_location).amount > 3:
+            if any([enemy.closer_than(20, townhall).amount > 3 for townhall in self.ai.townhalls]):
                 destination = enemy.closest_to(self.ai.start_location).position
             else:
-                destination = enemy.further_than(45, self.ai.start_location)
+                destination = enemy.further_than(self.ai.start_location.position.distance_to(
+                    self.ai.game_info.map_center), self.ai.start_location)
                 if destination:
                     destination = destination.closest_to(self.ai.start_location).position
                 # elif self.ai.enemy_structures().exists:
