@@ -1,6 +1,6 @@
 from sc2.position import Point2
 from sc2.unit import UnitTypeId as unit
-from bot.constants import AOE_IDS
+from bot.constants import GROUND_AOE_IDS, AIR_AOE_IDS
 import random
 
 
@@ -90,11 +90,15 @@ class Defense:
         purification_novas = self.ai.enemy_units(unit.DISRUPTORPHASED)
         purification_novas.extend(self.ai.units(unit.DISRUPTORPHASED))
         for man in self.ai.army:
-            if purification_novas.exists and purification_novas.closer_than(3, man).exists:
-                man.move(man.position.towards(purification_novas.closest_to(man), -4))
-                continue
+            if man.is_flying:
+                aoe_ids = AIR_AOE_IDS
+            else:
+                if purification_novas.exists and purification_novas.closer_than(3, man).exists:
+                    man.move(man.position.towards(purification_novas.closest_to(man), -4))
+                    continue
+                aoe_ids = GROUND_AOE_IDS
             for eff in self.ai.state.effects:
-                if eff.id in AOE_IDS:
+                if eff.id in aoe_ids:
                     positions = eff.positions
                     for position in positions:
                         if man.distance_to(position) < eff.radius + 2:
