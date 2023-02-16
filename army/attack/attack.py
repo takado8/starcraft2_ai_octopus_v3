@@ -31,7 +31,7 @@ class Attack:
             else:
                 destination = enemy.further_than(self.ai.start_location.position.distance_to(
                     self.ai.game_info.map_center), self.ai.start_location)
-                if destination:
+                if destination.amount > 2 or destination.filter(lambda x: x.is_structure).exists:
                     destination = destination.closest_to(self.ai.start_location).position
                 # elif self.ai.enemy_structures().exists:
                 #     enemy = self.ai.enemy_structures()

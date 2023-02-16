@@ -30,15 +30,10 @@ class CarrierMicro(MicroABS):
 
             if threats:
                 closest = threats.closest_to(carrier)
-                in_range_of = threats.filter(lambda x: x.can_attack_air and
-                                                       x.distance_to(carrier.position) <= x.air_range + x.radius + 4)
-                if in_range_of.exists:
-                    total_dps = sum([x.air_dps for x in in_range_of])
-                    if total_dps > 50:
-                        carrier.move(carrier.position.towards(closest.position, -4))
-                        continue
-                if (in_range_of and in_range_of.closest_to(carrier).distance_to(carrier) < 12 or not in_range_of and
-                        closest.distance_to(carrier) < 12) and carrier.is_moving:
+                if threats.closer_than(9, carrier.position).amount > 2:
+                    carrier.move(carrier.position.towards(closest.position, -5))
+                    continue
+                if closest.distance_to(carrier) < 12 and carrier.is_moving:
                     continue
                 close_threats = threats.closer_than(7.5, carrier)
                 if close_threats.exists:

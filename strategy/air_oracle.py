@@ -28,6 +28,8 @@ class AirOracle(StrategyABS):
         zealot_micro = ZealotMicro(ai)
 
         # sentry_micro = SentryMicro(ai)
+        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+
         self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=240)
         self.army.create_division('oracle2', ORACLE_x1, [OracleMicro(ai)], Movements(ai), lifetime=260)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
@@ -35,7 +37,6 @@ class AirOracle(StrategyABS):
         self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
 

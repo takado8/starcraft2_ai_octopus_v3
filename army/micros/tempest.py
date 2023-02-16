@@ -6,6 +6,7 @@ from sc2.unit import UnitTypeId as unit
 class TempestMicro(MicroABS):
     def __init__(self, ai):
         super().__init__('TempestMicro', ai)
+        self.targets_dict = {}
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
@@ -14,7 +15,24 @@ class TempestMicro(MicroABS):
         attacking_friends = None
         division_position = None
         dist = 20
-        targets_dict = {}
+        enemy_tag_unit_dict = {}
+        for en in enemy:
+            enemy_tag_unit_dict[en.tag] = en
+
+        targets_to_remove = []
+        for target in self.targets_dict:
+            if target.tag in enemy_tag_unit_dict:
+                self.targets_dict[enemy_tag_unit_dict[target.tag]] = [x for x in self.targets_dict[target]]
+            targets_to_remove.append(target)
+        for target in targets_to_remove:
+            self.targets_dict.pop(target)
+
+        for target in self.targets_dict:
+            if target.health + target.shield - sum(self.targets_dict[target]) <= 0:
+                try:
+                    enemy.remove(target)
+                except:
+                    pass
         for tempest in tempests:
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
@@ -31,17 +49,32 @@ class TempestMicro(MicroABS):
             if threats:
 
                 if tempest.weapon_cooldown == 0:
-                    for target_ in targets_dict:
+                    target_selected = False
+                    for target_ in self.targets_dict:
                         if tempest.target_in_range(target_):
-                            total_dmg = sum(targets_dict[target_])
-                            if total_dmg < target_.health + target_.shield:
-                                targets_dict[target_].append(targets_dict[target_][0])
+                            total_dmg = sum(self.targets_dict[target_])
+                            target_hp = target_.health + target_.shield
+                            if target_hp - total_dmg > 0:
+                                dmg = self.targets_dict[target_][0]
+                                self.targets_dict[target_].append(dmg)
                                 tempest.attack(target_)
-                                continue
+                                if target_hp - total_dmg - dmg <= 0:
+                                    try:
+                                        enemy.remove(target_)
+                                    except:
+                                        pass
+                                target_selected = True
+                                break
+                    if target_selected:
+                        continue
                 closest = threats.closest_to(tempest.position)
-                if threats.closer_than(9, tempest.position).amount > 2:
-                    tempest.move(tempest.position.towards(closest.position, -5))
-                    continue
+                in_range_of = threats.filter(lambda x: x.can_attack_air and
+                                                       x.distance_to(tempest.position) <= x.air_range + x.radius + 4)
+                if in_range_of.exists:
+                    total_dps = sum([x.air_dps for x in in_range_of])
+                    if total_dps > 50:
+                        tempest.move(tempest.position.towards(closest.position, -4))
+                        continue
                 if closest.distance_to(tempest) < 12 and tempest.is_moving:
                     continue
 
@@ -61,9 +94,9 @@ class TempestMicro(MicroABS):
                     target = threats.sorted(
                     lambda z: (z.shield_max + z.health_max,  1 - z.shield_health_percentage), reverse=True)[0]
                 if target is not None and tempest.weapon_cooldown == 0:
-                    if target not in targets_dict:
-                        targets_dict[target] = [tempest.calculate_damage_vs_target(target)[0]]
-                    tempest.attack(target)
+                    if target not in self.targets_dict:
+                        self.targets_dict[target] = [tempest.calculate_damage_vs_target(target)[0]]
+                        tempest.attack(target)
             else:
                 if attacking_friends is None:
                     attacking_friends = division.get_attacking_units(self.ai.iteration)

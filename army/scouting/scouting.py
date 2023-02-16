@@ -96,6 +96,8 @@ class Scouting:
             for exp in self.ai.expansion_locations_list:
                 if not self.ai.structures().closer_than(7, exp).exists:
                     self.scouting_positions.append(exp)
+            if len(self.scouting_positions) < 2:
+                self.scouting_positions.extend(self.ai.expansion_locations_list)
             self.scouting_positions = sorted(self.scouting_positions,
                                                    key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
             for px in scouts.idle:
