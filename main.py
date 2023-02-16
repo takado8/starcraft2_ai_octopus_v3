@@ -12,7 +12,6 @@ from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
 import traceback
-import sys
 
 
 class OctopusV3(sc2.BotAI):
