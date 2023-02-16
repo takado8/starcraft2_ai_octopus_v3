@@ -11,6 +11,8 @@ from typing import Optional, Union
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
+import traceback
+import sys
 
 
 class OctopusV3(sc2.BotAI):
@@ -110,10 +112,10 @@ class OctopusV3(sc2.BotAI):
     async def on_step(self, iteration: int):
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
-            await self.chat_send('{}'.format(strategy_tag))
+            await self.chat_send(strategy_tag)
         try:
             self.iteration = iteration
-            # self.save_stats()
+            self.save_stats()
             self.set_game_step()
             self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
         except Exception as ex:
@@ -126,19 +128,19 @@ class OctopusV3(sc2.BotAI):
             print(ex)
         try:
             await self.strategy.army_execute()
-        except Exception as ex:
+        except:
             await self.chat_send('Error 02')
-            print(ex)
+            print(traceback.print_exc())
         try:
             self.strategy.handle_workers()
-        except Exception as ex:
+        except Exception:
             await self.chat_send('Error 03')
-            print(ex)
+            print(traceback.print_exc())
         try:
             await self.strategy.nexus_abilities()
-        except Exception as ex:
+        except Exception:
             await self.chat_send('Error 04')
-            raise ex
+            print(traceback.print_exc())
         try:
             await self.strategy.build_pylons()
         except Exception as ex:
@@ -147,14 +149,14 @@ class OctopusV3(sc2.BotAI):
         try:
             self.strategy.train_probes()
             self.strategy.build_assimilators()
-        except Exception as ex:
+        except:
             await self.chat_send('Error 06')
-            print(ex)
+            print(traceback.print_exc())
         try:
             await self.strategy.do_upgrades()
-        except Exception as ex:
+        except:
             await self.chat_send('Error 07')
-            print(ex)
+            print(traceback.print_exc())
 
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
@@ -185,9 +187,9 @@ class OctopusV3(sc2.BotAI):
             if (not self.army_priority or (self.minerals > 700 and self.vespene > 350)) and not lock_spending:
                 # print('build from main.')
                 await self.strategy.build_from_queue()
-        except Exception as ex:
+        except:
             await self.chat_send('Error 08')
-            print(ex)
+            print(traceback.print_exc())
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -213,9 +215,9 @@ class OctopusV3(sc2.BotAI):
 
     def set_game_step(self):
         if self.enemy_units().exists:
-            self._client.game_step = 4
+            self._client.game_step = 6
         else:
-            self._client.game_step = 8
+            self._client.game_step = 4
 
     def get_super_pylon(self):
         return self.spot_validator.get_super_pylon()
@@ -254,8 +256,8 @@ def botVsComputer(ai, real_time=0):
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
-    computer_builds = [AIBuild.Macro]
+    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 5)
@@ -287,7 +289,7 @@ def test(real_time=0):
 if __name__ == '__main__':
     import time
     results = []
-    for i in range(1, 11):
+    for i in range(1, 6):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
         win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
@@ -297,10 +299,10 @@ if __name__ == '__main__':
         print('killed minerals: {}\nkilled gas: {}\n\nlost minerals: {}\nlost gas {}\n'.format(
             killed_minerals, killed_gas, lost_minerals, lost_gas))
 
-    avg_killed_minerals = sum([result[1] for result in results]) / len(results)
-    avg_killed_gas = sum([result[2] for result in results]) / len(results)
-    avg_lost_minerals = sum([result[3] for result in results]) / len(results)
-    avg_lost_gas = sum([result[4] for result in results]) / len(results)
+    avg_killed_minerals = sum([result[1] for result in results if result[0]]) / len(results)
+    avg_killed_gas = sum([result[2] for result in results if result[0]]) / len(results)
+    avg_lost_minerals = sum([result[3] for result in results if result[0]]) / len(results)
+    avg_lost_gas = sum([result[4] for result in results if result[0]]) / len(results)
     wins = sum([result[0] for result in results])
 
     print('\n----------------------------- results ---------------------------\n')
