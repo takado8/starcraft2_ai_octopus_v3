@@ -13,6 +13,8 @@ from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
 import traceback
 
+from data_analysis.test_bot_zerg_rush import SimpleZergBot
+
 
 class OctopusV3(sc2.BotAI):
     army_ids = ARMY_IDS
@@ -42,6 +44,7 @@ class OctopusV3(sc2.BotAI):
         self.starting_strategy = None
         self.iteration = -2
         self.enemy_main_base_ramp = None
+
 
 
     # async def on_unit_created(self, unit: Unit):
@@ -251,11 +254,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -264,7 +267,8 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Bot(race=Race.Zerg, ai=SimpleZergBot(), name='ZergRush')
+        # Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

@@ -1,3 +1,4 @@
+from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.archon import ArchonMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
@@ -40,10 +41,15 @@ class StalkerProxy(StrategyABS):
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
+        self.worker_rush_defense = WorkerRushDefense(ai)
 
     def handle_workers(self):
+        mineral_workers = self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers()
-        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        if mineral_workers:
+            self.speed_mining.execute(mineral_workers)
+        else:
+            self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):

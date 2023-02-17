@@ -1,3 +1,4 @@
+from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.observer import ObserverMicro
@@ -49,9 +50,15 @@ class AirOracle(StrategyABS):
         self.twilight_upgrader = TwilightUpgrader(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
 
+        self.worker_rush_defense = WorkerRushDefense(ai)
+
     def handle_workers(self):
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
-        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        mineral_workers = self.worker_rush_defense.worker_rush_defense()
+        self.workers_distribution.distribute_workers()
+        if mineral_workers:
+            self.speed_mining.execute(mineral_workers)
+        else:
+            self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):

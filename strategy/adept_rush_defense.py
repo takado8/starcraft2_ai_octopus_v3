@@ -1,3 +1,4 @@
+from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.archon import ArchonMicro
 from army.micros.colossus import ColossusMicro
@@ -83,9 +84,15 @@ class AdeptRushDefense(StrategyABS):
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
 
+        self.worker_rush_defense = WorkerRushDefense(ai)
+
     def handle_workers(self):
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=4)
-        self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        mineral_workers = self.worker_rush_defense.worker_rush_defense()
+        self.workers_distribution.distribute_workers(4)
+        if mineral_workers:
+            self.speed_mining.execute(mineral_workers)
+        else:
+            self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):
