@@ -3,6 +3,7 @@ from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 # from army.micros.carrier_updated import CarrierMicroUpdated
 from army.micros.observer import ObserverMicro
+from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.wall_guard_zealot import WallGuardZealotMicro
@@ -17,7 +18,7 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
-from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
+from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
 
 
 class SkyToss(StrategyABS):
@@ -35,6 +36,7 @@ class SkyToss(StrategyABS):
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-300)
         self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
