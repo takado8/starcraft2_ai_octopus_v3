@@ -6,9 +6,6 @@ class SimpleZergBot(sc2.BotAI):
     pool_exists = False
 
     async def on_step(self, iteration):
-        if iteration == 0:
-            await self.chat_send("gl hf")
-
         spawning_pool = UnitTypeId.SPAWNINGPOOL
         larva_id = UnitTypeId.LARVA
         drone = UnitTypeId.DRONE
