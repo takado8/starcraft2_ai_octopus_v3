@@ -5,6 +5,8 @@ from sc2.ids.ability_id import AbilityId as ability
 
 
 class WorkerRushDefense:
+    FIGHTING_WORKERS_PERCENTAGE = 0.7
+
     def __init__(self, ai):
         self.ai = ai
         self.fighting_probes = set()
@@ -17,7 +19,7 @@ class WorkerRushDefense:
             if not enemy_in_main_base:
                 enemy_in_main_base = enemy.closer_than(25, self.ai.start_location.position)
 
-            if enemy_in_main_base:
+            if enemy_in_main_base.amount > 2:
                 own_army = self.ai.army
                 total_hp = sum([unit.health + unit.shield for unit in own_army])
                 enemy_dps = sum([unit.ground_dps for unit in enemy_in_main_base])
@@ -49,9 +51,9 @@ class WorkerRushDefense:
                     for probe_to_remove in probes_to_remove:
                         self.fighting_probes.remove(probe_to_remove)
 
-                    if len(self.fighting_probes) < len(probes) * 0.8:
+                    if len(self.fighting_probes) < len(probes) * self.FIGHTING_WORKERS_PERCENTAGE:
                         probes = probes.sorted(lambda x: (x.shield, x.shield_health_percentage), reverse=True)
-                        missing = int(len(probes) * 0.8) - len(self.fighting_probes)
+                        missing = int(len(probes) * self.FIGHTING_WORKERS_PERCENTAGE) - len(self.fighting_probes)
                         for probe in probes[:missing]:
                             self.fighting_probes.add(probe.tag)
 

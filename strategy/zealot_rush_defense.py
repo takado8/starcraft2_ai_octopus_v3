@@ -5,6 +5,7 @@ from army.micros.colossus import ColossusMicro
 from army.micros.dark_templar import DarkTemplarMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
+from army.micros.probe import ProbeMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
 from army.micros.wall_guard_zealot import WallGuardZealotMicro
@@ -84,8 +85,10 @@ class ZealotRushDefense(StrategyABS):
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
         self.worker_rush_defense = WorkerRushDefense(ai)
+        self.probes_micro = ProbeMicro(ai)
 
     def handle_workers(self):
+        self.probes_micro.do_micro()
         mineral_workers = self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=4)
         if mineral_workers:
