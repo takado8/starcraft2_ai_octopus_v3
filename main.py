@@ -11,6 +11,7 @@ from typing import Optional, Union
 from bot.constants import ARMY_IDS, BASES_IDS, WORKERS_IDS, UNITS_TO_IGNORE
 from bot.enemy_data import EnemyData
 from bot.strategy_manager import StrategyManager
+from bot.cancel_build import cancel_damaged_build
 import traceback
 
 from data_analysis.test_bot_zerg_roach import RoachBurrowBot
@@ -192,6 +193,13 @@ class OctopusV3(sc2.BotAI):
         except:
             await self.chat_send('Error 08')
             print(traceback.print_exc())
+        try:
+            await cancel_damaged_build(self)
+        except:
+            await self.chat_send('Error 12')
+            print(traceback.print_exc())
+
+
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
@@ -267,8 +275,8 @@ def botVsComputer(ai, real_time=0):
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Bot(race=Race.Zerg, ai=RoachBurrowBot(), name='ZergRush')
-        # Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        # Bot(race=Race.Zerg, ai=RoachBurrowBot(), name='ZergRush')
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
