@@ -5,6 +5,7 @@ from strategy.air_oracle import AirOracle
 from strategy.colossus import Colossus
 from strategy.dts import DTs
 from strategy.one_base_robo import OneBaseRobo
+from strategy.oracle_defense import OracleDefense
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
@@ -22,12 +23,13 @@ class StrategyManager:
         'SkytossCarriers': SkytossCarriers,
         'DTs': DTs,
         'Colossus': Colossus,
-        'AirOracle': AirOracle
+        'AirOracle': AirOracle,
+        'OracleDefense': OracleDefense
     }
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = OracleDefense
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
