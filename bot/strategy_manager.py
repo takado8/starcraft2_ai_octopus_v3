@@ -23,8 +23,7 @@ class StrategyManager:
         'SkytossCarriers': SkytossCarriers,
         'DTs': DTs,
         'Colossus': Colossus,
-        'AirOracle': AirOracle,
-        'OracleDefense': OracleDefense
+        'AirOracle': AirOracle
     }
 
     def __init__(self, enemy_data: EnemyData):
