@@ -67,6 +67,7 @@ class Morphing:
                     ))
 
     async def set_wall_gates_resp_inside_base(self):
-        gates = self.ai.structures(unit.GATEWAY).closer_than(4, self.ai.main_base_ramp.protoss_wall_buildings[0])
+        gates = self.ai.structures().filter(lambda x: x.type_id == unit.GATEWAY and not x.is_ready
+                                  and x.distance_to(self.ai.main_base_ramp.protoss_wall_buildings[0]) < 4)
         for gate in gates:
             gate.smart(gate.position.towards(self.ai.main_base_ramp.bottom_center, -4))
