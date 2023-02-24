@@ -1,13 +1,11 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
-from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
-# from army.micros.carrier_updated import CarrierMicroUpdated
 from army.micros.observer import ObserverMicro
 from army.micros.oracle_defense import OracleDefenseMicro
+from army.micros.stalker import StalkerMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.wall_guard_zealot import WallGuardZealotMicro
-from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -16,35 +14,34 @@ from .strategyABS import StrategyABS
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
-from sc2.ids.unit_typeid import UnitTypeId as unit
-from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
-from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
+
+from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader
+from army.divisions import OBSERVER_x1, \
+    VOIDRAY_x3, TEMPEST_x5,  ORACLE_x1
+from sc2.unit import UnitTypeId as unit
+from sc2 import Race
 
 
-class OracleDefense(StrategyABS):
+class OracleDefenseUpdated(StrategyABS):
     def __init__(self, ai):
-        super().__init__(type='air', name='OracleDefense', ai=ai)
+        super().__init__(type='defend', name='OracleDefenseUpdated', ai=ai)
 
         voidray_micro = VoidrayMicro(ai)
         carrier_micro = CarrierMicro(ai)
         tempest_micro = TempestMicro(ai)
-        zealot_micro = ZealotMicro(ai)
 
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [WallGuardZealotMicro(ai)], Movements(ai))
+        self.army.create_division('stalkers', {unit.STALKER: 2}, [StalkerMicro(ai)], Movements(ai))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 3 if self.ai.enemy_race == Race.Zerg else 1},
+                                  [WallGuardZealotMicro(ai)], Movements(ai), lifetime=600)
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
+        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-300)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
-        self.army.create_division('zealots', {unit.ZEALOT: 7}, [zealot_micro], Movements(ai), lifetime=-380)
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-
+        self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
         self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        # self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-640)
-        # self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-40)
 
-        build_queue = BuildQueues.SKYTOSS
+        build_queue = BuildQueues.ORACLE_DEFENSE
         upper_wall = UpperWall(ai)
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
                                special_building_locations=upper_wall.locations_dict)
@@ -52,8 +49,9 @@ class OracleDefense(StrategyABS):
         self.shield_overcharge = ShieldOvercharge(ai)
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
-        self.twilight_upgrader = TwilightUpgrader(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
+        # self.twilight_upgrader = TwilightUpgrader(ai)
+        # self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
 
         self.worker_rush_defense = WorkerRushDefense(ai)
 
@@ -80,7 +78,8 @@ class OracleDefense(StrategyABS):
     async def do_upgrades(self):
         self.cybernetics_upgrader.air_dmg()
         self.forge_upgrader.shield()
-        await self.twilight_upgrader.charge()
+        # await self.twilight_upgrader.standard()
+        # await self.robotics_bay_upgrader.thermal_lances()
 
     # =======================================================  Trainers
 
@@ -94,7 +93,7 @@ class OracleDefense(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.air_dmg_lvl2_full_supply()
+        return self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
         return self.condition_retreat.army_supply_less_than(80)
@@ -112,4 +111,5 @@ class OracleDefense(StrategyABS):
 
     async def morphing(self):
         await self.morphing_.morph_gates()
+        await self.morphing_.morph_Archons()
         await self.morphing_.set_wall_gates_resp_inside_base()
