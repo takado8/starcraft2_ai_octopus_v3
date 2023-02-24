@@ -72,7 +72,7 @@ class TempestMicro(MicroABS):
                                                        x.distance_to(tempest.position) <= x.air_range + x.radius + 4)
                 if in_range_of.exists:
                     total_dps = sum([x.air_dps for x in in_range_of])
-                    if total_dps > 50:
+                    if total_dps > 50 or tempest.shield_percentage < 0.6:
                         tempest.move(tempest.position.towards(closest.position, -4))
                         continue
                 if closest.distance_to(tempest) < 12 and tempest.is_moving:
