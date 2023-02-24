@@ -135,8 +135,7 @@ class ConditionLockSpending:
 
     async def is_voidray_ready(self):
         return self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \
-                and self.ai.structures(unit.STARGATE).ready.idle.exists and not self.ai.units(unit.VOIDRAY).exists\
-            and (self.ai.minerals < 550 or self.ai.vespene < 100)
+            and not self.ai.structures(unit.STARGATE).ready.exists
 
     async def twilight_council_blink(self):
         if upgrade.BLINKTECH not in self.ai.state.upgrades:
