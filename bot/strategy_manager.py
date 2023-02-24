@@ -2,10 +2,8 @@ from bot.enemy_data import EnemyData
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
-from strategy.colossus import Colossus
 from strategy.dts import DTs
-from strategy.one_base_robo import OneBaseRobo
-from strategy.oracle_defense import OracleDefense
+from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
@@ -18,17 +16,16 @@ class StrategyManager:
         'AdeptProxy': AdeptProxy,
         'AdeptRushDefense': AdeptRushDefense,
         'SkyToss': SkyToss,
-        'OneBaseRobo': OneBaseRobo,
+        'OracleDefenseUpdated': OracleDefenseUpdated,
         'ZealotRushDefense': ZealotRushDefense,
         'SkytossCarriers': SkytossCarriers,
         'DTs': DTs,
-        'Colossus': Colossus,
         'AirOracle': AirOracle
     }
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = OracleDefense
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
@@ -49,7 +46,7 @@ class StrategyManager:
                         win = self.enemy_data.enemy_data_dict['scoreboard'][strategy]['win']
                         total = self.enemy_data.enemy_data_dict['scoreboard'][strategy]['total']
                         if total == 0:
-                            win_rate = 1
+                            win_rate = 0.75
                         elif win == 0:
                             win_rate = 0.3 / total
                         else:
