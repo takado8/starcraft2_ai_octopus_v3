@@ -20,6 +20,7 @@ from builders.builder import Builder
 from bot.upgraders import CyberneticsUpgrader, ForgeUpgrader, TwilightUpgrader, RoboticsBayUpgrader
 from army.divisions import SENTRY_x3, OBSERVER_x1, WARPPRISM_x1, ADEPT_x5
 from sc2.unit import UnitTypeId as unit
+from sc2 import Race
 
 
 class DTs(StrategyABS):
@@ -32,7 +33,6 @@ class DTs(StrategyABS):
         warpprism_micro = WarpPrismMicro(ai)
         colossus_micro = ColossusMicro(ai)
         archon_micro = ArchonMicro(ai)
-        # stalker_micro = StalkerMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         dt_micro = DarkTemplarMicro(ai)
         wall_guard_zealot_micro = WallGuardZealotMicro(ai)
@@ -40,17 +40,14 @@ class DTs(StrategyABS):
 
 
         self.army.create_division('dts', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 3 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=300)
         main_division_units = {unit.ZEALOT: 15, unit.STALKER: 5, unit.IMMORTAL: 7, unit.ARCHON: 8,
                                    unit.DISRUPTOR: 4, unit.COLOSSUS: 2}
-        # self.sentry_micro = SentryMicro(ai)
-        # self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.6))
-        self.army.create_division('adepts', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
 
+        self.army.create_division('adepts', ADEPT_x5, [adept_micro], Movements(ai, 0.6))
         self.army.create_division('main_army', main_division_units, [zealot_micro, colossus_micro,
-                                                                     immortal_micro, archon_micro, disruptor_micro],
-                                  Movements(ai, 0.7))
+                                            immortal_micro, archon_micro, disruptor_micro], Movements(ai, 0.7))
 
         self.army.create_division('sentry', SENTRY_x3, [sentry_micro], Movements(ai, 0.2), lifetime=-300)
         self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
@@ -128,3 +125,4 @@ class DTs(StrategyABS):
     async def morphing(self):
         await self.morphing_.morph_gates()
         await self.morphing_.morph_Archons()
+        await self.morphing_.set_wall_gates_resp_inside_base()
