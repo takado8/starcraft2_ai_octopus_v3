@@ -72,6 +72,14 @@ class StrategyManager:
             if strategy_name not in self.enemy_data.enemy_data_dict['scoreboard']:
                 self.enemy_data.enemy_data_dict['scoreboard'][strategy_name] = {'win': 0, 'total': 0}
 
+        strategies_to_remove = []
+        for strategy_name in self.enemy_data.enemy_data_dict['scoreboard']:
+            if strategy_name not in self.strategy_name_dict:
+                strategies_to_remove.append(strategy_name)
+        for strategy_name in strategies_to_remove:
+            self.enemy_data.enemy_data_dict['scoreboard'].pop(strategy_name)
+
+
     def update_general_stats_strategies(self, general_stats_dict):
         for strategy_name in self.strategy_name_dict:
             if strategy_name not in general_stats_dict:
