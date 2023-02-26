@@ -32,7 +32,7 @@ class SkyToss(StrategyABS):
 
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [WallGuardZealotMicro(ai)], Movements(ai))
-        self.army.create_division('zealots', {unit.ZEALOT: 7}, [zealot_micro], Movements(ai), lifetime=-380)
+        self.army.create_division('zealots', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai), lifetime=-380)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
@@ -96,7 +96,7 @@ class SkyToss(StrategyABS):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(80)
+        return self.condition_retreat.army_supply_less_than(95)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
