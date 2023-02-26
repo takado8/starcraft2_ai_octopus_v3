@@ -1,5 +1,5 @@
 from army.micros.microABS import MicroABS
-from bot.constants import ANTI_AIR_IDS
+from bot.constants import ANTI_AIR_IDS, BURROWING_UNITS_IDS
 from sc2.unit import UnitTypeId as unit
 from sc2.position import Point2
 from sc2.ids.ability_id import AbilityId as ability
@@ -186,17 +186,17 @@ class OracleMicro(MicroABS):
                 # print(abilities)
                 threats = enemy.filter(lambda x: x.can_attack_air and x.distance_to(oracle) < x.air_range + 4)
                 invisible_threats = enemy.filter(lambda x: not x.has_buff(buff.ORACLEREVELATION) and
-                                                           (x.cloak == 1 or x.type_id == unit.ROACH))
+                                                           (x.cloak == 1 or x.type_id in BURROWING_UNITS_IDS))
                 anti_air = self.ai.enemy_structures().filter(lambda x: x.type_id in ANTI_AIR_IDS and
                                                                        x.distance_to(
                                                                            oracle) < x.air_range + x.radius + 4)
                 if anti_air:  # or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
-                    oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -4))
+                    oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -6))
                 elif invisible_threats:
                     self.cast_revelation(oracle, invisible_threats, abilities)
                 elif threats:
-                    if sum([threat.air_dps for threat in threats]) > 30 and oracle.shield_percentage < 0.75 or \
-                            oracle.shield_percentage < 0.55:
+                    if threats.amount > 5 and sum([threat.air_dps for threat in threats]) > 10 or \
+                            oracle.shield_percentage < 0.85:
                         queue_command = False
                         if ability.BEHAVIOR_PULSARBEAMOFF in abilities:
                             oracle(ability.BEHAVIOR_PULSARBEAMOFF)
