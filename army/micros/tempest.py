@@ -47,7 +47,6 @@ class TempestMicro(MicroABS):
             else:
                 threats = None
             if threats:
-
                 if tempest.weapon_cooldown == 0:
                     target_selected = False
                     for target_ in self.targets_dict:
@@ -72,7 +71,8 @@ class TempestMicro(MicroABS):
                                                        x.distance_to(tempest.position) <= x.air_range + x.radius + 4)
                 if in_range_of.exists:
                     total_dps = sum([x.air_dps for x in in_range_of])
-                    if total_dps > 50 or tempest.shield_percentage < 0.6:
+                    if total_dps > 50 and tempest.shield_percentage < 0.85 or \
+                            tempest.shield_percentage < 0.85 and tempest.health_percentage < 0.85:
                         tempest.move(tempest.position.towards(closest.position, -4))
                         continue
                 if closest.distance_to(tempest) < 12 and tempest.is_moving:

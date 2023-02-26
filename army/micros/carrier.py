@@ -34,7 +34,8 @@ class CarrierMicro(MicroABS):
                                                        x.distance_to(carrier.position) <= x.air_range + x.radius + 4)
                 if in_range_of.exists:
                     total_dps = sum([x.air_dps for x in in_range_of])
-                    if total_dps > 50 or carrier.shield_percentage < 0.6:
+                    if total_dps > 50 and carrier.shield_percentage < 0.85 or\
+                            carrier.shield_percentage < 0.85 and carrier.health_percentage < 0.85:
                         carrier.move(carrier.position.towards(closest.position, -4))
                         continue
                 if (in_range_of and in_range_of.closest_to(carrier).distance_to(carrier) < 12 or not in_range_of and
