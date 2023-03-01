@@ -14,8 +14,9 @@ class DisruptorMicro(MicroABS):
         novas_casted = self.ai.units(unit.DISRUPTORPHASED).amount
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
+            close_enemy = enemy.closer_than(20, disruptor)
             if novas_casted < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
-                    and enemy.closer_than(15, disruptor).exists:
+                    and enemy and close_enemy.exists:
                 spell_target = enemy.filter(
                     lambda unit_: unit_.distance_to(disruptor) < 15 and unit_.type_id not in self.ai.units_to_ignore
                                   and not unit_.is_flying)
@@ -40,6 +41,8 @@ class DisruptorMicro(MicroABS):
                             # self.ai.nova_wait = self.ai.time
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
                             novas_casted += 1
+                elif close_enemy.amount > 3:
+                    disruptor.move(disruptor.position.towards(close_enemy.closest_to(disruptor), 2))
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
                 division_position = division.get_position(self.ai.iteration)
