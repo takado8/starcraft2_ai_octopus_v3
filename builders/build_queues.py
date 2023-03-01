@@ -51,12 +51,12 @@ class BuildQueues:
                       unit.STARGATE, unit.STARGATE, unit.NEXUS,
                       unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    COLOSSUS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, 6,
-                unit.ROBOTICSBAY, 12, unit.GATEWAY, 20, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY,
-                unit.TEMPLARARCHIVE, unit.FORGE, unit.NEXUS, 40, unit.GATEWAY, 60,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
-                unit.GATEWAY, unit.NEXUS]
+    COLOSSUS = [unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.ROBOTICSBAY, 12,
+                            unit.NEXUS,unit.STARGATE, unit.FLEETBEACON, unit.GATEWAY,  unit.NEXUS, unit.STARGATE,
+                            unit.ROBOTICSFACILITY,
+                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                           unit.STARGATE, unit.STARGATE, unit.NEXUS,unit.ROBOTICSFACILITY,
+                           unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     RAPID_EXPANSION = [unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.NEXUS,
                 unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,unit.GATEWAY, unit.GATEWAY, unit.NEXUS,

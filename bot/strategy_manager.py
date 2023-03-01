@@ -2,6 +2,7 @@ from bot.enemy_data import EnemyData
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
+from strategy.colossus_carrier import ColossusCarrier
 from strategy.dts import DTs
 from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.skytoss import SkyToss
@@ -20,7 +21,8 @@ class StrategyManager:
         'ZealotRushDefense': ZealotRushDefense,
         'SkytossCarriers': SkytossCarriers,
         'DTs': DTs,
-        'AirOracle': AirOracle
+        'AirOracle': AirOracle,
+        'ColossusCarrier': ColossusCarrier
     }
 
     def __init__(self, enemy_data: EnemyData):
