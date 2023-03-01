@@ -22,8 +22,8 @@ class AssimilatorBuilder:
                         worker = self.ai.select_build_worker(vaspene.position)
                         if worker is None:
                             break
-                        self.ai.do(worker.build(unit.ASSIMILATOR, vaspene))
-                        self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
+                        worker.build(unit.ASSIMILATOR, vaspene)
+                        worker.move(worker.position.random_on_distance(1), queue=True)
 
     def more_vespene(self):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \
@@ -49,8 +49,8 @@ class AssimilatorBuilder:
                             worker = self.ai.select_build_worker(vespene.position)
                             if worker is None:
                                 break
-                            self.ai.do(worker.build(unit.ASSIMILATOR, vespene))
-                            self.ai.do(worker.move(worker.position.random_on_distance(1), queue=True))
+                            worker.build(unit.ASSIMILATOR, vespene)
+                            worker.move(worker.position.random_on_distance(1), queue=True)
 
     def standard(self, minerals_to_gas_ratio=2):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1:
@@ -83,3 +83,30 @@ class AssimilatorBuilder:
                             # print("building assimilator.")
                             break
 
+    def one_vespene(self):
+        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1 or\
+                self.ai.structures(unit.ASSIMILATOR).exists or self.ai.already_pending(unit.ASSIMILATOR):
+            return
+
+
+        nexuses = self.ai.structures(unit.NEXUS)
+        probes = self.ai.units(unit.PROBE)
+        if probes.exists:
+            for nexus in nexuses:
+                vespenes = self.ai.vespene_geyser.closer_than(9, nexus)
+
+                for vespene in vespenes:
+                    if not (self.ai.already_pending(unit.ASSIMILATOR) or self.ai.already_pending(
+                            unit.ASSIMILATORRICH)) \
+                            and (not self.ai.structures(unit.ASSIMILATOR).exists or not (self.ai.structures(
+                        unit.ASSIMILATOR).closer_than(3, vespene).exists) or
+                                 self.ai.structures(unit.ASSIMILATORRICH).closer_than(3, vespene).exists):
+                        if not self.ai.can_afford(unit.ASSIMILATOR):
+                            return
+                        worker = self.ai.select_build_worker(vespene.position)
+                        if worker is None:
+                            return
+                        worker.build(unit.ASSIMILATOR, vespene)
+                        worker.move(worker.position.random_on_distance(1), queue=True)
+                        # print("building assimilator.")
+                        return
