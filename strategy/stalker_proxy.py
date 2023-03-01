@@ -81,10 +81,10 @@ class StalkerProxy(StrategyABS):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.total_supply_over(192)
+        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.army_supply_over(30)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(3 if self.ai.time < 300 else 7)
+        return self.condition_retreat.army_count_less_than(0)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
