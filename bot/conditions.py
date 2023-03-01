@@ -149,6 +149,18 @@ class ConditionLockSpending:
                             return True
             return False
 
+    async def twilight_council_charge(self):
+        if upgrade.CHARGE not in self.ai.state.upgrades:
+            twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready
+            if twilight_council.exists and twilight_council.idle.exists:
+                twilight_council = twilight_council.first
+                abilities = await self.ai.get_available_abilities(twilight_council, ignore_resource_requirements=True)
+                for ab in abilities:
+                    if ab == AbilityId.RESEARCH_CHARGE:
+                        if not self.ai.can_afford(ab):
+                            return True
+            return False
+
     async def twilight_council_glaives(self):
             twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready
             if twilight_council.exists and twilight_council.idle.exists:

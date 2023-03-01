@@ -11,16 +11,17 @@ class NexusTrainer:
         workers = self.ai.workers.amount
         if workers > 60:
             return
-        nex = self.ai.structures(unit.NEXUS).amount
+        nexuses_amount = self.ai.townhalls().amount
+        assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
         if not self.ai.structures(unit.PYLON).exists and workers == 14:
             return
-        if workers < 20 * nex and workers < 55:
+        if workers < (16 * nexuses_amount + 3 * assimilators_amount) and workers < 55:
             for nexus in self.ai.structures(unit.NEXUS).ready:
                 if nexus.is_idle and self.ai.can_afford(unit.PROBE):
                     nexus.train(unit.PROBE)
         elif 54 < workers < 74:
             if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
-                if self.ai.structures(unit.NEXUS).idle.amount < nex:
+                if self.ai.structures(unit.NEXUS).idle.amount < nexuses_amount:
                     return
                 nexus = self.ai.structures(unit.NEXUS).ready.idle.random
                 nexus.train(unit.PROBE)

@@ -4,7 +4,7 @@ from sc2.ids.ability_id import AbilityId as ability
 
 ARMY_IDS = {unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
             unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
-            unit.TEMPEST, unit.DISRUPTOR}
+            unit.TEMPEST, unit.DISRUPTOR, unit.PHOENIX}
 
 SPECIAL_UNITS_IDS = {unit.ORACLE}
 
@@ -42,4 +42,5 @@ ABILITIES_TIME = {ability.STARGATETRAIN_CARRIER: 64, ability.STARGATETRAIN_TEMPE
                   ability.RESEARCH_EXTENDEDTHERMALLANCE: 100, ability.NEXUSTRAIN_PROBE: 1500
                   }
 
-BURROWING_UNITS_IDS = {unit.ROACH, unit.ROACHBURROWED, unit.WIDOWMINE, unit.WIDOWMINEBURROWED}
+BURROWING_UNITS_IDS = {unit.ROACH, unit.ROACHBURROWED, unit.LURKER, unit.LURKERBURROWED,
+                       unit.WIDOWMINE, unit.WIDOWMINEBURROWED}
