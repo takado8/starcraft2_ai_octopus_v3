@@ -19,13 +19,13 @@ class Defense:
     def assign_defend_position(self):
         nexuses = self.ai.structures(unit.NEXUS).ready
         enemy = self.ai.enemy_units()
-        if enemy.exists:
+        if nexuses.amount < 2:
+            self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
+                                                                                -5)
+        elif enemy.exists:
             for nexus in nexuses:
                 if enemy.closer_than(35, nexus).amount > 1:
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
-        elif nexuses.amount < 2:
-            self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
-                                                                                -2)
         elif 4 > nexuses.amount > 1:
             second_nexus = nexuses.closest_to(self.ai.game_info.map_center)
             self.ai.defend_position = second_nexus.position.towards(
