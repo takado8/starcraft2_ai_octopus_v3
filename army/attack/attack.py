@@ -1,5 +1,5 @@
 from sc2.unit import UnitTypeId as unit
-from bot.constants import BASES_IDS
+from bot.constants import BASES_IDS, WORKERS_IDS
 
 
 class Attack:
@@ -10,7 +10,7 @@ class Attack:
     def select_targets_to_attack(self):
         enemy_units = self.ai.enemy_units()
         enemy = enemy_units.filter(lambda x: x.type_id not in self.ai.units_to_ignore and not x.is_hallucination
-                                             and (x.can_attack_ground or x.can_attack_air))
+                   and x.type_id not in WORKERS_IDS and (x.can_attack_ground or x.can_attack_air))
         enemy.extend(self.ai.enemy_structures().filter(lambda b: b.type_id in BASES_IDS or
                          b.can_attack_ground or b.can_attack_air or b.type_id == unit.BUNKER))
         if not enemy:
