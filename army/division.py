@@ -24,6 +24,8 @@ class Division:
         self.position_last_fetch = -1
         self.units = None
         self.units_last_fetch = -1
+        self.safety_backout_position = None
+        self.safety_backout_position_last_fetch = -1
 
     async def do_micro(self, destination):
         units_in_position = 0
@@ -84,6 +86,37 @@ class Division:
             self.position = position
             self.position_last_fetch = iteration
         return self.position
+
+    def get_safety_backout_position(self, iteration):
+        if self.safety_backout_position_last_fetch != iteration:
+            division_position = self.get_position(iteration)
+            if division_position:
+                enemies = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore and
+                                        (x.can_attack_ground or x.can_attack_air)
+                                                and x.distance_to(division_position) < 16)
+                if enemies:
+                    max_neighbours = -1
+                    position = None
+                    for enemy in enemies:
+                        neighbours = enemies.closer_than(6, enemy)
+                        if neighbours.amount > max_neighbours:
+                            max_neighbours = neighbours.amount
+                            position = enemy.position
+                    safety_position = division_position.towards(position, -10)
+                    self.safety_backout_position = self._find_back_out_position(safety_position)
+
+        return self.safety_backout_position
+
+    def _find_back_out_position(self, position):
+        j = 1
+        while not self.ai.in_pathing_grid(position) and j < 5:
+            k = 0
+            distance = j * 2
+            while not self.ai.in_pathing_grid(position) and k < 20:
+                k += 1
+                position = position.random_on_distance(distance)
+            j += 1
+        return position
 
     def get_units_amount(self):
         return len(self.soldiers)
