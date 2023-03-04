@@ -52,18 +52,19 @@ class BuildQueues:
                       unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     COLOSSUS = [unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.ROBOTICSBAY, 12,
-                            unit.NEXUS,unit.STARGATE, unit.FLEETBEACON, unit.GATEWAY,  unit.NEXUS, unit.STARGATE,
-                            unit.ROBOTICSFACILITY,
-                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                            unit.NEXUS,unit.ROBOTICSFACILITY, unit.GATEWAY, unit.FORGE, unit.NEXUS,unit.GATEWAY,
+                            unit.GATEWAY, 60, unit.STARGATE, unit.FLEETBEACON,
+                            unit.ROBOTICSFACILITY, unit.GATEWAY, 80,
+                           unit.NEXUS,  unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS, 80,
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,unit.ROBOTICSFACILITY,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    RAPID_EXPANSION = [unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.NEXUS,
-                unit.ROBOTICSBAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                unit.TEMPLARARCHIVE, unit.FORGE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.FORGE, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY,
-                unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
-                unit.GATEWAY, unit.NEXUS]
+    ROBO_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.SHIELDBATTERY, unit.ROBOTICSFACILITY,
+                    unit.GATEWAY, 33,  unit.NEXUS, unit.ROBOTICSBAY, unit.GATEWAY, unit.NEXUS,
+                    unit.FORGE, unit.TWILIGHTCOUNCIL,
+                    unit.GATEWAY,  42, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, 56,unit.NEXUS,
+                    unit.GATEWAY, 70, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, 80,
+                    unit.NEXUS, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     DTS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.SHIELDBATTERY, unit.TWILIGHTCOUNCIL,
            unit.DARKSHRINE, 4,
