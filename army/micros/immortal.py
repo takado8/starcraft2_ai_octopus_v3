@@ -5,8 +5,8 @@ from sc2 import Race
 
 
 class ImmortalMicro(MicroABS):
-    def __init__(self, ai):
-        super().__init__('ImmortalMicro', ai)
+    def __init__(self, ai, use_division_backout_position=None):
+        super().__init__('ImmortalMicro', ai, use_division_backout_position)
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
@@ -64,13 +64,13 @@ class ImmortalMicro(MicroABS):
 
                 if immortal.shield_percentage < 0.4:
                     if immortal.health_percentage < 0.35:
-                        immortal.move(self.find_back_out_position(immortal, closest_enemy.position))
+                        immortal.move(self.find_back_out_position(immortal, closest_enemy.position, division))
                         continue
                     d = 4
                 else:
                     d = 2
 
-                back_out_position = self.find_back_out_position(immortal, closest_enemy.position)
+                back_out_position = self.find_back_out_position(immortal, closest_enemy.position, division)
                 has_buff = immortal.has_buff(buff.IMMORTALOVERLOAD)
                 if back_out_position is not None and immortal.weapon_cooldown > 0 and immortal.shield_percentage < 1 \
                         and not has_buff:
@@ -89,7 +89,11 @@ class ImmortalMicro(MicroABS):
                     units_in_position += 1
         return units_in_position
 
-    def find_back_out_position(self, immortal, closest_enemy_position):
+    def find_back_out_position(self, immortal, closest_enemy_position, division):
+        if self.use_division_backout_position:
+            backout_position = division.get_safety_backout_position(self.ai.iteration)
+            if backout_position is not None:
+                return backout_position
         i = 6
         position = immortal.position.towards(closest_enemy_position, -i)
         while not self.in_grid(position) and i < 12:

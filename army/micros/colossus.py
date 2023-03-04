@@ -1,14 +1,12 @@
 from army.micros.microABS import MicroABS
 from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
-from sc2.ids.upgrade_id import UpgradeId as upgrade
-from sc2.units import Units
 
 
 class ColossusMicro(MicroABS):
-    def __init__(self, ai):
+    def __init__(self, ai, use_division_backout_position=None):
         self.name = 'ColossusMicro'
-        super().__init__(self.name, ai)
+        super().__init__(self.name, ai, use_division_backout_position)
 
     def select_target(self, targets):
         total_hp_in_range_of_fire = {}
@@ -69,14 +67,14 @@ class ColossusMicro(MicroABS):
                     targets = targets.sorted(lambda x1: x1.health + x1.shield)
                     target = self.select_target(targets)
                 if colossus.shield_percentage < 0.45:
-                    if colossus.health_percentage < 0.45:
-                        colossus.move(self.find_back_out_position(colossus, closest_enemy.position))
+                    if colossus.health_percentage < 0.55:
+                        colossus.move(self.find_back_out_position(colossus, closest_enemy.position, division))
                         continue
                     d = 5
                 else:
-                    d = 3
+                    d = 0
 
-                back_out_position = self.find_back_out_position(colossus, closest_enemy.position)
+                back_out_position = self.find_back_out_position(colossus, closest_enemy.position, division)
                 if back_out_position is not None and colossus.weapon_cooldown > 0:
                     colossus.move(colossus.position.towards(back_out_position, d))
                 elif target:
@@ -176,7 +174,6 @@ class ColossusMicro(MicroABS):
         #             units_in_position += 1
         return units_in_position
 
-
     def select_stalker_target(self, targets, stalker):
         if targets[0].shield_health_percentage == 1:
             target = targets.closest_to(stalker)
@@ -222,7 +219,11 @@ class ColossusMicro(MicroABS):
                 j += 1
         return position
 
-    def find_back_out_position(self, colossus, closest_enemy_position):
+    def find_back_out_position(self, colossus, closest_enemy_position, division):
+        if self.use_division_backout_position:
+            backout_position = division.get_safety_backout_position(self.ai.iteration)
+            if backout_position is not None:
+                return backout_position
         i = 6
         position = colossus.position.towards(closest_enemy_position, -i)
         while not self.in_grid(position) and i < 12:

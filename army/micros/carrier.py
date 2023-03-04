@@ -4,8 +4,8 @@ from sc2.unit import UnitTypeId as unit
 
 
 class CarrierMicro(MicroABS):
-    def __init__(self, ai):
-        super().__init__('CarrierMicro', ai)
+    def __init__(self, ai, use_division_backout_position=None):
+        super().__init__('CarrierMicro', ai, use_division_backout_position)
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
@@ -36,7 +36,11 @@ class CarrierMicro(MicroABS):
                     total_dps = sum([x.air_dps for x in in_range_of])
                     if total_dps > 50 and carrier.shield_percentage < 0.85 or\
                             carrier.shield_percentage < 0.85 and carrier.health_percentage < 0.85:
-                        carrier.move(carrier.position.towards(closest.position, -4))
+                        if self.use_division_backout_position:
+                            position = self.find_backout_position(division)
+                        else:
+                            position = carrier.position.towards(closest.position, -4)
+                        carrier.move(carrier.position.towards(position, 4))
                         continue
                 if (in_range_of and in_range_of.closest_to(carrier).distance_to(carrier) < 12 or not in_range_of and
                         closest.distance_to(carrier) < 12) and carrier.is_moving:
@@ -71,3 +75,9 @@ class CarrierMicro(MicroABS):
                 else:
                     units_in_position += 1
         return units_in_position
+
+    def find_backout_position(self, division):
+        if self.use_division_backout_position:
+            backout_position = division.get_safety_backout_position(self.ai.iteration)
+            if backout_position is not None:
+                return backout_position

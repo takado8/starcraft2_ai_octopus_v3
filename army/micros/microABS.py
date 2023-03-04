@@ -2,9 +2,10 @@ from army.division import Division
 
 
 class MicroABS:
-    def __init__(self, name, ai):
+    def __init__(self, name, ai, use_division_backout_position=None):
         self.ai = ai
         self.name = name
+        self.use_division_backout_position = use_division_backout_position
 
     def in_grid(self, pos):
         try:

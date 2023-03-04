@@ -6,8 +6,8 @@ from .microABS import MicroABS
 
 
 class StalkerMicro(MicroABS):
-    def __init__(self, ai):
-        super().__init__('StalkerMicro', ai)
+    def __init__(self, ai, use_division_backout_position=None):
+        super().__init__('StalkerMicro', ai, use_division_backout_position)
 
     def select_target(self, targets, stalker):
         if self.ai.enemy_race == Race.Protoss:
@@ -91,7 +91,7 @@ class StalkerMicro(MicroABS):
 
                 if stalker.shield_percentage < 0.4:
                     if stalker.health_percentage < 0.35:
-                        stalker.move(self.find_back_out_position(stalker, closest_enemy.position))
+                        stalker.move(self.find_back_out_position(stalker, closest_enemy.position, division))
                         continue
                     d = 4
                 else:
@@ -105,7 +105,7 @@ class StalkerMicro(MicroABS):
                     else:
                         stalker.attack(target)
                 else:
-                    back_out_position = self.find_back_out_position(stalker, closest_enemy.position)
+                    back_out_position = self.find_back_out_position(stalker, closest_enemy.position, division)
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
                         stalker.move(stalker.position.towards(back_out_position, d))
                     else:
@@ -144,7 +144,11 @@ class StalkerMicro(MicroABS):
                 j += 1
         return position
 
-    def find_back_out_position(self, stalker, closest_enemy_position):
+    def find_back_out_position(self, stalker, closest_enemy_position, division):
+        if self.use_division_backout_position:
+            backout_position = division.get_safety_backout_position(self.ai.iteration)
+            if backout_position is not None:
+                return backout_position
         i = 6
         position = stalker.position.towards(closest_enemy_position, -i)
         while not self.in_grid(position) and i < 12:
