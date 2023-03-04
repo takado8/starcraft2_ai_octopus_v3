@@ -3,9 +3,12 @@ from typing import Optional, Union
 from sc2.position import Point2, Point3
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.building_spot_validator import BuildingSpotValidator
+from bot.constants import STRUCTURES_RADIUS
 
 
 class Builder:
+    GAP_SIZE = 0.6
+
     def __init__(self, ai, build_queue, expander, special_building_locations=None):
         self.ai = ai
         self.expander = expander
@@ -13,6 +16,8 @@ class Builder:
         self.build_queue = build_queue
         self.build_queue_index = 0
         self.special_building_locations = special_building_locations
+        self.structures_max_radius = sorted(STRUCTURES_RADIUS, key=lambda x: STRUCTURES_RADIUS[x], reverse=True)[1]
+
 
     async def build_from_queue(self):
         order_dict = {}
@@ -50,7 +55,7 @@ class Builder:
                                     .closer_than(1, location).exists:
                                 await self.ai.build(building, near=location,
                                                 placement_step=1, max_distance=1,
-                                                random_alternative=False)
+                                                random_alternative=False, validate_location=False)
                                 return
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
@@ -69,26 +74,62 @@ class Builder:
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 45, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
-                    placement_step: int = 3, ) -> bool:
+                    placement_step: int = 3, validate_location=True, ) -> bool:
         assert isinstance(near, (Unit, Point2, Point3))
+        near_pylon = None
         if isinstance(near, Unit):
+            if near.type_id == unit.PYLON:
+                near_pylon = near
             near = near.position
         near = near.to2
         if not self.ai.can_afford(building, check_supply_cost=not block):
             # print('cant afford')
             return False
+        if validate_location:
+            place = None
+            loops = 5 if near_pylon else 1
+            try:
+                radius = STRUCTURES_RADIUS[building]
+            except:
+                radius = self.structures_max_radius
+            distance = self.GAP_SIZE + radius
+            for k in range(loops):
+                i=0
+                while place is None and i < 50:
+                    i+=1
+                    place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
 
-        p = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
-        if p is None:
+                    if place:
+                        neighbours = self.ai.structures().filter(lambda x: x.distance_to(place) < x.radius + distance)
+                        if neighbours.amount == 0:
+                            break
+                        else:
+                            if i < 50:
+                                place = None
+                if near_pylon and i == 50 and k < loops - 1:
+                    print('changing pylon...')
+                    place = None
+                    pylons = self.ai.structures().filter(lambda x: x.is_ready and x.type_id == unit.PYLON
+                                                                   and x.tag != near_pylon.tag)
+
+                    pylons = sorted(pylons, key=lambda x: self.ai.structures().filter(lambda y:
+                                                        y.type_id != unit.PYLON and y.distance_to(x) <= 6).amount)
+                    if pylons:
+                        near_pylon = pylons[0]
+                        near = near_pylon.position.to2
+        else:
+            place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
+
+        if place is None:
             # print('position none')
             return False
         # validate
-        if self.validator.is_valid_location(p.x, p.y):
+        if self.validator.is_valid_location(place.x, place.y):
             # print("valid location for " + str(building) + ": "+ str(p))
-            builder = build_worker or self.ai.select_build_worker(p)
+            builder = build_worker or self.ai.select_build_worker(place)
             if builder is None:
                 return False
-            builder.build(building, p)
+            builder.build(building, place)
             return True
         else:
             return False

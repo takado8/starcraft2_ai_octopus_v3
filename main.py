@@ -204,9 +204,10 @@ class OctopusV3(sc2.BotAI):
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
-                    placement_step: int = 3, ) -> bool:
+                    placement_step: int = 3, validate_location=True, ) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
-                                                 build_worker=build_worker, random_alternative=random_alternative)
+                                                 build_worker=build_worker, random_alternative=random_alternative,
+                                                 validate_location=validate_location)
 
     def in_pathing_grid(self, pos: Union[Point2, Unit]):
         if isinstance(pos, Unit):
@@ -263,9 +264,9 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    computer_builds = [AIBuild.Timing]
+    # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
     # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
@@ -277,7 +278,7 @@ def botVsComputer(ai, real_time=0):
     result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
-        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

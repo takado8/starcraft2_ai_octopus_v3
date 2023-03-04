@@ -29,15 +29,15 @@ class PylonBuilder:
 
     async def first_and_next_standard(self):
         if self.ai.supply_cap < 200:
-            pylons = self.ai.structures(unit.PYLON)
+            # pylons = self.ai.structures(unit.PYLON)
             if self.ai.supply_cap < 100:
                 pos = self.ai.start_location.position.towards(self.ai.main_base_ramp.top_center,5)
-                max_d = 23
+                max_d = 35
                 pending = 2 if self.ai.time > 180 else 1
                 left = 5
                 step = 7
             else:
-                pos = self.ai.structures(unit.NEXUS).ready.random.position
+                pos = self.ai.townhalls().ready.random.position
                 max_d = 27
                 pending = 3
                 left = 9
@@ -90,13 +90,13 @@ class PylonBuilder:
             # else:
             if self.ai.supply_cap < 60:
                 pos = self.ai.start_location.position
-                max_d = 30
+                max_d = 32
                 pending = 2 if self.ai.time > 180 else 1
                 left = 7
                 step = 10
             elif self.ai.supply_cap < 120:
                 pos = self.ai.start_location.position
-                max_d = 37
+                max_d = 42
                 pending = 2
                 left = 10
                 step = 8
