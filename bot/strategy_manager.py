@@ -2,6 +2,8 @@ from bot.enemy_data import EnemyData
 from strategy.adept_proxy import AdeptProxy
 from strategy.adept_rush_defense import AdeptRushDefense
 from strategy.air_oracle import AirOracle
+from strategy.cannon_defense import CannonDefense
+from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.dts import DTs
 from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.robo_defense import RoboDefense
@@ -27,7 +29,7 @@ class StrategyManager:
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = CannonRushDefense
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

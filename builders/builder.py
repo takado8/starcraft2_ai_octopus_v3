@@ -41,15 +41,20 @@ class Builder:
                 all_done = False
                 # print('need to build: {}'.format(building))
                 if self.ai.can_afford(building) and self.ai.already_pending(building) < \
-                        (2 if building == unit.GATEWAY else 1):
+                        (2 if building in {unit.GATEWAY, unit.PHOTONCANNON, unit.SHIELDBATTERY} else 1):
                     if building == unit.NEXUS:
                         await self.expander.expand()
                         return
-                    elif self.special_building_locations and building in self.special_building_locations:
+                    elif self.special_building_locations and\
+                            any([building in locations for locations in self.special_building_locations]):
                         all_building_types = None
                         if building == unit.GATEWAY:
                             all_building_types = {unit.GATEWAY, unit.WARPGATE}
-                        locations = self.special_building_locations[building]
+                        locations = []
+                        for location_list in self.special_building_locations:
+                            if building in location_list:
+                                locations.extend(location_list[building])
+
                         for location in locations:
                             if not self.ai.structures(all_building_types if all_building_types else building)\
                                     .closer_than(1, location).exists:

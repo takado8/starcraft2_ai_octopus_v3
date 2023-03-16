@@ -21,7 +21,7 @@ class StrategyABS:
         self.enemy_economy = EnemyEconomy(ai)
         self.scouting = Scouting(ai, self.enemy_economy)
         self.trainer = Trainer(ai)
-        self.army = Army(ai, self.scouting, self.trainer)
+        self.army = Army(ai, self.scouting, self.enemy_economy, self.own_economy, self.trainer)
 
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)
@@ -40,7 +40,7 @@ class StrategyABS:
 
 
 
-    def handle_workers(self):
+    async def handle_workers(self):
         raise NotImplementedError
 
     # =======================================================  Builders

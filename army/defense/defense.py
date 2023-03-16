@@ -20,6 +20,7 @@ class Defense:
         nexuses = self.ai.structures(unit.NEXUS).ready
         enemy = self.ai.enemy_units()
         if nexuses.amount < 2:
+
             self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
                                                                                 -5)
         elif enemy.exists:
@@ -81,6 +82,8 @@ class Defense:
         else:
             dist = 7
             for man in self.ai.army:
+                if man.type_id == unit.PHOENIX and man.is_hallucination:
+                    continue
                 position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
                     man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
                 if man.distance_to(self.ai.defend_position) > dist and man.type_id != unit.DARKTEMPLAR:

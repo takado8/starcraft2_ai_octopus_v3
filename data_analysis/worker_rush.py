@@ -15,7 +15,7 @@ class WorkerRushZergBot(sc2.BotAI):
         if self.units(larva_id).amount > 0:
             self.train(UnitTypeId.DRONE)
 
-        if self.time > 33:
-            for unit in self.units:
-                if unit.type_id == drone:
-                    unit.attack(self.enemy_start_locations[0])
+        # if self.time > 33:
+        #     for unit in self.units:
+        #         if unit.type_id == drone:
+        #             unit.attack(self.enemy_start_locations[0])

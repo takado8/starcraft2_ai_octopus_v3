@@ -11,13 +11,13 @@ class EnemyEconomy:
         self.enemy_info = {}
         self.total_enemy_ground_dps = 0
         self.total_enemy_hp = 0
-        self.killed_minerals_army = 0
-        self.killed_gas_army = 0
+        self.lost_minerals_army = 0
+        self.lost_gas_army = 0
         # self.killed_value_units = 0
 
     def lost_units_cost(self):
-        self.killed_minerals_army = self.ai.state.score.killed_minerals_army
-        self.killed_gas_army = self.ai.state.score.killed_vespene_army
+        self.lost_minerals_army = self.ai.state.score.killed_minerals_army
+        self.lost_gas_army = self.ai.state.score.killed_vespene_army
         # self.killed_value_units = self.ai.state.score.killed_value_units
 
     def add_units_to_enemy_info(self, category, units):
@@ -60,6 +60,6 @@ class EnemyEconomy:
                 print("   {}, {}".format(item, self.enemy_info[category][item]))
             print(" total: {}".format(len(self.enemy_info[category])))
         print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))
-        print('killed minerals army: {}'.format(self.killed_minerals_army))
-        print('killed gas army: {}'.format(self.killed_gas_army))
+        print('lost minerals army: {}'.format(self.lost_minerals_army))
+        print('lost gas army: {}'.format(self.lost_gas_army))
         print('-------------------- end of enemy info ----------------------')

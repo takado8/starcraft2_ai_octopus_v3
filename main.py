@@ -14,6 +14,8 @@ from bot.strategy_manager import StrategyManager
 from bot.cancel_build import cancel_damaged_build
 import traceback
 
+# from data_analysis.map_tools.map_positions_service import MapPositionsService
+from data_analysis.map_tools.map_positions_service import MapPositionsService
 from data_analysis.test_bot_zerg_roach import RoachBurrowBot
 from data_analysis.test_bot_zerg_rush import SimpleZergBot
 from data_analysis.worker_rush import WorkerRushZergBot
@@ -47,7 +49,7 @@ class OctopusV3(sc2.BotAI):
         self.starting_strategy = None
         self.iteration = -2
         self.enemy_main_base_ramp = None
-
+        self.map_service: MapPositionsService = None
 
 
     # async def on_unit_created(self, unit: Unit):
@@ -73,7 +75,7 @@ class OctopusV3(sc2.BotAI):
             print('getting enemy data...')
             self.enemy_data = EnemyData(self)
             self.strategy_manager = StrategyManager(self.enemy_data)
-
+            self.map_service = MapPositionsService(self)
             strategy = await self.strategy_manager.choose_get_strategy()
             self.strategy = strategy(self)
             print('getting enemy data done.')
@@ -114,6 +116,10 @@ class OctopusV3(sc2.BotAI):
             print(ex)
 
     async def on_step(self, iteration: int):
+        # if self.structures(unit.CYBERNETICSCORE).amount > 0:
+        #     self.map_service.save_positions_json('cannon_rush_defense')
+        #     time.sleep(1)
+        #     exit(12)
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
@@ -121,7 +127,8 @@ class OctopusV3(sc2.BotAI):
             self.iteration = iteration
             self.save_stats()
             self.set_game_step()
-            self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready)
+            self.army = self.units().filter(lambda x: x.type_id in self.army_ids and x.is_ready
+                                            and not (x.type_id == unit.PHOENIX and x.is_hallucination))
         except Exception as ex:
             await self.chat_send('Error 00')
             print(ex)
@@ -136,7 +143,7 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 02')
             print(traceback.print_exc())
         try:
-            self.strategy.handle_workers()
+            await self.strategy.handle_workers()
         except Exception:
             await self.chat_send('Error 03')
             print(traceback.print_exc())
@@ -145,6 +152,7 @@ class OctopusV3(sc2.BotAI):
         except Exception:
             await self.chat_send('Error 04')
             print(traceback.print_exc())
+        # return
         try:
             await self.strategy.build_pylons()
         except Exception as ex:
@@ -275,17 +283,22 @@ def botVsComputer(ai, real_time=0):
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    result = run_game(map_settings=maps.get(random.choice(maps_list)), players=[
+
+    result = run_game(map_settings=maps.get(maps_list[1]), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
+        # Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
 
 def test(real_time=0):
     ai = OctopusV3()
-    result, ai = botVsComputer(ai, real_time)
+    result = None
+    try:
+        result, ai = botVsComputer(ai, real_time)
+    except:
+        pass
     print('Result: {}'.format(result))
 
     if result == Result.Victory:

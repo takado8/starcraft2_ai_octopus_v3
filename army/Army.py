@@ -3,12 +3,13 @@ from army.defense.defense import Defense
 from army.movements import Movements
 from army.status.army_status import ArmyStatus
 from army.training.training import Training
+from economy.info.own_economy import OwnEconomy
 from .division import Division
 from typing import Dict, List
 
 
 class Army:
-    def __init__(self, ai_object, scouting, trainer):
+    def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer):
         self.divisions: Dict[str, Division] = {}
         self.ai = ai_object
         self.scouting = scouting
@@ -17,9 +18,18 @@ class Army:
         self.army_status = ArmyStatus(ai_object)
         self.training = Training(ai_object, trainer, self.divisions)
         self.defense.assign_defend_position()
+        self.enemy_economy = enemy_economy
+        self.own_economy: OwnEconomy = own_economy
+        self.last_print_time = 0
 
     async def execute(self):
         try:
+            # time = int(self.ai.time)
+            # if time % 5 == 0 and self.last_print_time != time:
+            #     self.own_economy.print_own_economy_info()
+            #     self.last_print_time = time
+
+
             self.army_status.establish_army_status()
             self.training.refresh_all_soldiers()
             training_order = self.training.create_training_order()
@@ -38,6 +48,8 @@ class Army:
             self.defense.avoid_aoe()
             if self.attack.enemy_main_base_down:
                 self.scouting.scan_on_end()
+            else:
+                self.scouting.scan_middle_game()
             # self.debug()
         except Exception as ex:
             self.training.debug()

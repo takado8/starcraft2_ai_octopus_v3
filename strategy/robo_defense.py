@@ -1,6 +1,7 @@
 from sc2 import Race
 
 from army.defense.worker_rush_defense import WorkerRushDefense
+from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
@@ -36,14 +37,14 @@ class RoboDefense(StrategyABS):
         stalker_micro = StalkerMicro(ai, use_division_backout_position=False)
         # carrier_micro = CarrierMicro(ai, use_division_backout_position=False)
         colossus_micro = ColossusMicro(ai, use_division_backout_position=False)
-        self.army.create_division('zealot', {unit.ZEALOT: 1},
-                                  [WallGuardZealotMicro(ai) if self.ai.enemy_race == Race.Zerg else ZealotMicro(ai)],
-                                  Movements(ai), lifetime=90)
+        zealot_micro = WallGuardZealotMicro(ai) if self.ai.enemy_race == Race.Zerg else ZealotMicro(ai)
+        self.army.create_division('zealot', {unit.ZEALOT: 1}, micros=[zealot_micro],
+                                                                   movements=Movements(ai), lifetime=90)
         # self.army.create_division('zealots', {unit.ZEALOT: 7}, [ZealotMicro(ai)], Movements(ai, 0.1), lifetime=-420)
         self.army.create_division('main_army', {unit.STALKER: 20, unit.ADEPT: 10, unit.IMMORTAL: 8, unit.COLOSSUS: 4,
                                                 unit.WARPPRISM: 1, unit.OBSERVER: 1, unit.DISRUPTOR: 6, unit.SENTRY: 3},
                                   [immortal_micro, disruptor_micro, colossus_micro, ObserverMicro(ai),
-                                   WarpPrismMicro(ai), SentryMicro(ai), stalker_micro],
+                                   WarpPrismMicro(ai), SentryMicro(ai), stalker_micro, AdeptMicro(ai)],
                                   Movements(ai, movements_step=25, units_ratio_before_next_step=0.65))
         # self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai, 0.1))
 

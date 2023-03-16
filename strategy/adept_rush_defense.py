@@ -86,7 +86,7 @@ class AdeptRushDefense(StrategyABS):
 
         self.worker_rush_defense = WorkerRushDefense(ai)
 
-    def handle_workers(self):
+    async def handle_workers(self):
         mineral_workers = self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers(4)
         if mineral_workers:

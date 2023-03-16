@@ -45,8 +45,8 @@ class AdeptProxy(StrategyABS):
 
         self.worker_rush_defense = WorkerRushDefense(ai)
 
-    def handle_workers(self):
-        mineral_workers = self.worker_rush_defense.worker_rush_defense()
+    async def handle_workers(self):
+        mineral_workers = await self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=3)
         if mineral_workers:
             self.speed_mining.execute(mineral_workers)

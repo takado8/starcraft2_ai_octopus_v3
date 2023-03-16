@@ -11,7 +11,7 @@ class WorkerRushDefense:
         self.ai = ai
         self.fighting_probes = set()
 
-    def worker_rush_defense(self):
+    async def worker_rush_defense(self):
         if self.ai.time < 360:
             enemy = self.ai.enemy_units()
 
@@ -33,13 +33,14 @@ class WorkerRushDefense:
                         if probe and (probe.shield > 5 if probes.filter(lambda x: x.shield > 15).amount > len(probes) / 2
                             else probe.health_percentage > 0.5):
                             target = enemy_in_main_base.closest_to(probe)
-                            if self.ai._client.query_pathing(probe.position, target.position):
+                            if await self.ai._client.query_pathing(probe.position, target.position):
                                 probe.attack(target)
                             else:
-                                possible_targets = enemy_in_main_base.filter(lambda x:
-                                                self.ai._client.query_pathing(probe.position, x.position))
+                                possible_targets = [x for x in enemy_in_main_base if await self.ai._client.query_pathing(probe.position, x.position)]
+
+
                                 if possible_targets:
-                                    possible_targets.sorted(lambda x: x.shield_health_percentage)
+                                    possible_targets = sorted(possible_targets, key=lambda x: x.shield_health_percentage)
                                     probe.attack(possible_targets[0])
                                 else:
                                     probe.move(target.position.towards(probe, 4))
@@ -62,6 +63,8 @@ class WorkerRushDefense:
                         if probe.tag not in self.fighting_probes:
                             mineral_workers_tags.add(probe.tag)
                     return mineral_workers_tags
+
+
 
     def nexus_train_probes(self):
         nexus = self.ai.townhalls.ready
