@@ -12,7 +12,7 @@ from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -21,7 +21,7 @@ from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
 from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
 
 
-class SkyToss(StrategyABS):
+class SkyToss(Strategy):
     def __init__(self, ai):
         super().__init__(type='air', name='SkyToss', ai=ai)
 

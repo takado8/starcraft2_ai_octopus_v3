@@ -169,7 +169,6 @@ class OctopusV3(sc2.BotAI):
         except:
             await self.chat_send('Error 07')
             print(traceback.print_exc())
-
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
             self.first_attack = True
@@ -272,11 +271,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -286,8 +285,8 @@ def botVsComputer(ai, real_time=0):
 
     result = run_game(map_settings=maps.get(maps_list[1]), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
-        # Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

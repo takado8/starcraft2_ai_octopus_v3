@@ -15,7 +15,7 @@ from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall, UpperWallGates
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -25,7 +25,7 @@ from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTR
 from sc2.unit import UnitTypeId as unit
 
 
-class ZealotRushDefense(StrategyABS):
+class ZealotRushDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='ZealotRushDefense', ai=ai)
 

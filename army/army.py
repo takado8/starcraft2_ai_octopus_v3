@@ -1,25 +1,23 @@
-from army.attack.attack import Attack
-from army.defense.defense import Defense
 from army.movements import Movements
 from army.status.army_status import ArmyStatus
 from army.training.training import Training
-from economy.info.own_economy import OwnEconomy
 from .division import Division
 from typing import Dict, List
 
 
 class Army:
-    def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer):
+    def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer, defense, attack):
         self.divisions: Dict[str, Division] = {}
         self.ai = ai_object
         self.scouting = scouting
-        self.defense = Defense(ai_object)
-        self.attack = Attack(ai_object)
+        self.defense = defense
+        self.attack = attack
         self.army_status = ArmyStatus(ai_object)
         self.training = Training(ai_object, trainer, self.divisions)
-        self.defense.assign_defend_position()
         self.enemy_economy = enemy_economy
-        self.own_economy: OwnEconomy = own_economy
+        self.own_economy = own_economy
+        self.defense.assign_defend_position()
+
         self.last_print_time = 0
 
     async def execute(self):

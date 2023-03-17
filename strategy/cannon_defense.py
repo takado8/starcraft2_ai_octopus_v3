@@ -6,6 +6,7 @@ from army.micros.dark_templar import DarkTemplarMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.probe import ProbeMicro
+from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
 from army.micros.wall_guard_zealot import WallGuardZealotMicro
@@ -16,7 +17,7 @@ from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall, UpperWallGates, UpperWallForge
 from data_analysis.map_tools.map_positions_service import MapPositionsService
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -26,7 +27,7 @@ from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTR
 from sc2.unit import UnitTypeId as unit
 
 
-class CannonDefense(StrategyABS):
+class CannonDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='CannonDefense', ai=ai)
 
@@ -35,7 +36,7 @@ class CannonDefense(StrategyABS):
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
-        wall_guard_zealot_micro = WallGuardZealotMicro(ai)
+        wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
         archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
@@ -44,34 +45,27 @@ class CannonDefense(StrategyABS):
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33), lifetime=400)
         self.army.create_division('zealots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1))
-        self.army.create_division('zealots2', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.1))
+        # self.army.create_division('zealots2', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.1))
 
         self.army.create_division('stalkers', STALKER_x5, [stalker_micro], Movements(ai, 0.2))
-        # self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
-
-        # self.army.create_division('dt', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
-        # self.army.create_division('dt', {unit.DARKTEMPLAR: 2}, [dt_micro], Movements(ai, 0.1))
-        # self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
-        # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2))
+        self.army.create_division('adepts3', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
+        self.army.create_division('adepts6', ADEPT_x5, [adept_micro], Movements(ai, 0.2))
         self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
         # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
 
         self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
         self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
 
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers2', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers3', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        self.army.create_division('stalkers4', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
 
+        self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
         self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
-        self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
+        self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-360)
         self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
-        self.army.create_division('colossi', {unit.COLOSSUS: 2}, [colossus_micro], Movements(ai, 0.2), lifetime=-420)
-        self.army.create_division('disruptors', {unit.DISRUPTOR: 3}, [disruptor_micro], Movements(ai, 0.2), lifetime=-420)
+        self.army.create_division('colossi', {unit.COLOSSUS: 4}, [colossus_micro], Movements(ai, 0.2), lifetime=-420)
+        self.army.create_division('disruptors', {unit.DISRUPTOR: 6}, [disruptor_micro], Movements(ai, 0.2), lifetime=-420)
 
         map_service = MapPositionsService(ai)
         locations_dict = map_service.load_positions_dict('early_cannon')
@@ -115,7 +109,7 @@ class CannonDefense(StrategyABS):
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
-        self.forge_upgrader.armor_first()
+        self.forge_upgrader.standard()
         await self.twilight_upgrader.standard()
 
 

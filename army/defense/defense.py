@@ -19,9 +19,19 @@ class Defense:
     def assign_defend_position(self):
         nexuses = self.ai.structures(unit.NEXUS).ready
         enemy = self.ai.enemy_units()
+        walloff_on_second = self.ai.structures({unit.PYLON, unit.PHOTONCANNON, unit.GATEWAY, unit.FORGE})
+        if walloff_on_second.exists:
+            walloff_on_second = walloff_on_second.closer_than(8, self.ai.main_base_ramp.bottom_center.towards(
+                    self.ai.main_base_ramp.top_center, -8).towards(self.ai.game_info.map_center, 8))
         if nexuses.amount < 2:
-
-            self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
+            if walloff_on_second.exists:
+                # second = min(self.ai.expansion_locations_list,
+                #                              key=lambda x: x.distance_to(self.ai.main_base_ramp.bottom_center.towards(
+                #         self.ai.main_base_ramp.top_center, -6)))
+                self.ai.defend_position = self.ai.main_base_ramp.bottom_center.towards(
+                    self.ai.main_base_ramp.top_center, -8).towards(self.ai.game_info.map_center, 3)
+            else:
+                self.ai.defend_position = self.ai.main_base_ramp.top_center.towards(self.ai.main_base_ramp.bottom_center,
                                                                                 -5)
         elif enemy.exists:
             for nexus in nexuses:

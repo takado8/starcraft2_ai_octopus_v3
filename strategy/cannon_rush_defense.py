@@ -1,22 +1,19 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
-from army.micros.adept import AdeptMicro
 from army.micros.archon import ArchonMicro
 from army.micros.colossus import ColossusMicro
-from army.micros.dark_templar import DarkTemplarMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.probe import ProbeMicro
+from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
-from army.micros.wall_guard_zealot import WallGuardZealotMicro
 from army.micros.warpprism import WarpPrismMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
-from builders.special_building_locations import UpperWall, UpperWallGates, UpperWallForge
 from data_analysis.map_tools.map_positions_service import MapPositionsService
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -26,10 +23,9 @@ from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTR
 from sc2.unit import UnitTypeId as unit
 
 
-class CannonRushDefense(StrategyABS):
+class CannonRushDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
-
         stalker_micro = StalkerMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
@@ -78,9 +74,7 @@ class CannonRushDefense(StrategyABS):
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.probes_micro = ProbeMicro(ai)
 
-    async def execute(self):
-
-    # async def handle_workers(self):
+    async def handle_workers(self):
         # self.probes_micro.do_micro()
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=4)

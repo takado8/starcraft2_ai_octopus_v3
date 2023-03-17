@@ -8,7 +8,7 @@ from army.micros.warpprism import WarpPrismMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -18,7 +18,7 @@ from sc2.unit import UnitTypeId as unit
 from army.divisions import STALKER_x10, ADEPT_x5
 
 
-class AdeptProxy(StrategyABS):
+class AdeptProxy(Strategy):
     def __init__(self, ai):
         super().__init__(type='rush', name='AdeptProxy', ai=ai)
 

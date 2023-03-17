@@ -1,4 +1,6 @@
 from army.army import Army
+from army.attack.attack import Attack
+from army.defense.defense import Defense
 from army.scouting.scouting import Scouting
 from bot.conditions import ConditionAttack, ConditionCounterAttack, ConditionRetreat, ConditionLockSpending
 from bot.morphing import Morphing
@@ -12,7 +14,7 @@ from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
 
 
-class StrategyABS:
+class Strategy:
     def __init__(self, type, name, ai):
         self.type = type
         self.name = name
@@ -21,7 +23,10 @@ class StrategyABS:
         self.enemy_economy = EnemyEconomy(ai)
         self.scouting = Scouting(ai, self.enemy_economy)
         self.trainer = Trainer(ai)
-        self.army = Army(ai, self.scouting, self.enemy_economy, self.own_economy, self.trainer)
+        self.attack = Attack(ai)
+        self.defense = Defense(ai)
+        self.army = Army(ai, self.scouting, self.enemy_economy, self.own_economy, self.trainer,
+                         self.defense, self.attack)
 
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)

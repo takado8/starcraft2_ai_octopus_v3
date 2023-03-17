@@ -13,7 +13,7 @@ from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -23,7 +23,7 @@ from sc2.unit import UnitTypeId as unit
 from sc2 import Race
 
 
-class DTs(StrategyABS):
+class DTs(Strategy):
     def __init__(self, ai):
         super().__init__(type='rush', name='DTs', ai=ai)
 

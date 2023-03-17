@@ -9,7 +9,7 @@ from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
-from .strategyABS import StrategyABS
+from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
 from builders.builder import Builder
@@ -18,7 +18,7 @@ from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
 from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1
 
 
-class AirOracle(StrategyABS):
+class AirOracle(Strategy):
     def __init__(self, ai):
         super().__init__(type='air', name='AirOracle', ai=ai)
 
