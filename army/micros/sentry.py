@@ -1,5 +1,6 @@
 from army.micros.microABS import MicroABS
 from sc2.constants import FakeEffectID
+from sc2.ids.buff_id import BuffId as buff
 from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2
@@ -18,9 +19,14 @@ class SentryMicro(MicroABS):
         if sentries.exists:
 
             guardian_shield_on = False
+            for sentry in self.ai.units(unit.SENTRY):
+                if sentry.has_buff(buff.GUARDIANSHIELD):
+                    guardian_shield_on = True
+                    break
             for eff in self.ai.state.effects:
                 if not guardian_shield_on and eff.id == effect.GUARDIANSHIELDPERSISTENT:
                     guardian_shield_on = True
+                    break
 
             for sentry in sentries:
                 threats = self.ai.enemy_units().filter(
@@ -28,7 +34,7 @@ class SentryMicro(MicroABS):
                                   unit_.distance_to(sentry.position) <= 12 and not unit_.is_hallucination)
                 abilities = await self.ai.get_available_abilities(sentry)
 
-                if threats.amount > 4 and not guardian_shield_on and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities:
+                if threats.amount > 4 and (not guardian_shield_on) and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities:
                     sentry(ability.GUARDIANSHIELD_GUARDIANSHIELD)
                     guardian_shield_on = True
                 # if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:

@@ -317,7 +317,7 @@ if __name__ == '__main__':
     for i in range(1, 6):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

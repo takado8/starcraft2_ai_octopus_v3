@@ -93,21 +93,14 @@ class Scouting:
 
     def create_scout(self):
         sentries = self.ai.army(Unit.SENTRY).ready
-        is_scout_created = False
         if sentries.exists:
-            sentries = sorted(sentries.filter(lambda z: z.energy >= 75), key=lambda sent: sent.energy, reverse=True)
-            if self.number_of_scoutings_done > 3:
-                if len(sentries) < 2:
-                    return
+            sentries = sorted(sentries.filter(lambda z: z.energy >= (150 if self.number_of_scoutings_done < 2 else 200)),
+                              key=lambda sent: sent.energy, reverse=True)
 
             for sentry in sentries:
-                sentry_energy = sentry.energy_percentage
                 sentry(AbilityId.HALLUCINATION_PHOENIX)
-                is_scout_created = True
                 self.number_of_scoutings_done += 1
-                if sentry_energy < 1:
-                    return True
-        return is_scout_created
+                return True
 
     def scan_on_end(self):
         scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)

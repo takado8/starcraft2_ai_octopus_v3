@@ -13,6 +13,25 @@ class Trainer:
     async def train(self):
         # print('\n\ntraining queue: ')
         # print(self.training_queue)
+        make_zealot_minerals_threshold = 600
+        if self.ai.attack and self.ai.minerals > make_zealot_minerals_threshold and self.ai.vespene < 50:
+            idle_warpgates = []
+            warpgates = self.ai.structures(UnitTypeId.WARPGATE).ready
+            for warpgate in warpgates:
+                abilities = await self.ai.get_available_abilities(warpgate)
+                if ability.WARPGATETRAIN_ZEALOT in abilities:
+                    idle_warpgates.append(warpgate)
+            if len(idle_warpgates) > warpgates.amount * 0.3:
+                minerals = self.ai.minerals - make_zealot_minerals_threshold - 200
+                zealots_nb = min([int(minerals/100), len(idle_warpgates)])
+                i=0
+                for warpgate in warpgates:
+                    i+=1
+                    if i == zealots_nb:
+                        break
+                    await self.warp_gate_trainer.standard(warpgate, UnitTypeId.ZEALOT)
+
+
 
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
                 or self.ai.is_build_in_progress() or self.ai.army_priority or (self.ai.minerals > 550

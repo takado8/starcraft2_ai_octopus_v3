@@ -7,7 +7,7 @@ from bot.constants import STRUCTURES_RADIUS
 
 
 class Builder:
-    GAP_SIZE = 0.6
+    GAP_SIZE = 0.5
 
     def __init__(self, ai, build_queue, expander, special_building_locations=None):
         self.ai = ai
@@ -65,7 +65,7 @@ class Builder:
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
-                        await self.ai.build(building, near=pylon, placement_step=4, max_distance=47,
+                        await self.ai.build(building, near=pylon, placement_step=4, max_distance=60,
                                         random_alternative=True)
                         # else:
                             # print("pylon is none")
@@ -92,26 +92,40 @@ class Builder:
             return False
         if validate_location:
             place = None
-            loops = 5 if near_pylon else 1
+            max_tries = 200
+            loops = 8 if near_pylon else 1
             try:
                 radius = STRUCTURES_RADIUS[building]
             except:
                 radius = self.structures_max_radius
-            distance = self.GAP_SIZE + radius
+
+            all_pylons = self.ai.structures(unit.PYLON)
+            if building == unit.PYLON and all_pylons.amount < 10:
+                if all_pylons.amount < 6:
+                    distance = 6
+                else:
+                    distance = 3
+            else:
+                distance = self.GAP_SIZE + radius
+
             for k in range(loops):
                 i=0
-                while place is None and i < 50:
+                while place is None and i < max_tries:
                     i+=1
-                    place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
+                    place = self.find_location(near, distance)
+
+                    # place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
 
                     if place:
-                        neighbours = self.ai.structures().filter(lambda x: x.distance_to(place) < x.radius + distance)
-                        if neighbours.amount == 0:
+                        too_close = self.ai.structures().filter(lambda x: x.distance_to(place) < x.radius + distance)
+                        close_enough = self.ai.structures().filter(lambda x: x.distance_to(place)
+                                     < x.radius + distance * 1.2).amount > 0 if building != unit.PYLON else True
+                        if too_close.amount < 2 and close_enough and await self.ai.can_place_single(building, place):
                             break
-                        else:
-                            if i < 50:
-                                place = None
-                if near_pylon and i == 50 and k < loops - 1:
+                        elif i < max_tries:
+                            place = None
+
+                if near_pylon and i == max_tries and k < loops - 1:
                     print('changing pylon...')
                     place = None
                     pylons = self.ai.structures().filter(lambda x: x.is_ready and x.type_id == unit.PYLON
@@ -120,7 +134,10 @@ class Builder:
                     pylons = sorted(pylons, key=lambda x: self.ai.structures().filter(lambda y:
                                                         y.type_id != unit.PYLON and y.distance_to(x) <= 6).amount)
                     if pylons:
-                        near_pylon = pylons[0]
+                        j=0
+                        if k < len(pylons):
+                            j=k
+                        near_pylon = pylons[j]
                         near = near_pylon.position.to2
         else:
             place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
@@ -151,3 +168,21 @@ class Builder:
 
     def increment_build_queue_index(self):
         self.build_queue_index += 1
+
+    def find_location(self, position, distance):
+        j = 1
+        while (not self.in_grid(position) or self.ai.structures().filter(lambda x:
+                                    x.distance_to(position) < x.radius + distance).exists) and j < 4:
+            k = 0
+            while (not self.in_grid(position) or self.ai.structures().filter(lambda x:
+                                    x.distance_to(position) < x.radius + distance).exists) and k < 12:
+                k += 1
+                position = position.random_on_distance(j * 2)
+            j += 1
+        return position
+
+    def in_grid(self, pos):
+        try:
+            return self.ai.in_pathing_grid(pos)
+        except:
+            return False

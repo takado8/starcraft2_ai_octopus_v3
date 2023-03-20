@@ -25,9 +25,6 @@ class Defense:
                     self.ai.main_base_ramp.top_center, -8).towards(self.ai.game_info.map_center, 8))
         if nexuses.amount < 2:
             if walloff_on_second.exists:
-                # second = min(self.ai.expansion_locations_list,
-                #                              key=lambda x: x.distance_to(self.ai.main_base_ramp.bottom_center.towards(
-                #         self.ai.main_base_ramp.top_center, -6)))
                 self.ai.defend_position = self.ai.main_base_ramp.bottom_center.towards(
                     self.ai.main_base_ramp.top_center, -8).towards(self.ai.game_info.map_center, 3)
             else:
@@ -38,9 +35,14 @@ class Defense:
                 if enemy.closer_than(35, nexus).amount > 1:
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
         elif 4 > nexuses.amount > 1:
-            second_nexus = nexuses.closest_to(self.ai.game_info.map_center)
+            if self.ai.structures(unit.TEMPLARARCHIVE).ready.exists and walloff_on_second:
+                second_nexus = nexuses.closest_to(self.ai.game_info.map_center)
+            else:
+                second_nexus = nexuses.closest_to(self.ai.main_base_ramp.bottom_center.towards(
+                    self.ai.main_base_ramp.top_center, -8))
             self.ai.defend_position = second_nexus.position.towards(
                 self.ai.game_info.map_center, 5)
+
         else:
             closest_nexuses = nexuses.closest_n_units(self.ai.enemy_start_locations[0].position, n=2)
             nexus_with_most_workers = max(closest_nexuses, key=lambda x: self.ai.workers.closer_than(15, x).amount)

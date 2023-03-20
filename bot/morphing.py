@@ -71,3 +71,11 @@ class Morphing:
                                   and x.distance_to(self.ai.main_base_ramp.protoss_wall_buildings[0]) < 4)
         for gate in gates:
             gate.smart(gate.position.towards(self.ai.main_base_ramp.bottom_center, -4))
+
+    async def set_second_wall_gates_resp_inside_base(self):
+        gates = self.ai.structures().filter(lambda x: x.type_id == unit.GATEWAY and not x.is_ready
+                                  and x.distance_to(self.ai.main_base_ramp.bottom_center.towards(
+                    self.ai.main_base_ramp.top_center, -10).towards(self.ai.game_info.map_center, 8)) < 8)
+        for gate in gates:
+            gate.smart(gate.position.towards(self.ai.main_base_ramp.bottom_center.towards(
+                    self.ai.main_base_ramp.top_center, -6), 6))

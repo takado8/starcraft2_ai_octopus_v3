@@ -35,14 +35,15 @@ class Army:
             await self.training.train()
 
             destination = None
+            self.defense.assign_defend_position()
             if self.army_status.status == ArmyStatus.ATTACKING:
                 destination = self.attack.select_targets_to_attack()
-                # await self.move_army(target)
+                await self.execute_micro(destination)
             else:
-                self.defense.assign_defend_position()
+                await self.execute_micro(destination)
                 self.defense.defend(self.army_status)
 
-            await self.execute_micro(destination)
+
             self.defense.avoid_aoe()
             if self.attack.enemy_main_base_down:
                 self.scouting.scan_on_end()
