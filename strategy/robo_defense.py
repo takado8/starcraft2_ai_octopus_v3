@@ -51,7 +51,7 @@ class RoboDefense(Strategy):
         build_queue = BuildQueues.ROBO_DEFENSE
         upper_wall = UpperWall(ai)
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=upper_wall.locations_dict)
+                               special_building_locations=[upper_wall.locations_dict])
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
 

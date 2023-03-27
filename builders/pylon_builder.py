@@ -61,7 +61,7 @@ class PylonBuilder:
                         enemy_expansions = sorted(self.ai.expansion_locations_list,
                                                   key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
 
-                        position = enemy_expansions[4]
+                        position = enemy_expansions[5]
                         position = self.ai.mineral_field.closer_than(9, position).center.towards(position, -3)
                     else:
                         position = Point2(self.ai.coords['proxy'])

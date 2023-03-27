@@ -24,6 +24,8 @@ class OracleDefenseMicro(MicroABS):
             # print(abilities)
             threats = enemy.filter(lambda x: x.can_attack_air and x.distance_to(oracle) < x.air_range + 4)
             invisible_threats = enemy.filter(lambda x: not x.has_buff(buff.ORACLEREVELATION) and
+                          not x.has_buff(buff.STASIS) and
+                (x.distance_to(self.ai.defend_position) < 15) if not self.ai.attack else True and
                                                        (x.cloak == 1 or x.type_id in BURROWING_UNITS_IDS))
             anti_air = self.ai.enemy_structures().filter(lambda x: x.type_id in ANTI_AIR_IDS and
                                             x.distance_to(oracle) < x.air_range + x.radius + 4)

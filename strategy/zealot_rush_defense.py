@@ -75,7 +75,7 @@ class ZealotRushDefense(Strategy):
         build_queue = BuildQueues.ZEALOT_RUSH_DEFENSE
         upper_wall = UpperWallGates(ai)
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=upper_wall.locations_dict)
+                               special_building_locations=[upper_wall.locations_dict])
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)

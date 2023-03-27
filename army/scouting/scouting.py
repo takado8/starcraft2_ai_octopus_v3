@@ -59,6 +59,8 @@ class Scouting:
                     self.scouting_index = 0
 
     def gather_enemy_info(self):
+        if self.number_of_scoutings_done % 3 == 0:
+            self.enemy_economy.clear_category(MILITARY)
         # bases
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.enemy_economy.add_units_to_enemy_info(BASES, enemy_bases)

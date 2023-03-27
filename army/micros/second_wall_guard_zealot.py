@@ -15,7 +15,7 @@ class SecondWallGuardZealotMicro(MicroABS):
             cannons = cannons.closest_n_units(self.ai.main_base_ramp.bottom_center, 2)
             location = cannons.center
         else:
-            location = self.ai.main_base_ramp.protoss_wall_warpin
+            location = self.ai.defend_position
         for zealot in zealots:
             try:
                 self.ai.army.remove(zealot)

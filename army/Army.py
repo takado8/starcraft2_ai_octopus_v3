@@ -25,6 +25,7 @@ class Army:
             # time = int(self.ai.time)
             # if time % 5 == 0 and self.last_print_time != time:
             #     self.own_economy.print_own_economy_info()
+            #     self.enemy_economy.print_enemy_info()
             #     self.last_print_time = time
 
 

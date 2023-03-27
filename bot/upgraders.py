@@ -159,8 +159,7 @@ class TwilightUpgrader:
         pass
 
     async def charge(self):
-        if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists and \
-                self.ai.army(unit.ZEALOT).amount > 4:
+        if upgrade.CHARGE not in self.ai.state.upgrades and self.ai.structures(unit.TWILIGHTCOUNCIL).ready.exists:
             tc = self.ai.structures(unit.TWILIGHTCOUNCIL).ready.idle
             if tc.exists:
                 tc = tc.random

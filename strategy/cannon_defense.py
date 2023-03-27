@@ -1,12 +1,17 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.archon import ArchonMicro
+from army.micros.carrier import CarrierMicro
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
+from army.micros.observer import ObserverMicro
+from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.probe import ProbeMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
+from army.micros.tempest import TempestMicro
+from army.micros.voidray import VoidrayMicro
 from army.micros.warpprism import WarpPrismMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
@@ -20,7 +25,7 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader
-from army.divisions import WARPPRISM_x1
+from army.divisions import WARPPRISM_x1, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, TEMPEST_x5
 from sc2.unit import UnitTypeId as unit
 
 
@@ -37,17 +42,24 @@ class CannonDefense(Strategy):
         archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         colossus_micro = ColossusMicro(ai)
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [wall_guard_zealot_micro],
-                                  Movements(ai, 0.33), lifetime=400)
-        army_units = {unit.ZEALOT: 15, unit.STALKER: 10, unit.IMMORTAL: 4, unit.ARCHON: 10,
-                      unit.SENTRY: 3, unit.OBSERVER: 1, unit.COLOSSUS: 4, unit.DISRUPTOR: 6}
+        tempest_micro = TempestMicro(ai)
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                  Movements(ai, 0.33))
+        army_units = {unit.STALKER: 2, unit.IMMORTAL: 2,
+                      unit.SENTRY: 2, unit.OBSERVER: 1, unit.COLOSSUS: 4, unit.DISRUPTOR: 6}
 
         self.army.create_division('main_army', army_units, [zealot_micro, stalker_micro, sentry_micro, immortal_micro,
                                         archon_micro,disruptor_micro,colossus_micro], Movements(ai, 0.7))
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
+        self.army.create_division('voidrays1', VOIDRAY_x3, [VoidrayMicro(ai)], Movements(ai))
+        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-300)
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
+        self.army.create_division('carriers1', {unit.CARRIER: 6}, [CarrierMicro(ai)], Movements(ai))
+        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
+        # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
 
         map_service = MapPositionsService(ai)
-        locations_dict = map_service.load_positions_dict('early_cannon')
+        locations_dict = map_service.load_positions_dict('early_cannon2')
         build_queue = BuildQueues.CANNON_DEFENSE
         # upper_wall = UpperWall(ai)
         special_locations = [locations_dict]
@@ -67,7 +79,7 @@ class CannonDefense(Strategy):
     async def handle_workers(self):
         # self.probes_micro.do_micro()
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
-        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=2)
+        self.workers_distribution.distribute_workers(minerals_to_gas_ratio=1)
         if mineral_workers:
             self.speed_mining.execute(mineral_workers)
         else:
@@ -79,10 +91,10 @@ class CannonDefense(Strategy):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
-        await self.battery_builder.build_batteries()
+        await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=4)
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=2)
+        self.assimilator_builder.max_vespene()
 
 
     # =======================================================  Upgraders

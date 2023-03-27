@@ -14,7 +14,6 @@ from bot.strategy_manager import StrategyManager
 from bot.cancel_build import cancel_damaged_build
 import traceback
 
-# from data_analysis.map_tools.map_positions_service import MapPositionsService
 from data_analysis.map_tools.map_positions_service import MapPositionsService
 from data_analysis.test_bot_zerg_roach import RoachBurrowBot
 from data_analysis.test_bot_zerg_rush import SimpleZergBot
@@ -116,8 +115,8 @@ class OctopusV3(sc2.BotAI):
             print(ex)
 
     async def on_step(self, iteration: int):
-        # if self.structures(unit.CYBERNETICSCORE).amount > 0:
-        #     self.map_service.save_positions_json('cannon_rush_defense')
+        # if self.units(unit.ZEALOT).amount > 0:
+        #     self.map_service.save_positions_json('early_cannon2')
         #     time.sleep(1)
         #     exit(12)
         if self.iteration == 10:
@@ -271,11 +270,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -317,7 +316,7 @@ if __name__ == '__main__':
     for i in range(1, 6):
         print('\n---------------------- game {} -----------------------------\n'.format(i))
         start = time.time()
-        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=1)
+        win, killed_minerals, killed_gas, lost_minerals, lost_gas = test(real_time=0)
         stop = time.time()
         results.append((win, killed_minerals, killed_gas, lost_minerals, lost_gas))
         print('result: {} time elapsed: {} s'.format('win' if win else 'lost', int(stop - start)))

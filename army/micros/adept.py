@@ -30,7 +30,7 @@ class AdeptMicro(MicroABS):
                     queue = False
                     if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept) and \
                             adept.distance_to(self.ai.enemy_start_locations[0]) < \
-                        self.ai.start_location.position.distance_to(self.ai.enemy_start_locations[0]) * 0.4:
+                        self.ai.start_location.position.distance_to(self.ai.enemy_start_locations[0]) * 0.15:
                         adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, adept.position)
                         queue = True
                     if threats.exists:

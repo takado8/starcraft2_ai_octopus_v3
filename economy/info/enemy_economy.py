@@ -7,6 +7,8 @@ MILITARY = 'military'
 
 class EnemyEconomy:
     def __init__(self, ai: BotAI):
+        self.enemy_army_supply = 0
+        self.enemy_army_value = 0
         self.ai = ai
         self.enemy_info = {}
         self.total_enemy_ground_dps = 0
@@ -28,15 +30,27 @@ class EnemyEconomy:
             for unit in units:
                 self.enemy_info[category][unit.tag] = unit
 
+    def clear_category(self, category):
+        if category in self.enemy_info:
+            self.enemy_info.pop(category)
+
     def calculate_enemy_units_report(self):
         self.lost_units_cost()
         self.total_enemy_ground_dps = 0
         self.total_enemy_hp = 0
+        self.enemy_army_value = 0
+        self.enemy_army_supply = 0
         if MILITARY in self.enemy_info:
             for unit_tag in self.enemy_info[MILITARY]:
                 unit = self.enemy_info[MILITARY][unit_tag]
                 self.total_enemy_ground_dps += unit.ground_dps
                 self.total_enemy_hp += unit.health + unit.shield
+                unit_cost = self.ai.calculate_cost(unit.type_id)
+                self.enemy_army_value += unit_cost.minerals + unit_cost.vespene
+                unit_data = self.ai._game_data.units[unit.type_id.value]
+                unit_supply_cost = unit_data._proto.food_required
+                self.enemy_army_supply += unit_supply_cost
+
 
     def remove_unit_from_enemy_info(self, unit_tag):
         for category in self.enemy_info:
@@ -62,4 +76,7 @@ class EnemyEconomy:
         print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))
         print('lost minerals army: {}'.format(self.lost_minerals_army))
         print('lost gas army: {}'.format(self.lost_gas_army))
+        print('value army: {}'.format(self.enemy_army_value))
+        print('supply army: {}'.format(self.enemy_army_supply))
+
         print('-------------------- end of enemy info ----------------------')

@@ -75,12 +75,14 @@ class BuildQueues:
            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
            unit.GATEWAY, unit.NEXUS]
 
-    CANNON_DEFENSE = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
-                      unit.PHOTONCANNON, unit.CYBERNETICSCORE,  unit.NEXUS, 6,
-                           unit.GATEWAY, 8, unit.ROBOTICSFACILITY, 30, unit.NEXUS, unit.TWILIGHTCOUNCIL,
-                           unit.GATEWAY, 20, unit.TEMPLARARCHIVE, unit.GATEWAY,
-                           unit.GATEWAY, unit.NEXUS,unit.ROBOTICSBAY, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.GATEWAY, 30, unit.FORGE,
-                           unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
+    CANNON_DEFENSE = [unit.PYLON, unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
+                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
+                      10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.ROBOTICSFACILITY, unit.ROBOTICSBAY,
+                      unit.STARGATE,unit.NEXUS, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                      unit.GATEWAY, unit.GATEWAY, unit.STARGATE, unit.NEXUS,
+                      unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
+                      unit.GATEWAY, unit.ROBOTICSFACILITY,unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                           unit.GATEWAY,
                            unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                            unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
@@ -92,3 +94,10 @@ class BuildQueues:
                       unit.GATEWAY, unit.GATEWAY, unit.NEXUS,  unit.GATEWAY,
                       unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSBAY,
                       unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+
+    PROXY_MIX = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, 16, unit.NEXUS,
+                    unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
+                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                    unit.ROBOTICSFACILITY,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]

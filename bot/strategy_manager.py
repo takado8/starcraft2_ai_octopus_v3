@@ -6,6 +6,7 @@ from strategy.cannon_defense import CannonDefense
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.dts import DTs
 from strategy.oracle_defense import OracleDefenseUpdated
+from strategy.proxy_mix import ProxyMix
 from strategy.robo_defense import RoboDefense
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
@@ -29,7 +30,7 @@ class StrategyManager:
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = CannonDefense
+        self.default_strategy = ProxyMix
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
