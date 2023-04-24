@@ -1,78 +1,61 @@
-import os
-import sys
 import json
 from sc2.unit import UnitTypeId as unit
-from sc2.position import Point2
+
+from bot.constants import BASES_IDS
+from data_analysis.map_tools.positions_file_utils import PositionsFileUtils
+from data_analysis.map_tools.positions_loader import PositionsLoader
 
 
-class MapPositionsService:
-    def __init__(self, ai):
-        self.ai = ai
-        self.positions_dict = {}
+class MapPositionsService(PositionsFileUtils):
+    def __init__(self, ai, positions_name):
+        super().__init__(ai)
+        self.added_positions = set()
+        self.positions_name = positions_name
+        positions_loader = PositionsLoader(ai)
+        self.positions_dict = positions_loader.load_positions_dict(positions_name,
+                                                                   load_opposite_start_location=True)
+        for start_location in self.positions_dict:
+            for unit_id in self.positions_dict[start_location]:
+                for position in self.positions_dict[start_location][unit_id]:
+                    self.added_positions.add(position)
 
-        directory = os.path.realpath(sys.argv[0]) if sys.argv[0] else ''
-        if directory:
-            directory = os.path.dirname(os.path.abspath(directory))
-        self.saved_positions_dir = os.path.join(directory, 'data_analysis', 'map_tools', 'saved_positions')
-
-    def get_positions(self, start_location):
-        for structure in self.ai.structures().filter(lambda x: x.type_id not in self.ai.bases_ids and
+    def get_structures_positions(self):
+        start_location = self.start_location
+        if start_location not in self.positions_dict:
+            self.positions_dict[start_location] = {}
+        for structure in self.ai.structures().filter(lambda x: x.type_id not in BASES_IDS and
                                                      x.type_id != unit.ASSIMILATOR):
-            type_id_int = structure.type_id.value
-            if type_id_int not in self.positions_dict[start_location]:
-                self.positions_dict[start_location][type_id_int] = [structure.position_tuple]
-            else:
-                self.positions_dict[start_location][type_id_int].append(structure.position_tuple)
+            if structure.position not in self.added_positions:
+                self.added_positions.add(structure.position)
+                type_id = structure.type_id
+                if type_id not in self.positions_dict[start_location]:
+                    self.positions_dict[start_location][type_id] = [structure.position]
+                else:
+                    self.positions_dict[start_location][type_id].append(structure.position)
 
-    def save_positions_json(self, locations_name):
-        self._load_positions_to_edit(locations_name)
-        start_location = self._get_start_location()
-        self.positions_dict[start_location] = {}
-        self.get_positions(start_location)
-        filename = self._get_filename(locations_name)
+    def get_units_position(self):
+        start_location = self.start_location
+        if start_location not in self.positions_dict:
+            self.positions_dict[start_location] = {}
+        for unit_ in self.ai.units().filter(lambda x: x.type_id == unit.ZEALOT):
+            if unit_.position not in self.added_positions:
+                self.added_positions.add(unit_.position)
+                type_id = unit_.type_id
+                if type_id not in self.positions_dict[start_location]:
+                    self.positions_dict[start_location][type_id] = [unit_.position]
+                else:
+                    self.positions_dict[start_location][type_id].append(unit_.position)
+
+    def save_positions_json(self):
+        self.get_structures_positions()
+        self.get_units_position()
+        filename = self.get_filename(self.positions_name)
+        positions_dict_to_save = {}
+        for start_location in self.positions_dict:
+            positions_dict_to_save[start_location] = {}
+            for unit_id in self.positions_dict[start_location]:
+                positions_dict_to_save[start_location][unit_id.value] =\
+                    [(round(position.x,2), round(position.y,2)) for position in self.positions_dict[start_location][unit_id]]
+
         with open(filename, 'w+') as file:
-            json.dump(self.positions_dict, file)
-
-    def _load_positions_to_edit(self, locations_name):
-        filename = self._get_filename(locations_name)
-        if os.path.isfile(filename):
-            with open(filename) as file:
-                positions_dict = json.load(file)
-
-            for start_location in positions_dict:
-                self.positions_dict[start_location] = {}
-
-                for id in positions_dict[start_location]:
-                    self.positions_dict[start_location][id] = [Point2(position) for position in positions_dict[start_location][id]]
-
-    def load_positions_dict(self, locations_name):
-        print('loading locations for map...')
-        filename = self._get_filename(locations_name)
-        if os.path.isfile(filename):
-            with open(filename) as file:
-                positions_dict = json.load(file)
-
-            start_location = self._get_start_location()
-            if start_location in positions_dict:
-                self.positions_dict[start_location] = {}
-                for id in positions_dict[start_location]:
-                    self.positions_dict[start_location][unit(int(id))] = [Point2(position) for position in
-                                                               positions_dict[start_location][id]]
-            else:
-                print('No locations for start location {} at map {}'.format(start_location,
-                                                                                 self.ai.game_info.map_name))
-                return False
-        else:
-            print('No locations file for map {} at {}'.format(self.ai.game_info.map_name,
-                                                              filename))
-            return False
-        print('Done')
-        print(self.positions_dict[start_location])
-        return self.positions_dict[start_location]
-
-    def _get_filename(self, locations_name):
-        map_name = self.ai.game_info.map_name
-        return os.path.join(self.saved_positions_dir, '{}_{}.json'.format(map_name, locations_name))
-
-    def _get_start_location(self):
-        return str((self.ai.start_location.x, self.ai.start_location.y))
+            json.dump(positions_dict_to_save, file)
