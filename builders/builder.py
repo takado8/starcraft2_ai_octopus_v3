@@ -41,7 +41,7 @@ class Builder:
                 all_done = False
                 # print('need to build: {}'.format(building))
                 if self.ai.can_afford(building) and self.ai.already_pending(building) < \
-                        (2 if building in {unit.GATEWAY, unit.PHOTONCANNON, unit.SHIELDBATTERY} else 1):
+                        (2 if building in {unit.PYLON, unit.GATEWAY, unit.PHOTONCANNON, unit.SHIELDBATTERY} else 1):
                     if building == unit.NEXUS:
                         await self.expander.expand()
                         return
@@ -58,14 +58,14 @@ class Builder:
                         for location in locations:
                             if not self.ai.structures(all_building_types if all_building_types else building)\
                                     .closer_than(1, location).exists:
-                                await self.ai.build(building, near=location,
+                                await self.build(building, near=location,
                                                 placement_step=1, max_distance=1,
                                                 random_alternative=False, validate_location=False)
                                 return
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
-                        await self.ai.build(building, near=pylon, placement_step=4, max_distance=60,
+                        await self.build(building, near=pylon, placement_step=4, max_distance=60,
                                         random_alternative=True)
                         # else:
                             # print("pylon is none")
@@ -146,7 +146,7 @@ class Builder:
             # print('position none')
             return False
         # validate
-        if self.validator.is_valid_location(place.x, place.y):
+        if not validate_location or self.validator.is_valid_location(place.x, place.y):
             # print("valid location for " + str(building) + ": "+ str(p))
             builder = build_worker or self.ai.select_build_worker(place)
             if builder is None:
