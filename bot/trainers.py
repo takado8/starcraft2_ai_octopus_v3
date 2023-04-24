@@ -1,5 +1,6 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.ability_id import AbilityId as ability
+from sc2.ids.buff_id import BuffId as buff
 from sc2 import Race
 
 
@@ -9,7 +10,7 @@ class NexusTrainer:
 
     def probes_standard(self):
         workers = self.ai.workers.amount
-        if workers > 60:
+        if workers > 68:
             return
         nexuses_amount = self.ai.townhalls().amount
         assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
