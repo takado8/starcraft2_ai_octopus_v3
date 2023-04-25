@@ -65,7 +65,7 @@ class EnemyData:
             json.dump(self.enemy_data_dict, file)
 
     def load_general_stats_dict(self):
-        self.general_stats_filepath = os.path.join(self.dir_path, 'data', 'enemy_info', 'general_stats.json')
+        self.general_stats_filepath = os.path.join(self.dir_path, 'data', 'enemy_info', 'general_stats2.json')
         if os.path.isfile(self.general_stats_filepath):
             with open(self.general_stats_filepath, 'r') as file:
                 general_stats = json.load(file)
