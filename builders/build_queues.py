@@ -9,20 +9,12 @@ class BuildQueues:
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    ADEPT_RUSH = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, 32,
-                  unit.NEXUS,
-                  unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,
-                  unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY,
-                  unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
-
-    ADEPT_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.SHIELDBATTERY, 6,
-                     unit.GATEWAY, unit.GATEWAY, 12,  unit.GATEWAY, unit.NEXUS, unit.TWILIGHTCOUNCIL,
-                     unit.TEMPLARARCHIVE, unit.GATEWAY, unit.NEXUS, 26, unit.FORGE, unit.GATEWAY,
-                     unit.GATEWAY,unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,  30, unit.FORGE,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSBAY,
-                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+    STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS,
+                    unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
+                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                    unit.ROBOTICSFACILITY,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
     ZEALOT_RUSH_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, 4, unit.SHIELDBATTERY, 6,
                            unit.GATEWAY, unit.GATEWAY, 8, unit.NEXUS, unit.TWILIGHTCOUNCIL,
@@ -76,12 +68,14 @@ class BuildQueues:
            unit.GATEWAY, unit.NEXUS]
 
     CANNON_DEFENSE = [unit.PYLON, unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
-                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
-                      10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.ROBOTICSFACILITY, unit.ROBOTICSBAY,
-                      unit.STARGATE,unit.NEXUS, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, 6, unit.NEXUS, unit.SHIELDBATTERY, unit.ROBOTICSFACILITY,
+                      15, unit.GATEWAY,
+                      unit.GATEWAY, 20,  unit.SHIELDBATTERY,unit.TWILIGHTCOUNCIL,
+                      32,unit.NEXUS, unit.ROBOTICSBAY, unit.STARGATE,  unit.FLEETBEACON,
+                     unit.NEXUS, unit.STARGATE, unit.STARGATE, unit.NEXUS,
                       unit.GATEWAY, unit.GATEWAY, unit.STARGATE, unit.NEXUS,
                       unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.GATEWAY,
-                      unit.GATEWAY, unit.ROBOTICSFACILITY,unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                      unit.GATEWAY, unit.ROBOTICSFACILITY,unit.NEXUS,
                            unit.GATEWAY,
                            unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                            unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
