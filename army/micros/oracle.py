@@ -87,9 +87,9 @@ class OracleMicro(MicroABS):
                                      for oracle2 in all_oracles])
 
                 if condition:
-                    queens = self.ai.enemy_units(unit.QUEEN).ready
-                    if queens:
-                        queens = queens.closer_than(12, oracle)
+                    # queens = self.ai.enemy_units(unit.QUEEN).ready
+                    # if queens:
+                    #     queens = queens.closer_than(12, oracle)
 
                     if workers.amount < 1:
                         if self.enemy_base_idx >= len(self.mineral_lines):
@@ -122,7 +122,7 @@ class OracleMicro(MicroABS):
                                 oracle.move(self.mineral_lines[self.enemy_base_idx].towards(self.ai.enemy_start_locations[0], -22))
                             else:
                                 oracle.move(attack_position)
-                    elif workers.amount > 1 and oracle.is_idle or queens.amount == 1:
+                    elif workers.amount > 1 and oracle.is_idle:# or queens.amount == 1:
                         self.oracle_first_position_visited = False
                         target = None
                         if self.ai.enemy_race == Race.Terran:
@@ -138,8 +138,8 @@ class OracleMicro(MicroABS):
                                         min_dist = dist
                                         target = closest_worker
                                 print('target {}'.format(target))
-                        if queens.amount == 1:
-                            target = queens.first
+                        # if queens.amount == 1:
+                        #     target = queens.first
                         if target is None:
                             workers_in_range = workers.closer_than(5,oracle.position)
                             if workers_in_range.exists:
