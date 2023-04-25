@@ -93,7 +93,7 @@ class Chronobooster:
 
 
     def rush_defense(self):
-        if self.ai.structures(unit.NEXUS).exists and self.ai.structures(unit.PYLON).ready.exists:
+        if self.ai.structures(unit.NEXUS).exists:
             nexuses = self.ai.structures().filter(
                 lambda x: x.type_id == unit.NEXUS and x.is_ready and x.energy >= 50).sorted(key=lambda x:
                                                                                             x.energy)
