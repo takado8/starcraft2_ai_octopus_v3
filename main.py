@@ -31,6 +31,9 @@ class OctopusV3(sc2.BotAI):
     structures_amount = 0
 
     def __init__(self):
+        self.building_time = 0
+        self.army_time = 0
+        self.workers_time = 0
         super().__init__()
         self.spot_validator = BuildingSpotValidator(self)
         self.attack = False
@@ -117,6 +120,8 @@ class OctopusV3(sc2.BotAI):
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
+        if iteration % 100 == 0:
+            print('\narmy: {}\nworkers: {}\nbuild: {}\n'.format(self.army_time, self.workers_time, self.building_time))
         try:
             self.iteration = iteration
             self.save_stats()
@@ -132,12 +137,19 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 01')
             print(ex)
         try:
+            start1 = time.time()
+
             await self.strategy.army_execute()
+            end = time.time()
+            self.army_time += end - start1
         except:
             await self.chat_send('Error 02')
             print(traceback.print_exc())
         try:
+            start2 = time.time()
             await self.strategy.handle_workers()
+            end2 = time.time()
+            self.workers_time += end2 - start2
         except Exception:
             await self.chat_send('Error 03')
             print(traceback.print_exc())
@@ -190,7 +202,10 @@ class OctopusV3(sc2.BotAI):
             # print('army priority: {}'.format(self.army_priority))
             if (not self.army_priority or (self.minerals > 700 and self.vespene > 350)) and not lock_spending:
                 # print('build from main.')
+                start3 = time.time()
                 await self.strategy.build_from_queue()
+                end3 = time.time()
+                self.building_time += end3 - start3
         except:
             await self.chat_send('Error 08')
             print(traceback.print_exc())

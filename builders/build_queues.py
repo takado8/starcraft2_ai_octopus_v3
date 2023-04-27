@@ -9,10 +9,11 @@ class BuildQueues:
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS,
-                    unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,
-                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
-                    unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+    STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY,
+                    unit.GATEWAY, 32, unit.NEXUS,
+                    unit.ROBOTICSBAY, 40, unit.NEXUS, unit.FORGE,  unit.TWILIGHTCOUNCIL,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,50, unit.NEXUS, unit.GATEWAY, unit.FORGE,
+                    unit.GATEWAY,50, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
@@ -36,6 +37,12 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
+    SKYTOSS_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY,
+                       26, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
+               40, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, unit.STARGATE,
+               unit.NEXUS, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+               unit.STARGATE, unit.STARGATE, unit.NEXUS,
+               unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     ORACLE_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
                       10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.STARGATE,

@@ -1,5 +1,7 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.archon import ArchonMicro
+from army.micros.colossus import ColossusMicro
+from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
 from army.micros.sentry import SentryMicro
@@ -19,21 +21,18 @@ from army.divisions import STALKER_x10, ZEALOT_x10
 from sc2.unit import UnitTypeId as unit
 
 
-class StalkerDefense(Strategy):
+class StalkerDefenseUpdated(Strategy):
     def __init__(self, ai):
-        super().__init__(type='rush', name='StalkerDefense', ai=ai)
+        super().__init__(type='defense', name='StalkerDefenseUpdated', ai=ai)
 
         stalker_micro = StalkerMicro(ai)
-        self.army.create_division('zealots', ZEALOT_x10, [ZealotMicro(ai)], Movements(ai, 0.1), lifetime=-420)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3))
-        # self.army.create_division('stalkers3', STALKER_x10, [stalker_micro], Movements(ai))
-        # self.army.create_division('stalkers4', STALKER_x10, [stalker_micro], Movements(ai))
-        # self.army.create_division('stalkers5', STALKER_x10, [stalker_micro], Movements(ai))
-        main_army = {unit.IMMORTAL: 7, unit.ARCHON: 8, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
-        self.army.create_division('main_army', main_army, [stalker_micro, ArchonMicro(ai), SentryMicro(ai),
-                                                           ImmortalMicro(ai), ObserverMicro(ai), WarpPrismMicro(ai)],
-                                  Movements(ai, 0.7), lifetime=-380)
+
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=360)
+        main_army = {unit.IMMORTAL: 7, unit.COLOSSUS: 4, unit.DISRUPTOR: 4, unit.SENTRY: 4, unit.OBSERVER: 1,
+                     unit.WARPPRISM: 1, unit.STALKER: 15, unit.ZEALOT: 12}
+        self.army.create_division('main_army', main_army, [stalker_micro, ZealotMicro(ai), ColossusMicro(ai), DisruptorMicro(ai),
+                                        SentryMicro(ai), ImmortalMicro(ai), ObserverMicro(ai), WarpPrismMicro(ai)],
+                                  Movements(ai, 0.7), lifetime=-360)
 
         build_queue = BuildQueues.STALKER_DEFENSE
         upper_wall = UpperWall(ai)
@@ -62,16 +61,16 @@ class StalkerDefense(Strategy):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
-        await self.pylon_builder.proxy()
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=1)
+        self.assimilator_builder.standard(minerals_to_gas_ratio=2)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
         self.forge_upgrader.standard()
         await self.twilight_upgrader.blink()
+        await self.twilight_upgrader.charge()
 
     # =======================================================  Trainers
 
@@ -85,10 +84,10 @@ class StalkerDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return (not self.ai.first_attack) and self.condition_attack.army_supply_over(30)
+        return self.condition_attack.total_supply_over(194)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(10)
+        return self.condition_retreat.army_supply_less_than(50)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack_wide_range()

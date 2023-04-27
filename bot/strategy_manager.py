@@ -5,7 +5,8 @@ from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
-from strategy.stalker_defense import StalkerDefense
+from strategy.skytoss_defense import SkyTossDefense
+from strategy.stalker_defense import StalkerDefenseUpdated
 from strategy.stalker_proxy import StalkerProxy
 from strategy.zealot_rush_defense import ZealotRushDefense
 
@@ -13,12 +14,13 @@ from strategy.zealot_rush_defense import ZealotRushDefense
 class StrategyManager:
     strategy_name_dict = {
         'StalkerProxy': StalkerProxy,
-        'StalkerDefense': StalkerDefense,
+        'StalkerDefenseUpdated': StalkerDefenseUpdated,
         'SkyToss': SkyToss,
         'OracleDefenseUpdated': OracleDefenseUpdated,
         'ZealotRushDefense': ZealotRushDefense,
         'SkytossCarriers': SkytossCarriers,
         'AirOracle': AirOracle
+        # 'SkyTossDefense': SkyTossDefense
     }
 
     def __init__(self, enemy_data: EnemyData):
