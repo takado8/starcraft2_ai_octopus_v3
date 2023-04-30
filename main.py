@@ -17,6 +17,7 @@ from data_analysis.map_tools.map_positions_service import MapPositionsService
 from data_analysis.test_bot_zerg_roach import RoachBurrowBot
 from data_analysis.test_bot_zerg_rush import SimpleZergBot
 from data_analysis.worker_rush import WorkerRushZergBot
+import time
 
 
 class OctopusV3(sc2.BotAI):
@@ -120,8 +121,8 @@ class OctopusV3(sc2.BotAI):
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
-        if iteration % 100 == 0:
-            print('\narmy: {}\nworkers: {}\nbuild: {}\n'.format(self.army_time, self.workers_time, self.building_time))
+        # if iteration % 100 == 0:
+        #     print('\narmy: {}\nworkers: {}\nbuild: {}\n'.format(self.army_time, self.workers_time, self.building_time))
         try:
             self.iteration = iteration
             self.save_stats()
@@ -132,24 +133,22 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 00')
             print(ex)
         try:
+            await self.strategy.execute_interfaces()
+        except:
+            await self.chat_send('Error 13')
+            print(traceback.print_exc())
+        try:
             await self.strategy.morphing()
         except Exception as ex:
             await self.chat_send('Error 01')
             print(ex)
         try:
-            start1 = time.time()
-
             await self.strategy.army_execute()
-            end = time.time()
-            self.army_time += end - start1
         except:
             await self.chat_send('Error 02')
             print(traceback.print_exc())
         try:
-            start2 = time.time()
             await self.strategy.handle_workers()
-            end2 = time.time()
-            self.workers_time += end2 - start2
         except Exception:
             await self.chat_send('Error 03')
             print(traceback.print_exc())
@@ -202,10 +201,8 @@ class OctopusV3(sc2.BotAI):
             # print('army priority: {}'.format(self.army_priority))
             if (not self.army_priority or (self.minerals > 700 and self.vespene > 350)) and not lock_spending:
                 # print('build from main.')
-                start3 = time.time()
                 await self.strategy.build_from_queue()
-                end3 = time.time()
-                self.building_time += end3 - start3
+
         except:
             await self.chat_send('Error 08')
             print(traceback.print_exc())
@@ -214,6 +211,7 @@ class OctopusV3(sc2.BotAI):
         except:
             await self.chat_send('Error 12')
             print(traceback.print_exc())
+
 
 
 
@@ -279,11 +277,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -320,7 +318,7 @@ def test(real_time=0):
 
 
 if __name__ == '__main__':
-    import time
+    # import time
     results = []
     for i in range(1, 6):
         print('\n---------------------- game {} -----------------------------\n'.format(i))

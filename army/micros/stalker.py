@@ -2,6 +2,8 @@ from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2 import Race
+
+from bot.constants import WORKERS_IDS
 from .microABS import MicroABS
 
 
@@ -43,14 +45,36 @@ class StalkerMicro(MicroABS):
                     if self.ai.enemy_race == Race.Terran:
                         # deal with terran bunkers
                         bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
-                        if bunkers and not threats or not any([t.target_in_range(stalker) for t in threats]):
-                            workers_near_bunkers = enemy.filter(lambda x: x.type_id == unit.SCV and
-                                                                  any([x.distance_to(building) < 3 for building in
-                                                                       bunkers]))
-                            if workers_near_bunkers:
-                                threats = workers_near_bunkers
-                            else:
-                                threats = bunkers
+                        if bunkers:
+                            closest_bunker = bunkers.closest_to(stalker)
+
+                            # try to go pass over it
+                            closest_minerals = self.ai.mineral_field.closest_to(closest_bunker)
+                            can_pass = await self.ai._client.query_pathing(stalker.position, closest_minerals.position)
+                            if can_pass:
+                                # avoid bunker range
+                                if stalker.distance_to(closest_bunker) < 8:
+                                    stalker.move(stalker.position.towards(closest_bunker, -4))
+                                    continue
+                                # go kill tanks
+                                tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED})
+                                if tanks:
+                                    threats = tanks
+                                # or workers if no threats
+                                elif not threats:
+                                    workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
+                                                           x.distance_to(closest_minerals) < 10)
+                                    threats = workers
+
+
+                            elif not threats or not any([t.target_in_range(stalker) for t in threats]):
+                                workers_near_bunkers = enemy.filter(lambda x: x.type_id == unit.SCV and
+                                                                      any([x.distance_to(building) < 3 for building in
+                                                                           bunkers]))
+                                if workers_near_bunkers:
+                                    threats = workers_near_bunkers
+                                else:
+                                    threats = bunkers
                         # deal with terran ramp
                         if not threats or threats.exists and not threats.in_attack_range_of(stalker):
                             enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
@@ -58,7 +82,7 @@ class StalkerMicro(MicroABS):
                             wall_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in {unit.SUPPLYDEPOT,
                                     unit.BARRACKS,unit.BARRACKSREACTOR} and x.distance_to(enemy_main_ramp) < 5 and
                                                                                          x.distance_to(stalker) < dist)
-                            if wall_buildings:
+                            if wall_buildings.amount >= 3:
                                 workers_near_wall = enemy.filter(lambda x: x.type_id == unit.SCV and
                                                                    any([x.distance_to(building) < 3 for building in
                                                                         wall_buildings]))

@@ -12,6 +12,7 @@ from economy.info.enemy_economy import EnemyEconomy
 from economy.info.own_economy import OwnEconomy
 from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
+from strategy.interfaces.secure_expansion_locations import SecureExpansionLocations
 
 
 class Strategy:
@@ -43,7 +44,12 @@ class Strategy:
 
         self.morphing_ = Morphing(ai)
 
+        # interfaces
+        self.secure_exp_locations = SecureExpansionLocations(ai)
 
+
+    async def execute_interfaces(self):
+        await self.secure_exp_locations.execute()
 
     async def handle_workers(self):
         raise NotImplementedError

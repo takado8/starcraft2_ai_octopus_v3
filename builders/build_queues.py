@@ -37,12 +37,13 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    SKYTOSS_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.ROBOTICSFACILITY,
-                       26, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
-               40, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, unit.STARGATE,
-               unit.NEXUS, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
-               unit.STARGATE, unit.STARGATE, unit.NEXUS,
-               unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+    SKYTOSS_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.SHIELDBATTERY, 8, unit.STARGATE,
+                       unit.FLEETBEACON, unit.GATEWAY,
+                        20, unit.NEXUS,  unit.ROBOTICSFACILITY, unit.GATEWAY,unit.FORGE, unit.GATEWAY,
+               40, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.STARGATE, unit.ROBOTICSFACILITY, unit.ROBOTICSBAY, 60,
+               unit.NEXUS, unit.STARGATE, unit.NEXUS, 80,
+               unit.STARGATE, unit.STARGATE, unit.NEXUS, unit.GATEWAY,  unit.GATEWAY,
+               unit.STARGATE,unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     ORACLE_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
                       10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.STARGATE,

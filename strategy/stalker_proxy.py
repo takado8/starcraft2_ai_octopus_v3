@@ -8,6 +8,7 @@ from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
+from builders.proxy_gate_builder import ProxyGateBuilder
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -42,6 +43,7 @@ class StalkerProxy(Strategy):
         self.twilight_upgrader = TwilightUpgrader(ai)
         self.forge_upgrader = ForgeUpgrader(ai)
         self.worker_rush_defense = WorkerRushDefense(ai)
+        self.proxy_gate_builder = ProxyGateBuilder(ai)
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -55,10 +57,12 @@ class StalkerProxy(Strategy):
     async def build_from_queue(self):
         await self.builder.build_from_queue()
         await self.battery_builder.build_batteries()
+        await self.proxy_gate_builder.build_proxy_gate()
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()
         await self.pylon_builder.proxy()
+
 
     def build_assimilators(self):
         self.assimilator_builder.standard(minerals_to_gas_ratio=1)

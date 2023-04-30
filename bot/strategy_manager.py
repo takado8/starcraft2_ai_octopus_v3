@@ -25,7 +25,7 @@ class StrategyManager:
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = SkyTossDefense
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

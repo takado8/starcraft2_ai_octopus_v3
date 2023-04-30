@@ -32,12 +32,14 @@ from sc2.unit import UnitTypeId as unit
 class CannonDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='CannonDefense', ai=ai)
+        map_service = MapPositionsService(ai)
+        locations_dict = map_service.load_positions_dict('cannon_wall')
 
         stalker_micro = StalkerMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
-        wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai)
+        wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
         warpprism_micro = WarpPrismMicro(ai)
         archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
@@ -45,21 +47,22 @@ class CannonDefense(Strategy):
         tempest_micro = TempestMicro(ai)
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.33))
-        army_units = {unit.STALKER: 2, unit.IMMORTAL: 2,
-                      unit.SENTRY: 2, unit.OBSERVER: 1, unit.COLOSSUS: 4, unit.DISRUPTOR: 6}
+        self.army.create_division('zealots', {unit.ZEALOT: 12}, [zealot_micro], Movements(ai, 0.33), lifetime=-420)
+
+        army_units = {unit.STALKER: 7, unit.IMMORTAL: 4, unit.SENTRY: 2, unit.OBSERVER: 1, unit.COLOSSUS: 4,
+                      unit.DISRUPTOR: 4, unit.CARRIER: 4, unit.TEMPEST: 5, unit.VOIDRAY: 2}
 
         self.army.create_division('main_army', army_units, [zealot_micro, stalker_micro, sentry_micro, immortal_micro,
-                                        archon_micro,disruptor_micro,colossus_micro], Movements(ai, 0.7))
+         archon_micro, disruptor_micro, colossus_micro, CarrierMicro(ai), tempest_micro, VoidrayMicro(ai)], Movements(ai, 0.7))
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
-        self.army.create_division('voidrays1', VOIDRAY_x3, [VoidrayMicro(ai)], Movements(ai))
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-300)
+        # self.army.create_division('voidrays1', VOIDRAY_x3, [VoidrayMicro(ai)], Movements(ai))
+        # self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-300)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
-        self.army.create_division('carriers1', {unit.CARRIER: 6}, [CarrierMicro(ai)], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
+        # self.army.create_division('carriers1', {unit.CARRIER: 3}, [CarrierMicro(ai)], Movements(ai))
+        # self.army.create_division('tempests1', {unit.TEMPEST: 7}, [tempest_micro], Movements(ai))
         # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
 
-        map_service = MapPositionsService(ai)
-        locations_dict = map_service.load_positions_dict('early_cannon2')
+
         build_queue = BuildQueues.CANNON_DEFENSE
         # upper_wall = UpperWall(ai)
         special_locations = [locations_dict]
@@ -91,17 +94,19 @@ class CannonDefense(Strategy):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
-        await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=4)
+        await self.battery_builder.build_batteries(when_minerals_more_than=600, amount=3)
 
     def build_assimilators(self):
-        self.assimilator_builder.max_vespene()
+        self.assimilator_builder.standard(minerals_to_gas_ratio=4)
 
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
         self.cybernetics_upgrader.warpgate()
-        self.forge_upgrader.standard()
-        await self.twilight_upgrader.standard()
+        if self.ai.time > 200:
+            self.forge_upgrader.standard()
+        await self.twilight_upgrader.charge()
+        await self.twilight_upgrader.blink()
 
 
     # =======================================================  Trainers
@@ -122,7 +127,7 @@ class CannonDefense(Strategy):
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(24 if self.ai.time < 480 else 80)
+        return self.condition_retreat.army_supply_less_than(60 if self.ai.time < 480 else 80)
 
 
     def counter_attack_condition(self):

@@ -94,7 +94,8 @@ class Defense:
         else:
             dist = 7
             for man in self.ai.army:
-                if man.type_id == unit.PHOENIX and man.is_hallucination:
+                if man.type_id == unit.PHOENIX and man.is_hallucination or\
+                        (man.type_id == unit.OBSERVER and not man.is_idle):
                     continue
                 position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
                     man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
