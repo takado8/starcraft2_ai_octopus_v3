@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/builders/proxy_gate_builder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy/interfaces/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy/interfaces/interfaceABS.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy/interfaces/secure_expansion_locations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/defense/defense.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/defense/defense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/stalker.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/stalker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/strategy_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/upgraders.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/upgraders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/cannon_defense.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/cannon_defense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/stalker_proxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/stalker_proxy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/strategyABS.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/strategyABS.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +67,7 @@
         <counts>
           <entry key="dummy" value="255" />
           <entry key="json" value="24" />
-          <entry key="py" value="99838" />
+          <entry key="py" value="99839" />
           <entry key="pyi" value="171" />
         </counts>
       </usages-collector>
@@ -88,7 +75,7 @@
         <counts>
           <entry key="JSON" value="24" />
           <entry key="PLAIN_TEXT" value="255" />
-          <entry key="Python" value="99838" />
+          <entry key="Python" value="99839" />
           <entry key="PythonStub" value="171" />
         </counts>
       </usages-collector>
@@ -98,7 +85,7 @@
           <entry key="gitignore" value="4" />
           <entry key="json" value="31" />
           <entry key="md" value="1" />
-          <entry key="py" value="1397" />
+          <entry key="py" value="1398" />
           <entry key="pyi" value="7" />
         </counts>
       </usages-collector>
@@ -107,7 +94,7 @@
           <entry key="JSON" value="31" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="1397" />
+          <entry key="Python" value="1398" />
           <entry key="PythonStub" value="7" />
         </counts>
       </usages-collector>
@@ -122,6 +109,18 @@
               <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="337">
+              <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -188,7 +187,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
@@ -294,7 +293,6 @@
         <option value="$PROJECT_DIR$/builders/special_building_locations.py" />
         <option value="$PROJECT_DIR$/builders/proxy_gate_builder.py" />
         <option value="$PROJECT_DIR$/bot/upgraders.py" />
-        <option value="$PROJECT_DIR$/bot/strategy_manager.py" />
         <option value="$PROJECT_DIR$/strategy/interfaces/interfaceABS.py" />
         <option value="$PROJECT_DIR$/army/defense/defense.py" />
         <option value="$PROJECT_DIR$/main.py" />
@@ -302,10 +300,11 @@
         <option value="$PROJECT_DIR$/strategy/strategyABS.py" />
         <option value="$PROJECT_DIR$/strategy/interfaces/secure_expansion_locations.py" />
         <option value="$PROJECT_DIR$/builders/build_queues.py" />
+        <option value="$PROJECT_DIR$/bot/strategy_manager.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="495" />
     <option name="y" value="249" />
     <option name="width" value="1215" />
@@ -587,7 +586,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17170112" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17170112" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -847,13 +846,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/pylon_builder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -943,16 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2700">
-          <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/strategy/strategyABS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
@@ -968,6 +950,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
           <caret line="4" column="97" selection-start-line="4" selection-start-column="97" selection-end-line="4" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2700">
+          <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
