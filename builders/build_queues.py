@@ -9,9 +9,9 @@ class BuildQueues:
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.ROBOTICSFACILITY,
+    STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.GATEWAY,
                     unit.GATEWAY, 32, unit.NEXUS,
-                    unit.ROBOTICSBAY, 40, unit.NEXUS, unit.FORGE,  unit.TWILIGHTCOUNCIL,
+                    unit.ROBOTICSBAY, unit.FORGE,unit.TWILIGHTCOUNCIL, 40, unit.NEXUS, unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,50, unit.NEXUS, unit.GATEWAY, unit.FORGE,
                     unit.GATEWAY,50, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.ROBOTICSFACILITY,

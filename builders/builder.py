@@ -100,9 +100,9 @@ class Builder:
                 radius = self.structures_max_radius
 
             all_pylons = self.ai.structures(unit.PYLON)
-            if building == unit.PYLON and all_pylons.amount < 10:
+            if building == unit.PYLON and all_pylons.amount < 5:
                 if all_pylons.amount < 6:
-                    distance = 6
+                    distance = 5
                 else:
                     distance = 3
             else:

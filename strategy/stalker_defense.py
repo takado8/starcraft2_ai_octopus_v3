@@ -27,12 +27,11 @@ class StalkerDefenseUpdated(Strategy):
 
         stalker_micro = StalkerMicro(ai)
 
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=360)
-        main_army = {unit.IMMORTAL: 7, unit.COLOSSUS: 4, unit.DISRUPTOR: 4, unit.SENTRY: 4, unit.OBSERVER: 1,
-                     unit.WARPPRISM: 1, unit.STALKER: 15, unit.ZEALOT: 12}
-        self.army.create_division('main_army', main_army, [stalker_micro, ZealotMicro(ai), ColossusMicro(ai), DisruptorMicro(ai),
+        main_army = {unit.IMMORTAL: 8, unit.DISRUPTOR: 8, unit.SENTRY: 3, unit.OBSERVER: 2,
+                     unit.WARPPRISM: 1, unit.STALKER: 20, unit.ZEALOT: 15}
+        self.army.create_division('main_army', main_army, [stalker_micro, ZealotMicro(ai), DisruptorMicro(ai),
                                         SentryMicro(ai), ImmortalMicro(ai), ObserverMicro(ai), WarpPrismMicro(ai)],
-                                  Movements(ai, 0.7), lifetime=-360)
+                                  Movements(ai, 0.7))
 
         build_queue = BuildQueues.STALKER_DEFENSE
         upper_wall = UpperWall(ai)
