@@ -19,12 +19,13 @@ class StrategyManager:
         'OracleDefenseUpdated': OracleDefenseUpdated,
         'ZealotRushDefense': ZealotRushDefense,
         'SkytossCarriers': SkytossCarriers,
-        'AirOracle': AirOracle
+        'AirOracle': AirOracle,
+        'CannonRushDefense': CannonRushDefense
     }
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = CannonRushDefense
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
