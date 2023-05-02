@@ -160,3 +160,41 @@ class PylonBuilder:
                         i += 1
                         pos = pos.random_on_distance(5)
                         result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)
+
+    async def cannon_rush_defense(self):
+        if self.ai.supply_cap < 200 and 3 >= self.ai.structures(unit.PYLON).amount >= 1 and self.ai.can_afford(unit.PYLON):
+
+            if self.ai.supply_cap < 80:
+                pos = self.ai.start_location.position
+                max_d = 20
+                pending = 2 if self.ai.time > 180 else 1
+                left = 7
+                step = 8
+            elif self.ai.supply_cap < 120:
+                pos = self.ai.start_location.position
+                max_d = 30
+                pending = 2
+                left = 10
+                step = 6
+            else:
+                pos = self.ai.structures(unit.NEXUS).ready
+                if pos.exists:
+                    pos = pos.random.position
+                else:
+                    return
+                minerals = self.ai.mineral_field.closest_to(pos)
+                if minerals.distance_to(pos) < 12:
+                    pos = pos.towards(minerals, -7).random_on_distance(2)
+                max_d = 45
+                pending = 3
+                left = 12
+                step = 6
+            if self.ai.supply_left < left:  # or (pylons.amount < 1 and self.ai.structures(unit.GATEWAY).exists):
+                if self.ai.already_pending(unit.PYLON) < pending:
+                    # pos = pos.random_on_distance(7)
+                    result = None
+                    i = 0
+                    while not result and i < 7:
+                        i += 1
+                        pos = pos.random_on_distance(5)
+                        result = await self.ai.build(unit.PYLON, max_distance=max_d, placement_step=step, near=pos)

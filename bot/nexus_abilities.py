@@ -14,8 +14,9 @@ class Chronobooster:
                                       unit.STARGATE, unit.ROBOTICSFACILITY,
                                       unit.CYBERNETICSCORE, unit.FORGE, unit.TWILIGHTCOUNCIL]
         self.stalker_proxy_chrono_queue = [unit.NEXUS, unit.CYBERNETICSCORE]
-        self.rush_defense_chrono_queue = [unit.NEXUS, unit.GATEWAY, unit.ROBOTICSBAY,
-                                       unit.ROBOTICSFACILITY, unit.FORGE, unit.TWILIGHTCOUNCIL]
+        self.rush_defense_chrono_queue = [unit.NEXUS, unit.GATEWAY, unit.ROBOTICSBAY, unit.STARGATE,
+                                          unit.CYBERNETICSCORE,
+                                       unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL]
 
     async def air(self):
         pass

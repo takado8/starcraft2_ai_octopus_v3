@@ -116,7 +116,7 @@ class Scouting:
             else:
                 scouts = self.ai.units({Unit.WARPPRISM, Unit.OBSERVER})
                 if not scouts.exists:
-                    scouts = self.ai.army.filter(lambda z: z.is_flying)
+                    scouts = self.ai.army.filter(lambda z: z.is_flying and int(str(z.tag)[-1]) % 3 == 0)
                     if not scouts.exists:
                         scouts = self.ai.units(Unit.PROBE).closest_n_units(self.ai.enemy_start_locations[0], 3)
                         if not scouts.exists:

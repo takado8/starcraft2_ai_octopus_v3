@@ -149,6 +149,10 @@ class Builder:
         if not validate_location or self.validator.is_valid_location(place.x, place.y):
             # print("valid location for " + str(building) + ": "+ str(p))
             builder = build_worker or self.ai.select_build_worker(place)
+            i=0
+            while not await self.ai._client.query_pathing(builder.position, place) and i < len(self.ai.workers):
+                builder = self.ai.workers[i]
+                i+=1
             if builder is None:
                 return False
             builder.build(building, place)

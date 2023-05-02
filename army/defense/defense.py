@@ -73,34 +73,15 @@ class Defense:
                 unit_.attack(enemy.closest_to(unit_))
 
     def take_defense_position(self):
-        enemy_structures = self.ai.enemy_structures().closer_than(20, self.ai.defend_position)
-        if enemy_structures:
-            target = None
-            pylons = enemy_structures(unit.PYLON)
-            cannons = enemy_structures(unit.PHOTONCANNON)
-            if pylons:
-                if cannons:
-                    if self.ai.army.amount >= cannons.amount * 2:
-                        target = pylons.closest_to(self.ai.main_base_ramp.bottom_center)
-                else:
-                    target = pylons.closest_to(self.ai.main_base_ramp.bottom_center)
-            elif cannons:
-                target = cannons.closest_to(self.ai.main_base_ramp.bottom_center)
-            else:
-                target = enemy_structures.closest_to(self.ai.main_base_ramp.bottom_center)
-            if target:
-                for man in self.ai.army:
-                    man.attack(target)
-        else:
-            dist = 7
-            for man in self.ai.army:
-                if man.type_id == unit.PHOENIX and man.is_hallucination or\
-                        man.type_id == unit.OBSERVER:
-                    continue
-                position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
-                    man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
-                if man.distance_to(self.ai.defend_position) > dist and man.type_id != unit.DARKTEMPLAR:
-                    man.move(position.random_on_distance(random.randint(1, 2)))
+        dist = 7
+        for man in self.ai.army:
+            if man.type_id == unit.PHOENIX and man.is_hallucination or\
+                    man.type_id == unit.OBSERVER:
+                continue
+            position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
+                man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
+            if man.distance_to(self.ai.defend_position) > dist and man.type_id != unit.DARKTEMPLAR:
+                man.move(position.random_on_distance(random.randint(1, 2)))
 
     def avoid_aoe(self):
         purification_novas = self.ai.enemy_units(unit.DISRUPTORPHASED)

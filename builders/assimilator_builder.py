@@ -25,6 +25,26 @@ class AssimilatorBuilder:
                         worker.build(unit.ASSIMILATOR, vaspene)
                         worker.move(worker.position.random_on_distance(1), queue=True)
 
+    def absolute_max_vespene(self):
+        if self.ai.structures().filter(lambda x: x.type_id in [unit.PYLON]).amount < 1:
+            return
+        if self.ai.can_afford(unit.ASSIMILATOR) and self.ai.structures(unit.PYLON).exists:
+            nexuses = self.ai.structures(unit.NEXUS)
+            if nexuses.amount < 3:
+                nexuses = nexuses.ready
+            for nexus in nexuses:
+                vaspenes = self.ai.vespene_geyser.closer_than(12, nexus)
+                for vaspene in vaspenes:
+                    if not (self.ai.already_pending(unit.ASSIMILATOR) or self.ai.already_pending(unit.ASSIMILATORRICH)) \
+                            and (not self.ai.structures(unit.ASSIMILATOR).exists or not (self.ai.structures(
+                        unit.ASSIMILATOR).closer_than(3, vaspene).exists) or
+                                 self.ai.structures(unit.ASSIMILATORRICH).closer_than(3, vaspene).exists):
+                        worker = self.ai.select_build_worker(vaspene.position)
+                        if worker is None:
+                            break
+                        worker.build(unit.ASSIMILATOR, vaspene)
+                        worker.move(worker.position.random_on_distance(1), queue=True)
+
     def more_vespene(self):
         if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount == 0 or \
                 (self.ai.structures(unit.NEXUS).ready.amount > 1 and self.ai.vespene > self.ai.minerals):
