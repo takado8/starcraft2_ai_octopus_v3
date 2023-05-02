@@ -18,7 +18,8 @@ class WorkerRushDefense:
             enemy_in_main_base = enemy.closer_than(10, self.ai.main_base_ramp.bottom_center)
             if not enemy_in_main_base:
                 enemy_in_main_base = enemy.closer_than(25, self.ai.start_location.position)
-
+            probes = self.ai.workers
+            mineral_workers_tags = set()
             if enemy_in_main_base.amount > 2:
                 own_army = self.ai.army
                 total_hp = sum([unit.health + unit.shield for unit in own_army])
@@ -27,7 +28,7 @@ class WorkerRushDefense:
                     # need probes
                     if self.ai.workers.amount < 18:
                         self.nexus_train_probes()
-                    probes = self.ai.workers
+
                     probes_to_remove = set()
                     for probe_tag in self.fighting_probes:
                         probe = probes.find_by_tag(probe_tag)
@@ -59,14 +60,15 @@ class WorkerRushDefense:
                         for probe in probes[:missing]:
                             self.fighting_probes.add(probe.tag)
 
-                    mineral_workers_tags = set()
                     for probe in probes:
-                        if probe.distance_to(self.ai.start_location) > 40:
-                            probe.gather(self.ai.mineral_field.closer_than(10,
-                                self.ai.start_location).closest_to(probe.position))
                         if probe.tag not in self.fighting_probes:
                             mineral_workers_tags.add(probe.tag)
-                    return mineral_workers_tags
+
+            for probe in probes:
+                if probe.distance_to(self.ai.start_location) > 40:
+                    probe.gather(self.ai.mineral_field.closer_than(10,
+                        self.ai.start_location).closest_to(probe.position))
+            return mineral_workers_tags
 
 
 

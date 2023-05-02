@@ -286,7 +286,7 @@ def botVsComputer(ai, real_time=0):
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
 
-    result = run_game(map_settings=maps.get(maps_list[1]), players=[
+    result = run_game(map_settings=maps.get(maps_list[5]), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
         Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)

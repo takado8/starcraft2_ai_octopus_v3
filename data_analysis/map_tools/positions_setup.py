@@ -58,7 +58,7 @@ def run(real_time=0):
     maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
                  "WaterfallAIE"]
 
-    run_game(map_settings=maps.get(maps_list[1]), players=[
+    run_game(map_settings=maps.get(maps_list[5]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
         Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
 
