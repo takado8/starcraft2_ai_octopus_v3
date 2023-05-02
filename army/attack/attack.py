@@ -40,7 +40,11 @@ class Attack:
                 else:
                     destination = self.ai.enemy_start_locations[0].position
         elif not self.enemy_main_base_down:
-            destination = self.ai.enemy_start_locations[0].position
+            structures = self.ai.enemy_structures()
+            if structures.exists:
+                destination = structures.closest_to(self.ai.start_location)
+            else:
+                destination = self.ai.enemy_start_locations[0].position
         else:
             destination = None
 

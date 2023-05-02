@@ -65,7 +65,13 @@ class WorkerRushDefense:
                             mineral_workers_tags.add(probe.tag)
 
             for probe in probes:
-                if probe.distance_to(self.ai.start_location) > 40:
+                if enemy_in_main_base:
+                    dist = self.ai.start_location.distance_to(self.ai.main_base_ramp.bottom_center)
+                elif enemy.exists:
+                    dist = 35
+                else:
+                    continue
+                if probe.distance_to(self.ai.start_location) > dist:
                     probe.gather(self.ai.mineral_field.closer_than(10,
                         self.ai.start_location).closest_to(probe.position))
             return mineral_workers_tags
