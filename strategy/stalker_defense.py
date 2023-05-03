@@ -26,10 +26,11 @@ class StalkerDefenseUpdated(Strategy):
         super().__init__(type='defense', name='StalkerDefenseUpdated', ai=ai)
 
         stalker_micro = StalkerMicro(ai)
+        self.army.create_division('zealots', {unit.ZEALOT: 10}, [ZealotMicro(ai)], Movements(ai, 0.1), lifetime=-480)
 
-        main_army = {unit.IMMORTAL: 8, unit.DISRUPTOR: 8, unit.SENTRY: 3, unit.OBSERVER: 2,
-                     unit.WARPPRISM: 1, unit.STALKER: 20, unit.ZEALOT: 15}
-        self.army.create_division('main_army', main_army, [stalker_micro, ZealotMicro(ai), DisruptorMicro(ai),
+        main_army = {unit.IMMORTAL: 8, unit.DISRUPTOR: 8, unit.SENTRY: 2, unit.OBSERVER: 2,
+                     unit.WARPPRISM: 1, unit.STALKER: 20}
+        self.army.create_division('main_army', main_army, [stalker_micro, DisruptorMicro(ai),
                                         SentryMicro(ai), ImmortalMicro(ai), ObserverMicro(ai), WarpPrismMicro(ai)],
                                   Movements(ai, 0.7))
 
