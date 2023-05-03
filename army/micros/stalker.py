@@ -50,21 +50,21 @@ class StalkerMicro(MicroABS):
 
                             # try to go pass over it
                             closest_minerals = self.ai.mineral_field.closest_to(closest_bunker)
-                            can_pass = await self.ai._client.query_pathing(stalker.position, closest_minerals.position)
-                            if can_pass:
-                                # avoid bunker range
-                                if stalker.distance_to(closest_bunker) < 8:
-                                    stalker.move(stalker.position.towards(closest_bunker, -4))
-                                    continue
-                                # go kill tanks
-                                tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED})
-                                if tanks:
-                                    threats = tanks
-                                # or workers if no threats
-                                elif not threats:
-                                    workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
-                                                           x.distance_to(closest_minerals) < 10)
-                                    threats = workers
+                            # can_pass = await self.ai._client.query_pathing(stalker.position, closest_minerals.position)
+                            # if can_pass:
+                            # avoid bunker range
+                            # if stalker.distance_to(closest_bunker) < 8:
+                            #     stalker.move(stalker.position.towards(closest_bunker, -4))
+                            #     continue
+                            # go kill tanks
+                            tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED})
+                            if tanks:
+                                threats = tanks
+                            # or workers if no threats
+                            elif not threats:
+                                workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
+                                                       x.distance_to(closest_minerals) < 10)
+                                threats = workers
 
 
                             elif not threats or not any([t.target_in_range(stalker) for t in threats]):

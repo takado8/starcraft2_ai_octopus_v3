@@ -1,21 +1,8 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
-from army.micros.archon import ArchonMicro
-from army.micros.colossus import ColossusMicro
-from army.micros.disruptor import DisruptorMicro
-from army.micros.immortal import ImmortalMicro
-from army.micros.probe import ProbeMicro
-from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
-from army.micros.sentry import SentryMicro
-from army.micros.stalker import StalkerMicro
-from army.micros.voidray import VoidrayMicro
 from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
-from army.micros.wall_guard_zealot import WallGuardZealotMicro
-from army.micros.warpprism import WarpPrismMicro
-from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
-from data_analysis.map_tools.map_positions_service import MapPositionsService
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from .strategyABS import Strategy
 from builders.expander import Expander
@@ -23,50 +10,19 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader
-from army.divisions import ADEPT_x5, WARPPRISM_x1, STALKER_x5, ARCHONS_x5, SENTRY_x1, IMMORTAL_x2, OBSERVER_x1
 from sc2.unit import UnitTypeId as unit
 
 
 class CannonRushDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
-        stalker_micro = StalkerMicro(ai)
-        # sentry_micro = SentryMicro(ai)
-        # immortal_micro = ImmortalMicro(ai)
-        # zealot_micro = ZealotMicro(ai)
-        # wall_guard_zealot_micro = WallGuardZealotMicro(ai)
-        # warpprism_micro = WarpPrismMicro(ai)
-        # archon_micro = ArchonMicro(ai)
-        # disruptor_micro = DisruptorMicro(ai)
-        # colossus_micro = ColossusMicro(ai)
-        # dt_micro = DarkTemplarMicro(ai)
-        # self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [wall_guard_zealot_micro],
-        #                           Movements(ai, 0.33), lifetime=400)
-        # self.army.create_division('zealots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1))
-        # self.army.create_division('zealots2', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.1))
-        #
-        # self.army.create_division('stalkers', STALKER_x5, [stalker_micro], Movements(ai, 0.2))
-        # self.army.create_division('immortals1', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        # self.army.create_division('immortals2', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
-        #
-        # self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
-        # self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
-        #
-        # self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
-        #
-        # self.army.create_division('sentry1', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-220)
-        # self.army.create_division('sentry2', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-360)
-        # self.army.create_division('sentry3', SENTRY_x1, [sentry_micro], Movements(ai, 0.2), lifetime=-260)
-        # self.army.create_division('observer', OBSERVER_x1, [], Movements(ai, 0.2))
+        # self.army.create_division('stalker', {unit.ADEPT: 5}, [StalkerMicro(ai)], Movements(ai, 0.1))
         self.army.create_division('voidray', {unit.VOIDRAY: 30}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6))
         # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
-
-
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('cannon_rush_defense')
         build_queue = BuildQueues.CANNON_RUSH_DEFENSE
-        # upper_wall = UpperWall(ai)
         special_locations = [locations_dict]
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
                                special_building_locations=special_locations)
@@ -79,11 +35,10 @@ class CannonRushDefense(Strategy):
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
         self.worker_rush_defense = WorkerRushDefense(ai)
-        self.probes_micro = ProbeMicro(ai)
 
     async def handle_workers(self):
-        # self.probes_micro.do_micro()
-        mineral_workers = await self.worker_rush_defense.worker_rush_defense()
+        mineral_workers = await self.worker_rush_defense.worker_rush_defense() if \
+            self.ai.structures(unit.PHOTONCANNON).amount >= 3 else None
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=1)
         if mineral_workers:
             self.speed_mining.execute(mineral_workers)
@@ -104,10 +59,8 @@ class CannonRushDefense(Strategy):
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
-        pass
-        # self.cybernetics_upgrader.air_armor()
+        self.cybernetics_upgrader.air_dmg()
         self.forge_upgrader.shield()
-        # await self.twilight_upgrader.standard()
 
 
     # =======================================================  Trainers
@@ -124,7 +77,7 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_supply_over(40)
+        return self.condition_attack.army_supply_over(160)
 
 
     def retreat_condition(self):
