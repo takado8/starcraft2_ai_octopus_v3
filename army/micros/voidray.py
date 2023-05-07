@@ -17,7 +17,7 @@ class VoidrayMicro(MicroABS):
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
                     lambda z: z.distance_to(voidray.position) < 12 and z.type_id not in self.ai.units_to_ignore
-                              and not z.is_hallucination)
+                              and not z.is_hallucination and z.cloak != 1)
                 can_attack_air = threats.filter(lambda x: x.can_attack_air)
                 if can_attack_air.exists:
                     threats = can_attack_air
