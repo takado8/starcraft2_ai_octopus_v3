@@ -9,10 +9,11 @@ from bot.constants import STRUCTURES_RADIUS
 class Builder:
     GAP_SIZE = 0.5
 
-    def __init__(self, ai, build_queue, expander, special_building_locations=None):
+    def __init__(self, ai, build_queue, expander, special_building_locations=None, random_worker=False):
         self.ai = ai
         self.expander = expander
         self.validator = BuildingSpotValidator(ai)
+        self.random_worker = random_worker
         self.build_queue = build_queue
         self.build_queue_index = 0
         self.special_building_locations = special_building_locations
@@ -148,7 +149,9 @@ class Builder:
         # validate
         if not validate_location or self.validator.is_valid_location(place.x, place.y):
             # print("valid location for " + str(building) + ": "+ str(p))
-            builder = build_worker or self.ai.select_build_worker(place)
+            builder =self.ai.workers.random if self.random_worker else \
+                build_worker or self.ai.select_build_worker(place)
+
             i=0
             while not await self.ai._client.query_pathing(builder.position, place) and i < len(self.ai.workers):
                 builder = self.ai.workers[i]
