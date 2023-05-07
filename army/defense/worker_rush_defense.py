@@ -1,4 +1,3 @@
-# from main import OctopusV3
 from sc2.constants import UnitTypeId as unit_id
 from sc2.ids.ability_id import AbilityId as ability
 
@@ -63,15 +62,9 @@ class WorkerRushDefense:
                     for probe in probes:
                         if probe.tag not in self.fighting_probes:
                             mineral_workers_tags.add(probe.tag)
-
+            dist = 35
             for probe in probes:
-                if enemy_in_main_base:
-                    dist = self.ai.start_location.distance_to(self.ai.main_base_ramp.bottom_center)
-                elif enemy.exists:
-                    dist = 35
-                else:
-                    continue
-                if probe.distance_to(self.ai.start_location) > dist:
+                if isinstance(probe.order_target, int) and probe.distance_to(self.ai.start_location) > dist:
                     probe.gather(self.ai.mineral_field.closer_than(10,
                         self.ai.start_location).closest_to(probe.position))
             return mineral_workers_tags
