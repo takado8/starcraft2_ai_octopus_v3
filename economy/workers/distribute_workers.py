@@ -5,9 +5,10 @@ from typing import Dict, List
 class DistributeWorkers:
     def __init__(self, ai):
         self.ai = ai
-        self.all_workers: Dict[int, int] = {} # [worker.tag, target.tag]
+        self.assigned_workers: Dict[int, int] = {} # [worker.tag, target.tag]
         self.minerals_dict: Dict[int, List[int]] = {} # [mineral.tag, [worker.tag, ...]]
         self.gas_dict: Dict[int, List[int]] = {} # [gas.tag, [worker.tag, ...]]
+        self.distant_mining_workers = set()
 
     def distribute_workers(self, minerals_to_gas_ratio=2):
         self.refresh_mining_places_dicts()
@@ -17,12 +18,12 @@ class DistributeWorkers:
 
     def refresh_mining_places_dicts(self):
         for base in self.ai.townhalls.ready:
-            minerals = self.ai.mineral_field.closer_than(12, base)
+            minerals = self.ai.mineral_field.closer_than(10, base)
             for mineral in minerals:
                 if mineral.tag not in self.minerals_dict:
                     self.minerals_dict[mineral.tag] = []
 
-            gas = self.ai.structures(unit.ASSIMILATOR).ready
+            gas = self.ai.structures(unit.ASSIMILATOR).filter(lambda x: x.is_ready and x.has_vespene)
             if gas.exists:
                 gas = gas.closer_than(14, base)
                 for g in gas:
@@ -31,12 +32,14 @@ class DistributeWorkers:
 
     def distribute_idle_workers(self):
         for worker in self.ai.units(unit.PROBE).filter(lambda x: x.is_carrying_minerals or x.is_idle):
-            if worker.tag in self.all_workers:
-                target_tag = self.all_workers[worker.tag]
+            if worker.tag in self.assigned_workers:
+                target_tag = self.assigned_workers[worker.tag]
                 target = None
                 if target_tag in self.gas_dict:
                     try:
                         target = self.ai.structures(unit.ASSIMILATOR).by_tag(target_tag)
+                        if not target.has_vespene:
+                            self.remove_dead_gas(target_tag)
                     except KeyError:
                         self.remove_dead_gas(target_tag)
                 elif target_tag in self.minerals_dict:
@@ -50,12 +53,14 @@ class DistributeWorkers:
                         worker.gather(target, queue=True)
                     else:
                         worker.gather(target)
-            else:
-                worker.gather(self.ai.mineral_field.closest_n_units(worker, 5).random)
+        for worker in self.ai.units(unit.PROBE).filter(lambda x: x.tag in self.distant_mining_workers):
+            if worker.is_idle or worker.order_target in self.minerals_dict:
+                worker.gather(self.ai.mineral_field.filter(lambda x: x.tag not in self.minerals_dict).closest_to(
+                    self.ai.start_location))
 
     def assign_workers(self, minerals_to_gas_ratio=2):
         prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio
-        workers = self.ai.workers.filter(lambda worker: worker.tag not in self.all_workers and worker.is_ready)
+        workers = self.ai.workers.filter(lambda worker: worker.tag not in self.assigned_workers and worker.is_ready)
         if prefer_minerals:
             self.assign_mineral_mining(workers)
             if workers:
@@ -64,6 +69,9 @@ class DistributeWorkers:
             self.assign_gas_mining(workers)
             if workers:
                 self.assign_mineral_mining(workers)
+        if workers:
+            for worker in workers:
+                self.distant_mining_workers.add(worker.tag)
 
     def assign_mineral_mining(self, workers):
         mineral_tags_to_remove = []
@@ -76,7 +84,9 @@ class DistributeWorkers:
                         self.minerals_dict[mineral_tag].append(closest_worker.tag)
                         workers.remove(closest_worker)
                         closest_worker.gather(mineral)
-                        self.all_workers[closest_worker.tag] = mineral_tag
+                        if closest_worker.tag in self.distant_mining_workers:
+                            self.distant_mining_workers.remove(closest_worker.tag)
+                        self.assigned_workers[closest_worker.tag] = mineral_tag
                     except KeyError:
                         mineral_tags_to_remove.append(mineral_tag)
 
@@ -92,11 +102,13 @@ class DistributeWorkers:
                     self.gas_dict[gas_tag].append(closest_worker.tag)
                     workers.remove(closest_worker)
                     closest_worker.gather(gas)
-                    self.all_workers[closest_worker.tag] = gas_tag
+                    if closest_worker.tag in self.distant_mining_workers:
+                        self.distant_mining_workers.remove(closest_worker.tag)
+                    self.assigned_workers[closest_worker.tag] = gas_tag
 
     def on_unit_destroyed(self, tag):
         try:
-            worker_tag = self.all_workers[tag]
+            worker_tag = self.assigned_workers[tag]
         except KeyError:
             return
         if worker_tag in self.minerals_dict:
@@ -132,12 +144,12 @@ class DistributeWorkers:
     def remove_dead_gas(self, gas_tag):
         local_workers = self.gas_dict.pop(gas_tag)
         for local_worker in local_workers:
-            self.all_workers.pop(local_worker)
+            self.assigned_workers.pop(local_worker)
 
     def remove_dead_mineral(self, mineral_tag):
         local_workers = self.minerals_dict.pop(mineral_tag)
         for worker_tag in local_workers:
-            self.all_workers.pop(worker_tag)
+            self.assigned_workers.pop(worker_tag)
 
     def get_mineral_workers_tags(self):
         mineral_workers_tags = set()
