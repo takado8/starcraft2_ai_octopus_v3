@@ -1,5 +1,8 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
+from army.divisions import WARPPRISM_x1
+from army.micros.carrier import CarrierMicro
 from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
+from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -17,15 +20,16 @@ class CannonRushDefense(Strategy):
     def __init__(self, ai):
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
         # self.army.create_division('stalker', {unit.ADEPT: 5}, [StalkerMicro(ai)], Movements(ai, 0.1))
-        self.army.create_division('voidray', {unit.VOIDRAY: 30}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6))
-        # self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2), lifetime=-360)
+        self.army.create_division('voidray', {unit.VOIDRAY: 10}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6), lifetime=480)
+        self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
+        self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismElevatorMicro(ai)], Movements(ai, 0.2), lifetime=-260)
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('cannon_rush_defense')
         build_queue = BuildQueues.CANNON_RUSH_DEFENSE
         special_locations = [locations_dict]
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=special_locations)
+                               special_building_locations=special_locations, random_worker=True)
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
@@ -38,7 +42,7 @@ class CannonRushDefense(Strategy):
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense() if \
-            self.ai.structures(unit.PHOTONCANNON).amount >= 3 else None
+            self.ai.structures(unit.PHOTONCANNON).amount < 3 else None
         self.workers_distribution.distribute_workers(minerals_to_gas_ratio=1)
         if mineral_workers:
             self.speed_mining.execute(mineral_workers)
@@ -51,7 +55,7 @@ class CannonRushDefense(Strategy):
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
-        await self.battery_builder.build_batteries()
+        await self.battery_builder.build_batteries(when_minerals_more_than=600, amount=4)
 
     def build_assimilators(self):
         self.assimilator_builder.standard(minerals_to_gas_ratio=1)
@@ -77,11 +81,11 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_supply_over(160)
+        return self.condition_attack.total_supply_over(190)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(12 if self.ai.time < 480 else 20)
+        return self.condition_retreat.army_count_less_than(6 if self.ai.time < 360 else 15)
 
 
     def counter_attack_condition(self):

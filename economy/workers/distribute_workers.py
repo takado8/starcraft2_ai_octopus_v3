@@ -158,3 +158,6 @@ class DistributeWorkers:
                 mineral_workers_tags.add(worker_tag)
 
         return mineral_workers_tags
+
+    def get_distant_mining_workers_tags(self):
+        return self.distant_mining_workers

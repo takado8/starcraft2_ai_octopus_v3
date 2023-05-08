@@ -5,7 +5,7 @@ from sc2 import run_game, maps, Race
 from sc2.player import Bot
 from builders.builder import Builder
 from data_analysis.map_tools.map_positions_service import MapPositionsService
-from data_analysis.worker_rush import WorkerRushZergBot
+from data_analysis.test_bots.worker_rush import WorkerRushZergBot
 
 
 class PositionsSetup(BotAI):

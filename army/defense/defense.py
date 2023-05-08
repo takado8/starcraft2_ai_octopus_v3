@@ -62,7 +62,7 @@ class Defense:
             high_mobility = []
             high_mobility_ids = {unit.STALKER, unit.ADEPT, unit.ZEALOT}
             for man in self.ai.army:
-                if man.is_flying or man.type_id in high_mobility_ids:
+                if man.is_flying and man.type_id != unit.WARPPRISM or man.type_id in high_mobility_ids:
                     high_mobility.append(man)
 
             high_mobility = high_mobility[:5]
@@ -76,7 +76,7 @@ class Defense:
         dist = 7
         for man in self.ai.army:
             if man.type_id == unit.PHOENIX and man.is_hallucination or\
-                    man.type_id == unit.OBSERVER:
+                    man.type_id in {unit.OBSERVER, unit.WARPPRISM}:
                 continue
             position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
                 man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)

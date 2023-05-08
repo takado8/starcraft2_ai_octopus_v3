@@ -32,8 +32,8 @@ class BuildQueues:
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     SKYTOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
-                           10, unit.FLEETBEACON, unit.ROBOTICSFACILITY, unit.STARGATE, unit.NEXUS, 30, unit.STARGATE,
-                           unit.NEXUS, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+                           10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.STARGATE,
+                           unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
@@ -90,13 +90,13 @@ class BuildQueues:
 
     CANNON_RUSH_DEFENSE = [unit.PYLON, unit.FORGE, unit.PHOTONCANNON,
                       unit.PHOTONCANNON,unit.GATEWAY, unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.SHIELDBATTERY,unit.SHIELDBATTERY,
-                      unit.STARGATE,unit.PYLON,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.STARGATE,unit.SHIELDBATTERY,
-                           unit.PYLON,unit.PYLON,30, unit.NEXUS,unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL,
-                      unit.TEMPLARARCHIVE, unit.GATEWAY, unit.NEXUS, 20, unit.FORGE, unit.GATEWAY,
-                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, 30, unit.FORGE,
-                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS,  unit.GATEWAY,
-                      unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSBAY,
-                      unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+                      unit.STARGATE,unit.PYLON,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.SHIELDBATTERY,
+                           unit.PYLON,unit.PYLON, unit.ROBOTICSFACILITY, unit.STARGATE, 20, unit.NEXUS, unit.FLEETBEACON, unit.STARGATE, unit.CYBERNETICSCORE,
+                           unit.NEXUS, 30, unit.STARGATE,
+                           unit.TWILIGHTCOUNCIL,
+                           unit.NEXUS, unit.FORGE, unit.NEXUS,
+                           unit.STARGATE, unit.STARGATE, unit.NEXUS,
+                           unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     PROXY_MIX = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, 16, unit.NEXUS,
                     unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,

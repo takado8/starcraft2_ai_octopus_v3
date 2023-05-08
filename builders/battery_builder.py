@@ -15,7 +15,7 @@ class BatteryBuilder:
                 if pylon.exists:
                     pylon = pylon.furthest_to(self.ai.start_location.position)
                     if self.ai.structures(unit.SHIELDBATTERY).closer_than(12, pylon.position).amount < amount \
-                            and self.ai.already_pending(unit.SHIELDBATTERY) < 2:
+                            and self.ai.already_pending(unit.SHIELDBATTERY) < amount:
                         await self.ai.build(unit.SHIELDBATTERY, pylon.position.towards(self.ai.game_info.map_center, 3), max_distance=5,
                                          random_alternative=False, placement_step=2)
                 elif self.ai.already_pending(unit.PYLON) < 1:
