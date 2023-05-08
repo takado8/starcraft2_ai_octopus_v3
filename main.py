@@ -14,9 +14,6 @@ from bot.strategy_manager import StrategyManager
 from bot.cancel_build import cancel_damaged_build
 import traceback
 from data_analysis.map_tools.map_positions_service import MapPositionsService
-from data_analysis.test_bot_zerg_roach import RoachBurrowBot
-from data_analysis.test_bot_zerg_rush import SimpleZergBot
-from data_analysis.worker_rush import WorkerRushZergBot
 import time
 
 
@@ -285,11 +282,12 @@ def botVsComputer(ai, real_time=0):
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-
-    result = run_game(map_settings=maps.get(maps_list[5]), players=[
+    # map = maps_list[5]
+    a_map = random.choice(maps_list)
+    result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

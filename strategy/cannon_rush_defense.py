@@ -81,7 +81,7 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.total_supply_over(190)
+        return self.condition_attack.total_supply_over(80)
 
 
     def retreat_condition(self):
