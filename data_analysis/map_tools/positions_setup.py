@@ -15,7 +15,7 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        self.map_service = MapPositionsService(self, "cannon_rush_defense")
+        self.map_service = MapPositionsService(self, "fortress_skytoss2")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -58,7 +58,7 @@ def run(real_time=0):
     maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
                  "WaterfallAIE"]
 
-    run_game(map_settings=maps.get(maps_list[5]), players=[
+    run_game(map_settings=maps.get(maps_list[0]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
         Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
 
@@ -66,4 +66,4 @@ def run(real_time=0):
 
 
 if __name__ == '__main__':
-    run(real_time=0)
+    run(real_time=1)

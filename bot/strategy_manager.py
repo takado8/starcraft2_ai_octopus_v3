@@ -1,6 +1,7 @@
 from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.cannon_rush_defense import CannonRushDefense
+from strategy.fortress_skytoss import FortressSkyToss
 from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers

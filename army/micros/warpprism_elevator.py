@@ -32,7 +32,10 @@ class WarpPrismElevatorMicro(MicroABS):
         return 1
 
     def unload(self, prism):
-        spot = self.ai.main_base_ramp.bottom_center.towards(
-            self.ai.main_base_ramp.top_center, -5)
+        spot = self.ai.mineral_field.filter(lambda x: x.tag not in
+                self.ai.strategy.workers_distribution.minerals_dict).closest_to(
+            self.ai.start_location)
+
+        spot = min(self.ai.expansion_locations_list, key=lambda x: x.distance_to(spot))
         if not self.ai.enemy_units.exists or not self.ai.enemy_units.closer_than(20, spot):
-            prism(ability.UNLOADALLAT_WARPPRISM, spot)
+            prism(ability.UNLOADALLAT_WARPPRISM, spot, queue=True)

@@ -282,8 +282,8 @@ def botVsComputer(ai, real_time=0):
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    # map = maps_list[5]
-    a_map = random.choice(maps_list)
+    a_map = maps_list[0]
+    # a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')

@@ -35,7 +35,7 @@ class Expander:
             startp = self.ai._game_info.player_start_location
             d = await self.ai._client.query_pathing(startp, el)
             if d is None:
-                continue
+                d = startp.distance_to(el)
 
             if d < distance:
                 distance = d

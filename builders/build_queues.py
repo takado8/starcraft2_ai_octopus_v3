@@ -37,6 +37,14 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
+    FORTRESS_SKYTOSS = [unit.PYLON, unit.GATEWAY, unit.FORGE, unit.PYLON, unit.PYLON, unit.CYBERNETICSCORE, unit.PHOTONCANNON, unit.PHOTONCANNON,
+                         unit.NEXUS, unit.PYLON,  unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.STARGATE,
+                        unit.SHIELDBATTERY, unit.PYLON, unit.STARGATE, unit.SHIELDBATTERY,unit.FLEETBEACON,
+                        unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.SHIELDBATTERY,
+                        unit.ROBOTICSFACILITY, unit.STARGATE, unit.NEXUS, unit.CYBERNETICSCORE, unit.NEXUS, unit.TWILIGHTCOUNCIL,
+                        unit.NEXUS,unit.STARGATE, unit.NEXUS,unit.STARGATE,
+                        unit.STARGATE,unit.NEXUS,unit.NEXUS,unit.NEXUS]
+
     SKYTOSS_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.SHIELDBATTERY, 8, unit.STARGATE,
                        unit.FLEETBEACON, unit.GATEWAY,
                         20, unit.NEXUS,  unit.ROBOTICSFACILITY, unit.GATEWAY,unit.FORGE, unit.GATEWAY,
@@ -91,7 +99,8 @@ class BuildQueues:
     CANNON_RUSH_DEFENSE = [unit.PYLON, unit.FORGE, unit.PHOTONCANNON,
                       unit.PHOTONCANNON,unit.GATEWAY, unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.SHIELDBATTERY,unit.SHIELDBATTERY,
                       unit.STARGATE,unit.PYLON,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.STARGATE,unit.SHIELDBATTERY,
-                           unit.PYLON,unit.PYLON]
+                           unit.PYLON,unit.PYLON, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.FLEETBEACON, unit.STARGATE,
+                           unit.STARGATE]
 
     PROXY_MIX = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, 16, unit.NEXUS,
                     unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,

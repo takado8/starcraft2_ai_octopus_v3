@@ -4,9 +4,10 @@ import math
 
 
 class PylonBuilder:
-    def __init__(self, ai):
+    def __init__(self, ai, special_locations=None):
         self.ai = ai
         self.is_proxy_pylon_built = False
+        self.special_locations = special_locations
 
     async def none(self):
         pass
@@ -155,6 +156,14 @@ class PylonBuilder:
                 if self.ai.already_pending(unit.PYLON) < pending:
                     # pos = pos.random_on_distance(7)
                     result = None
+                    if self.special_locations:
+                        for location in self.special_locations:
+                            if not self.ai.structures().filter(lambda x: x.type_id == unit.PYLON and
+                                                        x.distance_to(location) < 1).exists:
+                                await self.ai.build(unit.PYLON, max_distance=1, placement_step=1, near=location,
+                                                    validate_location=False)
+                                return
+
                     i = 0
                     while not result and i < 7:
                         i += 1

@@ -1,12 +1,14 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
-from army.divisions import WARPPRISM_x1
+from army.divisions import WARPPRISM_x1, TEMPEST_x5
 from army.micros.carrier import CarrierMicro
+from army.micros.tempest import TempestMicro
 from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
 from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from data_analysis.map_tools.positions_loader import PositionsLoader
+from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -18,11 +20,17 @@ from sc2.unit import UnitTypeId as unit
 
 class CannonRushDefense(Strategy):
     def __init__(self, ai):
+        carrier_micro = CarrierMicro(ai)
+        tempest_micro = TempestMicro(ai)
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
         # self.army.create_division('stalker', {unit.ADEPT: 5}, [StalkerMicro(ai)], Movements(ai, 0.1))
-        self.army.create_division('voidray', {unit.VOIDRAY: 10}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6), lifetime=480)
-        self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
-        self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismElevatorMicro(ai)], Movements(ai, 0.2), lifetime=-260)
+        self.army.create_division('voidray', {unit.VOIDRAY: 40}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6), lifetime=480)
+        # self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
+        self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismElevatorMicro(ai)],
+                                  Movements(ai, 0.2), lifetime=-1800)
+        self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai), lifetime=-1800)
+        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai), lifetime=-1800)
+        self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai), lifetime=-1800)
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('cannon_rush_defense')
@@ -39,6 +47,11 @@ class CannonRushDefense(Strategy):
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
         self.worker_rush_defense = WorkerRushDefense(ai)
+        self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
+
+    async def execute_interfaces(self):
+        await super().execute_interfaces()
+
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense() if \
@@ -81,11 +94,11 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.total_supply_over(80)
+        return self.condition_attack.army_supply_over(40)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(6 if self.ai.time < 360 else 15)
+        return self.condition_retreat.army_supply_less_than(12 if self.ai.time < 480 else 30)
 
 
     def counter_attack_condition(self):

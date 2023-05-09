@@ -1,3 +1,4 @@
+from sc2 import AbilityId
 from sc2.unit import Unit
 from typing import Optional, Union
 from sc2.position import Point2, Point3
@@ -193,3 +194,25 @@ class Builder:
             return self.ai.in_pathing_grid(pos)
         except:
             return False
+    #
+    #
+    # def select_build_worker(self, pos: Union[Unit, Point2], force: bool = False) -> Optional[Unit]:
+    #     workers = (
+    #         self.ai.workers.filter(lambda w: (w.is_gathering or w.is_idle) and w.distance_to(pos) < 20) or self.ai.workers
+    #     )
+    #     if workers:
+    #         for worker in workers:
+    #             if worker.orders and len(worker.orders) == 1\
+    #                 and worker.orders[0].ability.id == AbilityId.HOLDPOSITION:
+    #                 return worker
+    #         for worker in workers.sorted_by_distance_to(pos).prefer_idle:
+    #             if (
+    #                 worker not in self.ai.unit_tags_received_action
+    #                 and not worker.orders
+    #                 or len(worker.orders) == 1
+    #                 and worker.orders[0].ability.id in {AbilityId.MOVE, AbilityId.HARVEST_GATHER, AbilityId.HOLDPOSITION}
+    #
+    #             ):
+    #                 return worker
+    #
+    #         return workers.random if force else None
