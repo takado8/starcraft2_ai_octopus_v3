@@ -24,7 +24,8 @@ class CannonRushDefense(Strategy):
         tempest_micro = TempestMicro(ai)
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
         # self.army.create_division('stalker', {unit.ADEPT: 5}, [StalkerMicro(ai)], Movements(ai, 0.1))
-        self.army.create_division('voidray', {unit.VOIDRAY: 40}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6), lifetime=480)
+        self.army.create_division('voidray', {unit.VOIDRAY: 40}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6),
+                                  lifetime=2000)
         # self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
         self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismElevatorMicro(ai)],
                                   Movements(ai, 0.2), lifetime=-1800)
