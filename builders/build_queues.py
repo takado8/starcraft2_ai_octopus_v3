@@ -99,7 +99,7 @@ class BuildQueues:
     CANNON_RUSH_DEFENSE = [unit.PYLON, unit.FORGE, unit.PHOTONCANNON,
                       unit.PHOTONCANNON,unit.GATEWAY, unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.SHIELDBATTERY,unit.SHIELDBATTERY,
                       unit.STARGATE,unit.PYLON,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.SHIELDBATTERY,unit.PYLON,unit.STARGATE,unit.SHIELDBATTERY,
-                           unit.PYLON,unit.PYLON, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.FLEETBEACON, unit.STARGATE,
+                           unit.PYLON,unit.PYLON, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.FLEETBEACON, unit.STARGATE,
                            unit.STARGATE]
 
     PROXY_MIX = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, 16, unit.NEXUS,
