@@ -40,11 +40,12 @@ class SentryMicro(MicroABS):
                 # if ability.FORCEFIELD_FORCEFIELD in abilities and len(points) > 0:
                 #     se(ability.FORCEFIELD_FORCEFIELD, points.pop(0))
                 else:
-                    army_nearby = self.ai.army.closer_than(12, sentry.position)
+                    army_nearby = self.ai.army.closer_than(30, sentry.position)
                     if army_nearby.exists:
                         in_position += 1
                         if threats.exists:
                             sentry.move(army_nearby.center.towards(threats.closest_to(sentry), -2))
                     else:
-                        sentry.move(self.ai.army.closest_to(sentry))
+                        sentry.move(self.ai.army.filter(lambda x: x.type_id not in {unit.SENTRY, unit.HIGHTEMPLAR,
+                                                 unit.WARPPRISM,unit.WARPPRISMPHASING}).closest_to(sentry))
         return in_position
