@@ -52,6 +52,7 @@ class CannonRushDefense(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
+        await self.shield_battery_interface.execute()
 
 
     async def handle_workers(self):
