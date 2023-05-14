@@ -9,11 +9,10 @@ class NexusTrainer:
         self.ai = ai
 
     def probes_standard(self):
-        workers = self.ai.workers.amount
-        if workers > 68:
-            return
-        nexuses_amount = self.ai.townhalls().amount
         assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
+        workers = self.ai.workers.amount + assimilators_amount
+        nexuses_amount = self.ai.townhalls().amount
+
         if not self.ai.structures(unit.PYLON).exists and workers == 14:
             return
         if workers < (16 * nexuses_amount + 3 * assimilators_amount) and workers < 55:
