@@ -62,7 +62,7 @@ class WorkerRushDefense:
                     for probe in probes:
                         if probe.tag not in self.fighting_probes:
                             mineral_workers_tags.add(probe.tag)
-            dist = 35
+            dist = 55
             for probe in probes:
                 if isinstance(probe.order_target, int) and probe.distance_to(self.ai.start_location) > dist:
                     probe.gather(self.ai.mineral_field.closer_than(10,
