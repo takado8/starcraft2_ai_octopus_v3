@@ -15,7 +15,8 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        self.map_service = MapPositionsService(self, "fortress_skytoss2")
+        self.start_on_specific_location("(31.5, 131.5)")
+        self.map_service = MapPositionsService(self, "second_wall_cannon")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -46,6 +47,11 @@ class PositionsSetup(BotAI):
                 time.sleep(1)
                 exit(12)
 
+    def start_on_specific_location(self, desired_location):
+        if str(self.start_location.position) != desired_location:
+            raise ValueError("wrong location, should be: {}, is: {}, restarting...".format(desired_location,
+                                                                       str(self.start_location.position)))
+
 
 
 
@@ -66,4 +72,8 @@ def run(real_time=0):
 
 
 if __name__ == '__main__':
-    run(real_time=1)
+    real_time = 1
+    try:
+        run(real_time=real_time)
+    except ValueError as err:
+        run(real_time=real_time)
