@@ -7,6 +7,8 @@ import random
 class Defense:
     def __init__(self, ai):
         self.ai = ai
+        self.units_tags_to_defend_scout = set()
+        self.scout_defense_units_amount = 4
 
     def defend(self, army_status):
         if army_status.status == army_status.DEFENDING_SIEGE:
@@ -59,24 +61,24 @@ class Defense:
     def defend_scout(self):
         enemy = self.ai.enemy_units()
         if enemy:
-            high_mobility = []
-            high_mobility_ids = {unit.STALKER, unit.ADEPT, unit.ZEALOT}
-            for man in self.ai.army:
-                if man.is_flying and man.type_id != unit.WARPPRISM or man.type_id in high_mobility_ids:
-                    high_mobility.append(man)
+            if self.units_tags_to_defend_scout:
+                scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
+                if len(scout_defense_units) < len(self.units_tags_to_defend_scout):
+                    self.units_tags_to_defend_scout = {unit_.tag for unit_ in scout_defense_units}
+                    self.assign_units_to_defend_scout()
+                    scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
+            else:
+                self.assign_units_to_defend_scout()
+                scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
 
-            high_mobility = high_mobility[:5]
-            observer = self.ai.units(unit.OBSERVER).ready
-            if observer.exists:
-                high_mobility.append(observer.random)
-            for unit_ in high_mobility:
+            for unit_ in scout_defense_units:
                 unit_.attack(enemy.closest_to(unit_))
 
     def take_defense_position(self):
         dist = 7
         for man in self.ai.army:
             if man.type_id == unit.PHOENIX and man.is_hallucination or\
-                    man.type_id in {unit.OBSERVER, unit.WARPPRISM}:
+                    man.type_id in {unit.OBSERVER}:
                 continue
             position = Point2(self.ai.defend_position).towards(self.ai.game_info.map_center, 5) if \
                 man.type_id == unit.ZEALOT else Point2(self.ai.defend_position)
@@ -100,3 +102,24 @@ class Defense:
                     for position in positions:
                         if man.distance_to(position) < eff.radius + 2:
                             man.move(man.position.towards(position, -3))
+
+    def assign_units_to_defend_scout(self):
+        selected_units = self.ai.army.filter(lambda x: x.is_flying and x.can_attack_ground)
+        deficit = self.scout_defense_units_amount - len(self.units_tags_to_defend_scout)
+        if selected_units.amount < deficit:
+            stalkers = self.ai.army.filter(lambda x: x.type_id == unit.STALKER)
+            if stalkers.amount + selected_units.amount < deficit:
+                anybody = self.ai.army.filter(lambda x: x.type_id in {unit.ADEPT, unit.ZEALOT})
+                if stalkers.amount + selected_units.amount + anybody.amount > deficit:
+                    selected_units.extend(stalkers)
+                    selected_units.extend(anybody[:deficit-selected_units.amount])
+            else:
+                selected_units.extend(stalkers[:deficit-selected_units.amount])
+        else:
+            selected_units = selected_units[:deficit]
+
+        observer = self.ai.units(unit.OBSERVER).ready
+        if observer.exists:
+            selected_units.append(observer.random)
+
+        self.units_tags_to_defend_scout = {unit_.tag for unit_ in selected_units}
