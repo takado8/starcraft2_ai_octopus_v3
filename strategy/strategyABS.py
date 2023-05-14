@@ -16,7 +16,7 @@ from strategy.interfaces.secure_expansion_locations import SecureExpansionLocati
 
 
 class Strategy:
-    def __init__(self, type, name, ai):
+    def __init__(self, type, name, ai, defense=None):
         self.type = type
         self.name = name
         self.ai = ai
@@ -25,7 +25,7 @@ class Strategy:
         self.scouting = Scouting(ai, self.enemy_economy)
         self.trainer = Trainer(ai)
         self.attack = Attack(ai)
-        self.defense = Defense(ai)
+        self.defense = defense if defense else Defense(ai)
         self.army = Army(ai, self.scouting, self.enemy_economy, self.own_economy, self.trainer,
                          self.defense, self.attack)
 
