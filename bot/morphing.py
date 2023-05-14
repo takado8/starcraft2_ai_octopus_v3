@@ -13,16 +13,10 @@ class Morphing:
             if AbilityId.MORPH_WARPGATE in abilities:
                 gateway(AbilityId.MORPH_WARPGATE)
 
-    async def morph_Archons(self):
-        if upgrade.PSISTORMTECH is self.ai.state.upgrades or self.ai.already_pending_upgrade(upgrade.PSISTORMTECH):
-            archons = self.ai.army(unit.ARCHON)
-            ht_amount = int(archons.amount / 2)
-            ht_thresh = ht_amount + 1
-        else:
-            ht_thresh = 1
+    async def morph_Archons(self, leave_n_high_templars=0):
         hts = self.ai.units().filter(lambda x: x.type_id == unit.HIGHTEMPLAR and x.is_ready and
                                                x.is_idle).sorted(lambda u: u.energy)
-        if hts.amount > ht_thresh:
+        if hts.amount > leave_n_high_templars + 1:
 
             ht2 = hts[0]
             ht1 = hts[1]
