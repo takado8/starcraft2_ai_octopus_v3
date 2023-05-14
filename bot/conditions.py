@@ -179,6 +179,10 @@ class ConditionLockSpending:
         return upgrade.EXTENDEDTHERMALLANCE not in self.ai.state.upgrades and \
                self.ai.structures(unit.ROBOTICSBAY).ready.idle.exists and self.ai.units(unit.COLOSSUS).exists
 
+    def psi_storm(self):
+        return upgrade.PSISTORMTECH not in self.ai.state.upgrades and\
+               self.ai.structures(unit.TEMPLARARCHIVE).ready.idle.exists
+
     async def forge(self):
         upgrades_abilities_ids = [AbilityId.FORGERESEARCH_PROTOSSGROUNDWEAPONSLEVEL1,
                                   AbilityId.FORGERESEARCH_PROTOSSGROUNDARMORLEVEL1,

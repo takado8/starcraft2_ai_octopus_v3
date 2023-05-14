@@ -104,7 +104,7 @@ class AssimilatorBuilder:
                             break
 
     def one_vespene(self):
-        if self.ai.structures().filter(lambda x: x.type_id in [unit.GATEWAY, unit.WARPGATE]).amount < 1 or\
+        if self.ai.structures().filter(lambda x: x.type_id in {unit.GATEWAY, unit.WARPGATE}).ready.amount < 1 or\
                 self.ai.structures(unit.ASSIMILATOR).exists or self.ai.already_pending(unit.ASSIMILATOR):
             return
 

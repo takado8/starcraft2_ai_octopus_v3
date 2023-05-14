@@ -1,7 +1,8 @@
 from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.cannon_rush_defense import CannonRushDefense
-from strategy.fortress_skytoss import FortressSkyToss
+from strategy.cannon_rush_defense_updated import CannonRushDefenseUpdated
+from strategy.fortress_toss import FortressToss
 from strategy.oracle_defense import OracleDefenseUpdated
 from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
@@ -24,7 +25,7 @@ class StrategyManager:
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = FortressToss
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

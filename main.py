@@ -271,11 +271,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -287,7 +287,7 @@ def botVsComputer(ai, real_time=0):
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
