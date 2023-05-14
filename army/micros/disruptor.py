@@ -18,13 +18,13 @@ class DisruptorMicro(MicroABS):
             if novas_casted < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
                     and enemy and close_enemy.exists:
                 spell_target = enemy.filter(
-                    lambda unit_: unit_.distance_to(disruptor) < 15 and unit_.type_id not in self.ai.units_to_ignore
-                                  and not unit_.is_flying)
+                    lambda unit_: unit_.distance_to(disruptor) < 15 and not unit_.is_flying and
+                                  unit_.type_id != unit.BROODLING)
                 target = None
                 if spell_target.amount > 2:
                     tanks = spell_target.filter(lambda x: x.type_id in {unit.SIEGETANKSIEGED, unit.SIEGETANK,
                                                                         unit.DISRUPTOR})
-                    if tanks.amount > 1:
+                    if tanks.amount > 0:
                         spell_target = tanks
 
                     maxNeighbours = 0
