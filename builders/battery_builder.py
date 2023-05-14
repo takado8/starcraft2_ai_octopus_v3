@@ -6,8 +6,8 @@ class BatteryBuilder:
         self.ai = ai
 
     async def build_batteries(self, when_minerals_more_than=600, amount=2):
-        nexuses = self.ai.structures(unit.NEXUS).ready
-        if nexuses.amount > 1 and self.ai.minerals > when_minerals_more_than:
+        nexuses = self.ai.structures(unit.NEXUS)
+        if nexuses.amount > 2 and self.ai.minerals > when_minerals_more_than:
             start_nexus = nexuses.closest_to(self.ai.start_location.position)
             nexuses.remove(start_nexus)
             for nexus in nexuses:
