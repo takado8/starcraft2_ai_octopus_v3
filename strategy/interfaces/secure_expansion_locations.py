@@ -12,7 +12,8 @@ class SecureExpansionLocations(InterfaceABS):
         observers = self.ai.units(unit.OBSERVER).ready
         locations = [x for x in sorted(self.ai.expansion_locations_list,
                                        key=lambda x: x.distance_to(self.ai.start_location))
-                     if not self.ai.townhalls.closer_than(10, x).exists]
+                     if not self.ai.townhalls.closer_than(10, x).exists and
+        (not self.ai.enemy_structures().exists or not self.ai.enemy_structures().closer_than(10, x).exists)]
         locations = locations[:3]
 
         for observer in observers:
