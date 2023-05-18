@@ -1,3 +1,6 @@
+from sc2.ids.unit_typeid import UnitTypeId as unit
+
+
 class ArmyStatus:
     DEFENSE_POSITION = 'DEFENSE_POSITION'
     ENEMY_SCOUT = 'ENEMY_SCOUT'
@@ -15,7 +18,8 @@ class ArmyStatus:
             self.status = ArmyStatus.ATTACKING
         elif enemy.closer_than(40, self.ai.defend_position).amount > 1:
             self.status = ArmyStatus.DEFENDING_SIEGE
-        elif self.status != ArmyStatus.ATTACKING and any([3 > enemy.closer_than(30, townhall).amount > 0 for townhall in
+        elif self.status != ArmyStatus.ATTACKING and any([3 > enemy().filter(lambda x: x.type_id != unit.OVERSEER and
+                                        x.distance_to(townhall) < 30).amount > 0 for townhall in
                                                         [y for y in self.ai.townhalls] + sorted(self.ai.expansion_locations_list,
             key=lambda x: x.distance_to(self.ai.start_location))[len(self.ai.townhalls):len(self.ai.townhalls) + 3]]):
             self.status = ArmyStatus.ENEMY_SCOUT
