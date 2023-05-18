@@ -49,6 +49,7 @@ class ConditionCounterAttack:
         en = self.ai.enemy_units()
         return en.exists and en.closer_than(35, self.ai.defend_position).amount > 3
 
+
 class ConditionRetreat:
     def __init__(self, ai):
         self.ai = ai
@@ -130,6 +131,11 @@ class ConditionLockSpending:
 
     async def none(self):
         pass
+
+    async def is_mothership_ready(self):
+        return self.ai.army({unit.CARRIER, unit.TEMPEST}).amount >= 2 and not self.ai.units(unit.MOTHERSHIP).exists and \
+               ('is_mothership_created' not in self.ai.global_variables or
+                not self.ai.global_variables['is_mothership_created'])
 
     async def is_oracle_ready(self):
         return self.ai.time < 300 and self.ai.structures(unit.STARGATE).exists \

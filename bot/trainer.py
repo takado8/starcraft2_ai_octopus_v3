@@ -11,8 +11,6 @@ class Trainer:
         self.warp_gate_trainer = WarpgateTrainer(ai)
 
     async def train(self):
-        # print('\n\ntraining queue: ')
-        # print(self.training_queue)
         make_zealot_minerals_threshold = 600
         if self.ai.attack and self.ai.minerals > make_zealot_minerals_threshold and self.ai.vespene < 50:
             idle_warpgates = []
@@ -31,19 +29,16 @@ class Trainer:
                         break
                     await self.warp_gate_trainer.standard(warpgate, UnitTypeId.ZEALOT)
 
-
-
         if self.training_queue and not await self.ai.lock_spending_condition() and (self.ai.is_build_finished()
                 or self.ai.is_build_in_progress() or self.ai.army_priority or (self.ai.minerals > 550
                                                                                and self.ai.vespene > 250)):
-            # print("training")
             i = 0
             buildings = None
             unit_id = None
             while not buildings and i < len(self.training_queue):
                 unit_id = self.training_queue[i]
                 i += 1
-                if not self.is_tech_requirement_met(unit_id):
+                if not self.is_tech_requirement_met(unit_id) or unit_id == UnitTypeId.MOTHERSHIP:
                     unit_id = None
                     continue
                 building_id = BUILDING_OF_ORIGIN_DICT[unit_id]
@@ -65,7 +60,6 @@ class Trainer:
 
             if buildings and unit_id:
                 building = buildings.random
-                # print('building: {}, unit: {}'.format(building.type_id, unit_id))
                 if building.type_id == UnitTypeId.WARPGATE:
                     await self.warp_gate_trainer.standard(building, unit_id)
                 else:

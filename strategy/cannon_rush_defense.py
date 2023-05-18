@@ -96,11 +96,11 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_supply_over(40)
+        return self.condition_attack.army_supply_over(80)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(12 if self.ai.time < 480 else 30)
+        return self.condition_retreat.army_count_less_than(7 if self.ai.time < 480 else 15)
 
 
     def counter_attack_condition(self):

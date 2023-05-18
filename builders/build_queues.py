@@ -37,18 +37,28 @@ class BuildQueues:
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
+    FORTRESS_TOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
+                     unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
+                     unit.SHIELDBATTERY,
+                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
+                     unit.SHIELDBATTERY, unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.ROBOTICSBAY, unit.SHIELDBATTERY,
+                     unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.TEMPLARARCHIVE,
+                     unit.NEXUS, unit.FORGE, unit.GATEWAY,
+                     unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.FLEETBEACON,
+                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.STARGATE,
+                     unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
-                        unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
-                        unit.SHIELDBATTERY,
-                        unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
-                        unit.SHIELDBATTERY, unit.ROBOTICSFACILITY,unit.GATEWAY,
-                        unit.ROBOTICSBAY, unit.SHIELDBATTERY,
-                        unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY,unit.TEMPLARARCHIVE,
-                         unit.NEXUS, unit.FORGE,unit.GATEWAY,
-                         unit.ROBOTICSFACILITY,unit.GATEWAY,
-                        unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.FLEETBEACON,
-                        unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.STARGATE,
-                        unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+                     unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
+                     unit.SHIELDBATTERY,
+                     unit.STARGATE, unit.FLEETBEACON, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
+                     unit.NEXUS, unit.STARGATE,30,
+                     unit.NEXUS, unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.STARGATE,
+                     unit.NEXUS, unit.STARGATE, unit.NEXUS,
+                     unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     SKYTOSS_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.SHIELDBATTERY, 8, unit.STARGATE,
                        unit.FLEETBEACON, unit.GATEWAY,

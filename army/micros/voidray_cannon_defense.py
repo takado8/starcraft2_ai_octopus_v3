@@ -2,6 +2,8 @@ from army.micros.microABS import MicroABS
 from sc2.unit import UnitTypeId as unit
 from sc2.ids.ability_id import AbilityId as ability
 
+from bot.constants import BASES_IDS
+
 
 class VoidrayCannonDefenseMicro(MicroABS):
     def __init__(self, ai):
@@ -15,6 +17,7 @@ class VoidrayCannonDefenseMicro(MicroABS):
         division_position = None
         for voidray in void_rays:
             if enemy.exists:
+
                 threats = self.ai.enemy_units().filter(
                     lambda z: z.distance_to(voidray.position) < 12 and z.type_id not in self.ai.units_to_ignore
                               and not z.is_hallucination)
@@ -23,7 +26,7 @@ class VoidrayCannonDefenseMicro(MicroABS):
                     threats = can_attack_air
                 threats.extend(
                     self.ai.enemy_structures().filter(lambda z: z.distance_to(voidray.position) < 12 and
-                                                                (z.can_attack_air or z.type_id == unit.BUNKER)))
+                                        (z.can_attack_air or z.type_id == unit.BUNKER or z.type_id in BASES_IDS)))
             else:
                 threats = None
             # if not self.ai.strategy.attack.enemy_main_base_down:
@@ -40,25 +43,50 @@ class VoidrayCannonDefenseMicro(MicroABS):
                     voidray.move(batteries.closest_to(voidray).position)
                     continue
             if threats:
+                motherships = self.ai.units(unit.MOTHERSHIP).ready
+                if motherships.exists:
+                    mothership = motherships.first
+                    if voidray.distance_to(mothership) > 5:
+                        voidray.move(mothership)
+                        continue
+
+                    detectors = enemy.filter(lambda x: x.is_detector and
+                                                       x.distance_to(voidray) < 7)
+                    detectors.extend(self.ai.enemy_structures().filter(lambda x: x.is_detector and
+                                                                                 x.distance_to(voidray) < 7))
+                    if detectors.exists:
+                        threats = detectors
+                        target = threats.sorted(lambda z: z.health + z.shield)[0]
+                        if target.is_armored and target.distance_to(voidray.position) < 7:
+                            queue = False
+                            abilities = await self.ai.get_available_abilities(voidray)
+                            if ability.EFFECT_VOIDRAYPRISMATICALIGNMENT in abilities:
+                                voidray(ability.EFFECT_VOIDRAYPRISMATICALIGNMENT)
+                                queue = True
+                            voidray.attack(target, queue=queue)
+                        elif not voidray.is_attacking:
+                            voidray.attack(target)
+                            continue
+
                 close_threats = threats.closer_than(4, voidray)
                 if close_threats.exists:
                     threats = close_threats
                 priority = threats.filter(lambda z: z.can_attack_air and z.is_armored) \
                     .sorted(lambda z: z.health + z.shield)
                 if priority.exists:
-                    target2 = priority[0]
+                    target = priority[0]
                 else:
-                    target2 = threats.sorted(lambda z: z.health + z.shield)[0]
-                if target2 is not None:
-                    if target2.is_armored and target2.distance_to(voidray.position) < 7:
+                    target = threats.sorted(lambda z: z.health + z.shield)[0]
+                if target is not None:
+                    if target.is_armored and target.distance_to(voidray.position) < 7:
                         queue = False
                         abilities = await self.ai.get_available_abilities(voidray)
                         if ability.EFFECT_VOIDRAYPRISMATICALIGNMENT in abilities:
                             voidray(ability.EFFECT_VOIDRAYPRISMATICALIGNMENT)
                             queue = True
-                        voidray.attack(target2, queue=queue)
+                        voidray.attack(target, queue=queue)
                     elif not voidray.is_attacking:
-                        voidray.attack(target2)
+                        voidray.attack(target)
             else:
                 if attacking_friends is None:
                     attacking_friends = division.get_attacking_units(self.ai.iteration)

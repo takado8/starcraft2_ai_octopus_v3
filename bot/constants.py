@@ -4,7 +4,7 @@ from sc2.ids.ability_id import AbilityId as ability
 
 ARMY_IDS = {unit.ADEPT, unit.STALKER, unit.ZEALOT, unit.SENTRY, unit.OBSERVER, unit.IMMORTAL, unit.ARCHON,
             unit.HIGHTEMPLAR, unit.DARKTEMPLAR, unit.WARPPRISM, unit.VOIDRAY, unit.CARRIER, unit.COLOSSUS,
-            unit.TEMPEST, unit.DISRUPTOR, unit.PHOENIX}
+            unit.TEMPEST, unit.DISRUPTOR, unit.PHOENIX, unit.MOTHERSHIP}
 
 SPECIAL_UNITS_IDS = {unit.ORACLE}
 
