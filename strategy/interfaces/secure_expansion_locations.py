@@ -15,13 +15,16 @@ class SecureExpansionLocations(InterfaceABS):
                      if not self.ai.townhalls.closer_than(10, x).exists and
         (not self.ai.enemy_structures().exists or not self.ai.enemy_structures().closer_than(10, x).exists)]
         locations = locations[:3]
-
-        for observer in observers:
-
-            if (observer.distance_to(locations[self.index]) < 6 or observer.is_idle) and not (self.ai.enemy_units.exists or
-                                                self.ai.enemy_units.closer_than(12, observer).exists):
-                self.index += 1
+        if locations:
+            for observer in observers:
                 if self.index >= len(locations):
                     self.index = 0
+                    if not locations:
+                        return
+                if (observer.distance_to(locations[self.index]) < 6 or observer.is_idle) and not (self.ai.enemy_units.exists or
+                                                    self.ai.enemy_units.closer_than(12, observer).exists):
+                    self.index += 1
+                    if self.index >= len(locations):
+                        self.index = 0
 
-                observer.move(locations[self.index])
+                    observer.move(locations[self.index])
