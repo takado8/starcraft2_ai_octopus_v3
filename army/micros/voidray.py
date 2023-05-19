@@ -14,6 +14,12 @@ class VoidrayMicro(MicroABS):
         attacking_friends = None
         division_position = None
         for voidray in void_rays:
+            if voidray.shield_percentage < 0.25:
+                batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.energy > 20 and
+                                                        x.distance_to(voidray) < 14)
+                if batteries:
+                    voidray.move(batteries.closest_to(voidray).position)
+                    continue
             if enemy.exists:
                 threats = self.ai.enemy_units().filter(
                     lambda z: z.distance_to(voidray.position) < 12 and z.type_id not in self.ai.units_to_ignore

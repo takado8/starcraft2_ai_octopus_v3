@@ -14,7 +14,7 @@ class Mothership(InterfaceABS):
 
     async def execute(self):
         motherships = self.ai.units(unit.MOTHERSHIP)
-        if self.ai.army({unit.CARRIER, unit.TEMPEST}).amount >= 2 and not motherships.exists:
+        if self.ai.structures(unit.FLEETBEACON).ready.exists and not motherships.exists:
             await self.create_mothership()
         if motherships:
             mothership = motherships.first
@@ -25,10 +25,10 @@ class Mothership(InterfaceABS):
                 if enemy.closer_than(self.TIME_WARP_RADIUS, target).amount >= 5:
                     mothership(ability.EFFECT_TIMEWARP, target.position)
                     return
-            army = self.ai.army
+            army = self.ai.army.exclude_type({unit.OBSERVER, unit.ZEALOT, unit.ADEPT})
             if army:
-                army_nearby = army.closer_than(30, mothership)
-                if army_nearby.amount >= 5:
+                army_nearby = army.closer_than(15, mothership)
+                if army_nearby.amount >= 7:
                     position = max(army_nearby, key=lambda x: army_nearby.closer_than(self.CLOAKING_FIELD_RADIUS, x).amount).position
                     mothership.move(position)
                 else:

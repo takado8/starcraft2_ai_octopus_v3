@@ -9,6 +9,8 @@ class SecureExpansionLocations(InterfaceABS):
         self.index = 0
 
     async def execute(self):
+        if self.ai.attack:
+            return
         observers = self.ai.units(unit.OBSERVER).ready
         locations = [x for x in sorted(self.ai.expansion_locations_list,
                                        key=lambda x: x.distance_to(self.ai.start_location))

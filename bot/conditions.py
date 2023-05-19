@@ -133,7 +133,7 @@ class ConditionLockSpending:
         pass
 
     async def is_mothership_ready(self):
-        return self.ai.army({unit.CARRIER, unit.TEMPEST}).amount >= 2 and not self.ai.units(unit.MOTHERSHIP).exists and \
+        return self.ai.structures(unit.FLEETBEACON).ready.exists and not self.ai.units(unit.MOTHERSHIP).exists and \
                ('is_mothership_created' not in self.ai.global_variables or
                 not self.ai.global_variables['is_mothership_created'])
 

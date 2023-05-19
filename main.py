@@ -32,7 +32,9 @@ class OctopusV3(sc2.BotAI):
         self.building_time = 0
         self.army_time = 0
         self.workers_time = 0
+        self.interfaces_time = 0
         super().__init__()
+        self.global_variables = {}
         self.spot_validator = BuildingSpotValidator(self)
         self.attack = False
         self.first_attack = False
@@ -118,8 +120,9 @@ class OctopusV3(sc2.BotAI):
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
-        # if iteration % 100 == 0:
-        #     print('\narmy: {}\nworkers: {}\nbuild: {}\n'.format(self.army_time, self.workers_time, self.building_time))
+        if iteration % 500 == 0:
+            print('\ninterfaces: {}\narmy: {}\nworkers: {}\nbuild: {}\n'.format(
+                self.interfaces_time, self.army_time, self.workers_time, self.building_time))
         try:
             self.iteration = iteration
             self.save_stats()
@@ -130,7 +133,10 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 00')
             print(ex)
         try:
+            start = time.time()
             await self.strategy.execute_interfaces()
+            stop = time.time()
+            self.interfaces_time += stop - start
         except:
             await self.chat_send('Error 13')
             print(traceback.print_exc())
@@ -140,12 +146,18 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 01')
             print(ex)
         try:
+            start = time.time()
             await self.strategy.army_execute()
+            stop = time.time()
+            self.army_time += stop - start
         except:
             await self.chat_send('Error 02')
             print(traceback.print_exc())
         try:
+            start = time.time()
             await self.strategy.handle_workers()
+            stop = time.time()
+            self.workers_time += stop - start
         except Exception:
             await self.chat_send('Error 03')
             print(traceback.print_exc())
@@ -155,7 +167,10 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 04')
             print(traceback.print_exc())
         try:
+            start = time.time()
             await self.strategy.build_pylons()
+            stop = time.time()
+            self.building_time += stop - start
         except Exception as ex:
             await self.chat_send('Error 05')
             print(ex)
@@ -198,8 +213,10 @@ class OctopusV3(sc2.BotAI):
             # print('army priority: {}'.format(self.army_priority))
             if (not self.army_priority or (self.minerals > 700 and self.vespene > 350)) and not lock_spending:
                 # print('build from main.')
+                start = time.time()
                 await self.strategy.build_from_queue()
-
+                stop = time.time()
+                self.building_time += stop - start
         except:
             await self.chat_send('Error 08')
             print(traceback.print_exc())

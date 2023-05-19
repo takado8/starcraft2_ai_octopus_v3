@@ -34,7 +34,7 @@ class FortressDefense(Defense):
                     self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)
         elif nexuses.amount > 2:
             nexuses_fortified = nexuses.filter(lambda nexus: self.ai.structures().filter(lambda y:
-                         y.type_id == unit.SHIELDBATTERY and y.is_ready and y.distance_to(nexus) < 14).amount > 3)
+                         y.type_id == unit.SHIELDBATTERY and y.distance_to(nexus) < 14).amount >= 3)
             if nexuses_fortified:
                 nexus = nexuses_fortified.furthest_to(self.ai.start_location)
                 self.ai.defend_position = nexus.position.towards(self.ai.game_info.map_center, 5)

@@ -39,13 +39,14 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader, \
     TemplarArchiveUpgrader
 from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1
+import time
 
 
 class FortressSkyToss(Strategy):
     def __init__(self, ai):
         super().__init__(type='air', name='FortressSkyToss', ai=ai, defense=FortressDefense(ai))
 
-        voidray_micro = VoidrayCannonDefenseMicro(ai)
+        # voidray_micro =
         # carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
 
@@ -56,14 +57,12 @@ class FortressSkyToss(Strategy):
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.1))
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
-        self.army.create_division('voidrays1', {unit.VOIDRAY: 15}, [voidray_micro], Movements(ai))
-        # self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai))
-        self.army.create_division('mothership', {unit.MOTHERSHIP: 1}, [], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
-        self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        # self.army.create_division('tempests3', TEMPEST_x5, [tempest_micro], Movements(ai))
+        # self.army.create_division('voidrays1', {unit.VOIDRAY: 3}, [VoidrayMicro(ai)], Movements(ai))
+        # self.army.create_division('voidrays2', {unit.VOIDRAY: 5}, [VoidrayMicro(ai)], Movements(ai))
+        self.army.create_division('voidrays3',
+                                  {unit.VOIDRAY: 15, unit.MOTHERSHIP: 1, unit.TEMPEST: 8, unit.OBSERVER: 1},
+                                  [VoidrayCannonDefenseMicro(ai), tempest_micro, ObserverMicro(ai)], Movements(ai))
 
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-360)
 
@@ -90,7 +89,7 @@ class FortressSkyToss(Strategy):
         await self.wall_builder.execute()
         await self.mother_ship_interface.execute()
         await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=6)
-        await self.cannon_builder.build_cannons(when_minerals_more_than=400, amount=3)
+        await self.cannon_builder.build_cannons(when_minerals_more_than=350, amount=4)
 
 
     async def handle_workers(self):
@@ -134,7 +133,7 @@ class FortressSkyToss(Strategy):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(40 if self.ai.time < 500 else 80)
+        return self.condition_retreat.army_supply_less_than(70 if self.ai.time < 500 else 90)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

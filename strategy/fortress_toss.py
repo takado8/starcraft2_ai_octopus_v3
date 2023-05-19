@@ -62,9 +62,9 @@ class FortressToss(Strategy):
                                   Movements(ai, 0.1))
 
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
-        self.army.create_division('stalkers', {unit.STALKER: 5}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
+        self.army.create_division('stalkers', {unit.STALKER: 5}, [StalkerMicro(ai)], Movements(ai), lifetime=300)
         self.high_templars_amount = 3
-        main_army = {unit.ZEALOT: 3, unit.STALKER: 15, unit.SENTRY: 3, unit.IMMORTAL: 3,
+        main_army = {unit.ZEALOT: 3, unit.STALKER: 15, unit.SENTRY: 2, unit.IMMORTAL: 3,
                      unit.HIGHTEMPLAR: self.high_templars_amount,
                      unit.ARCHON: 6, unit.COLOSSUS: 3, unit.DISRUPTOR: 2, unit.CARRIER: 10, unit.TEMPEST: 10}
         self.army.create_division('main_army', main_army, [zealot_micro, carrier_micro, tempest_micro, sentry_micro,
@@ -77,7 +77,7 @@ class FortressToss(Strategy):
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro],Movements(ai, 0.2), lifetime=-360)
 
 
-        build_queue = BuildQueues.FORTRESS_SKYTOSS
+        build_queue = BuildQueues.FORTRESS_TOSS
         # upper_wall = UpperWall(ai)
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),

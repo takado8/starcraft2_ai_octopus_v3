@@ -94,8 +94,8 @@ class Builder:
             return False
         if validate_location:
             place = None
-            max_tries = 200
-            loops = 8 if near_pylon else 1
+            max_tries = 60
+            loops = 12 if near_pylon else 1
             try:
                 radius = STRUCTURES_RADIUS[building]
             except:
@@ -104,7 +104,7 @@ class Builder:
             all_pylons = self.ai.structures(unit.PYLON)
             if building == unit.PYLON and all_pylons.amount < 5:
                 if all_pylons.amount < 6:
-                    distance = 5
+                    distance = 7
                 else:
                     distance = 3
             else:
@@ -116,12 +116,10 @@ class Builder:
                     i+=1
                     place = self.find_location(near, distance)
 
-                    # place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
-
                     if place:
                         too_close = self.ai.structures().filter(lambda x: x.distance_to(place) < x.radius + distance)
-                        close_enough = self.ai.structures().filter(lambda x: x.distance_to(place)
-                                     < x.radius + distance * 1.2).amount > 0 if building != unit.PYLON else True
+                        close_enough = True if i > max_tries / 2 else self.ai.structures().filter(lambda x: x.distance_to(place)
+                                     < x.radius + distance * 1.8).amount > 0 if building != unit.PYLON else True
                         if too_close.amount < 2 and close_enough and await self.ai.can_place_single(building, place):
                             break
                         elif i < max_tries:
@@ -145,7 +143,8 @@ class Builder:
             place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
 
         if place is None:
-            # print('position none')
+            place = await self.ai.find_placement(building, near, max_distance, random_alternative, placement_step)
+        if place is None:
             return False
         # validate
         if not validate_location or self.validator.is_valid_location(place.x, place.y):

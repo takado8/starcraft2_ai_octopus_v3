@@ -6,6 +6,7 @@ class Attack:
     def __init__(self, ai):
         self.ai = ai
         self.enemy_main_base_down = False
+        self.previous_destination = None
 
     def select_targets_to_attack(self):
         enemy_units = self.ai.enemy_units()
@@ -36,16 +37,19 @@ class Attack:
                         self.ai.game_info.map_center), self.ai.start_location)
 
                 if destination.amount > 2 or destination.filter(lambda x: x.is_structure).exists:
-                    destination = destination.closest_to(self.ai.start_location).position
+                    destination = destination.closest_to(self.previous_destination if
+                                self.previous_destination else self.ai.start_location).position
                 else:
                     destination = self.ai.enemy_start_locations[0].position
         elif not self.enemy_main_base_down:
             structures = self.ai.enemy_structures()
             if structures.exists:
-                destination = structures.closest_to(self.ai.start_location)
+                destination = structures.closest_to(self.previous_destination if
+                                self.previous_destination else self.ai.start_location)
             else:
                 destination = self.ai.enemy_start_locations[0].position
         else:
             destination = None
-
+        if destination:
+            self.previous_destination = destination
         return destination

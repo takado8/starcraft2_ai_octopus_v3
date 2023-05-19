@@ -15,14 +15,16 @@ class CannonBuilder:
                 self.ai.main_base_ramp.top_center, -5))
             nexuses.remove(second_nexus)
             for nexus in nexuses:
-                pylon = self.ai.structures(unit.PYLON).ready.closer_than(12, nexus)
+                pylon = self.ai.structures(unit.PYLON).ready.closer_than(14, nexus)
                 if pylon.exists:
                     pylon = pylon.furthest_to(self.ai.start_location.position)
-                    if self.ai.structures(unit.PHOTONCANNON).closer_than(12, pylon.position).amount < amount \
+                    cannons = self.ai.structures(unit.PHOTONCANNON).closer_than(14, pylon.position)
+                    if cannons.amount < amount \
                             and self.ai.already_pending(unit.PHOTONCANNON) < amount:
                         await self.ai.build(unit.PHOTONCANNON, pylon.position.towards(self.ai.game_info.map_center, 3),
                                             max_distance=7,
-                                         random_alternative=False, placement_step=2)
+                                         random_alternative=False, placement_step=2,
+                        validate_location=True if cannons.amount < amount / 2 else False)
                 elif self.ai.already_pending(unit.PYLON) < 1:
                     minerals = self.ai.mineral_field.closest_to(nexus.position)
                     if minerals.distance_to(nexus.position) < 12:
