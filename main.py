@@ -120,7 +120,7 @@ class OctopusV3(sc2.BotAI):
         if self.iteration == 10:
             strategy_tag = 'Tag:' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
-        if iteration % 500 == 0:
+        if iteration % 1000 == 0:
             print('\ninterfaces: {}\narmy: {}\nworkers: {}\nbuild: {}\n'.format(
                 self.interfaces_time, self.army_time, self.workers_time, self.building_time))
         try:
@@ -299,7 +299,7 @@ def botVsComputer(ai, real_time=0):
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    a_map = maps_list[3]
+    a_map = maps_list[4]
     # a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
