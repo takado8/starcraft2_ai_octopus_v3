@@ -15,7 +15,7 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        self.start_on_specific_location("(31.5, 131.5)")
+        self.start_on_specific_location(undesired_location="(30.5, 28.5)")
         self.map_service = MapPositionsService(self, "second_wall_cannon")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
@@ -47,12 +47,15 @@ class PositionsSetup(BotAI):
                 time.sleep(1)
                 exit(12)
 
-    def start_on_specific_location(self, desired_location):
-        if str(self.start_location.position) != desired_location:
-            raise ValueError("wrong location, should be: {}, is: {}, restarting...".format(desired_location,
-                                                                       str(self.start_location.position)))
-
-
+    def start_on_specific_location(self, desired_location=None, undesired_location=None):
+        if desired_location:
+            if str(self.start_location.position) != desired_location:
+                raise ValueError("wrong location, should be: {}, is: {}, restarting...".format(desired_location,
+                                                                                str(self.start_location.position)))
+        elif undesired_location:
+            if str(self.start_location.position) == undesired_location:
+                raise ValueError("wrong location, should not be: {}, is: {}, restarting...".format(undesired_location,
+                                                                                                   str(self.start_location.position)))
 
 
 def run(real_time=0):
@@ -64,7 +67,7 @@ def run(real_time=0):
     maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
                  "WaterfallAIE"]
 
-    run_game(map_settings=maps.get(maps_list[0]), players=[
+    run_game(map_settings=maps.get(maps_list[5]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
         Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
 
@@ -73,7 +76,5 @@ def run(real_time=0):
 
 if __name__ == '__main__':
     real_time = 1
-    try:
-        run(real_time=real_time)
-    except ValueError as err:
+    for i in range(15):
         run(real_time=real_time)
