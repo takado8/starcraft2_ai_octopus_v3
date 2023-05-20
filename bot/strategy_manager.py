@@ -21,7 +21,7 @@ class StrategyManager:
         'SkytossCarriers': SkytossCarriers,
         'AirOracle': AirOracle,
         'CannonRushDefense': CannonRushDefense,
-        'FortressSkyToss':FortressSkyToss
+        'FortressSkyToss': FortressSkyToss
     }
 
     def __init__(self, enemy_data: EnemyData):
