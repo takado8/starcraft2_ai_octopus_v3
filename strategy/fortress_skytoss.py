@@ -133,7 +133,7 @@ class FortressSkyToss(Strategy):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(70 if self.ai.time < 500 else 90)
+        return self.condition_retreat.army_supply_less_than(60 if self.ai.time < 500 else 80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

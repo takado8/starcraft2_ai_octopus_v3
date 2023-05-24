@@ -23,7 +23,7 @@ class StalkerMicro(MicroABS):
         return target
 
     async def do_micro(self, division):
-        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
+        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore and not x.is_snapshot)
         stalkers = division.get_units(self.ai.iteration, unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
@@ -38,9 +38,10 @@ class StalkerMicro(MicroABS):
                 threats = enemy.filter(
                     lambda unit_: (unit_.can_attack_ground or unit_.type_id in priority_ids) and
                                   unit_.distance_to(stalker.position) < dist and
-                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination)
+                                  unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination
+                                and not unit_.is_snapshot and unit_.is_visible and unit_.cloak != 1)
                 if self.ai.attack:
-                    threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground
+                    threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
                     if self.ai.enemy_race == Race.Terran:
                         # deal with terran bunkers
@@ -57,7 +58,8 @@ class StalkerMicro(MicroABS):
                             #     stalker.move(stalker.position.towards(closest_bunker, -4))
                             #     continue
                             # go kill tanks
-                            tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED})
+                            tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED}
+                                                           and not x.is_snapshot)
                             if tanks:
                                 threats = tanks
                             # or workers if no threats
@@ -75,7 +77,19 @@ class StalkerMicro(MicroABS):
                                     threats = workers_near_bunkers
                                 else:
                                     threats = bunkers
-                        # deal with terran ramp
+                        # get on ramp and kill tanks
+                        enemy_main_ramp = self.ai.enemy_main_base_ramp
+                        if stalker.distance_to(enemy_main_ramp.bottom_center) < 14 and enemy.exists:
+                            if stalker.distance_to(enemy_main_ramp.top_center) > 4 and threats.closer_than(
+                                6, stalker).exists:
+                                threats_in_range = threats.in_attack_range_of(stalker)
+                                if stalker.weapon_ready and threats_in_range.exists:
+                                    stalker.attack(self.select_target(threats_in_range, stalker))
+                                else:
+                                    stalker.move(enemy_main_ramp.top_center)
+                                continue
+
+                        # deal with terran wall
                         if not threats or threats.exists and not threats.in_attack_range_of(stalker):
                             enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
 
@@ -115,7 +129,10 @@ class StalkerMicro(MicroABS):
 
                 if stalker.shield_percentage < 0.4:
                     if stalker.health_percentage < 0.35:
-                        stalker.move(self.find_back_out_position(stalker, closest_enemy.position, division))
+                        if not closest_enemy and enemy:
+                            closest_enemy = enemy.closest_to(stalker)
+                        if closest_enemy:
+                            stalker.move(self.find_back_out_position(stalker, closest_enemy.position, division))
                         continue
                     d = 4
                 else:
@@ -129,7 +146,8 @@ class StalkerMicro(MicroABS):
                     else:
                         stalker.attack(target)
                 else:
-                    back_out_position = self.find_back_out_position(stalker, closest_enemy.position, division)
+                    back_out_position = self.find_back_out_position(stalker, closest_enemy.position, division)\
+                                                if closest_enemy else None
                     if back_out_position is not None and stalker.weapon_cooldown > 0:
                         stalker.move(stalker.position.towards(back_out_position, d))
                     else:

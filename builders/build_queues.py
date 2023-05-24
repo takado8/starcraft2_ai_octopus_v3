@@ -39,12 +39,12 @@ class BuildQueues:
 
     FORTRESS_TOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
-                     unit.SHIELDBATTERY,
-                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
-                     unit.SHIELDBATTERY, unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.SHIELDBATTERY,unit.ROBOTICSFACILITY,
+                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
+                     unit.SHIELDBATTERY,  unit.GATEWAY, unit.FORGE, unit.TWILIGHTCOUNCIL,
                      unit.ROBOTICSBAY, unit.SHIELDBATTERY,
-                     unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.GATEWAY, unit.TEMPLARARCHIVE,
-                     unit.NEXUS, unit.FORGE, unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.NEXUS, unit.TEMPLARARCHIVE,  unit.GATEWAY,
                      unit.ROBOTICSFACILITY, unit.GATEWAY,
                      unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.FLEETBEACON,
                      unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.STARGATE,
@@ -117,14 +117,16 @@ class BuildQueues:
                            unit.PYLON,unit.PYLON, unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.FLEETBEACON, unit.STARGATE,
                            unit.STARGATE]
 
-    CANNON_RUSH_DEFENSE2 = [unit.PYLON, unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PYLON, unit.PHOTONCANNON,
-                           unit.PHOTONCANNON, unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.SHIELDBATTERY,
-                           unit.SHIELDBATTERY, unit.SHIELDBATTERY,
-                           unit.STARGATE,unit.SHIELDBATTERY,  unit.SHIELDBATTERY, unit.SHIELDBATTERY,
-                           unit.STARGATE, unit.SHIELDBATTERY,
-                           unit.ROBOTICSFACILITY, unit.NEXUS, unit.NEXUS, unit.NEXUS,
-                           unit.FLEETBEACON, unit.STARGATE,
-                           unit.STARGATE]
+    WORKER_RUSH_DEFENSE = [unit.PYLON, unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON, unit.PYLON,
+                             unit.CYBERNETICSCORE, unit.PHOTONCANNON, unit.PHOTONCANNON,
+                           unit.STARGATE, unit.SHIELDBATTERY, unit.SHIELDBATTERY, unit.PYLON, unit.PYLON, unit.SHIELDBATTERY,
+                           unit.PYLON, unit.SHIELDBATTERY,
+                           unit.PYLON, unit.SHIELDBATTERY, unit.SHIELDBATTERY,unit.SHIELDBATTERY, unit.SHIELDBATTERY,
+                           unit.PYLON, unit.PYLON, 12, unit.STARGATE, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
+                           unit.SHIELDBATTERY, unit.SHIELDBATTERY, 24, unit.ROBOTICSFACILITY, unit.NEXUS,
+                           unit.NEXUS,unit.FLEETBEACON, unit.NEXUS,
+                            unit.STARGATE, unit.STARGATE, unit.NEXUS,unit.NEXUS,unit.NEXUS]
+
 
     PROXY_MIX = [unit.PYLON, unit.GATEWAY, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, 16, unit.NEXUS,
                     unit.ROBOTICSFACILITY, unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, 30, unit.NEXUS, unit.FORGE,

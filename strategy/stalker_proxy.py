@@ -48,10 +48,10 @@ class StalkerProxy(Strategy):
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers()
-        if mineral_workers:
-            self.speed_mining.execute(mineral_workers)
-        else:
-            self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        # if mineral_workers:
+        #     self.speed_mining.execute(mineral_workers)
+        # else:
+        #     self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):
@@ -85,10 +85,16 @@ class StalkerProxy(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.army_supply_over(30)
+        return self.condition_attack.stalkers_more_than(2) or self.condition_attack.army_supply_over(50)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(0)
+        if self.ai.time < 300:
+            army_supply = 0
+        elif self.ai.time < 480:
+            army_supply = 20
+        else:
+            army_supply = 40
+        return self.condition_retreat.army_supply_less_than(army_supply)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

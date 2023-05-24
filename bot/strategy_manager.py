@@ -8,6 +8,7 @@ from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_defense import StalkerDefenseUpdated
 from strategy.stalker_proxy import StalkerProxy
+from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
 
 
@@ -26,7 +27,7 @@ class StrategyManager:
 
     def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = WorkerRushDefenseStrategy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

@@ -17,7 +17,7 @@ class SecondWallBuilder(InterfaceABS):
             else:
                 builder = self.ai.workers.find_by_tag(self.builder_tag)
                 if builder:
-                    if builder.distance_to(self.natural_location) > 10:
+                    if builder.distance_to(self.natural_location) > 25:
                         builder.move(self.natural_location)
                     elif isinstance(builder.order_target, int):
                         builder.move(self.natural_location)
