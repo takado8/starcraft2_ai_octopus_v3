@@ -45,19 +45,22 @@ class StalkerProxy(Strategy):
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.proxy_gate_builder = ProxyGateBuilder(ai)
 
+    async def execute_interfaces(self):
+        await super().execute_interfaces()
+        await self.proxy_gate_builder.build_proxy_gate()
+
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
         self.workers_distribution.distribute_workers()
-        # if mineral_workers:
-        #     self.speed_mining.execute(mineral_workers)
-        # else:
-        #     self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        if mineral_workers:
+            self.speed_mining.execute(mineral_workers)
+        else:
+            self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
 
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
         await self.battery_builder.build_batteries()
-        await self.proxy_gate_builder.build_proxy_gate()
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard()

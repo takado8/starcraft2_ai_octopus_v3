@@ -23,13 +23,13 @@ class TerranStalkerDefense(sc2.BotAI):
         await self.distribute_workers()
         await self.build_depots()
         await self.build_barracks()
-        await self.build_factory()
-        # await self.build_bunker()
+        # await self.build_factory()
+        await self.build_bunker()
         await self.build_refinery()
         self.train_marines()
-        self.train_tank()
-        self.siege_up_tanks()
-        # self.load_up_bunkers()
+        # self.train_tank()
+        # self.siege_up_tanks()
+        self.load_up_bunkers()
         self.build_barracks_reactor()
         await self.build_factory_techlab()
         # await self.expand()
@@ -88,7 +88,7 @@ class TerranStalkerDefense(sc2.BotAI):
         if self.can_afford(unit.BARRACKS) and not self.already_pending(unit.BARRACKS):
             if not barracks:
                 await self.build(unit.BARRACKS, self.main_base_ramp.barracks_correct_placement)
-            elif 2 > barracks.amount > 0 and self.structures(unit.FACTORY).exists:
+            elif 2 > barracks.amount > 0 :#and self.structures(unit.FACTORY).exists:
                 await self.build(unit.BARRACKS, self.start_location.position.random_on_distance(12))
 
     def train_workers(self):
