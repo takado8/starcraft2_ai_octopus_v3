@@ -70,36 +70,37 @@ class OctopusV3(sc2.BotAI):
             print(ex)
 
     async def on_start(self):
-        print('----------------------- new game ---------------------------------')
-        # try:
-        now = datetime.now()
-        current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        print(current_time)
-        print('getting enemy data...')
-        self.enemy_data = EnemyData(self)
-        self.strategy_manager = StrategyManager(self.enemy_data)
-        # self.map_service = MapPositionsService(self, 'cannon_wall')
-        strategy = await self.strategy_manager.choose_get_strategy()
-        self.strategy = strategy(self)
-        print('getting enemy data done.')
-        print('setting strategy: ' + str(self.strategy.name))
-        self.starting_strategy = self.strategy.name
-        map_name = str(self.game_info.map_name)
-        print('map_name: ' + map_name)
-        print('start location: ' + str(self.start_location.position))
+        try:
+            print('----------------------- new game ---------------------------------')
+            # try:
+            now = datetime.now()
+            current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+            print(current_time)
+            print('getting enemy data...')
+            self.enemy_data = EnemyData(self)
+            self.strategy_manager = StrategyManager(self.enemy_data)
+            # self.map_service = MapPositionsService(self, 'cannon_wall')
+            strategy = await self.strategy_manager.choose_get_strategy()
+            self.strategy = strategy(self)
+            print('getting enemy data done.')
+            print('setting strategy: ' + str(self.strategy.name))
+            self.starting_strategy = self.strategy.name
+            map_name = str(self.game_info.map_name)
+            print('map_name: ' + map_name)
+            print('start location: ' + str(self.start_location.position))
 
-        for worker in self.workers:
-            worker.stop()
+            for worker in self.workers:
+                worker.stop()
 
-        self.enemy_main_base_ramp = min(self.game_info.map_ramps, key=lambda ramp:
-                    self.enemy_start_locations[0].position.distance_to(ramp.top_center))
+            self.enemy_main_base_ramp = min(self.game_info.map_ramps, key=lambda ramp:
+                        self.enemy_start_locations[0].position.distance_to(ramp.top_center))
+        except:
+            print(traceback.print_exc())
+            try:
+                await self.chat_send('Init error')
+            except:
+                pass
 
-        # except Exception as ex:
-        #     try:
-        #         await self.chat_send('Error 10')
-        #     except:
-        #         pass
-        #     print(ex)
 
     async def on_end(self, game_result: Result):
         try:
@@ -290,11 +291,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    computer_builds = [AIBuild.Rush]
+    # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -305,8 +306,8 @@ def botVsComputer(ai, real_time=0):
     a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
+        Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
+        # Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
