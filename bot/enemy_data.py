@@ -50,6 +50,7 @@ class EnemyData:
                     return False
             else:
                 print("opponent_id is None")
+                return False
         except Exception as ex:
             print('load_enemy_data_dict error')
             print(ex)

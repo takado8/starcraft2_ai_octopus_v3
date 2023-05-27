@@ -2,42 +2,63 @@ from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.fortress_skytoss import FortressSkyToss
-from strategy.fortress_toss import FortressToss
-from strategy.oracle_defense import OracleDefenseUpdated
-from strategy.skytoss import SkyToss
-from strategy.skytoss_carriers import SkytossCarriers
-from strategy.stalker_defense import StalkerDefenseUpdated
 from strategy.stalker_proxy import StalkerProxy
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
+from sc2 import Race
+import os
+import sys
 
 
 class StrategyManager:
-    strategy_name_dict = {
-        'StalkerProxy': StalkerProxy,
-        'StalkerDefenseUpdated': StalkerDefenseUpdated,
-        'SkyToss': SkyToss,
-        'OracleDefenseUpdated': OracleDefenseUpdated,
-        'ZealotRushDefense': ZealotRushDefense,
-        'SkytossCarriers': SkytossCarriers,
-        'AirOracle': AirOracle,
-        'CannonRushDefense': CannonRushDefense,
-        'FortressSkyToss': FortressSkyToss
-    }
+    def __init__(self, enemy_data: EnemyData, ai):
+        if ai.enemy_race == Race.Terran:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'AirOracle': AirOracle,
+                'FortressSkyToss': FortressSkyToss
+            }
+        elif ai.enemy_race == Race.Protoss:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'CannonRushDefense': CannonRushDefense,
+                'FortressSkyToss': FortressSkyToss
+            }
+        elif ai.enemy_race == Race.Zerg:
+            self.strategy_name_dict = {
+                'ZealotRushDefense': ZealotRushDefense,
+                'FortressSkyToss': FortressSkyToss,
+                'StalkerProxy': StalkerProxy
+            }
+        else:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'FortressSkyToss': FortressSkyToss
+            }
 
-    def __init__(self, enemy_data: EnemyData):
         self.enemy_data = enemy_data
-        self.default_strategy = WorkerRushDefenseStrategy
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
+
+    def data_dir_files_amount(self):
+        dir_ = os.path.realpath(sys.argv[0]) if sys.argv[0] else None
+        if dir_:
+            dir_path = os.path.join(os.path.dirname(os.path.abspath(dir_)), 'data', 'enemy_info')
+            return len(os.listdir(dir_path))
+        return -1
 
     async def choose_get_strategy(self):
         enemy_data_dict = await self.enemy_data.load_enemy_data_dict()
         strategy_chosen = None
         if enemy_data_dict is False:
             self.enemy_data.create_enemy_data_dict(self.create_enemy_data_scoreboard_dict())
+            if self.data_dir_files_amount() == 0:
+                return WorkerRushDefenseStrategy
         elif enemy_data_dict:
+            if self.data_dir_files_amount() == 2:
+                return WorkerRushDefenseStrategy
             self.update_strategies()
             if self.enemy_data.enemy_data_dict['last_game']['result'] is 1:
                 strategy_chosen = self.enemy_data.enemy_data_dict['last_game']['strategy']
@@ -103,6 +124,9 @@ class StrategyManager:
         if self.enemy_data.enemy_data_dict is None:
             self.enemy_data.create_enemy_data_dict(self.create_enemy_data_scoreboard_dict())
 
+        if self.enemy_data.ai.starting_strategy not in self.enemy_data.enemy_data_dict['scoreboard']:
+            self.enemy_data.enemy_data_dict['scoreboard'] = {'win': 0, 'total': 0}
+
         self.enemy_data.enemy_data_dict['scoreboard'][self.enemy_data.ai.starting_strategy]['total'] += 1
         self.enemy_data.enemy_data_dict['last_game']['strategy'] = self.enemy_data.ai.starting_strategy
         self.enemy_data.enemy_data_dict['last_game']['result'] = score
@@ -112,6 +136,9 @@ class StrategyManager:
             self.update_general_stats_strategies(general_stats)
         else:
             general_stats = self.create_general_stats_dict()
+
+        if self.enemy_data.ai.starting_strategy not in general_stats:
+            general_stats[self.enemy_data.ai.starting_strategy] = {'win': 0, 'total': 0}
 
         general_stats[self.enemy_data.ai.starting_strategy]['total'] += 1
         general_stats['total']['total'] += 1

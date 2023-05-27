@@ -16,8 +16,6 @@ import traceback
 from data_analysis.map_tools.map_positions_service import MapPositionsService
 import time
 
-from data_analysis.test_bots.terran_stalker_defense import TerranStalkerDefense
-
 
 class OctopusV3(sc2.BotAI):
     army_ids = ARMY_IDS
@@ -78,7 +76,7 @@ class OctopusV3(sc2.BotAI):
             print(current_time)
             print('getting enemy data...')
             self.enemy_data = EnemyData(self)
-            self.strategy_manager = StrategyManager(self.enemy_data)
+            self.strategy_manager = StrategyManager(self.enemy_data, ai=self)
             # self.map_service = MapPositionsService(self, 'cannon_wall')
             strategy = await self.strategy_manager.choose_get_strategy()
             self.strategy = strategy(self)
@@ -291,11 +289,11 @@ def botVsComputer(ai, real_time=0):
                  "WaterfallAIE"]
     races = [Race.Protoss, Race.Zerg, Race.Terran]
 
-    # computer_builds = [AIBuild.Rush]
+    computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -306,8 +304,8 @@ def botVsComputer(ai, real_time=0):
     a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        # Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
+        # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
+        Computer(race=races[1], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
