@@ -10,24 +10,41 @@ from strategy.stalker_defense import StalkerDefenseUpdated
 from strategy.stalker_proxy import StalkerProxy
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
+from sc2 import Race
 
 
 class StrategyManager:
-    strategy_name_dict = {
-        'StalkerProxy': StalkerProxy,
-        'StalkerDefenseUpdated': StalkerDefenseUpdated,
-        'SkyToss': SkyToss,
-        'OracleDefenseUpdated': OracleDefenseUpdated,
-        'ZealotRushDefense': ZealotRushDefense,
-        'SkytossCarriers': SkytossCarriers,
-        'AirOracle': AirOracle,
-        'CannonRushDefense': CannonRushDefense,
-        'FortressSkyToss': FortressSkyToss
-    }
+    def __init__(self, enemy_data: EnemyData, ai):
+        if ai.enemy_race == Race.Terran:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'AirOracle': AirOracle,
+                'FortressSkyToss': FortressSkyToss,
+                'SkytossCarriers': SkytossCarriers
+            }
+        elif ai.enemy_race == Race.Protoss:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'CannonRushDefense': CannonRushDefense,
+                'FortressSkyToss': FortressSkyToss,
+                'SkytossCarriers': SkytossCarriers
 
-    def __init__(self, enemy_data: EnemyData):
+            }
+        elif ai.enemy_race == Race.Zerg:
+            self.strategy_name_dict = {
+                'ZealotRushDefense': ZealotRushDefense,
+                'FortressSkyToss': FortressSkyToss,
+                'StalkerProxy': StalkerProxy,
+                'SkytossCarriers': SkytossCarriers
+            }
+        else:
+            self.strategy_name_dict = {
+                'StalkerProxy': StalkerProxy,
+                'FortressSkyToss': FortressSkyToss,
+            }
+
         self.enemy_data = enemy_data
-        self.default_strategy = WorkerRushDefenseStrategy
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

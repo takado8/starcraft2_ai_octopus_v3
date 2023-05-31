@@ -78,7 +78,7 @@ class OctopusV3(sc2.BotAI):
             print(current_time)
             print('getting enemy data...')
             self.enemy_data = EnemyData(self)
-            self.strategy_manager = StrategyManager(self.enemy_data)
+            self.strategy_manager = StrategyManager(self.enemy_data, self)
             # self.map_service = MapPositionsService(self, 'cannon_wall')
             strategy = await self.strategy_manager.choose_get_strategy()
             self.strategy = strategy(self)
@@ -306,8 +306,8 @@ def botVsComputer(ai, real_time=0):
     a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
-        Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        # Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
+        # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
+        Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

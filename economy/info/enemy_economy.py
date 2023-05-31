@@ -43,13 +43,15 @@ class EnemyEconomy:
         if MILITARY in self.enemy_info:
             for unit_tag in self.enemy_info[MILITARY]:
                 unit = self.enemy_info[MILITARY][unit_tag]
-                self.total_enemy_ground_dps += unit.ground_dps
-                self.total_enemy_hp += unit.health + unit.shield
-                unit_cost = self.ai.calculate_cost(unit.type_id)
-                self.enemy_army_value += unit_cost.minerals + unit_cost.vespene
-                unit_data = self.ai._game_data.units[unit.type_id.value]
-                unit_supply_cost = unit_data._proto.food_required
-                self.enemy_army_supply += unit_supply_cost
+                if unit:
+                    self.total_enemy_ground_dps += unit.ground_dps
+                    self.total_enemy_hp += unit.health + unit.shield
+                    if unit.type_id:
+                        unit_cost = self.ai.calculate_cost(unit.type_id)
+                        self.enemy_army_value += unit_cost.minerals + unit_cost.vespene
+                        unit_data = self.ai._game_data.units[unit.type_id.value]
+                        unit_supply_cost = unit_data._proto.food_required
+                        self.enemy_army_supply += unit_supply_cost
 
 
     def remove_unit_from_enemy_info(self, unit_tag):

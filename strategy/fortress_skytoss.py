@@ -60,7 +60,7 @@ class FortressSkyToss(Strategy):
         # self.army.create_division('voidrays1', {unit.VOIDRAY: 3}, [VoidrayMicro(ai)], Movements(ai))
         # self.army.create_division('voidrays2', {unit.VOIDRAY: 5}, [VoidrayMicro(ai)], Movements(ai))
         self.army.create_division('voidrays3',
-                                  {unit.VOIDRAY: 15, unit.MOTHERSHIP: 1, unit.TEMPEST: 8, unit.OBSERVER: 1},
+                                  {unit.VOIDRAY: 12, unit.MOTHERSHIP: 1, unit.CARRIER: 4, unit.TEMPEST: 8, unit.OBSERVER: 1},
                                   [VoidrayCannonDefenseMicro(ai), tempest_micro, ObserverMicro(ai)], Movements(ai))
 
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
