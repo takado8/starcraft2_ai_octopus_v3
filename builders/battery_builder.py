@@ -12,7 +12,8 @@ class BatteryBuilder:
             nexuses.remove(start_nexus)
             second_nexus = self.ai.townhalls.closest_to(self.ai.main_base_ramp.bottom_center.towards(
                 self.ai.main_base_ramp.top_center, -5))
-            nexuses.remove(second_nexus)
+            if second_nexus:
+                nexuses.remove(second_nexus)
             for nexus in nexuses:
                 pylon = self.ai.structures(unit.PYLON).ready.closer_than(14, nexus)
                 if pylon.exists:
@@ -23,7 +24,7 @@ class BatteryBuilder:
                         await self.ai.build(unit.SHIELDBATTERY, pylon.position.towards(self.ai.game_info.map_center, 3),
                                             max_distance=8,
                                          random_alternative=False, placement_step=2,
-                        validate_location=True if batteries.amount < amount / 2 else False)
+                        validate_location=True if batteries.amount <= 5 else False)
                 elif self.ai.already_pending(unit.PYLON) < 1:
                     minerals = self.ai.mineral_field.closest_to(nexus.position)
                     if minerals.distance_to(nexus.position) < 12:

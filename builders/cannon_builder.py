@@ -22,9 +22,9 @@ class CannonBuilder:
                     if cannons.amount < amount \
                             and self.ai.already_pending(unit.PHOTONCANNON) < amount:
                         await self.ai.build(unit.PHOTONCANNON, pylon.position.towards(self.ai.game_info.map_center, 3),
-                                            max_distance=7,
+                                            max_distance=8,
                                          random_alternative=False, placement_step=2,
-                        validate_location=True if cannons.amount < amount / 2 else False)
+                        validate_location=True if cannons.amount <= 3 else False)
                 elif self.ai.already_pending(unit.PYLON) < 1:
                     minerals = self.ai.mineral_field.closest_to(nexus.position)
                     if minerals.distance_to(nexus.position) < 12:

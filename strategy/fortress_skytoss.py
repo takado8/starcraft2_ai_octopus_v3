@@ -47,7 +47,7 @@ class FortressSkyToss(Strategy):
         super().__init__(type='air', name='FortressSkyToss', ai=ai, defense=FortressDefense(ai))
 
         # voidray_micro =
-        # carrier_micro = CarrierMothershipMicro(ai)
+        carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
 
         positions_loader = PositionsLoader(ai)
@@ -57,13 +57,16 @@ class FortressSkyToss(Strategy):
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.1))
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('stalkers', {unit.STALKER: 2}, [StalkerMicro(ai)], Movements(ai))
+        self.army.create_division('immortals', {unit.IMMORTAL: 2}, [ImmortalMicro(ai)], Movements(ai))
         # self.army.create_division('voidrays1', {unit.VOIDRAY: 3}, [VoidrayMicro(ai)], Movements(ai))
         # self.army.create_division('voidrays2', {unit.VOIDRAY: 5}, [VoidrayMicro(ai)], Movements(ai))
         self.army.create_division('voidrays3',
                                   {unit.VOIDRAY: 12, unit.MOTHERSHIP: 1, unit.CARRIER: 4, unit.TEMPEST: 8, unit.OBSERVER: 1},
-                                  [VoidrayCannonDefenseMicro(ai), tempest_micro, ObserverMicro(ai)], Movements(ai))
+                                  [VoidrayCannonDefenseMicro(ai), tempest_micro, ObserverMicro(ai),
+                                   carrier_micro], Movements(ai))
 
-        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
+        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-360)
 
         build_queue = BuildQueues.FORTRESS_SKYTOSS
@@ -133,7 +136,7 @@ class FortressSkyToss(Strategy):
         return self.condition_attack.air_dmg_lvl2_full_supply()
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(60 if self.ai.time < 500 else 80)
+        return self.condition_retreat.army_supply_less_than(80)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

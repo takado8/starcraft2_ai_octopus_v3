@@ -29,6 +29,13 @@ class Mothership(InterfaceABS):
             if army:
                 army_nearby = army.closer_than(15, mothership)
                 if army_nearby.amount >= 7:
+                    if mothership.shield_percentage < 0.2:
+                        nexuses = self.ai.townhalls.filter(lambda x: x.is_ready and x.energy >= 50)
+                        if nexuses:
+                            nexus = nexuses.closest_to(self.ai.start_location)
+                            abilities = await self.ai.get_available_abilities(nexus)
+                            if ability.EFFECT_MASSRECALL_NEXUS in abilities:
+                                nexus(ability.EFFECT_MASSRECALL_NEXUS, mothership.position)
                     position = max(army_nearby, key=lambda x: army_nearby.closer_than(self.CLOAKING_FIELD_RADIUS, x).amount).position
                     mothership.move(position)
                 else:
