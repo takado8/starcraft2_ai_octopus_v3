@@ -27,6 +27,7 @@ from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
+from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
 from .strategyABS import Strategy
 from builders.expander import Expander
@@ -36,15 +37,16 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader, \
     TemplarArchiveUpgrader
 from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1
+from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
 class FortressToss(Strategy):
     def __init__(self, ai):
-        super().__init__(type='air', name='FortressToss', ai=ai, defense=FortressDefense(ai))
+        super().__init__(type='macro', name='FortressToss', ai=ai, defense=FortressDefense(ai))
 
         # voidray_micro = VoidrayMicro(ai)
         carrier_micro = CarrierMicro(ai)
-        tempest_micro = TempestMicro(ai)
+        # tempest_micro = TempestMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
@@ -59,17 +61,17 @@ class FortressToss(Strategy):
         locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.1))
 
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        # self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
         self.army.create_division('stalkers', {unit.STALKER: 5}, [StalkerMicro(ai)], Movements(ai), lifetime=300)
         self.high_templars_amount = 3
-        main_army = {unit.ZEALOT: 7, unit.STALKER: 15, unit.SENTRY: 4, unit.IMMORTAL: 4,
+        main_army = {unit.ZEALOT: 3, unit.STALKER: 15, unit.SENTRY: 4, unit.IMMORTAL: 3,
                      unit.HIGHTEMPLAR: self.high_templars_amount,
-                     unit.ARCHON: 6, unit.COLOSSUS: 4, unit.DISRUPTOR: 2, unit.CARRIER: 10, unit.TEMPEST: 10}
-        self.army.create_division('main_army', main_army, [zealot_micro, carrier_micro, tempest_micro, sentry_micro,
-            stalker_micro, immortal_micro, colossus_micro, archon_micro, ht_micro, disruptor_micro], Movements(ai),
+                     unit.ARCHON: 5, unit.COLOSSUS: 3, unit.DISRUPTOR: 4, unit.MOTHERSHIP: 1, unit.CARRIER: 8}
+        self.army.create_division('main_army', main_army, [zealot_micro, sentry_micro,
+            stalker_micro, immortal_micro, colossus_micro, archon_micro, ht_micro, disruptor_micro, carrier_micro], Movements(ai),
                                                                                              lifetime=-300)
 
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-380)
@@ -98,16 +100,20 @@ class FortressToss(Strategy):
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
+        self.secure_lines = SecureMineralLines(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
+        if self.ai.time > 240:
+            await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
         await self.mother_ship_interface.execute()
-        await self.battery_builder.build_batteries(when_minerals_more_than=170, amount=2)
-        await self.battery_builder.build_batteries(when_minerals_more_than=250, amount=4)
-        await self.cannon_builder.build_cannons(when_minerals_more_than=150, amount=2)
-        await self.cannon_builder.build_cannons(when_minerals_more_than=200, amount=2)
+        if self.ai.iteration % 10 == 0:
+            # await self.battery_builder.build_batteries(when_minerals_more_than=170, amount=2)
+            await self.battery_builder.build_batteries(when_minerals_more_than=250, amount=4)
+            # await self.cannon_builder.build_cannons(when_minerals_more_than=150, amount=2)
+            await self.cannon_builder.build_cannons(when_minerals_more_than=270, amount=2)
 
 
     async def handle_workers(self):
@@ -126,7 +132,7 @@ class FortressToss(Strategy):
         await self.pylon_builder.new_standard_upper_wall()
 
     def build_assimilators(self):
-        if self.ai.time < 240:
+        if self.ai.time < 180:
             self.assimilator_builder.one_vespene()
         else:
             self.assimilator_builder.standard(minerals_to_gas_ratio=1)
@@ -137,10 +143,11 @@ class FortressToss(Strategy):
         self.cybernetics_upgrader.warpgate()
         if self.ai.structures(unit.STARGATE).exists:
             self.cybernetics_upgrader.air_dmg()
-        self.forge_upgrader.standard()
+        if self.ai.time > 240:
+            self.forge_upgrader.standard()
         await self.robotics_bay_upgrader.thermal_lances()
         await self.twilight_upgrader.blink()
-        if self.ai.time > 500:
+        if upgrade.BLINKTECH in self.ai.state.upgrades:
             await self.twilight_upgrader.charge()
 
 
@@ -173,7 +180,8 @@ class FortressToss(Strategy):
     async def lock_spending_condition(self):
         return self.condition_lock_spending.thermal_lances() or self.condition_lock_spending.psi_storm()\
     or (await self.condition_lock_spending.forge() if self.ai.time > 600 else False) or \
-               await self.condition_lock_spending.is_mothership_ready()
+               await self.condition_lock_spending.is_mothership_ready() or\
+               await self.condition_lock_spending.twilight_council_blink()
 
     async def morphing(self):
         await self.morphing_.morph_gates()

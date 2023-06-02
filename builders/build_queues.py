@@ -39,16 +39,16 @@ class BuildQueues:
 
     FORTRESS_TOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
-                     unit.SHIELDBATTERY,unit.ROBOTICSFACILITY,
-                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY,
-                     unit.SHIELDBATTERY,  unit.GATEWAY, unit.FORGE, unit.TWILIGHTCOUNCIL,
-                     unit.ROBOTICSBAY, unit.SHIELDBATTERY,
-                     unit.NEXUS, unit.GATEWAY,
+                     unit.SHIELDBATTERY, unit.ROBOTICSFACILITY,
+                     unit.GATEWAY, unit.GATEWAY, unit.TWILIGHTCOUNCIL, 23, unit.NEXUS, unit.GATEWAY,
+                     unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,
+                     unit.ROBOTICSBAY, unit.SHIELDBATTERY, 40,
+                     unit.NEXUS, unit.GATEWAY, 50,
                      unit.NEXUS, unit.TEMPLARARCHIVE,  unit.GATEWAY,
-                     unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.ROBOTICSFACILITY, unit.GATEWAY, 60,
                      unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.FLEETBEACON,
-                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.STARGATE,
-                     unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
+                     unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
