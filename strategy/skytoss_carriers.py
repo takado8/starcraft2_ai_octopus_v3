@@ -1,7 +1,9 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
+from army.micros.carrier_mothership import CarrierMothershipMicro
 from army.micros.observer import ObserverMicro
+from army.micros.stalker import StalkerMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.zealot import ZealotMicro
@@ -9,6 +11,9 @@ from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
+from strategy.interfaces.mothership import Mothership
+from strategy.interfaces.secure_mineral_lines import SecureMineralLines
+from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -23,15 +28,17 @@ class SkytossCarriers(Strategy):
         super().__init__(type='air', name='SkytossCarriers', ai=ai)
 
         voidray_micro = VoidrayMicro(ai)
-        carrier_micro = CarrierMicro(ai)
+        carrier_micro = CarrierMothershipMicro(ai)
         # tempest_micro = TempestMicro(ai)
         # zealot_micro = ZealotMicro(ai)
 
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
-        self.army.create_division('carriers1', {unit.CARRIER: 20}, [carrier_micro], Movements(ai))
+        self.army.create_division('carriers1', {unit.CARRIER: 20, unit.MOTHERSHIP: 1}, [carrier_micro],
+                                  Movements(ai))
         # self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-640)
@@ -49,6 +56,15 @@ class SkytossCarriers(Strategy):
         self.forge_upgrader = ForgeUpgrader(ai)
 
         self.worker_rush_defense = WorkerRushDefense(ai)
+        self.mother_ship_interface = Mothership(ai)
+        self.secure_lines = SecureMineralLines(ai)
+        self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
+
+    async def execute_interfaces(self):
+        await super().execute_interfaces()
+        await self.secure_lines.execute()
+        await self.mother_ship_interface.execute()
+        await self.shield_battery_interface.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

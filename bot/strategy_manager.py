@@ -41,10 +41,11 @@ class StrategyManager:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
                 'FortressSkyToss': FortressSkyToss,
+                'SkytossCarriers': SkytossCarriers
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = FortressSkyToss
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

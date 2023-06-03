@@ -32,7 +32,7 @@ class BuildQueues:
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     SKYTOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
-                           10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.STARGATE,
+                           10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 30, unit.CYBERNETICSCORE, unit.STARGATE,
                            unit.NEXUS, unit.ROBOTICSFACILITY, unit.FORGE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                            unit.STARGATE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]

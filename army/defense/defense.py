@@ -8,7 +8,7 @@ class Defense:
     def __init__(self, ai):
         self.ai = ai
         self.units_tags_to_defend_scout = set()
-        self.scout_defense_units_amount = 4
+        self.scout_defense_units_amount = 5
 
     def defend(self, army_status):
         if army_status.status == army_status.DEFENDING_SIEGE:
@@ -63,7 +63,8 @@ class Defense:
         if enemy:
             if self.units_tags_to_defend_scout:
                 scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
-                if len(scout_defense_units) < len(self.units_tags_to_defend_scout):
+                if len(scout_defense_units) < len(self.units_tags_to_defend_scout) or\
+                        len(scout_defense_units) < self.scout_defense_units_amount:
                     self.units_tags_to_defend_scout = {unit_.tag for unit_ in scout_defense_units}
                     self.assign_units_to_defend_scout()
                     scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)

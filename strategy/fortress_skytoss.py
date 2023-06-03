@@ -41,6 +41,7 @@ from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, 
     TemplarArchiveUpgrader
 from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1
 import time
+from sc2 import Race
 
 
 class FortressSkyToss(Strategy):
@@ -55,8 +56,7 @@ class FortressSkyToss(Strategy):
         locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-                                  Movements(ai, 0.1))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro], Movements(ai, 0.1))
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('stalkers', {unit.STALKER: 2}, [StalkerMicro(ai)], Movements(ai))
         self.army.create_division('immortals', {unit.IMMORTAL: 2}, [ImmortalMicro(ai)], Movements(ai))
