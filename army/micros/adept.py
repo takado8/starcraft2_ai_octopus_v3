@@ -87,7 +87,20 @@ class AdeptMicro(MicroABS):
                         self.enemy_base_idx += 1
                         if self.enemy_base_idx > 2:
                             self.enemy_base_idx = 0
+        elif self.ai.enemy_units:
+            enemy = self.ai.enemy_units.closer_than(35, self.ai.start_location)
+            if enemy:
+                for adept in adepts:
+                    closest_enemy = enemy.closest_to(adept)
+                    adept.attack(closest_enemy)
+                    if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept):
+                        adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, closest_enemy.position)
 
+                for shadow in self.ai.units(unit.ADEPTPHASESHIFT):
+                    enemy_shadows = enemy(unit.ADEPTPHASESHIFT)
+                    if enemy_shadows:
+                        enemy = enemy_shadows
+                    shadow.move(enemy.closest_to(shadow))
         return adepts.amount
 
     def select_target(self, targets, adept):

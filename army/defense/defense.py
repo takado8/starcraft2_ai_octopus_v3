@@ -110,9 +110,14 @@ class Defense:
             stalkers = self.ai.army.filter(lambda x: x.type_id == unit.STALKER)
             if stalkers.amount + selected_units.amount < deficit:
                 anybody = self.ai.army.filter(lambda x: x.type_id in {unit.ADEPT, unit.ZEALOT})
+                if not anybody:
+                    anybody = self.ai.army.filter(lambda x: x.can_attack_ground)
                 if stalkers.amount + selected_units.amount + anybody.amount > deficit:
                     selected_units.extend(stalkers)
                     selected_units.extend(anybody[:deficit-selected_units.amount])
+                else:
+                    selected_units.extend(stalkers)
+                    selected_units.extend(anybody)
             else:
                 selected_units.extend(stalkers[:deficit-selected_units.amount])
         else:

@@ -44,7 +44,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = FortressToss
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
