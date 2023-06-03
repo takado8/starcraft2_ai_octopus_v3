@@ -30,6 +30,7 @@ from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
+from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
 from .strategyABS import Strategy
 from builders.expander import Expander
@@ -85,9 +86,11 @@ class FortressSkyToss(Strategy):
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
+        self.secure_lines = SecureMineralLines(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
+        await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
         await self.mother_ship_interface.execute()
