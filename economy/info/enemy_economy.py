@@ -47,11 +47,14 @@ class EnemyEconomy:
                     self.total_enemy_ground_dps += unit.ground_dps
                     self.total_enemy_hp += unit.health + unit.shield
                     if unit.type_id:
-                        unit_cost = self.ai.calculate_cost(unit.type_id)
-                        self.enemy_army_value += unit_cost.minerals + unit_cost.vespene
-                        unit_data = self.ai._game_data.units[unit.type_id.value]
-                        unit_supply_cost = unit_data._proto.food_required
-                        self.enemy_army_supply += unit_supply_cost
+                        try:
+                            unit_cost = self.ai.calculate_cost(unit.type_id)
+                            self.enemy_army_value += unit_cost.minerals + unit_cost.vespene * 3
+                            unit_data = self.ai._game_data.units[unit.type_id.value]
+                            unit_supply_cost = unit_data._proto.food_required
+                            self.enemy_army_supply += unit_supply_cost
+                        except:
+                            print("cannot calculate cost of {}".format(unit.type_id))
 
 
     def remove_unit_from_enemy_info(self, unit_tag):
@@ -72,13 +75,12 @@ class EnemyEconomy:
         self.calculate_enemy_units_report()
         for category in self.enemy_info:
             print("{}:".format(category))
-            for item in self.enemy_info[category]:
-                print("   {}, {}".format(item, self.enemy_info[category][item]))
+            # for item in self.enemy_info[category]:
+            #     print("   {}, {}".format(item, self.enemy_info[category][item]))
             print(" total: {}".format(len(self.enemy_info[category])))
+        print('army value: {}'.format(self.enemy_army_value))
+        print('army supply: {}'.format(self.enemy_army_supply))
         print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))
-        print('lost minerals army: {}'.format(self.lost_minerals_army))
-        print('lost gas army: {}'.format(self.lost_gas_army))
-        print('value army: {}'.format(self.enemy_army_value))
-        print('supply army: {}'.format(self.enemy_army_supply))
-
+        print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * 3))
+        # print('lost gas army: {}'.format(self.lost_gas_army))
         print('-------------------- end of enemy info ----------------------')

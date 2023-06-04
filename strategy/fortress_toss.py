@@ -73,7 +73,6 @@ class FortressToss(Strategy):
         self.army.create_division('main_army', main_army, [zealot_micro, sentry_micro,
             stalker_micro, immortal_micro, colossus_micro, archon_micro, ht_micro, disruptor_micro, carrier_micro], Movements(ai),
                                                                                              lifetime=-300)
-
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-380)
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-360)
@@ -104,8 +103,7 @@ class FortressToss(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        if self.ai.time > 240:
-            await self.secure_lines.execute()
+        await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
         await self.mother_ship_interface.execute()

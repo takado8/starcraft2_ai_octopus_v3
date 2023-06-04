@@ -1,6 +1,5 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2
-import math
 
 
 class PylonBuilder:
@@ -8,6 +7,8 @@ class PylonBuilder:
         self.ai = ai
         self.is_proxy_pylon_built = False
         self.special_locations = special_locations
+        self.enemy_expansions = sorted(self.ai.expansion_locations_list,
+                                       key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
 
     async def none(self):
         pass
@@ -59,10 +60,8 @@ class PylonBuilder:
             if pylons.further_than(40, self.ai.start_location.position).amount == 0:
                 if not self.ai.already_pending(unit.PYLON):
                     if self.ai.coords is None:
-                        enemy_expansions = sorted(self.ai.expansion_locations_list,
-                                                  key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
 
-                        position = enemy_expansions[5]
+                        position = self.enemy_expansions[5]
                         position = self.ai.mineral_field.closer_than(9, position).center.towards(position, -3)
                     else:
                         position = Point2(self.ai.coords['proxy'])

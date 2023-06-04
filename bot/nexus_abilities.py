@@ -278,7 +278,7 @@ class Chronobooster:
                     target = targets_filtered.random
                     if target.type_id in [unit.NEXUS, unit.GATEWAY]:
                         self.stalker_proxy_chrono_queue.remove(target.type_id)
-                    self.ai.do(nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target))
+                    nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target)
                     return
                 else:
                     warpgates = self.ai.structures(unit.WARPGATE).ready
@@ -289,7 +289,7 @@ class Chronobooster:
                             targets.append(warpgate)
                     if targets:
                         target = random.choice(targets)
-                        self.ai.do(nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target))
+                        nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target)
                         return
 
 
