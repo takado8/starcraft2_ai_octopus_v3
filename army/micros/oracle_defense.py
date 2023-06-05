@@ -30,12 +30,12 @@ class OracleDefenseMicro(MicroABS):
             anti_air = self.ai.enemy_structures().filter(lambda x: x.type_id in ANTI_AIR_IDS and
                                             x.distance_to(oracle) < x.air_range + x.radius + 4)
             if anti_air:# or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
-                oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -6))
+                oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -12))
             elif invisible_threats:
                 self.cast_revelation(oracle, invisible_threats, abilities)
             elif threats:
-                if threats.amount > 5 and sum([threat.air_dps for threat in threats]) > 10 or\
-                        oracle.shield_percentage < 0.85:
+                if threats.amount > 5 and sum([threat.air_dps for threat in threats]) > 15 or\
+                        oracle.shield_percentage < 0.75:
                     queue_command = False
                     if ability.BEHAVIOR_PULSARBEAMOFF in abilities:
                         oracle(ability.BEHAVIOR_PULSARBEAMOFF)

@@ -23,7 +23,7 @@ class DistributeWorkers:
                 if mineral.tag not in self.minerals_dict:
                     self.minerals_dict[mineral.tag] = []
 
-            gas = self.ai.structures(unit.ASSIMILATOR).filter(lambda x: x.is_ready and x.has_vespene)
+            gas = self.ai.structures().filter(lambda x: x.type_id == unit.ASSIMILATOR and x.is_ready and x.has_vespene)
             if gas.exists:
                 gas = gas.closer_than(14, base)
                 for g in gas:
@@ -31,13 +31,14 @@ class DistributeWorkers:
                         self.gas_dict[g.tag] = []
 
     def distribute_idle_workers(self):
-        for worker in self.ai.units(unit.PROBE).filter(lambda x: x.is_carrying_minerals or x.is_idle):
+        workers = self.ai.workers.filter(lambda x: x.is_carrying_minerals or x.is_idle)
+        for worker in workers:
             if worker.tag in self.assigned_workers:
                 target_tag = self.assigned_workers[worker.tag]
                 target = None
                 if target_tag in self.gas_dict:
                     try:
-                        target = self.ai.structures(unit.ASSIMILATOR).by_tag(target_tag)
+                        target = self.ai.structures().by_tag(target_tag)
                         if not target.has_vespene:
                             self.remove_dead_gas(target_tag)
                     except KeyError:
@@ -49,14 +50,17 @@ class DistributeWorkers:
                         self.remove_dead_mineral(target_tag)
                 if target:
                     if worker.is_carrying_minerals or worker.is_carrying_vespene:
-                        worker.smart(self.ai.structures(unit.NEXUS).ready.closest_to(worker))
+                        worker.smart(self.ai.townhalls.ready.closest_to(worker))
                         worker.gather(target, queue=True)
                     else:
                         worker.gather(target)
-        for worker in self.ai.units(unit.PROBE).filter(lambda x: x.tag in self.distant_mining_workers):
-            if worker.is_idle or worker.order_target in self.minerals_dict:
-                worker.gather(self.ai.mineral_field.filter(lambda x: x.tag not in self.minerals_dict).closest_to(
-                    self.ai.start_location))
+        distant_mining_workers = self.ai.workers.filter(lambda x: x.tag in self.distant_mining_workers)
+        if distant_mining_workers:
+            mineral_field = self.ai.mineral_field.filter(lambda x: x.tag not in self.minerals_dict).closest_to(
+                    self.ai.start_location)
+            for worker in distant_mining_workers:
+                if worker.is_idle or worker.order_target in self.minerals_dict:
+                    worker.gather(mineral_field)
 
     def assign_workers(self, minerals_to_gas_ratio=2):
         prefer_minerals = self.ai.minerals / (self.ai.vespene + 1) < minerals_to_gas_ratio
@@ -97,7 +101,7 @@ class DistributeWorkers:
         for j in range(1,4):
             for gas_tag in self.gas_dict:
                 while len(self.gas_dict[gas_tag]) < j and workers:
-                    gas = self.ai.structures(unit.ASSIMILATOR).by_tag(gas_tag)
+                    gas = self.ai.structures().by_tag(gas_tag)
                     closest_worker = workers.closest_to(gas)
                     self.gas_dict[gas_tag].append(closest_worker.tag)
                     workers.remove(closest_worker)

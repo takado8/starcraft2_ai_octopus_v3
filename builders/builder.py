@@ -152,10 +152,10 @@ class Builder:
             builder =self.ai.workers.random if self.random_worker else \
                 build_worker or self.ai.select_build_worker(place)
 
-            i=0
-            while not await self.ai._client.query_pathing(builder.position, place) and i < len(self.ai.workers):
-                builder = self.ai.workers[i]
-                i+=1
+            # i=0
+            # while not await self.ai._client.query_pathing(builder.position, place) and i < len(self.ai.workers):
+            #     builder = self.ai.workers[i]
+            #     i+=1
             if builder is None:
                 return False
             builder.build(building, place)

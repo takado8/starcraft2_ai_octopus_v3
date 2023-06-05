@@ -3,12 +3,14 @@ from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.carrier_mothership import CarrierMothershipMicro
 from army.micros.observer import ObserverMicro
+from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.stalker import StalkerMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
+from builders import CannonBuilder
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
 from strategy.interfaces.mothership import Mothership
@@ -20,7 +22,8 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
-from army.divisions import VOIDRAY_x3, OBSERVER_x1
+from army.divisions import VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
+import time
 
 
 class SkytossCarriers(Strategy):
@@ -36,7 +39,9 @@ class SkytossCarriers(Strategy):
         self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai))
+        self.army.create_division('voidrays1', {unit.VOIDRAY:1}, [voidray_micro], Movements(ai))
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
+
         self.army.create_division('carriers1', {unit.CARRIER: 20, unit.MOTHERSHIP: 1}, [carrier_micro],
                                   Movements(ai))
         # self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
@@ -59,12 +64,24 @@ class SkytossCarriers(Strategy):
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
+        self.cannon_builder = CannonBuilder(ai)
+        self.interface_time_consumed = 0
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.secure_lines.execute()
-        await self.mother_ship_interface.execute()
+        if self.ai.time > 500:
+            await self.mother_ship_interface.execute()
         await self.shield_battery_interface.execute()
+        if self.interface_time_consumed > 220 and self.ai.iteration % 30 != 0:
+            return
+
+        start = time.time()
+        await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
+        await self.battery_builder.build_batteries(when_minerals_more_than=420,
+                                                   amount=3 if self.interface_time_consumed > 500 else 5)
+        end = time.time()
+        self.interface_time_consumed += end - start
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -77,7 +94,6 @@ class SkytossCarriers(Strategy):
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
-        await self.battery_builder.build_batteries(when_minerals_more_than=600)
 
     async def build_pylons(self):
         await self.pylon_builder.new_standard_upper_wall()
@@ -117,7 +133,10 @@ class SkytossCarriers(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.none()
+        if self.ai.time > 600:
+            return await self.condition_lock_spending.is_mothership_ready()
+        else:
+            return False
 
     async def morphing(self):
         await self.morphing_.morph_gates()

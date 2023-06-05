@@ -1,6 +1,6 @@
 from sc2.position import Point2
 from sc2.unit import UnitTypeId as unit
-from bot.constants import GROUND_AOE_IDS, AIR_AOE_IDS
+from bot.constants import GROUND_AOE_IDS, AIR_AOE_IDS, BURROWING_UNITS_IDS
 import random
 
 
@@ -8,7 +8,7 @@ class Defense:
     def __init__(self, ai):
         self.ai = ai
         self.units_tags_to_defend_scout = set()
-        self.scout_defense_units_amount = 5
+        self.scout_defense_units_amount = 7
 
     def defend(self, army_status):
         if army_status.status == army_status.DEFENDING_SIEGE:
@@ -66,14 +66,24 @@ class Defense:
                 if len(scout_defense_units) < len(self.units_tags_to_defend_scout) or\
                         len(scout_defense_units) < self.scout_defense_units_amount:
                     self.units_tags_to_defend_scout = {unit_.tag for unit_ in scout_defense_units}
-                    self.assign_units_to_defend_scout()
-                    scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
+                    scout_defense_units = self.assign_units_to_defend_scout()
             else:
-                self.assign_units_to_defend_scout()
-                scout_defense_units = self.ai.army.filter(lambda x: x.tag in self.units_tags_to_defend_scout)
+                scout_defense_units = self.assign_units_to_defend_scout()
 
+            ground_units = enemy.filter(lambda x: not x.is_flying)
+            flying_units = enemy.filter(lambda x: x.is_flying)
+            cloacked_or_burrowing_units = enemy.filter(lambda x: x.cloak in {1,2} or x.type_id in BURROWING_UNITS_IDS
+                                                       or x.is_burrowed)
             for unit_ in scout_defense_units:
-                unit_.attack(enemy.closest_to(unit_))
+                if flying_units and unit_.can_attack_air:
+                    unit_.attack(flying_units.closest_to(unit_))
+                elif ground_units and unit_.can_attack_ground:
+                    unit_.attack(ground_units.closest_to(unit_))
+                elif unit_.type_id == unit.OBSERVER and cloacked_or_burrowing_units:
+                    unit_.move(cloacked_or_burrowing_units.closest_to(unit_))
+
+        elif self.ai.iteration % 50 == 0:
+            self.units_tags_to_defend_scout = set()
 
     def take_defense_position(self):
         dist = 7
@@ -105,14 +115,18 @@ class Defense:
                             man.move(man.position.towards(position, -3))
 
     def assign_units_to_defend_scout(self):
-        selected_units = self.ai.army.filter(lambda x: x.is_flying and x.can_attack_ground)
+        selected_units = self.ai.army.filter(lambda x: x.is_flying and x.can_attack_ground
+                                                       and x.tag not in self.units_tags_to_defend_scout)
         deficit = self.scout_defense_units_amount - len(self.units_tags_to_defend_scout)
         if selected_units.amount < deficit:
-            stalkers = self.ai.army.filter(lambda x: x.type_id == unit.STALKER)
+            stalkers = self.ai.army.filter(lambda x: x.type_id == unit.STALKER
+                                                     and x.tag not in self.units_tags_to_defend_scout)
             if stalkers.amount + selected_units.amount < deficit:
-                anybody = self.ai.army.filter(lambda x: x.type_id in {unit.ADEPT, unit.ZEALOT})
+                anybody = self.ai.army.filter(lambda x: x.type_id in {unit.ADEPT, unit.ZEALOT}
+                                                        and x.tag not in self.units_tags_to_defend_scout)
                 if not anybody:
-                    anybody = self.ai.army.filter(lambda x: x.can_attack_ground)
+                    anybody = self.ai.army.filter(lambda x: x.can_attack_ground
+                                                            and x.tag not in self.units_tags_to_defend_scout)
                 if stalkers.amount + selected_units.amount + anybody.amount > deficit:
                     selected_units.extend(stalkers)
                     selected_units.extend(anybody[:deficit-selected_units.amount])
@@ -129,3 +143,4 @@ class Defense:
             selected_units.append(observer.random)
 
         self.units_tags_to_defend_scout = {unit_.tag for unit_ in selected_units}
+        return selected_units

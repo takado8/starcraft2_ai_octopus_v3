@@ -16,7 +16,6 @@ class CarrierMothershipMicro(MicroABS):
         division_position = None
         dist = 12
         for carrier in carriers:
-
             if enemy.exists:
                 threats = enemy.filter(
                     lambda z: z.distance_to(carrier.position) < dist)
@@ -82,6 +81,15 @@ class CarrierMothershipMicro(MicroABS):
                     carrier.attack(enemy.closest_to(attacking_friends.closest_to(carrier)))
                 else:
                     units_in_position += 1
+        interceptors = self.ai.units(unit.INTERCEPTOR)
+
+        for interceptor in interceptors:
+
+            enemies = self.ai.enemy_units().filter(lambda x: x.type_id not in UNITS_TO_IGNORE and not x.is_hallucination
+                                                and x.distance_to(interceptor) < interceptor.ground_range + 1)
+            if enemies:
+                enemies = sorted(enemies, key=lambda x: (x.health, x.distance_to(interceptor)))
+                interceptor.attack(enemies[0])
         return units_in_position
 
     def find_backout_position(self, division):
