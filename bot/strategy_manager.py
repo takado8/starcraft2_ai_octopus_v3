@@ -2,11 +2,10 @@ from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.fortress_skytoss import FortressSkyToss
-from strategy.fortress_toss import FortressToss
-from strategy.oracle_defense import OracleDefenseUpdated
-from strategy.skytoss import SkyToss
+# from strategy.fortress_toss import FortressToss
+# from strategy.oracle_defense import OracleDefenseUpdated
+# from strategy.skytoss import SkyToss
 from strategy.skytoss_carriers import SkytossCarriers
-from strategy.stalker_defense import StalkerDefenseUpdated
 from strategy.stalker_proxy import StalkerProxy
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
@@ -56,6 +55,15 @@ class StrategyManager:
         if enemy_data_dict is False:
             self.enemy_data.create_enemy_data_dict(self.create_enemy_data_scoreboard_dict())
         elif enemy_data_dict:
+            if 'enemy_strategy' in self.enemy_data.enemy_data_dict['last_game'] and \
+                    self.enemy_data.enemy_data_dict['last_game']['enemy_strategy'] == 'worker_rush':
+                return WorkerRushDefenseStrategy
+            else:
+                if 'enemy_strategy' in self.enemy_data.enemy_data_dict['last_game']:
+                    print(self.enemy_data.enemy_data_dict['last_game']['enemy_strategy'])
+                else:
+                    print("no enemy_strategy")
+                    print(self.enemy_data.enemy_data_dict)
             self.update_strategies()
             if self.enemy_data.enemy_data_dict['last_game']['result'] is 1:
                 strategy_chosen = self.enemy_data.enemy_data_dict['last_game']['strategy']
