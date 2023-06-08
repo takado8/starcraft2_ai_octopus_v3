@@ -77,17 +77,17 @@ class StalkerMicro(MicroABS):
                                     threats = workers_near_bunkers
                                 else:
                                     threats = bunkers
-                        # get on ramp and kill tanks
-                        enemy_main_ramp = self.ai.enemy_main_base_ramp
-                        if stalker.distance_to(enemy_main_ramp.bottom_center) < 14 and enemy.exists:
-                            if stalker.distance_to(enemy_main_ramp.top_center) > 4 and threats.closer_than(
-                                6, stalker).exists:
-                                threats_in_range = threats.in_attack_range_of(stalker)
-                                if stalker.weapon_ready and threats_in_range.exists:
-                                    stalker.attack(self.select_target(threats_in_range, stalker))
-                                else:
-                                    stalker.move(enemy_main_ramp.top_center)
-                                continue
+                        # # get on ramp and kill tanks
+                        # enemy_main_ramp = self.ai.enemy_main_base_ramp
+                        # if stalker.distance_to(enemy_main_ramp.bottom_center) < 14 and enemy.exists:
+                        #     if stalker.distance_to(enemy_main_ramp.top_center) > 4 and threats.closer_than(
+                        #         6, stalker).exists:
+                        #         threats_in_range = threats.in_attack_range_of(stalker)
+                        #         if stalker.weapon_ready and threats_in_range.exists:
+                        #             stalker.attack(self.select_target(threats_in_range, stalker))
+                        #         else:
+                        #             stalker.move(enemy_main_ramp.top_center)
+                        #         continue
 
                         # deal with terran wall
                         if not threats or threats.exists and not threats.in_attack_range_of(stalker):

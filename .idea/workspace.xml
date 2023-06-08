@@ -3,15 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/defense/defense.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/defense/defense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/carrier_mothership.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/carrier_mothership.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/oracle_defense.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/oracle_defense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/status/army_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/status/army_status.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/micros/stalker.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/stalker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/strategy_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/economy/workers/distribute_workers.py" beforeDir="false" afterPath="$PROJECT_DIR$/economy/workers/distribute_workers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/skytoss_carriers.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/skytoss_carriers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/fortress_toss.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/fortress_toss.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -61,23 +56,23 @@
     <session id="1374357970">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="234" />
+          <entry key="project.closed" value="237" />
           <entry key="project.open.time.0" value="9" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.4" value="110" />
-          <entry key="project.open.time.5" value="92" />
-          <entry key="project.open.time.6" value="15" />
+          <entry key="project.open.time.5" value="94" />
+          <entry key="project.open.time.6" value="16" />
           <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="234" />
+          <entry key="project.opened" value="237" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="295" />
           <entry key="json" value="26" />
-          <entry key="py" value="126850" />
+          <entry key="py" value="127127" />
           <entry key="pyi" value="171" />
         </counts>
       </usages-collector>
@@ -85,7 +80,7 @@
         <counts>
           <entry key="JSON" value="26" />
           <entry key="PLAIN_TEXT" value="295" />
-          <entry key="Python" value="126850" />
+          <entry key="Python" value="127127" />
           <entry key="PythonStub" value="171" />
         </counts>
       </usages-collector>
@@ -95,7 +90,7 @@
           <entry key="gitignore" value="4" />
           <entry key="json" value="53" />
           <entry key="md" value="1" />
-          <entry key="py" value="1865" />
+          <entry key="py" value="1870" />
           <entry key="pyi" value="7" />
         </counts>
       </usages-collector>
@@ -104,7 +99,7 @@
           <entry key="JSON" value="53" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="1865" />
+          <entry key="Python" value="1870" />
           <entry key="PythonStub" value="7" />
         </counts>
       </usages-collector>
@@ -115,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
+            <state relative-caret-position="420">
+              <caret line="47" column="44" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -125,10 +120,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/strategy/fortress_skytoss.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="5" column="61" selection-start-line="5" selection-start-column="61" selection-end-line="5" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/strategy/fortress_toss.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="899">
+              <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/strategy/skytoss_carriers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+            <state relative-caret-position="2480">
+              <caret line="124" selection-start-line="124" selection-end-line="124" />
               <folding>
                 <element signature="e#0#62#0" expanded="true" />
               </folding>
@@ -137,10 +153,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="400">
+              <caret line="90" lean-forward="true" selection-start-line="79" selection-start-column="26" selection-end-line="90" />
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="36" column="54" selection-start-line="36" selection-start-column="54" selection-end-line="36" selection-end-column="54" />
+            <state relative-caret-position="640">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -148,29 +176,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/builders/builder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="158" column="31" lean-forward="true" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/economy/workers/distribute_workers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1000">
-              <caret line="103" column="32" selection-start-line="103" selection-start-column="32" selection-end-line="103" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/army/micros/carrier_mothership.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1280">
-              <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="3040">
+              <caret line="158" column="31" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -179,7 +186,7 @@
         <entry file="file://$PROJECT_DIR$/army/defense/defense.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="280">
-              <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+              <caret line="17" column="51" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
               <folding>
                 <marker date="1685994435140" expanded="true" signature="4673:4682" ph="..." />
               </folding>
@@ -260,7 +267,6 @@
         <option value="$PROJECT_DIR$/army/attack/attack.py" />
         <option value="$PROJECT_DIR$/builders/proxy_gate_builder.py" />
         <option value="$PROJECT_DIR$/data_analysis/test_bots/terran_stalker_defense.py" />
-        <option value="$PROJECT_DIR$/army/micros/stalker.py" />
         <option value="$PROJECT_DIR$/strategy/stalker_proxy.py" />
         <option value="$PROJECT_DIR$/army/scouting/scouting.py" />
         <option value="$PROJECT_DIR$/army/Army.py" />
@@ -273,7 +279,6 @@
         <option value="$PROJECT_DIR$/builders/cannon_builder.py" />
         <option value="$PROJECT_DIR$/army/micros/adept.py" />
         <option value="$PROJECT_DIR$/strategy/interfaces/secure_mineral_lines.py" />
-        <option value="$PROJECT_DIR$/strategy/fortress_toss.py" />
         <option value="$PROJECT_DIR$/bot/nexus_abilities.py" />
         <option value="$PROJECT_DIR$/strategy/zealot_rush.py" />
         <option value="$PROJECT_DIR$/builders/special_building_locations.py" />
@@ -281,21 +286,23 @@
         <option value="$PROJECT_DIR$/strategy/zealot_proxy.py" />
         <option value="$PROJECT_DIR$/strategy/interfaces/proxy_4_gates.py" />
         <option value="$PROJECT_DIR$/builders/pylon_builder.py" />
-        <option value="$PROJECT_DIR$/strategy/fortress_skytoss.py" />
         <option value="$PROJECT_DIR$/army/micros/tempest_mothership.py" />
         <option value="$PROJECT_DIR$/army/micros/oracle_defense.py" />
         <option value="$PROJECT_DIR$/army/micros/carrier_mothership.py" />
         <option value="$PROJECT_DIR$/army/defense/defense.py" />
         <option value="$PROJECT_DIR$/army/status/army_status.py" />
-        <option value="$PROJECT_DIR$/builders/build_queues.py" />
         <option value="$PROJECT_DIR$/builders/builder.py" />
         <option value="$PROJECT_DIR$/economy/workers/distribute_workers.py" />
+        <option value="$PROJECT_DIR$/strategy/fortress_skytoss.py" />
+        <option value="$PROJECT_DIR$/builders/build_queues.py" />
+        <option value="$PROJECT_DIR$/strategy/fortress_toss.py" />
+        <option value="$PROJECT_DIR$/army/micros/stalker.py" />
         <option value="$PROJECT_DIR$/strategy/skytoss_carriers.py" />
         <option value="$PROJECT_DIR$/bot/strategy_manager.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="495" />
     <option name="y" value="249" />
     <option name="width" value="1215" />
@@ -675,20 +682,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-160">
-          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/enemy_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="871">
-          <caret line="46" column="42" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/army/division.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
@@ -762,13 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2920">
-          <caret line="148" column="14" selection-start-line="148" selection-start-column="14" selection-end-line="148" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/builders/cannon_builder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -801,13 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="440">
           <caret line="23" column="96" selection-start-line="23" selection-start-column="96" selection-end-line="23" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/fortress_toss.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="74" column="107" selection-start-line="74" selection-start-column="107" selection-end-line="74" selection-end-column="107" />
         </state>
       </provider>
     </entry>
@@ -867,9 +846,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
           <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -891,16 +867,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/fortress_skytoss.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="97" column="86" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="86" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -932,30 +898,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/army/defense/defense.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
-          <folding>
-            <marker date="1685994435140" expanded="true" signature="4673:4682" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="36" column="54" selection-start-line="36" selection-start-column="54" selection-end-line="36" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/builders/builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="158" column="31" lean-forward="true" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/sc2/bot_ai.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -977,37 +919,102 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bot/enemy_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/fortress_skytoss.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="61" selection-start-line="5" selection-start-column="61" selection-end-line="5" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/conditions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3620">
+          <caret line="183" column="8" selection-start-line="183" selection-start-column="8" selection-end-line="183" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/build_queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/builders/builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3040">
+          <caret line="158" column="31" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/economy/workers/distribute_workers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1000">
+        <state relative-caret-position="2040">
           <caret line="103" column="32" selection-start-line="103" selection-start-column="32" selection-end-line="103" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/army/micros/carrier_mothership.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1280">
-          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+        <state relative-caret-position="1640">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/army/defense/defense.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="17" column="51" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+          <folding>
+            <marker date="1685994435140" expanded="true" signature="4673:4682" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/army/micros/stalker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="90" lean-forward="true" selection-start-line="79" selection-start-column="26" selection-end-line="90" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/strategy/skytoss_carriers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+        <state relative-caret-position="2480">
+          <caret line="124" selection-start-line="124" selection-end-line="124" />
           <folding>
             <element signature="e#0#62#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/strategy/fortress_toss.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="899">
+          <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
+        <state relative-caret-position="420">
+          <caret line="47" column="44" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>

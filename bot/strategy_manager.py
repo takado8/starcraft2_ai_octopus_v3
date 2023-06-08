@@ -5,6 +5,7 @@ from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.fortress_toss import FortressToss
 # from strategy.oracle_defense import OracleDefenseUpdated
 # from strategy.skytoss import SkyToss
+from strategy.fortress_toss import FortressToss
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
@@ -44,7 +45,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = SkytossCarriers
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
