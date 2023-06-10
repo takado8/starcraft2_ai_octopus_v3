@@ -49,9 +49,10 @@ class BuildQueues:
                      unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
-    BLINKERS = [unit.PYLON, unit.GATEWAY, unit.FORGE, unit.CYBERNETICSCORE, unit.NEXUS, unit.PHOTONCANNON,
-                     unit.SHIELDBATTERY,  unit.TWILIGHTCOUNCIL, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                        unit.SHIELDBATTERY, unit.FORGE, 32,
+    BLINKERS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.NEXUS,
+                      unit.TWILIGHTCOUNCIL, unit.SHIELDBATTERY,
+                      unit.ROBOTICSFACILITY, unit.GATEWAY,
+                        unit.SHIELDBATTERY, 40,unit.FORGE,
                      unit.NEXUS, unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,  unit.GATEWAY,  unit.GATEWAY,
                      unit.SHIELDBATTERY,  unit.GATEWAY, unit.ROBOTICSBAY,
                      unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,

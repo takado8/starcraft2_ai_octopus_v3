@@ -63,8 +63,8 @@ class Blinkers(Strategy):
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-        # locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-        # del locations_dict[unit.FORGE]
+        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+        del locations_dict[unit.FORGE]
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro],
@@ -72,8 +72,8 @@ class Blinkers(Strategy):
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
 
         self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
-        self.army.create_division('main', {unit.STALKER: 30, unit.IMMORTAL: 5,
-                                           unit.SENTRY: 1, unit.COLOSSUS: 3},
+        self.army.create_division('main', {unit.STALKER: 30, unit.IMMORTAL: 2,
+                                           unit.SENTRY: 1, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
                                   [stalker_micro, immortal_micro, sentry_micro, colossus_micro],
                                   Movements(ai))
 
@@ -161,10 +161,10 @@ class Blinkers(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_supply_over(100)
+        return self.condition_attack.blink_research_ready() or self.condition_attack.army_supply_over(100)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(20 if self.ai.time < 600 else 40)
+        return self.condition_retreat.army_supply_less_than(30 if self.ai.time < 600 else 70)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

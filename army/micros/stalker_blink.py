@@ -10,6 +10,7 @@ from .microABS import MicroABS
 class StalkerBlinkMicro(MicroABS):
     def __init__(self, ai, use_division_backout_position=None):
         super().__init__('StalkerBlinkMicro', ai, use_division_backout_position)
+        self.targets_dict = {}
 
     def select_target(self, targets, stalker):
         if self.ai.enemy_race == Race.Protoss:
@@ -33,6 +34,25 @@ class StalkerBlinkMicro(MicroABS):
         division_position = None
         dist = 10
         units_in_position = 0
+        enemy_tag_unit_dict = {}
+        for en in enemy:
+            enemy_tag_unit_dict[en.tag] = en
+
+        targets_to_remove = []
+        for target in self.targets_dict:
+            if target.tag in enemy_tag_unit_dict:
+                self.targets_dict[enemy_tag_unit_dict[target.tag]] = [x for x in self.targets_dict[target]]
+            targets_to_remove.append(target)
+        for target in targets_to_remove:
+            self.targets_dict.pop(target)
+
+        for target in self.targets_dict:
+            if target.health + target.shield - sum(self.targets_dict[target]) <= 0:
+                try:
+                    enemy.remove(target)
+                except:
+                    pass
+
         for stalker in stalkers:
             if enemy.exists:
                 threats = enemy.filter(
@@ -111,6 +131,25 @@ class StalkerBlinkMicro(MicroABS):
             else:
                 threats = None
             if threats:
+                if stalker.weapon_cooldown == 0:
+                    target_selected = False
+                    for target_ in self.targets_dict:
+                        if stalker.target_in_range(target_):
+                            total_dmg = sum(self.targets_dict[target_])
+                            target_hp = target_.health + target_.shield
+                            if target_hp - total_dmg > 0:
+                                dmg = self.targets_dict[target_][0]
+                                self.targets_dict[target_].append(dmg)
+                                stalker.attack(target_)
+                                if target_hp - total_dmg - dmg <= 0:
+                                    try:
+                                        enemy.remove(target_)
+                                    except:
+                                        pass
+                                target_selected = True
+                                break
+                    if target_selected:
+                        continue
                 closest_enemy = None
                 target = None
                 for i in range(2, dist + 4, 2):
@@ -155,30 +194,38 @@ class StalkerBlinkMicro(MicroABS):
                         if back_out_position is not None:
                             await self.blink(stalker, back_out_position)
                     else:
+                        if target not in self.targets_dict:
+                            self.targets_dict[target] = [stalker.calculate_damage_vs_target(target)[0]]
                         stalker.attack(target)
                 else:
                     if stalker.weapon_cooldown > 0:
-                        back_out_position = self.find_back_out_position(stalker, closest_enemy.position, division) \
-                            if closest_enemy else None
-                        if back_out_position is not None:
-                            stalker.move(stalker.position.towards(back_out_position, d))
+                        if stalker.shield_percentage < 1:
+                            back_out_position = self.find_back_out_position(stalker, closest_enemy.position, division) \
+                                if closest_enemy else None
+                            if back_out_position is not None:
+                                stalker.move(stalker.position.towards(back_out_position, d))
+                        elif not enemy.in_attack_range_of(stalker).exists and threats.exists:
+                            stalker.move(stalker.position.towards(threats.closest_to(stalker.position)))
                     else:
                         queue = False
                         if upgrade.BLINKTECH in self.ai.state.upgrades and not stalker.target_in_range(target) and\
                                 await self.is_blink_available(stalker):
                             if enemy.closer_than(6, target.position).amount < 8 \
                                 and stalker.distance_to(target) > 8:
-                                await self.blink(stalker, target.position)
+                                await self.blink(stalker, target.position.towards(stalker.position, 5))
                                 queue = True
+
+                        if target not in self.targets_dict:
+                            self.targets_dict[target] = [stalker.calculate_damage_vs_target(target)[0]]
                         stalker.attack(target, queue=queue)
             else:
                 if attacking_friends is None:
                     attacking_friends = division.get_attacking_units(iteration=self.ai.iteration)
                     division_position = division.get_position(iteration=self.ai.iteration)
                 if division_position and stalker.distance_to(division_position) > division.max_units_distance:
-                    stalker.attack(division_position)
+                    stalker.move(division_position)
                 elif attacking_friends.exists and enemy.exists:
-                    stalker.attack(enemy.closest_to(attacking_friends.closest_to(stalker)))
+                    stalker.move(attacking_friends.closest_to(stalker))
                 else:
                     units_in_position += 1
         return units_in_position
