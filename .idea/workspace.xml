@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/stalker_blink.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/stalker_blink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/blinkers.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/blinkers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packit.py" beforeDir="false" afterPath="$PROJECT_DIR$/packit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/strategy/fortress_toss.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/fortress_toss.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,7 +70,7 @@
         <counts>
           <entry key="dummy" value="295" />
           <entry key="json" value="26" />
-          <entry key="py" value="130140" />
+          <entry key="py" value="130422" />
           <entry key="pyi" value="171" />
         </counts>
       </usages-collector>
@@ -81,7 +78,7 @@
         <counts>
           <entry key="JSON" value="26" />
           <entry key="PLAIN_TEXT" value="295" />
-          <entry key="Python" value="130140" />
+          <entry key="Python" value="130422" />
           <entry key="PythonStub" value="171" />
         </counts>
       </usages-collector>
@@ -91,7 +88,7 @@
           <entry key="gitignore" value="4" />
           <entry key="json" value="53" />
           <entry key="md" value="1" />
-          <entry key="py" value="1904" />
+          <entry key="py" value="1905" />
           <entry key="pyi" value="7" />
         </counts>
       </usages-collector>
@@ -100,7 +97,7 @@
           <entry key="JSON" value="53" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="1904" />
+          <entry key="Python" value="1905" />
           <entry key="PythonStub" value="7" />
         </counts>
       </usages-collector>
@@ -120,7 +117,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/micros/stalker_blink.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
+            <state relative-caret-position="245">
               <caret line="206" column="49" selection-start-line="206" selection-start-column="49" selection-end-line="206" selection-end-column="49" />
             </state>
           </provider>
@@ -136,15 +133,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/packit.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/army/training/training.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="800">
@@ -153,19 +141,28 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/packit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="340" column="84" selection-start-line="340" selection-start-column="84" selection-end-line="340" selection-end-column="84" />
+            <state relative-caret-position="80">
+              <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="40">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/strategy/blinkers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
+            <state relative-caret-position="925">
               <caret line="75" column="94" selection-start-line="75" selection-start-column="94" selection-end-line="75" selection-end-column="94" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
@@ -186,7 +183,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
+            <state relative-caret-position="714">
               <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
@@ -295,15 +292,15 @@
         <option value="$PROJECT_DIR$/bot/trainers.py" />
         <option value="$PROJECT_DIR$/strategy/fortress_toss.py" />
         <option value="$PROJECT_DIR$/bot/strategy_manager.py" />
-        <option value="$PROJECT_DIR$/packit.py" />
         <option value="$PROJECT_DIR$/army/micros/stalker_blink.py" />
         <option value="$PROJECT_DIR$/builders/build_queues.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/strategy/blinkers.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/packit.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="495" />
     <option name="y" value="249" />
     <option name="width" value="1215" />
@@ -396,7 +393,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.packit ">
     <configuration name="Evo" type="PythonConfigurationType" factoryName="Python">
       <module name="starcraft2_ai_octopus_v3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -439,7 +436,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="packit (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="packit " type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="starcraft2_ai_octopus_v3" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -452,27 +449,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/packit.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="packit" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="starcraft2_ai_octopus_v3" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/builders" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/builders/packit.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -550,13 +526,11 @@
       <item itemvalue="Python.replay_bot" />
       <item itemvalue="Python.positions_setup" />
       <item itemvalue="Python.terran_stalker_defense" />
-      <item itemvalue="Python.packit" />
-      <item itemvalue="Python.packit (1)" />
+      <item itemvalue="Python.packit " />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.packit (1)" />
-        <item itemvalue="Python.packit" />
+        <item itemvalue="Python.packit " />
         <item itemvalue="Python.positions_setup" />
         <item itemvalue="Python.terran_stalker_defense" />
         <item itemvalue="Python.replay_bot" />
@@ -876,34 +850,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/army/training/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="800">
           <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/packit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -948,27 +898,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/strategy/blinkers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="340" column="84" selection-start-line="340" selection-start-column="84" selection-end-line="340" selection-end-column="84" />
+        <state relative-caret-position="925">
+          <caret line="75" column="94" selection-start-line="75" selection-start-column="94" selection-end-line="75" selection-end-column="94" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/strategy_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/army/micros/stalker_blink.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
+        <state relative-caret-position="245">
           <caret line="206" column="49" selection-start-line="206" selection-start-column="49" selection-end-line="206" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/strategy/blinkers.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="75" column="94" selection-start-line="75" selection-start-column="94" selection-end-line="75" selection-end-column="94" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="40">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/packit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
         </state>
       </provider>
     </entry>
