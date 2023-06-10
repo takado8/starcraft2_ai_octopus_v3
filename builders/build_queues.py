@@ -37,16 +37,27 @@ class BuildQueues:
                             unit.NEXUS, unit.STARGATE,
                            unit.NEXUS,unit.STARGATE, unit.NEXUS, unit.NEXUS,unit.NEXUS, unit.NEXUS, unit.STARGATE, ]
 
-    FORTRESS_TOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
-                     unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
-                     unit.SHIELDBATTERY, unit.ROBOTICSFACILITY,
-                     unit.GATEWAY, unit.GATEWAY, unit.TWILIGHTCOUNCIL, 23, unit.NEXUS, unit.GATEWAY,
+    FORTRESS_TOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY,
+                     unit.SHIELDBATTERY, 16, unit.STARGATE, unit.NEXUS, unit.FLEETBEACON,
+                      36, unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.GATEWAY,
                      unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,
-                     unit.ROBOTICSBAY, unit.SHIELDBATTERY, 40,
-                     unit.NEXUS, unit.GATEWAY, 50,
+                     unit.SHIELDBATTERY,
+                     unit.NEXUS, unit.GATEWAY,
                      unit.NEXUS, unit.TEMPLARARCHIVE,  unit.GATEWAY,
-                     unit.ROBOTICSFACILITY, unit.GATEWAY, 60,
-                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.FLEETBEACON,
+                     unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
+                     unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
+    BLINKERS = [unit.PYLON, unit.GATEWAY, unit.FORGE, unit.CYBERNETICSCORE, unit.NEXUS, unit.PHOTONCANNON,
+                     unit.SHIELDBATTERY,  unit.TWILIGHTCOUNCIL, unit.ROBOTICSFACILITY, unit.GATEWAY,
+                        unit.SHIELDBATTERY, unit.FORGE, 32,
+                     unit.NEXUS, unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,  unit.GATEWAY,  unit.GATEWAY,
+                     unit.SHIELDBATTERY,  unit.GATEWAY, unit.ROBOTICSBAY,
+                     unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
                      unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 

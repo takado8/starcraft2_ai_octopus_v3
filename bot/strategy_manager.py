@@ -1,5 +1,6 @@
 from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
+from strategy.blinkers import Blinkers
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.fortress_toss import FortressToss
@@ -20,14 +21,16 @@ class StrategyManager:
                 'StalkerProxy': StalkerProxy,
                 'AirOracle': AirOracle,
                 'FortressSkyToss': FortressSkyToss,
-                'SkytossCarriers': SkytossCarriers
+                'SkytossCarriers': SkytossCarriers,
+                'Blinkers': Blinkers
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
                 'CannonRushDefense': CannonRushDefense,
                 'FortressSkyToss': FortressSkyToss,
-                'SkytossCarriers': SkytossCarriers
+                'SkytossCarriers': SkytossCarriers,
+                'Blinkers': Blinkers
 
             }
         elif ai.enemy_race == Race.Zerg:
@@ -35,17 +38,20 @@ class StrategyManager:
                 'ZealotRushDefense': ZealotRushDefense,
                 'FortressSkyToss': FortressSkyToss,
                 'StalkerProxy': StalkerProxy,
-                'SkytossCarriers': SkytossCarriers
+                'SkytossCarriers': SkytossCarriers,
+                'Blinkers': Blinkers
+
             }
         else:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
                 'FortressSkyToss': FortressSkyToss,
-                'SkytossCarriers': SkytossCarriers
+                'SkytossCarriers': SkytossCarriers,
+                'Blinkers': Blinkers
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = Blinkers
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

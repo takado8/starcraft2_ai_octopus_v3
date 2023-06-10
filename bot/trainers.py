@@ -15,7 +15,7 @@ class NexusTrainer:
 
         if not self.ai.structures(unit.PYLON).exists and workers == 14:
             return
-        if workers < (16 * nexuses_amount + 3 * assimilators_amount) and workers < 55:
+        if workers < (16 * nexuses_amount + 3 * assimilators_amount) + 1 and workers < 55:
             for nexus in self.ai.structures(unit.NEXUS).ready:
                 if nexus.is_idle and self.ai.can_afford(unit.PROBE):
                     nexus.train(unit.PROBE)

@@ -23,6 +23,7 @@ class Training:
                     continue
                 elif -division.lifetime > self.ai.time:
                     continue
+
             missing_units = division.get_dict_of_missing_units()
             for unit_id in missing_units:
                 unit_amount = 0
@@ -39,6 +40,10 @@ class Training:
                         break
                 for soldier in assigned_soldiers:
                     self.unassigned_soldiers.remove(soldier)
+
+            # assign existing units, but don't train new
+            if division.lifetime is False:
+                continue
             for unit_id in missing_units:
                 if unit_id in all_missing_units:
                     all_missing_units[unit_id] += missing_units[unit_id]
