@@ -4,6 +4,17 @@ class OwnEconomy:
         self.ai = ai
 
     @property
+    def army_value(self):
+        army_value = 0
+        for unit in self.ai.army:
+            try:
+                unit_cost = self.ai.calculate_cost(unit.type_id)
+                army_value += unit_cost.minerals + unit_cost.vespene * 3
+            except:
+                print('cannot get unit value: {}'.format(unit.type_id))
+        return army_value
+
+    @property
     def army_stats(self):
         army_value = 0
         total_own_ground_dps = 0
@@ -29,8 +40,8 @@ class OwnEconomy:
     def print_own_economy_info(self):
         total_own_ground_dps, total_own_hp, value, supply = self.army_stats
         print("----------------------- own economy ----------------------------")
-        print('army value: {}\narmy supply: {}'.format(value, supply))
-        print('total dps: {}\ntotal hp: {}'.format(total_own_ground_dps, total_own_hp))
+        print('army value: {}'.format(value))
+        # print('total dps: {}\ntotal hp: {}'.format(total_own_ground_dps, total_own_hp))
         print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * 3))
         # print('lost gas army: {}'.format(self.lost_gas_army))
         print("----------------------- end own economy ------------------------")

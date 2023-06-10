@@ -1,6 +1,7 @@
 from sc2.ids.unit_typeid import UnitTypeId as Unit
 from sc2 import AbilityId
 from economy.info.enemy_economy import BASES, MILITARY, EnemyEconomy
+from sc2.position import Point2
 
 
 class Scouting:
@@ -16,7 +17,6 @@ class Scouting:
         self.last_scouting_time = 0
         self.last_print_time = 0
         self.visited_positions_count = {}
-
 
     def scan_middle_game(self):
         self.gather_enemy_info()
@@ -39,18 +39,31 @@ class Scouting:
             #         len(self.enemy_economy.enemy_info[BASES]) + 2:
             self.scouting_positions.clear()
             self.scouting_positions = self.create_scouting_positions_list()
+            enemy = self.ai.enemy_units()
+            if enemy:
+                threats = enemy.filter(lambda x: x.can_attack_air)
+                if threats:
+                    for scout in scouts:
+                        threats = threats.closer_than(12, scout)
+                        if threats:
+                            center1 = Point2.center([t.position for t in threats] + [scout.position,
+                                                            self.scouting_positions[self.scouting_index]])
+                            center2 = Point2.center([scout.position, self.scouting_positions[self.scouting_index]])
+                            dodge_position = center1.position.towards(center2, 9)
+                            scout.move(dodge_position)
 
             for scout in scouts.filter(lambda x: x.is_idle or
-                    (x.distance_to(self.scouting_positions[self.scouting_index]) < 5)
+                    (x.distance_to(self.scouting_positions[self.scouting_index]) < 6)
             if self.scouting_index < len(self.scouting_positions) else False):
                 if self.scouting_index < len(self.scouting_positions):
                     position = self.scouting_positions[self.scouting_index]
-                    if scout.distance_to(position) < 5:
+                    if scout.distance_to(position) < 6:
                         if position not in self.visited_positions_count:
                             self.visited_positions_count[position] = 1
                         else:
                             self.visited_positions_count[position] += 1
                         self.scouting_index += 1
+                        self.number_of_scoutings_done += 1
                 else:
                     self.scouting_index = 0
                 if len(self.scouting_positions) > 0 and self.scouting_index < len(self.scouting_positions):
@@ -96,12 +109,12 @@ class Scouting:
     def create_scout(self):
         sentries = self.ai.army(Unit.SENTRY).ready
         if sentries.exists:
-            sentries = sorted(sentries.filter(lambda z: z.energy >= (150 if self.number_of_scoutings_done < 2 else 200)),
+            sentries = sorted(sentries.filter(lambda z: z.energy >= (75 if self.number_of_scoutings_done < 5 else 150)),
                               key=lambda sent: sent.energy, reverse=True)
 
             for sentry in sentries:
                 sentry(AbilityId.HALLUCINATION_PHOENIX)
-                self.number_of_scoutings_done += 1
+                # self.number_of_scoutings_done += 1
                 return True
 
     def scan_on_end(self):

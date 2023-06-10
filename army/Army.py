@@ -22,12 +22,11 @@ class Army:
 
     async def execute(self):
         try:
-            # time = int(self.ai.time)
-            # if time % 5 == 0 and self.last_print_time != time:
-            #     self.own_economy.print_own_economy_info()
-            #     self.enemy_economy.print_enemy_info()
-            #     self.last_print_time = time
-
+            time = int(self.ai.time)
+            if time % 10 == 0 and self.last_print_time != time:
+                self.own_economy.print_own_economy_info()
+                self.enemy_economy.print_enemy_info()
+                self.last_print_time = time
 
             self.army_status.establish_army_status()
             self.training.refresh_all_soldiers()
@@ -48,8 +47,8 @@ class Army:
             self.defense.avoid_aoe()
             if self.attack.enemy_main_base_down:
                 self.scouting.scan_on_end()
-            # else:
-            #     self.scouting.scan_middle_game()
+            else:
+                self.scouting.scan_middle_game()
             # self.debug()
         except Exception as ex:
             self.training.debug()

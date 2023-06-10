@@ -36,6 +36,15 @@ class ConditionAttack:
     def total_supply_over(self, supply):
         return self.ai.supply_used > supply
 
+    def army_value_n_times_the_enemy(self, n):
+        if self.ai.strategy.scouting.number_of_scoutings_done > 0:
+            own_value = self.ai.strategy.own_economy.army_value
+            if own_value > 500:
+                enemy_value = self.ai.strategy.enemy_economy.army_value
+                if enemy_value == 0:
+                    enemy_value = 1
+                return own_value / enemy_value >= n
+
 
 class ConditionCounterAttack:
     def __init__(self, ai):
@@ -65,6 +74,14 @@ class ConditionRetreat:
 
     def army_supply_less_than(self, supply):
         return self.ai.supply_army < supply
+
+    def army_value_n_times_the_enemy(self, n):
+        if self.ai.strategy.scouting.number_of_scoutings_done > 0:
+            own_value = self.ai.strategy.own_economy.army_value
+            enemy_value = self.ai.strategy.enemy_economy.army_value
+            if enemy_value == 0:
+                enemy_value = 1
+            return own_value / enemy_value <= n
 
 
 class ConditionTransform:
