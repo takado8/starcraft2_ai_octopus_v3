@@ -32,7 +32,7 @@ class StalkerBlinkMicro(MicroABS):
 
         attacking_friends = None
         division_position = None
-        dist = 10
+        dist = 14
         units_in_position = 0
         enemy_tag_unit_dict = {}
         for en in enemy:

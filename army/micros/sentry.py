@@ -8,8 +8,9 @@ from sc2.ids.effect_id import EffectId as effect
 
 
 class SentryMicro(MicroABS):
-    def __init__(self, ai):
+    def __init__(self, ai, defend_position=None):
         super().__init__('SentryMicro', ai)
+        self.defend_position = defend_position
 
     async def do_micro(self, division):
         #  Sentry region  #
@@ -33,6 +34,18 @@ class SentryMicro(MicroABS):
                     lambda unit_: unit_.can_attack_ground and unit_.type_id not in self.ai.units_to_ignore and
                                   unit_.distance_to(sentry.position) <= 12 and not unit_.is_hallucination)
                 abilities = await self.ai.get_available_abilities(sentry)
+
+                if self.defend_position and self.ai.enemy_units() and sentry.distance_to(self.defend_position) <= 16\
+                        and self.ai.enemy_units().closer_than(5, self.defend_position):
+                    force_field_in_place = False
+                    if ability.FORCEFIELD_FORCEFIELD in abilities:
+                        for eff in self.ai.state.effects:
+                            if eff.id == FakeEffectID[unit.FORCEFIELD.value]:
+                                for position in eff.positions:
+                                    if self.defend_position.distance_to(position) < 1.5:
+                                        force_field_in_place = True
+                        if not force_field_in_place:
+                            sentry(ability.FORCEFIELD_FORCEFIELD, self.defend_position)
 
                 if threats.amount > 4 and (not guardian_shield_on) and ability.GUARDIANSHIELD_GUARDIANSHIELD in abilities:
                     sentry(ability.GUARDIANSHIELD_GUARDIANSHIELD)

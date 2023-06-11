@@ -29,6 +29,7 @@ from builders import PylonBuilder, CannonBuilder
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
+from strategy.interfaces.attack_informator import AttackInformant
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
@@ -44,42 +45,44 @@ from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPP
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
-class Blinkers(Strategy):
+class BlinkersUpdated(Strategy):
     def __init__(self, ai):
-        super().__init__(type='mid', name='Blinkers', ai=ai, defense=FortressDefense(ai))
+        super().__init__(type='mid', name='BlinkersUpdated', ai=ai, defense=FortressDefense(ai))
 
         # voidray_micro = VoidrayMicro(ai)
         # carrier_micro = CarrierMicro(ai)
         # tempest_micro = TempestMicro(ai)
-        sentry_micro = SentryMicro(ai)
+        positions_loader = PositionsLoader(ai)
+        locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+        del locations_dict[unit.FORGE]
+
+        sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
         stalker_micro = StalkerBlinkMicro(ai)
         colossus_micro = ColossusMicro(ai)
         # archon_micro = ArchonMicro(ai)
-        # disruptor_micro = DisruptorMicro(ai)
+        disruptor_micro = DisruptorMicro(ai)
         # ht_micro = HighTemplarMicro(ai)
 
-        positions_loader = PositionsLoader(ai)
-        locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-        del locations_dict[unit.FORGE]
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro],
+        if self.ai.enemy_race == Race.Zerg:
+            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
                                   Movements(ai, 0.1))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
 
-        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
+        self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
+                                  [AdeptMicro(ai)], Movements(ai), lifetime=300)
         self.army.create_division('main', {unit.STALKER: 30, unit.IMMORTAL: 2,
                                            unit.SENTRY: 1, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
-                                  [stalker_micro, immortal_micro, sentry_micro, colossus_micro],
+                                  [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro],
                                   Movements(ai))
 
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro],Movements(ai, 0.2), lifetime=-360)
-        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-480)
+        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-380)
         self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
 
@@ -104,6 +107,7 @@ class Blinkers(Strategy):
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.attack_informant = AttackInformant(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
@@ -111,7 +115,7 @@ class Blinkers(Strategy):
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
-
+        await self.attack_informant.execute()
         # await self.mother_ship_interface.execute()
         # if self.ai.iteration % 10 == 0:
         #     # await self.battery_builder.build_batteries(when_minerals_more_than=170, amount=2)
@@ -161,8 +165,8 @@ class Blinkers(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw and
-                                        self.condition_attack.army_value_n_times_the_enemy(2))
+        return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw()
+                                                    and self.condition_attack.army_value_n_times_the_enemy(2))
 
     def retreat_condition(self):
         return self.condition_retreat.army_value_n_times_the_enemy(1)

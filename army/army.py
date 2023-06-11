@@ -48,7 +48,7 @@ class Army:
             if self.attack.enemy_main_base_down:
                 self.scouting.scan_on_end()
             else:
-                self.scouting.scan_middle_game()
+                await self.scouting.scan_middle_game()
             # self.debug()
         except Exception as ex:
             self.training.debug()

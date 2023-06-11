@@ -1,4 +1,4 @@
-from sc2.ids.unit_typeid import UnitTypeId as Unit
+from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2 import AbilityId
 from economy.info.enemy_economy import BASES, MILITARY, EnemyEconomy
 from sc2.position import Point2
@@ -18,7 +18,7 @@ class Scouting:
         self.last_print_time = 0
         self.visited_positions_count = {}
 
-    def scan_middle_game(self):
+    async def scan_middle_game(self):
         self.gather_enemy_info()
         # time = int(self.ai.time)
         # if time % 5 == 0 and self.last_print_time != time:
@@ -33,19 +33,22 @@ class Scouting:
             if self.create_scout():
                 self.last_scouting_time = self.ai.time
 
-        scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
+        scouts = self.ai.units(unit.PHOENIX).filter(lambda z: z.is_hallucination)
         if scouts.exists:
             # if BASES not in self.enemy_economy.enemy_info or len(self.scouting_positions) <\
             #         len(self.enemy_economy.enemy_info[BASES]) + 2:
             self.scouting_positions.clear()
-            self.scouting_positions = self.create_scouting_positions_list()
-            enemy = self.ai.enemy_units()
+            self.scouting_positions = await self.create_scouting_positions_list()
+            enemy = self.ai.enemy_units() + self.ai.enemy_structures()
             if enemy:
-                threats = enemy.filter(lambda x: x.can_attack_air)
+                threats = enemy.filter(lambda x: x.can_attack_air or x.type_id == unit.BUNKER)
                 if threats:
                     for scout in scouts:
                         threats = threats.closer_than(12, scout)
-                        if threats:
+                        close_threats = threats.closer_than(7, scout)
+                        if close_threats:
+                            scout.move(scout.position.towards(close_threats.closest_to(scout), -10))
+                        elif threats:
                             center1 = Point2.center([t.position for t in threats] + [scout.position,
                                                             self.scouting_positions[self.scouting_index]])
                             center2 = Point2.center([scout.position, self.scouting_positions[self.scouting_index]])
@@ -54,7 +57,7 @@ class Scouting:
 
             for scout in scouts.filter(lambda x: x.is_idle or
                     (x.distance_to(self.scouting_positions[self.scouting_index]) <= 8)
-            if self.scouting_index < len(self.scouting_positions) else False):
+                    if self.scouting_index < len(self.scouting_positions) else False):
                 if self.scouting_index < len(self.scouting_positions):
                     position = self.scouting_positions[self.scouting_index]
                     if scout.distance_to(position) <= 8:
@@ -62,8 +65,11 @@ class Scouting:
                             self.visited_positions_count[position] = 1
                         else:
                             self.visited_positions_count[position] += 1
+                        if enemy.exists and enemy.closer_than(14, position).amount >= 5:
+                            self.number_of_scoutings_done += 1
+                            await self.print_info()
                         self.scouting_index += 1
-                        self.number_of_scoutings_done += 1
+
                 else:
                     self.scouting_index = 0
                 if len(self.scouting_positions) > 0 and self.scouting_index < len(self.scouting_positions):
@@ -72,28 +78,36 @@ class Scouting:
                     self.scouting_index = 0
 
     def gather_enemy_info(self):
-        if self.number_of_scoutings_done % 3 == 0:
+        if self.number_of_scoutings_done and self.number_of_scoutings_done % 5 == 0:
             self.enemy_economy.clear_category(MILITARY)
         # bases
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.enemy_economy.add_units_to_enemy_info(BASES, enemy_bases)
         # military units
-        excluded = {Unit.BROODLING, Unit.OVERLORD, Unit.OVERSEER, Unit.ADEPTPHASESHIFT, Unit.OVERLORDCOCOON,
-                    Unit.OVERLORDTRANSPORT}
+        excluded = {unit.BROODLING, unit.OVERLORD, unit.OVERSEER, unit.ADEPTPHASESHIFT, unit.OVERLORDCOCOON,
+                    unit.OVERLORDTRANSPORT}
         enemy_military_units = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.workers_ids and
                                                                       x.type_id not in self.ai.units_to_ignore
                                                                       and x.type_id not in excluded and x.is_visible
                                                             and not x.is_snapshot and not x.is_hallucination)
         self.enemy_economy.add_units_to_enemy_info(MILITARY, enemy_military_units)
 
-
-    def create_scouting_positions_list(self):
+    async def create_scouting_positions_list(self):
         scouting_positions = []
-        for exp in self.ai.expansion_locations_list:
-            if not self.ai.structures().closer_than(7, exp).exists:
-                scouting_positions.append(exp)
+        # enemy_start_location = self.ai.enemy_start_locations[0]
+        for expansion in self.ai.expansion_locations_list:
+            if not self.ai.structures().closer_than(7, expansion).exists:
+                scouting_positions.append(expansion)
 
         scouting_positions = sorted(scouting_positions, key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
+        # position_distance_list = []
+        # for expansion in scouting_positions:
+        #     distance = await self.ai._client.query_pathing(enemy_start_location, expansion)
+        #     if distance is not None:
+        #         position_distance_list.append((distance, expansion))
+        #
+        # scouting_positions = sorted(position_distance_list, key=lambda x: x[0])
+        # scouting_positions = [x for _, x in scouting_positions]
         if BASES in self.enemy_economy.enemy_info:
             most_distant_base_idx = len(self.enemy_economy.enemy_info[BASES]) + 2
         else:
@@ -103,11 +117,12 @@ class Scouting:
             most_distant_base_idx -= 1
 
         scouting_positions = scouting_positions[:most_distant_base_idx]
+        # return scouting_positions
         return sorted(scouting_positions, key=lambda x: (self.visited_positions_count[x]
                                     if x in self.visited_positions_count else 0, scouting_positions.index(x)))
 
     def create_scout(self):
-        sentries = self.ai.army(Unit.SENTRY).ready
+        sentries = self.ai.army(unit.SENTRY).ready
         if sentries.exists:
             sentries = sorted(sentries.filter(lambda z: z.energy >= (75 if self.number_of_scoutings_done < 5 else 150)),
                               key=lambda sent: sent.energy, reverse=True)
@@ -118,20 +133,20 @@ class Scouting:
                 return True
 
     def scan_on_end(self):
-        scouts = self.ai.units(Unit.PHOENIX).filter(lambda z: z.is_hallucination)
+        scouts = self.ai.units(unit.PHOENIX).filter(lambda z: z.is_hallucination)
         if scouts.amount < 3:
-            snts = self.ai.army(Unit.SENTRY)
+            snts = self.ai.army(unit.SENTRY)
             if snts.exists:
-                snts = self.ai.army(Unit.SENTRY).filter(lambda z: z.energy >= 75)
+                snts = self.ai.army(unit.SENTRY).filter(lambda z: z.energy >= 75)
                 if snts:
                     for se in snts:
                         se(AbilityId.HALLUCINATION_PHOENIX)
             else:
-                scouts = self.ai.units({Unit.WARPPRISM, Unit.OBSERVER})
+                scouts = self.ai.units({unit.WARPPRISM, unit.OBSERVER})
                 if not scouts.exists:
                     scouts = self.ai.army.filter(lambda z: z.is_flying and int(str(z.tag)[-1]) % 3 == 0)
                     if not scouts.exists:
-                        scouts = self.ai.units(Unit.PROBE).closest_n_units(self.ai.enemy_start_locations[0], 3)
+                        scouts = self.ai.units(unit.PROBE).closest_n_units(self.ai.enemy_start_locations[0], 3)
                         if not scouts.exists:
                             scouts = self.ai.units().closest_n_units(self.ai.enemy_start_locations[0], 3)
         if scouts.exists:
@@ -151,3 +166,9 @@ class Scouting:
                     self.scouting_index += 1
                 else:
                     self.scouting_positions_on_end.extend(self.ai.expansion_locations_list)
+
+    async def print_info(self):
+        msg = "army value {} vs {}".format(self.ai.strategy.own_economy.army_value,
+                                                   self.ai.strategy.enemy_economy.army_value)
+        print(msg)
+        await self.ai.chat_send(msg)

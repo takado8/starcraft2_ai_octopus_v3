@@ -29,7 +29,6 @@ class ConditionAttack:
     def blink_research_ready_raw(self):
         return upgrade.BLINKTECH in self.ai.state.upgrades
 
-
     def air_dmg_lvl2_full_supply(self):
         return upgrade.PROTOSSAIRWEAPONSLEVEL2 in self.ai.state.upgrades and \
                self.ai.supply_used > 193
@@ -41,12 +40,12 @@ class ConditionAttack:
         return self.ai.supply_used > supply
 
     def army_value_n_times_the_enemy(self, n):
-        if self.ai.strategy.scouting.number_of_scoutings_done >= 3:
+        if self.ai.strategy.scouting.number_of_scoutings_done >= 2:
             own_value = self.ai.strategy.own_economy.army_value
             if own_value > 500:
                 enemy_value = self.ai.strategy.enemy_economy.army_value
                 if enemy_value == 0:
-                    enemy_value = 1
+                    return False
                 return own_value / enemy_value >= n
         return False
 

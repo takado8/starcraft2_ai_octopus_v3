@@ -65,7 +65,8 @@ class Division:
     def get_attacking_units(self, iteration):
         if self.attacking_units_last_fetch != iteration:
             self.attacking_units = Units([self.soldiers[soldier_tag].unit for soldier_tag in self.soldiers
-                                          if self.soldiers[soldier_tag].unit.is_attacking], self.ai)
+                            if self.soldiers[soldier_tag].unit.is_attacking and self.ai.enemy_units.exists and
+                        self.ai.enemy_units.closer_than(10, self.soldiers[soldier_tag].unit.position)], self.ai)
             self.attacking_units_last_fetch = iteration
 
         return self.attacking_units
