@@ -161,10 +161,11 @@ class Blinkers(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.blink_research_ready() or self.condition_attack.army_value_n_times_the_enemy(1.6)
+        return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw and
+                                        self.condition_attack.army_value_n_times_the_enemy(2))
 
     def retreat_condition(self):
-        return self.condition_retreat.army_value_n_times_the_enemy(0.5)
+        return self.condition_retreat.army_value_n_times_the_enemy(1)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

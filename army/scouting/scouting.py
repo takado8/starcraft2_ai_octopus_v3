@@ -53,11 +53,11 @@ class Scouting:
                             scout.move(dodge_position)
 
             for scout in scouts.filter(lambda x: x.is_idle or
-                    (x.distance_to(self.scouting_positions[self.scouting_index]) < 6)
+                    (x.distance_to(self.scouting_positions[self.scouting_index]) <= 8)
             if self.scouting_index < len(self.scouting_positions) else False):
                 if self.scouting_index < len(self.scouting_positions):
                     position = self.scouting_positions[self.scouting_index]
-                    if scout.distance_to(position) < 6:
+                    if scout.distance_to(position) <= 8:
                         if position not in self.visited_positions_count:
                             self.visited_positions_count[position] = 1
                         else:

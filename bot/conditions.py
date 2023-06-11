@@ -26,6 +26,10 @@ class ConditionAttack:
     def blink_research_ready(self):
         return (not self.ai.first_attack) and upgrade.BLINKTECH in self.ai.state.upgrades
 
+    def blink_research_ready_raw(self):
+        return upgrade.BLINKTECH in self.ai.state.upgrades
+
+
     def air_dmg_lvl2_full_supply(self):
         return upgrade.PROTOSSAIRWEAPONSLEVEL2 in self.ai.state.upgrades and \
                self.ai.supply_used > 193
