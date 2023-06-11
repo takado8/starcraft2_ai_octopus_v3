@@ -63,3 +63,6 @@ STRUCTURES_RADIUS = {
     unit.DARKSHRINE: 1.5,
     unit.SHIELDBATTERY: 1.125,
 }
+
+
+GAS_VALUE = 2

@@ -1,3 +1,5 @@
+from bot.constants import GAS_VALUE
+
 
 class OwnEconomy:
     def __init__(self, ai):
@@ -9,7 +11,7 @@ class OwnEconomy:
         for unit in self.ai.army:
             try:
                 unit_cost = self.ai.calculate_cost(unit.type_id)
-                army_value += unit_cost.minerals + unit_cost.vespene * 3
+                army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
             except:
                 print('cannot get unit value: {}'.format(unit.type_id))
         return army_value
@@ -24,7 +26,7 @@ class OwnEconomy:
             total_own_hp += unit.health + unit.shield
 
             unit_cost = self.ai.calculate_cost(unit.type_id)
-            army_value += unit_cost.minerals + unit_cost.vespene * 3
+            army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
 
         return total_own_ground_dps, total_own_hp, army_value, self.ai.state.score.food_used_army
 
@@ -42,6 +44,6 @@ class OwnEconomy:
         print("----------------------- own economy ----------------------------")
         print('army value: {}'.format(value))
         # print('total dps: {}\ntotal hp: {}'.format(total_own_ground_dps, total_own_hp))
-        print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * 3))
+        print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * GAS_VALUE))
         # print('lost gas army: {}'.format(self.lost_gas_army))
         print("----------------------- end own economy ------------------------")

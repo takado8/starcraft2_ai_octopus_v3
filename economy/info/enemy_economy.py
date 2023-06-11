@@ -1,6 +1,6 @@
 from sc2 import BotAI
+from bot.constants import GAS_VALUE
 
-# info categories
 BASES = 'bases'
 MILITARY = 'military'
 
@@ -43,7 +43,7 @@ class EnemyEconomy:
                 if unit and unit.type_id:
                     try:
                         unit_cost = self.ai.calculate_cost(unit.type_id)
-                        enemy_army_value += unit_cost.minerals + unit_cost.vespene * 3
+                        enemy_army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
                     except:
                         print("cannot calculate cost of {}".format(unit.type_id))
         return enemy_army_value
@@ -63,7 +63,7 @@ class EnemyEconomy:
                     if unit.type_id:
                         try:
                             unit_cost = self.ai.calculate_cost(unit.type_id)
-                            self.enemy_army_value += unit_cost.minerals + unit_cost.vespene * 3
+                            self.enemy_army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
                             unit_data = self.ai._game_data.units[unit.type_id.value]
                             unit_supply_cost = unit_data._proto.food_required
                             self.enemy_army_supply += unit_supply_cost
@@ -95,6 +95,6 @@ class EnemyEconomy:
         print('army value: {}'.format(self.enemy_army_value))
         # print('army supply: {}'.format(self.enemy_army_supply))
         # print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))
-        print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * 3))
+        print('lost value army: {}'.format(self.lost_minerals_army + self.lost_gas_army * GAS_VALUE))
         # print('lost gas army: {}'.format(self.lost_gas_army))
         print('-------------------- end of enemy info ----------------------')

@@ -49,15 +49,20 @@ class BlinkersUpdated(Strategy):
     def __init__(self, ai):
         super().__init__(type='mid', name='BlinkersUpdated', ai=ai, defense=FortressDefense(ai))
 
-        # voidray_micro = VoidrayMicro(ai)
-        # carrier_micro = CarrierMicro(ai)
-        # tempest_micro = TempestMicro(ai)
         positions_loader = PositionsLoader(ai)
-        locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-        del locations_dict[unit.FORGE]
+        if self.ai.enemy_race == Race.Zerg:
+            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+            del locations_dict[unit.FORGE]
+            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
+            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
+            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                      Movements(ai, 0.1))
+            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+        else:
+            locations_dict = None
+            sentry_micro = SentryMicro(ai)
 
-        sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
@@ -67,12 +72,7 @@ class BlinkersUpdated(Strategy):
         disruptor_micro = DisruptorMicro(ai)
         # ht_micro = HighTemplarMicro(ai)
 
-        wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-        if self.ai.enemy_race == Race.Zerg:
-            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-                                  Movements(ai, 0.1))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-
         self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
                                   [AdeptMicro(ai)], Movements(ai), lifetime=300)
         self.army.create_division('main', {unit.STALKER: 30, unit.IMMORTAL: 2,
@@ -85,12 +85,10 @@ class BlinkersUpdated(Strategy):
         self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-380)
         self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
-
         build_queue = BuildQueues.BLINKERS
-        # upper_wall = UpperWall(ai)
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=[locations_dict])
+                               special_building_locations=[locations_dict] if locations_dict else None)
         self.battery_builder = BatteryBuilder(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
@@ -102,7 +100,7 @@ class BlinkersUpdated(Strategy):
         self.templar_archive_upgrader = TemplarArchiveUpgrader(ai)
 
         self.worker_rush_defense = WorkerRushDefense(ai)
-        self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
@@ -136,7 +134,10 @@ class BlinkersUpdated(Strategy):
         await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        await self.pylon_builder.new_standard_upper_wall()
+        if self.ai.enemy_race == Race.Zerg:
+            await self.pylon_builder.new_standard_upper_wall()
+        else:
+            await self.pylon_builder.new_standard()
 
     def build_assimilators(self):
         # if self.ai.time < 90:
