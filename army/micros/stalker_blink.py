@@ -63,12 +63,6 @@ class StalkerBlinkMicro(MicroABS):
             hallucinated_warp_prisms = self.ai.units().filter(lambda x: x.type_id == unit.WARPPRISM and
                                                                     x.is_hallucination)
             if sentries:
-                if sum([s.energy for s in sentries]) < 150:
-                    for sentry in sentries:
-                        try:
-                            self.ai.army.remove(sentry)
-                        except:
-                            pass
                 division_position = division.get_position(iteration=self.ai.iteration)
                 for sentry in sentries:
                     if not hallucinated_warp_prisms.exists and sentry.energy >= 75 and stalkers and\
@@ -88,10 +82,10 @@ class StalkerBlinkMicro(MicroABS):
                 flying_units = self.ai.units().filter(lambda x: x.is_flying and x.type_id != unit.PHOENIX)
             if flying_units and not any([f.distance_to(self.blink_locations[0]) < 4 for f in flying_units]) and stalkers:
                 flying_units.closest_to(self.blink_locations[0]).move(self.blink_locations[0])
-            else:
-                for f in flying_units:
-                    if f.distance_to(self.blink_locations[0]) > 8 and f.distance_to(self.blink_locations[1]) > 5:
-                        f.move(self.blink_locations[1])
+            # else:
+            #     for f in flying_units:
+            #         if f.distance_to(self.blink_locations[0]) > 8 and f.distance_to(self.blink_locations[1]) > 5:
+            #             f.move(self.blink_locations[1])
         else:
             enemy_main_base_height = 0
             blink_location_height = 0
