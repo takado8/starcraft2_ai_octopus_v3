@@ -17,18 +17,13 @@ class Scouting:
         self.last_scouting_time = 0
         self.last_print_time = 0
         self.visited_positions_count = {}
+        self.scouting_active_after_s = 0
 
     async def scan_middle_game(self):
         self.gather_enemy_info()
-        # time = int(self.ai.time)
-        # if time % 5 == 0 and self.last_print_time != time:
-            # print()
-            # for pos in self.visited_positions_count:
-            #     print("{}: {}".format(pos, self.visited_positions_count[pos]))
-            # print()
-            # self.enemy_economy.print_enemy_info()
-            # self.last_print_time = time
 
+        if self.ai.time < self.scouting_active_after_s:
+            return
         if self.ai.time - self.last_scouting_time > self.SCOUTING_COOLDOWN:
             if self.create_scout():
                 self.last_scouting_time = self.ai.time

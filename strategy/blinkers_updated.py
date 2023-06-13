@@ -48,6 +48,7 @@ from sc2.ids.upgrade_id import UpgradeId as upgrade
 class BlinkersUpdated(Strategy):
     def __init__(self, ai):
         super().__init__(type='mid', name='BlinkersUpdated', ai=ai, defense=FortressDefense(ai))
+        self.scouting.scouting_active_after_s = 360
 
         positions_loader = PositionsLoader(ai)
         if self.ai.enemy_race == Race.Zerg:
@@ -63,25 +64,31 @@ class BlinkersUpdated(Strategy):
             locations_dict = None
             sentry_micro = SentryMicro(ai)
 
+        blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
+        blink_locations = blink_locations_dict[unit.PYLON]
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
-        stalker_micro = StalkerBlinkMicro(ai)
+        stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
         colossus_micro = ColossusMicro(ai)
         # archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
         # ht_micro = HighTemplarMicro(ai)
 
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
                                   [AdeptMicro(ai)], Movements(ai), lifetime=300)
-        self.army.create_division('main', {unit.STALKER: 30, unit.IMMORTAL: 2,
-                                           unit.SENTRY: 1, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
+        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro],Movements(ai, 0.2))
+        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
+        self.army.create_division('stalkers', {unit.STALKER: 20}, [stalker_micro],
+                                  Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
+
+
+        self.army.create_division('main', {unit.IMMORTAL: 2,
+                                           unit.SENTRY: 2, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
                                   [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro],
                                   Movements(ai))
-
-        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro],Movements(ai, 0.2), lifetime=-360)
+        #
+        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-380)
         self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
@@ -109,10 +116,12 @@ class BlinkersUpdated(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        if self.ai.enemy_race == Race.Terran:
+        if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
             await self.secure_lines.execute()
+        elif self.ai.enemy_race == Race.Zerg:
+            await self.wall_builder.execute()
+
         await self.shield_battery_interface.execute()
-        await self.wall_builder.execute()
         await self.attack_informant.execute()
         # await self.mother_ship_interface.execute()
         # if self.ai.iteration % 10 == 0:

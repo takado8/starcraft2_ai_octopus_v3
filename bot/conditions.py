@@ -80,13 +80,11 @@ class ConditionRetreat:
         return self.ai.supply_army < supply
 
     def army_value_n_times_the_enemy(self, n):
-        if self.ai.strategy.scouting.number_of_scoutings_done > 0:
-            own_value = self.ai.strategy.own_economy.army_value
-            enemy_value = self.ai.strategy.enemy_economy.army_value
-            if enemy_value == 0:
-                enemy_value = 1
-            return own_value / enemy_value <= n
-        return False
+        own_value = self.ai.strategy.own_economy.army_value
+        enemy_value = self.ai.strategy.enemy_economy.army_value
+        if enemy_value == 0:
+            enemy_value = 1
+        return own_value / enemy_value <= n
 
 
 class ConditionTransform:

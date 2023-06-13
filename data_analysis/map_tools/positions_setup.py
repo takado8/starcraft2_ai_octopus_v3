@@ -15,8 +15,8 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        self.start_on_specific_location(undesired_location="(160.5, 123.5)")
-        self.map_service = MapPositionsService(self, "worker_rush_defense")
+        self.start_on_specific_location(undesired_location="(31.5, 26.5)")
+        self.map_service = MapPositionsService(self, "blink_to_main")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -64,10 +64,10 @@ def run(real_time=0):
     else:
         real_time = False
 
-    maps_list = ["BerlingradAIE", "HardwireAIE", "InsideAndOutAIE", "MoondanceAIE", "StargazersAIE",
-                 "WaterfallAIE"]
+    maps_list = ["AncientCisternAIE", "DragonScalesAIE", "GoldenauraAIE", "InfestationStationAIE", "RoyalBloodAIE",
+                 "GresvanAIE"]
 
-    MAP = 4
+    MAP = 0
 
     run_game(map_settings=maps.get(maps_list[MAP]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
