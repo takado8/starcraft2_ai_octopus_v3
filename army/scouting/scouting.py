@@ -18,6 +18,8 @@ class Scouting:
         self.last_print_time = 0
         self.visited_positions_count = {}
         self.scouting_active_after_s = 0
+        self.enemy_value_lost_cached = 0
+        self.killed_units_diff_cached = 0
 
     async def scan_middle_game(self):
         self.gather_enemy_info()
@@ -72,15 +74,27 @@ class Scouting:
                 else:
                     self.scouting_index = 0
 
+    def clear_units(self):
+        if self.ai.iteration % 1000 == 0:
+            diff = self.enemy_economy.lost_units_value - self.enemy_value_lost_cached
+            if diff > 1000:
+                enemy_value = self.enemy_economy.army_value
+                estimated = enemy_value - diff
+                self.enemy_economy.enemy_army_value_estimated = estimated
+                self.enemy_economy.clear_category(MILITARY)
+                self.enemy_value_lost_cached = self.enemy_economy.lost_units_value
+                self.killed_units_diff_cached = diff
+                print('clearing units')
+
+
     def gather_enemy_info(self):
-        if self.number_of_scoutings_done and self.number_of_scoutings_done % 5 == 0:
-            self.enemy_economy.clear_category(MILITARY)
+        self.clear_units()
         # bases
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.enemy_economy.add_units_to_enemy_info(BASES, enemy_bases)
         # military units
         excluded = {unit.BROODLING, unit.OVERLORD, unit.OVERSEER, unit.ADEPTPHASESHIFT, unit.OVERLORDCOCOON,
-                    unit.OVERLORDTRANSPORT}
+                    unit.OVERLORDTRANSPORT, unit.WARPPRISM, unit.WARPPRISMPHASING, unit.OBSERVER}
         enemy_military_units = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.workers_ids and
                                                                       x.type_id not in self.ai.units_to_ignore
                                                                       and x.type_id not in excluded and x.is_visible
