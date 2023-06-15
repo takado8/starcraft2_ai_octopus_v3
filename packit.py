@@ -6,7 +6,7 @@ aaaaaaa = 'aaaaaaa'
 
 make_backup = True
 
-zip_file_name = octopus
+zip_file_name = aaaaaaa
 destination_dir_name = zip_file_name # could be different, is the same usually
 zip_dir = r"C:\Users\korne\Desktop\sc2 AI"
 
