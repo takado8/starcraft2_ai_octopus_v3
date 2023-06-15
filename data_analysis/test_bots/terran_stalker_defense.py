@@ -23,15 +23,15 @@ class TerranStalkerDefense(sc2.BotAI):
         await self.distribute_workers()
         await self.build_depots()
         await self.build_barracks()
-        # await self.build_factory()
+        await self.build_factory()
         await self.build_bunker()
         await self.build_refinery()
         self.train_marines()
-        # # self.train_tank()
-        # # self.siege_up_tanks()
+        self.train_tank()
+        self.siege_up_tanks()
         self.load_up_bunkers()
-        self.build_barracks_reactor()
-        # await self.build_factory_techlab()
+        await self.build_barracks_reactor()
+        await self.build_factory_techlab()
         # # await self.expand()
         self.lower_depots()
         self.marine_micro()
@@ -110,29 +110,33 @@ class TerranStalkerDefense(sc2.BotAI):
                 place = self.start_location.position.random_on_distance(7)
             await self.build(unit.SUPPLYDEPOT, place)
 
-    def build_barracks_reactor(self):
+    async def build_barracks_reactor(self):
         if self.can_afford(unit.BARRACKSREACTOR):
             barracks = self.structures().filter(lambda x: x.type_id == unit.BARRACKS and x.is_ready and
                                                not x.has_reactor)
 
             for barrack in barracks:
-                barrack(ability.BUILD_REACTOR_BARRACKS, barrack.position)
+
+                if await self.can_place_single(unit.BARRACKSREACTOR, barrack.add_on_position):
+                    barrack(ability.BUILD_REACTOR_BARRACKS, barrack.position)
+
+                else:
+                    barrack(ability.BUILD_REACTOR_BARRACKS,
+                            await self.find_placement(unit.FACTORY, near=barrack.position))
 
     async def build_factory_techlab(self):
         if self.can_afford(unit.TECHLAB):
-            factories = self.structures().filter(lambda x: x.type_id == unit.FACTORY and x.is_ready)
-            factories_no_lab = factories.filter(lambda x: not x.has_techlab)
-            if factories_no_lab and factories_no_lab.amount == factories.amount:
-                can_place_add_on = False
-                for factory in factories:
+            factories_no_lab = self.structures().filter(lambda x: x.type_id == unit.FACTORY and x.is_ready and
+                                                          not x.has_techlab)
+            if factories_no_lab:
+
+                for factory in factories_no_lab:
                     if await self.can_place_single(unit.FACTORYTECHLAB,factory.add_on_position):
                         factory(ability.BUILD_TECHLAB_FACTORY, factory.position)
-                        can_place_add_on = True
-                        break
-                if not can_place_add_on:
-                    factory = factories_no_lab.random
-                    factory(ability.BUILD_TECHLAB_FACTORY,
-                            await self.find_placement(unit.FACTORY, near=factory.position))
+
+                    else:
+                        factory(ability.BUILD_TECHLAB_FACTORY,
+                                await self.find_placement(unit.FACTORY, near=factory.position))
 
     def siege_up_tanks(self):
         tanks = self.units(unit.SIEGETANK).ready.idle
