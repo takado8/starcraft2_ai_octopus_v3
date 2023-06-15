@@ -8,6 +8,7 @@ from bot.nexus_abilities import Chronobooster
 from bot.trainer import Trainer
 from bot.trainers import NexusTrainer
 from builders import PylonBuilder, AssimilatorBuilder
+from economy.info.army_fitness import ArmyFitness
 from economy.info.enemy_economy import EnemyEconomy
 from economy.info.own_economy import OwnEconomy
 from economy.workers.distribute_workers import DistributeWorkers
@@ -20,6 +21,7 @@ class Strategy:
         self.type = type
         self.name = name
         self.ai = ai
+        self.army_fitness = ArmyFitness(ai)
         self.own_economy = OwnEconomy(ai)
         self.enemy_economy = EnemyEconomy(ai)
         self.scouting = Scouting(ai, self.enemy_economy)

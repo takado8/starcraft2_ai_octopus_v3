@@ -88,7 +88,7 @@ class BlinkersUpdated(Strategy):
                                   Movements(ai))
         #
         # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-380)
+        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
         self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
         build_queue = BuildQueues.BLINKERS
@@ -105,8 +105,9 @@ class BlinkersUpdated(Strategy):
         self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
         self.templar_archive_upgrader = TemplarArchiveUpgrader(ai)
 
-        self.worker_rush_defense = WorkerRushDefense(ai)
 
+
+        self.worker_rush_defense = WorkerRushDefense(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
@@ -151,7 +152,7 @@ class BlinkersUpdated(Strategy):
         # if self.ai.time < 90:
         #     self.assimilator_builder.one_vespene()
         # else:
-        self.assimilator_builder.standard(minerals_to_gas_ratio=2)
+        self.assimilator_builder.standard(minerals_to_gas_ratio=1)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
