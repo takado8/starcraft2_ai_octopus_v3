@@ -55,7 +55,7 @@ class StalkerBlinkMicro(MicroABS):
                     pass
         enemy_main_base = self.ai.enemy_start_locations[0]
 
-        if self.blink_locations and self.ai.attack:
+        if self.blink_locations and self.ai.attack and self.ai.time < 900:
             blink_to_location = self.blink_locations[0].towards(enemy_main_base, 12)
             blink_location_height = self.ai.mineral_field.closest_to(self.blink_locations[0]).position3d.z
             enemy_main_base_height = self.ai.mineral_field.closest_to(enemy_main_base).position3d.z
@@ -120,43 +120,44 @@ class StalkerBlinkMicro(MicroABS):
                 if self.ai.attack:
                     threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
-                    # blink to main base
-                    if self.blink_locations and not stalker_on_main_base_lvl:
-                        if not threats or not threats.in_attack_range_of(stalker):
-                            stalker.attack(self.blink_locations[0])
-                        elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
-                            stalker.move(self.blink_locations[0])
-                            continue
+                    if self.ai.time < 900:
+                        # blink to main base
+                        if self.blink_locations and not stalker_on_main_base_lvl:
+                            if not threats or not threats.in_attack_range_of(stalker):
+                                stalker.attack(self.blink_locations[0])
+                            elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
+                                stalker.move(self.blink_locations[0])
+                                continue
 
-                        # deal with terran wall
-                        if not threats or threats.exists and not threats.in_attack_range_of(stalker):
-                            enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
+                            # deal with terran wall
+                            if not threats or threats.exists and not threats.in_attack_range_of(stalker):
+                                enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
 
-                            wall_buildings = self.ai.enemy_structures().filter(
-                                lambda x: x.type_id in {unit.SUPPLYDEPOT,
-                                                        unit.BARRACKS, unit.BARRACKSREACTOR} and x.distance_to(
-                                    enemy_main_ramp) < 5 and
-                                          x.distance_to(stalker) < dist)
-                            if wall_buildings.amount >= 3:
-                                if await self.is_blink_available(stalker):
-                                    blink_spot = self.ai.enemy_main_base_ramp.top_center.towards(
-                                        self.ai.enemy_main_base_ramp.bottom_center, -8)
-                                    await self.blink(stalker, blink_spot)
-                                    continue
-                                workers_near_wall = enemy.filter(lambda x: x.type_id == unit.SCV and
-                                                                           any([x.distance_to(building) < 3 for
-                                                                                building in
-                                                                                wall_buildings]))
-                                if workers_near_wall:
-                                    threats = workers_near_wall
-                                else:
-                                    threats = wall_buildings
-                    if stalker_on_main_base_lvl:
-                        main_base_minerals = self.ai.mineral_field.closest_to(enemy_main_base)
-                        if (not threats or not threats.in_attack_range_of(stalker) or 1 > stalker.weapon_cooldown > 0) and\
-                                stalker.distance_to(enemy_main_base) > 12:
-                            stalker.move(main_base_minerals)
-                            continue
+                                wall_buildings = self.ai.enemy_structures().filter(
+                                    lambda x: x.type_id in {unit.SUPPLYDEPOT,
+                                                            unit.BARRACKS, unit.BARRACKSREACTOR} and x.distance_to(
+                                        enemy_main_ramp) < 5 and
+                                              x.distance_to(stalker) < dist)
+                                if wall_buildings.amount >= 3:
+                                    if await self.is_blink_available(stalker):
+                                        blink_spot = self.ai.enemy_main_base_ramp.top_center.towards(
+                                            self.ai.enemy_main_base_ramp.bottom_center, -8)
+                                        await self.blink(stalker, blink_spot)
+                                        continue
+                                    workers_near_wall = enemy.filter(lambda x: x.type_id == unit.SCV and
+                                                                               any([x.distance_to(building) < 3 for
+                                                                                    building in
+                                                                                    wall_buildings]))
+                                    if workers_near_wall:
+                                        threats = workers_near_wall
+                                    else:
+                                        threats = wall_buildings
+                        if stalker_on_main_base_lvl:
+                            main_base_minerals = self.ai.mineral_field.closest_to(enemy_main_base)
+                            if (not threats or not threats.in_attack_range_of(stalker) or 1 > stalker.weapon_cooldown > 0) and\
+                                    stalker.distance_to(enemy_main_base) > 14:
+                                stalker.move(main_base_minerals)
+                                continue
 
                     if self.ai.enemy_race == Race.Terran:
                         # deal with tanks
@@ -243,7 +244,8 @@ class StalkerBlinkMicro(MicroABS):
                     d = 4
                 else:
                     d = 2
-
+                if not closest_enemy and enemy:
+                    closest_enemy = enemy.closest_to(stalker)
                 if stalker.shield_percentage < 0.4 and upgrade.BLINKTECH in self.ai.state.upgrades and \
                         await self.is_blink_available(stalker):
 
@@ -251,7 +253,7 @@ class StalkerBlinkMicro(MicroABS):
                         back_out_position = self.find_blink_out_position(stalker, closest_enemy.position)
                         if back_out_position is not None:
                             await self.blink(stalker, back_out_position)
-                    else:
+                    elif target:
                         if target not in self.targets_dict:
                             self.targets_dict[target] = [stalker.calculate_damage_vs_target(target)[0]]
                         stalker.attack(target)
@@ -264,7 +266,7 @@ class StalkerBlinkMicro(MicroABS):
                                 stalker.move(stalker.position.towards(back_out_position, d))
                         elif not enemy.in_attack_range_of(stalker).exists and threats.exists:
                             stalker.move(stalker.position.towards(threats.closest_to(stalker.position)))
-                    else:
+                    elif target:
                         queue = False
                         if upgrade.BLINKTECH in self.ai.state.upgrades and not stalker.target_in_range(target) and\
                                 await self.is_blink_available(stalker):
