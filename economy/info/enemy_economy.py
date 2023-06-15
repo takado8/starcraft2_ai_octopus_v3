@@ -1,4 +1,3 @@
-from sc2 import BotAI
 from bot.constants import GAS_VALUE
 
 BASES = 'bases'
@@ -6,21 +5,22 @@ MILITARY = 'military'
 
 
 class EnemyEconomy:
-    def __init__(self, ai: BotAI):
+    def __init__(self, ai):
         self.enemy_army_supply = 0
         self.enemy_army_value = 0
+        self.enemy_army_value_estimated = 0
+
         self.ai = ai
         self.enemy_info = {}
         self.total_enemy_ground_dps = 0
         self.total_enemy_hp = 0
         self.lost_minerals_army = 0
         self.lost_gas_army = 0
-        # self.killed_value_units = 0
 
-    def lost_units_cost(self):
-        self.lost_minerals_army = self.ai.state.score.killed_minerals_army
-        self.lost_gas_army = self.ai.state.score.killed_vespene_army
-        # self.killed_value_units = self.ai.state.score.killed_value_units
+
+    @property
+    def lost_units_value(self):
+        return self.ai.state.score.killed_minerals_army + self.ai.state.score.killed_vespene_army * GAS_VALUE
 
     def add_units_to_enemy_info(self, category, units):
         if units:
@@ -46,10 +46,13 @@ class EnemyEconomy:
                         enemy_army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
                     except:
                         print("cannot calculate cost of {}".format(unit.type_id))
-        return enemy_army_value
+        result = max(enemy_army_value, self.enemy_army_value_estimated)
+        result_adjusted = result - self.ai.strategy.army_fitness.get_army_fitness()[1]
+        if result_adjusted < 0:
+            result_adjusted = result * 0.5
+        return result_adjusted
 
     def calculate_enemy_units_report(self):
-        self.lost_units_cost()
         self.total_enemy_ground_dps = 0
         self.total_enemy_hp = 0
         self.enemy_army_value = 0
@@ -69,7 +72,6 @@ class EnemyEconomy:
                             self.enemy_army_supply += unit_supply_cost
                         except:
                             print("cannot calculate cost of {}".format(unit.type_id))
-
 
     def remove_unit_from_enemy_info(self, unit_tag):
         for category in self.enemy_info:

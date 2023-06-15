@@ -14,7 +14,10 @@ class OwnEconomy:
                 army_value += unit_cost.minerals + unit_cost.vespene * GAS_VALUE
             except:
                 print('cannot get unit value: {}'.format(unit.type_id))
-        return army_value
+        result_adjusted = army_value - self.ai.strategy.army_fitness.get_army_fitness()[1]
+        if result_adjusted < 0:
+            result_adjusted = army_value * 0.5
+        return result_adjusted
 
     @property
     def army_stats(self):
