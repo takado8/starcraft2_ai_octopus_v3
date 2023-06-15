@@ -15,7 +15,7 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        self.start_on_specific_location(undesired_location="(31.5, 26.5)")
+        # self.start_on_specific_location(undesired_location="(76.5, 154.5)")
         self.map_service = MapPositionsService(self, "blink_to_main")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
@@ -32,6 +32,8 @@ class PositionsSetup(BotAI):
 
         print('map_name: ' + str(self.game_info.map_name))
         print('start location: ' + str(self.start_location.position))
+        print('enemy start location: ' + str(self.enemy_start_locations[0].position))
+
         print('build queue:')
         print(build_queue)
 
@@ -67,7 +69,7 @@ def run(real_time=0):
     maps_list = ["AncientCisternAIE", "DragonScalesAIE", "GoldenauraAIE", "InfestationStationAIE", "RoyalBloodAIE",
                  "GresvanAIE"]
 
-    MAP = 0
+    MAP = 5
 
     run_game(map_settings=maps.get(maps_list[MAP]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
