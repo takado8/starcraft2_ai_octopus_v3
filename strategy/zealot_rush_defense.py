@@ -129,11 +129,11 @@ class ZealotRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.total_supply_over(195)
+        return self.condition_attack.army_value_n_times_the_enemy(2)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(24 if self.ai.time < 480 else 40)
+        return self.condition_retreat.army_value_n_times_the_enemy(1)
 
 
     def counter_attack_condition(self):

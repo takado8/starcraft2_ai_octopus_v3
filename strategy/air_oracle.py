@@ -3,6 +3,7 @@ from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle import OracleMicro
+from army.micros.sentry import SentryMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.zealot import ZealotMicro
@@ -28,7 +29,7 @@ class AirOracle(Strategy):
         tempest_micro = TempestMicro(ai)
         zealot_micro = ZealotMicro(ai)
 
-        # sentry_micro = SentryMicro(ai)
+        sentry_micro = SentryMicro(ai)
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
 
         self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=240)
@@ -40,6 +41,8 @@ class AirOracle(Strategy):
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
+        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
+
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
@@ -89,10 +92,11 @@ class AirOracle(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.air_dmg_lvl2_full_supply()
+        return self.condition_attack.air_dmg_lvl2_full_supply() or \
+               self.condition_attack.army_value_n_times_the_enemy(2)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(80)
+        return self.condition_retreat.army_value_n_times_the_enemy(1)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()

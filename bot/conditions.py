@@ -176,7 +176,7 @@ class ConditionLockSpending:
                     if ab == AbilityId.RESEARCH_BLINK:
                         if not self.ai.can_afford(ab):
                             return True
-            return False
+        return False
 
     async def twilight_council_charge(self):
         if upgrade.CHARGE not in self.ai.state.upgrades:
@@ -188,7 +188,7 @@ class ConditionLockSpending:
                     if ab == AbilityId.RESEARCH_CHARGE:
                         if not self.ai.can_afford(ab):
                             return True
-            return False
+        return False
 
     async def twilight_council_glaives(self):
             twilight_council = self.ai.structures(unit.TWILIGHTCOUNCIL).ready

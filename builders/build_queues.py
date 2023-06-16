@@ -53,13 +53,13 @@ class BuildQueues:
                       unit.TWILIGHTCOUNCIL,
                       unit.ROBOTICSFACILITY, unit.GATEWAY,
                       30,
-                     unit.NEXUS,unit.FORGE, unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,  unit.GATEWAY,  unit.GATEWAY,
+                     unit.NEXUS, unit.FORGE, unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE,  unit.GATEWAY,  unit.GATEWAY,
                      unit.SHIELDBATTERY,  unit.GATEWAY, unit.ROBOTICSBAY,
                      unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
-                     unit.NEXUS, unit.GATEWAY,
-                     unit.GATEWAY,
-                     unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
-                     unit.NEXUS, unit.GATEWAY, unit.STARGATE, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY,  unit.STARGATE, unit.FLEETBEACON,
+                     unit.GATEWAY, unit.STARGATE,
+                     unit.NEXUS, unit.GATEWAY, unit.STARGATE,
+                     unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,

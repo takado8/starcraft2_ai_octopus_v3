@@ -13,6 +13,7 @@ from economy.info.enemy_economy import EnemyEconomy
 from economy.info.own_economy import OwnEconomy
 from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
+from strategy.interfaces.attack_informator import AttackInformant
 from strategy.interfaces.secure_expansion_locations import SecureExpansionLocations
 
 
@@ -48,10 +49,12 @@ class Strategy:
 
         # interfaces
         self.secure_exp_locations = SecureExpansionLocations(ai)
+        self.attack_informant = AttackInformant(ai)
 
 
     async def execute_interfaces(self):
         await self.secure_exp_locations.execute()
+        await self.attack_informant.execute()
 
     async def handle_workers(self):
         raise NotImplementedError

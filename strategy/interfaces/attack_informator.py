@@ -22,7 +22,7 @@ class AttackInformant(InterfaceABS):
                 else:
                     word = 'Retreating'
             fitness = self.ai.strategy.army_fitness.get_army_fitness()
-            msg = "{} with army value {} vs {}, fit {} vs {}".format(word, self.ai.strategy.own_economy.army_value,
-                                self.ai.strategy.enemy_economy.army_value, fitness[0], fitness[1])
+            msg = "{} with army value {} vs {}, fit -{} vs -{}".format(word, round(self.ai.strategy.own_economy.army_value),
+                                round(self.ai.strategy.enemy_economy.army_value), round(fitness[0]), round(fitness[1]))
             print(msg)
             await self.ai.chat_send(msg)
