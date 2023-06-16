@@ -41,7 +41,7 @@ class AirOracle(Strategy):
         self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
         self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
         self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
-        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
+        self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro],Movements(ai, 0.2), lifetime=-420)
 
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS

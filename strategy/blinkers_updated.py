@@ -46,22 +46,22 @@ from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 class BlinkersUpdated(Strategy):
     def __init__(self, ai):
-        super().__init__(type='mid', name='BlinkersUpdated', ai=ai, defense=FortressDefense(ai))
+        super().__init__(type='mid', name='BlinkersUpdated', ai=ai)
         self.scouting.scouting_active_after_s = 360
 
         positions_loader = PositionsLoader(ai)
-        if self.ai.enemy_race == Race.Zerg:
-            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-            del locations_dict[unit.FORGE]
-            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
-            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-                                      Movements(ai, 0.1))
-            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
-        else:
-            locations_dict = None
-            sentry_micro = SentryMicro(ai)
+        # if self.ai.enemy_race == Race.Zerg:
+        #     locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+        #     locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+        #     del locations_dict[unit.FORGE]
+        #     sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
+        #     wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
+        #     self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+        #                               Movements(ai, 0.1))
+        #     self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+        # else:
+        locations_dict = None
+        sentry_micro = SentryMicro(ai)
 
         blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
         blink_locations = blink_locations_dict[unit.PYLON]
