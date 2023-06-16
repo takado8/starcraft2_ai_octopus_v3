@@ -84,7 +84,7 @@ class BlinkersUpdated(Strategy):
         self.army.create_division('stalkers', {unit.STALKER: 20, unit.SENTRY: 2}, [stalker_micro, sentry_micro],
                                   Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
 
-        self.army.create_division('main', {unit.IMMORTAL: 2, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
+        self.army.create_division('main', {unit.IMMORTAL: 3, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
                                   [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro],
                                   Movements(ai))
 
@@ -93,7 +93,8 @@ class BlinkersUpdated(Strategy):
 
         # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
-        self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
+        self.army.create_division('chargelots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1), lifetime=-600)
+        self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
 
         build_queue = BuildQueues.BLINKERS

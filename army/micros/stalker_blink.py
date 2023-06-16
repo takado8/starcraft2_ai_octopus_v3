@@ -3,7 +3,7 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2 import Race
 
-from bot.constants import WORKERS_IDS
+from bot.constants import WORKERS_IDS, BASES_IDS
 from .microABS import MicroABS
 
 
@@ -93,7 +93,8 @@ class StalkerBlinkMicro(MicroABS):
             blink_to_location = None
 
         for stalker in stalkers:
-            if self.ai.attack:
+            if self.ai.attack and stalker.distance_to(enemy_main_base) < stalker.distance_to(
+                        self.ai.defend_position):
                 stalker_on_main_base_lvl = abs(enemy_main_base_height - stalker.position3d.z) < \
                         abs(blink_location_height - stalker.position3d.z)
                 if self.blink_locations and not stalker_on_main_base_lvl:
@@ -108,7 +109,7 @@ class StalkerBlinkMicro(MicroABS):
                         continue
                     elif stalker_dist_to_blink > 3 and stalker_dist_to_wait_spot > 45:
                         stalker.attack(self.blink_locations[1])
-                        continue
+                        units_in_position -= 1
             else:
                 stalker_on_main_base_lvl = False
             if enemy.exists:
@@ -121,14 +122,14 @@ class StalkerBlinkMicro(MicroABS):
                     threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
                     if self.ai.time < 900 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
-                        self.ai.start_location):
+                        self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:
                             if not threats or not threats.in_attack_range_of(stalker):
                                 stalker.attack(self.blink_locations[0])
-                            elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
-                                stalker.move(self.blink_locations[0])
-                                continue
+                            # elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
+                            #     stalker.move(self.blink_locations[0])
+                            #     continue
 
                             # deal with terran wall
                             if not threats or threats.exists and not threats.in_attack_range_of(stalker):
@@ -156,7 +157,7 @@ class StalkerBlinkMicro(MicroABS):
                         if stalker_on_main_base_lvl:
                             main_base_minerals = self.ai.mineral_field.closest_to(enemy_main_base)
                             if (not threats or not threats.in_attack_range_of(stalker) or 1 > stalker.weapon_cooldown > 0) and\
-                                    stalker.distance_to(enemy_main_base) > 14:
+                                    stalker.distance_to(enemy_main_base) > 12:
                                 stalker.move(main_base_minerals)
                                 continue
 
@@ -186,8 +187,10 @@ class StalkerBlinkMicro(MicroABS):
                                         threats = workers_near_bunkers
                                     else:
                                         threats = bunkers
-                    if not enemy.exists and stalker.distance_to(enemy_main_base) < 15:
-                        threats = self.ai.enemy_structures()
+                    if not enemy.exists and stalker.distance_to(enemy_main_base) < 12:
+                        threats = self.ai.enemy_structures().filter(lambda x: x.type_id in BASES_IDS)
+                        if not threats:
+                            threats = self.ai.enemy_structures()
             else:
                 threats = None
             if threats:
