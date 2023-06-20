@@ -41,7 +41,7 @@ class ZealotRushDefense(Strategy):
         colossus_micro = ColossusMicro(ai)
         # dt_micro = DarkTemplarMicro(ai)
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 3}, [wall_guard_zealot_micro],
-                                  Movements(ai, 0.33), lifetime=400)
+                                  Movements(ai, 0.33))
         self.army.create_division('zealots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1))
         self.army.create_division('zealots2', {unit.ZEALOT: 5}, [zealot_micro], Movements(ai, 0.1))
 
@@ -58,6 +58,7 @@ class ZealotRushDefense(Strategy):
         # self.army.create_division('immortals3', IMMORTAL_x2, [immortal_micro], Movements(ai, 0.2))
 
         self.army.create_division('archons1', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
+        self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
         self.army.create_division('archons2', ARCHONS_x5, [archon_micro], Movements(ai, 0.2))
 
         self.army.create_division('stalkers1', STALKER_x5, [stalker_micro], Movements(ai, 0.5))
@@ -129,7 +130,7 @@ class ZealotRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_value_n_times_the_enemy(2)
+        return self.condition_attack.army_value_n_times_the_enemy(2) or self.condition_attack.total_supply_over(195)
 
 
     def retreat_condition(self):

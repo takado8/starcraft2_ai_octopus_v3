@@ -123,11 +123,11 @@ class BlinkersUpdated(Strategy):
         await super().execute_interfaces()
         if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
             await self.secure_lines.execute()
-        elif self.ai.enemy_race == Race.Zerg:
-            await self.wall_builder.execute()
+        # elif self.ai.enemy_race == Race.Zerg:
+        #     await self.wall_builder.execute()
         await self.shield_battery_interface.execute()
 
-        if self.ai.iteration % 100 == 0:
+        if self.ai.iteration % 10 == 0:
             await self.battery_builder.build_batteries(when_minerals_more_than=410, amount=5)
             await self.cannon_builder.build_cannons(when_minerals_more_than=420, amount=2)
 
@@ -144,10 +144,10 @@ class BlinkersUpdated(Strategy):
         await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        if self.ai.enemy_race == Race.Zerg:
-            await self.pylon_builder.new_standard_upper_wall()
-        else:
-            await self.pylon_builder.new_standard()
+        # if self.ai.enemy_race == Race.Zerg:
+        #     await self.pylon_builder.new_standard_upper_wall()
+        # else:
+        await self.pylon_builder.new_standard()
 
     def build_assimilators(self):
         # if self.ai.time < 90:
@@ -177,7 +177,7 @@ class BlinkersUpdated(Strategy):
     # ======================================================= Conditions
     def attack_condition(self):
         return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw()
-                                                    and self.condition_attack.army_value_n_times_the_enemy(2))
+            and self.condition_attack.army_value_n_times_the_enemy(2)) or self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
         return self.condition_retreat.army_value_n_times_the_enemy(1)
