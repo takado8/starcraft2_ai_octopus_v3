@@ -20,7 +20,7 @@ class StrategyManager:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
                 'AirOracle': AirOracle,
-                # 'FortressSkyToss': FortressSkyToss,
+                'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated
             }
@@ -28,7 +28,7 @@ class StrategyManager:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
                 # 'CannonRushDefense': CannonRushDefense,
-                # 'FortressSkyToss': FortressSkyToss,
+                'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated
 
@@ -36,7 +36,7 @@ class StrategyManager:
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
                 'ZealotRushDefense': ZealotRushDefense,
-                # 'FortressSkyToss': FortressSkyToss,
+                'FortressSkyToss': FortressSkyToss,
                 'StalkerProxy': StalkerProxy,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated
@@ -45,7 +45,7 @@ class StrategyManager:
         else:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
-                # 'FortressSkyToss': FortressSkyToss,
+                'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated
             }
