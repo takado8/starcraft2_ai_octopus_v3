@@ -50,18 +50,18 @@ class BlinkersUpdated(Strategy):
         self.scouting.scouting_active_after_s = 360
 
         positions_loader = PositionsLoader(ai)
-        # if self.ai.enemy_race == Race.Zerg:
-        #     locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-        #     locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-        #     del locations_dict[unit.FORGE]
-        #     sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
-        #     wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-        #     self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-        #                               Movements(ai, 0.1))
-        #     self.pylon_builder.special_locations = locations_dict[unit.PYLON]
-        # else:
-        locations_dict = None
-        sentry_micro = SentryMicro(ai)
+        if self.ai.enemy_race == Race.Zerg:
+            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+            del locations_dict[unit.FORGE]
+            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
+            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
+            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                      Movements(ai, 0.1))
+            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+        else:
+            locations_dict = None
+            sentry_micro = SentryMicro(ai)
 
         blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
         blink_locations = blink_locations_dict[unit.PYLON]
@@ -123,8 +123,8 @@ class BlinkersUpdated(Strategy):
         await super().execute_interfaces()
         if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
             await self.secure_lines.execute()
-        # elif self.ai.enemy_race == Race.Zerg:
-        #     await self.wall_builder.execute()
+        elif self.ai.enemy_race == Race.Zerg:
+            await self.wall_builder.execute()
         await self.shield_battery_interface.execute()
 
         if self.ai.iteration % 10 == 0:
@@ -144,10 +144,10 @@ class BlinkersUpdated(Strategy):
         await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        # if self.ai.enemy_race == Race.Zerg:
-        #     await self.pylon_builder.new_standard_upper_wall()
-        # else:
-        await self.pylon_builder.new_standard()
+        if self.ai.enemy_race == Race.Zerg:
+            await self.pylon_builder.new_standard_upper_wall()
+        else:
+            await self.pylon_builder.new_standard()
 
     def build_assimilators(self):
         # if self.ai.time < 90:
