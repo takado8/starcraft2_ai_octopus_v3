@@ -16,7 +16,7 @@ class PositionsSetup(BotAI):
 
     async def on_start(self):
         # self.start_on_specific_location(undesired_location="(76.5, 154.5)")
-        self.map_service = MapPositionsService(self, "blink_to_main")
+        self.map_service = MapPositionsService(self, "test")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -44,6 +44,8 @@ class PositionsSetup(BotAI):
             pass
         if iteration > 5:
             self.map_service.get_structures_positions()
+            self.map_service.get_units_position()
+
             if self.structures(unit.ASSIMILATOR).amount > 1:
                 self.map_service.save_positions_json()
                 time.sleep(1)

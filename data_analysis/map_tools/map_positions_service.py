@@ -1,6 +1,6 @@
 import json
 from sc2.unit import UnitTypeId as unit
-
+from sc2.ids.ability_id import AbilityId as ability
 from bot.constants import BASES_IDS
 from data_analysis.map_tools.positions_file_utils import PositionsFileUtils
 from data_analysis.map_tools.positions_loader import PositionsLoader
@@ -20,7 +20,11 @@ class MapPositionsService(PositionsFileUtils):
                     self.added_positions.add(position)
 
     def get_structures_positions(self):
-        start_location = self.start_location
+        if not self.ai.structures(unit.ASSIMILATOR).exists:
+            start_location = self.start_location
+        else:
+            start_location = self.enemy_start_location
+
         if start_location not in self.positions_dict:
             self.positions_dict[start_location] = {}
         for structure in self.ai.structures().filter(lambda x: x.type_id not in BASES_IDS and
@@ -34,10 +38,15 @@ class MapPositionsService(PositionsFileUtils):
                     self.positions_dict[start_location][type_id].append(structure.position)
 
     def get_units_position(self):
-        start_location = self.start_location
+        if not self.ai.structures(unit.ASSIMILATOR).exists:
+            start_location = self.start_location
+        else:
+            start_location = self.enemy_start_location
+
         if start_location not in self.positions_dict:
             self.positions_dict[start_location] = {}
-        for unit_ in self.ai.units().filter(lambda x: x.type_id == unit.ZEALOT):
+        for unit_ in self.ai.units().filter(lambda x: x.type_id == unit.ZEALOT
+                                                      and x.is_using_ability(ability.HOLDPOSITION)):
             if unit_.position not in self.added_positions:
                 self.added_positions.add(unit_.position)
                 type_id = unit_.type_id

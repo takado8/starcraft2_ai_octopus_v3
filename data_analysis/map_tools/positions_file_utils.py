@@ -22,3 +22,8 @@ class PositionsFileUtils:
     @property
     def start_location(self):
         return str((self.ai.start_location.x, self.ai.start_location.y))
+
+    @property
+    def enemy_start_location(self):
+        location = self.ai.enemy_start_locations[0].position
+        return str((location.x, location.y))
