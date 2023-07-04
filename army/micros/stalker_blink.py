@@ -1,4 +1,5 @@
 from sc2.ids.ability_id import AbilityId as ability
+from sc2.ids.buff_id import BuffId as buff
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 from sc2 import Race
@@ -29,7 +30,8 @@ class StalkerBlinkMicro(MicroABS):
         stalkers = division.get_units(self.ai.iteration, unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
-                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
+                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN, unit.IMMORTAL, unit.VOIDRAY,
+                        unit.RAVEN}
 
         attacking_friends = None
         division_position = None
@@ -55,7 +57,7 @@ class StalkerBlinkMicro(MicroABS):
                     pass
         enemy_main_base = self.ai.enemy_start_locations[0]
 
-        if self.blink_locations and self.ai.attack and self.ai.time < 900:
+        if self.blink_locations and self.ai.attack and self.ai.time < 900 and upgrade.BLINKTECH in self.ai.state.upgrades:
             blink_to_location = self.blink_locations[0].towards(enemy_main_base, 12)
             blink_location_height = self.ai.mineral_field.closest_to(self.blink_locations[0]).position3d.z
             enemy_main_base_height = self.ai.mineral_field.closest_to(enemy_main_base).position3d.z
@@ -93,8 +95,8 @@ class StalkerBlinkMicro(MicroABS):
             blink_to_location = None
 
         for stalker in stalkers:
-            if self.ai.attack and stalker.distance_to(enemy_main_base) < stalker.distance_to(
-                        self.ai.defend_position):
+            if self.ai.attack and upgrade.BLINKTECH in self.ai.state.upgrades and\
+                    stalker.distance_to(enemy_main_base) < stalker.distance_to(self.ai.defend_position):
                 stalker_on_main_base_lvl = abs(enemy_main_base_height - stalker.position3d.z) < \
                         abs(blink_location_height - stalker.position3d.z)
                 if self.blink_locations and not stalker_on_main_base_lvl:
@@ -114,8 +116,8 @@ class StalkerBlinkMicro(MicroABS):
                 stalker_on_main_base_lvl = False
             if enemy.exists:
                 threats = enemy.filter(
-                    lambda unit_: (unit_.can_attack_ground or unit_.type_id in priority_ids) and
-                                  unit_.distance_to(stalker.position) < dist and
+                    lambda unit_: not unit_.has_buff(buff.IMMORTALOVERLOAD) and (unit_.can_attack_ground or
+                            unit_.type_id in priority_ids) and unit_.distance_to(stalker.position) < dist and
                                   unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination
                                 and not unit_.is_snapshot and unit_.is_visible and unit_.cloak != 1)
                 if self.ai.attack:
@@ -125,7 +127,7 @@ class StalkerBlinkMicro(MicroABS):
                         self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:
-                            if not threats or not threats.in_attack_range_of(stalker):
+                            if upgrade.BLINKTECH in self.ai.state.upgrades and (not threats or not threats.in_attack_range_of(stalker)):
                                 stalker.attack(self.blink_locations[0])
                             # elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
                             #     stalker.move(self.blink_locations[0])
@@ -154,7 +156,7 @@ class StalkerBlinkMicro(MicroABS):
                                         threats = workers_near_wall
                                     else:
                                         threats = wall_buildings
-                        if stalker_on_main_base_lvl:
+                        if stalker_on_main_base_lvl and upgrade.BLINKTECH in self.ai.state.upgrades:
                             main_base_minerals = self.ai.mineral_field.closest_to(enemy_main_base)
                             if (not threats or not threats.in_attack_range_of(stalker) or 1 > stalker.weapon_cooldown > 0) and\
                                     stalker.distance_to(enemy_main_base) > 12:

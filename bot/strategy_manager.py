@@ -7,6 +7,7 @@ from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.oracle_defense import OracleDefenseUpdated
 # from strategy.skytoss import SkyToss
 from strategy.fortress_toss import FortressToss
+from strategy.one_base_robo import OneBaseRobo
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
@@ -22,7 +23,8 @@ class StrategyManager:
                 'AirOracle': AirOracle,
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
-                'BlinkersUpdated': BlinkersUpdated
+                'BlinkersUpdated': BlinkersUpdated,
+                'OneBaseRobo': OneBaseRobo
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -30,7 +32,8 @@ class StrategyManager:
                 # 'CannonRushDefense': CannonRushDefense,
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
-                'BlinkersUpdated': BlinkersUpdated
+                'BlinkersUpdated': BlinkersUpdated,
+                'OneBaseRobo': OneBaseRobo
 
             }
         elif ai.enemy_race == Race.Zerg:
@@ -39,7 +42,8 @@ class StrategyManager:
                 'FortressSkyToss': FortressSkyToss,
                 'StalkerProxy': StalkerProxy,
                 'SkytossCarriers': SkytossCarriers,
-                'BlinkersUpdated': BlinkersUpdated
+                'BlinkersUpdated': BlinkersUpdated,
+                'OneBaseRobo': OneBaseRobo
 
             }
         else:
@@ -47,11 +51,12 @@ class StrategyManager:
                 'StalkerProxy': StalkerProxy,
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
-                'BlinkersUpdated': BlinkersUpdated
+                'BlinkersUpdated': BlinkersUpdated,
+                'OneBaseRobo': OneBaseRobo
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = BlinkersUpdated
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

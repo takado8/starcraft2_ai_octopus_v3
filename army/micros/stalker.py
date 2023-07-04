@@ -1,6 +1,8 @@
 from sc2.ids.ability_id import AbilityId as ability
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.ids.upgrade_id import UpgradeId as upgrade
+from sc2.ids.buff_id import BuffId as buff
+
 from sc2 import Race
 
 from bot.constants import WORKERS_IDS
@@ -27,7 +29,8 @@ class StalkerMicro(MicroABS):
         stalkers = division.get_units(self.ai.iteration, unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
-                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN}
+                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN, unit.IMMORTAL, unit.VOIDRAY,
+                        unit.RAVEN}
 
         attacking_friends = None
         division_position = None
@@ -36,7 +39,7 @@ class StalkerMicro(MicroABS):
         for stalker in stalkers:
             if enemy.exists:
                 threats = enemy.filter(
-                    lambda unit_: (unit_.can_attack_ground or unit_.type_id in priority_ids) and
+                    lambda unit_: not unit_.has_buff(buff.IMMORTALOVERLOAD) and (unit_.can_attack_ground or unit_.type_id in priority_ids) and
                                   unit_.distance_to(stalker.position) < dist and
                                   unit_.type_id not in self.ai.units_to_ignore and not unit_.is_hallucination
                                 and not unit_.is_snapshot and unit_.is_visible and unit_.cloak != 1)
