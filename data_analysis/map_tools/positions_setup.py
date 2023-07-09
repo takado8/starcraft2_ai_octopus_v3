@@ -5,6 +5,7 @@ from sc2 import run_game, maps, Race
 from sc2.player import Bot
 from builders.builder import Builder
 from data_analysis.map_tools.map_positions_service import MapPositionsService
+from data_analysis.test_bots.terran_stalker_defense import TerranStalkerDefense
 from data_analysis.test_bots.worker_rush import WorkerRushZergBot
 
 
@@ -16,7 +17,7 @@ class PositionsSetup(BotAI):
 
     async def on_start(self):
         # self.start_on_specific_location(undesired_location="(76.5, 154.5)")
-        self.map_service = MapPositionsService(self, "test")
+        self.map_service = MapPositionsService(self, "worker_rush_defense")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -75,7 +76,7 @@ def run(real_time=0):
 
     run_game(map_settings=maps.get(maps_list[MAP]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
-        Bot(race=Race.Zerg, ai=WorkerRushZergBot(), name='ZergRush')
+        Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='ZergRush')
 
     ], realtime=real_time)
 

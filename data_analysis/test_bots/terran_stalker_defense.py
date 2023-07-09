@@ -19,23 +19,25 @@ class TerranStalkerDefense(sc2.BotAI):
         self.depots_pos = [x for x in self.main_base_ramp.corner_depots]
 
     async def on_step(self, iteration):
-        self.train_workers()
-        await self.distribute_workers()
-        await self.build_depots()
-        await self.build_barracks()
-        await self.build_factory()
-        await self.build_bunker()
-        await self.build_refinery()
-        self.train_marines()
-        self.train_tank()
-        self.siege_up_tanks()
-        self.load_up_bunkers()
-        await self.build_barracks_reactor()
-        await self.build_factory_techlab()
-        # # await self.expand()
-        self.lower_depots()
-        self.marine_micro()
-        self.repair_damaged_units()
+        for u in self.workers:
+            u.move(self.game_info.map_center)
+        # self.train_workers()
+        # await self.distribute_workers()
+        # await self.build_depots()
+        # await self.build_barracks()
+        # await self.build_factory()
+        # await self.build_bunker()
+        # await self.build_refinery()
+        # self.train_marines()
+        # self.train_tank()
+        # self.siege_up_tanks()
+        # self.load_up_bunkers()
+        # await self.build_barracks_reactor()
+        # await self.build_factory_techlab()
+        # # # await self.expand()
+        # self.lower_depots()
+        # self.marine_micro()
+        # self.repair_damaged_units()
 
     async def expand(self):
         if self.structures(unit.BUNKER).ready.exists and self.townhalls.amount < 2:
