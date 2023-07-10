@@ -10,6 +10,7 @@ from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
+from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -54,6 +55,16 @@ class AirOracle(Strategy):
         self.forge_upgrader = ForgeUpgrader(ai)
 
         self.worker_rush_defense = WorkerRushDefense(ai)
+        self.secure_lines = SecureMineralLines(ai)
+        self.is_secure_lines_enabled = False
+
+    async def execute_interfaces(self):
+        await super().execute_interfaces()
+        if self.is_secure_lines_enabled:
+            await self.secure_lines.execute()
+        else:
+            if self.ai.enemy_units({unit.BANSHEE, unit.ORACLE}).exists:
+                self.is_secure_lines_enabled = True
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

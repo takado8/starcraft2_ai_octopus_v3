@@ -93,7 +93,8 @@ class FortressSkyToss(Strategy):
         await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
-        await self.mother_ship_interface.execute()
+        if self.ai.time > 1200:
+            await self.mother_ship_interface.execute()
         await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=6)
         await self.cannon_builder.build_cannons(when_minerals_more_than=350, amount=4)
 
@@ -151,7 +152,8 @@ class FortressSkyToss(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.is_mothership_ready()
+        if self.ai.time > 1200 and self.condition_attack.army_supply_over(60):
+            return await self.condition_lock_spending.is_mothership_ready()
 
     async def morphing(self):
         await self.morphing_.morph_gates()

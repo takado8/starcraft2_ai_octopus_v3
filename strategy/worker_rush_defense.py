@@ -37,11 +37,11 @@ class WorkerRushDefenseStrategy(Strategy):
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('worker_rush_defense')
-        # locations_dict2 = positions_loader.load_positions_dict('cannon_rush_defense')
+        locations_dict2 = positions_loader.load_positions_dict('cannon_rush_defense')
         build_queue = BuildQueues.WORKER_RUSH_DEFENSE
-        special_locations = [locations_dict]
+        special_locations = [locations_dict, locations_dict2]
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=special_locations, random_worker=False)
+                               special_building_locations=special_locations, furthest_worker=True)
 
         self.cybernetics_upgrader = CyberneticsUpgrader(ai)
         self.twilight_upgrader = TwilightUpgrader(ai)
