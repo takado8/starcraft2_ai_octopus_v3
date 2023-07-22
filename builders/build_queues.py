@@ -74,14 +74,15 @@ class BuildQueues:
                 unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     TWO_BASE_COLOSSUS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                     unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.FORGE, 35, unit.NEXUS, unit.ROBOTICSFACILITY,
+                     unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.GATEWAY, 35, unit.NEXUS, unit.FORGE, unit.GATEWAY,
+                         unit.ROBOTICSFACILITY,
                          unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE, unit.GATEWAY, unit.GATEWAY,
                          unit.ROBOTICSFACILITY,
                      unit.NEXUS, unit.GATEWAY,
                      unit.NEXUS, unit.GATEWAY,
                      unit.GATEWAY,
                      unit.NEXUS, unit.GATEWAY,
-                     unit.NEXUS,  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,unit.ROBOTICSFACILITY,
+                     unit.NEXUS,  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,

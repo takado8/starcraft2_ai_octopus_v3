@@ -99,7 +99,6 @@ class TwoBaseColossusUpdated(Strategy):
         # self.army.create_division('chargelots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1), lifetime=-600)
         self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
-
         build_queue = BuildQueues.TWO_BASE_COLOSSUS
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
@@ -113,8 +112,6 @@ class TwoBaseColossusUpdated(Strategy):
         self.forge_upgrader = ForgeUpgrader(ai)
         self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
         self.templar_archive_upgrader = TemplarArchiveUpgrader(ai)
-
-
 
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
@@ -131,8 +128,8 @@ class TwoBaseColossusUpdated(Strategy):
         await self.shield_battery_interface.execute()
 
         if self.ai.iteration % 10 == 0:
-            await self.battery_builder.build_batteries(when_minerals_more_than=410, amount=5)
-            await self.cannon_builder.build_cannons(when_minerals_more_than=420, amount=2)
+            await self.battery_builder.build_batteries(when_minerals_more_than=450, amount=4)
+            await self.cannon_builder.build_cannons(when_minerals_more_than=460, amount=2)
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -156,7 +153,7 @@ class TwoBaseColossusUpdated(Strategy):
         # if self.ai.time < 90:
         #     self.assimilator_builder.one_vespene()
         # else:
-        self.assimilator_builder.standard(minerals_to_gas_ratio=1)
+        self.assimilator_builder.standard(minerals_to_gas_ratio=2)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
