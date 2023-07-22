@@ -10,6 +10,7 @@ from strategy.fortress_toss import FortressToss
 from strategy.one_base_robo import OneBaseRobo
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
+from strategy.two_base_colossus import TwoBaseColossusUpdated
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
 from sc2 import Race
@@ -24,7 +25,8 @@ class StrategyManager:
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
-                'OneBaseRobo': OneBaseRobo
+                'OneBaseRobo': OneBaseRobo,
+                'TwoBaseColossus': TwoBaseColossusUpdated,
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -33,8 +35,8 @@ class StrategyManager:
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
-                'OneBaseRobo': OneBaseRobo
-
+                'OneBaseRobo': OneBaseRobo,
+                'TwoBaseColossus': TwoBaseColossusUpdated
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -43,7 +45,8 @@ class StrategyManager:
                 'StalkerProxy': StalkerProxy,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
-                'OneBaseRobo': OneBaseRobo
+                'OneBaseRobo': OneBaseRobo,
+                'TwoBaseColossus': TwoBaseColossusUpdated
 
             }
         else:
@@ -52,7 +55,8 @@ class StrategyManager:
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
-                'OneBaseRobo': OneBaseRobo
+                'OneBaseRobo': OneBaseRobo,
+                'TwoBaseColossus': TwoBaseColossusUpdated
             }
 
         self.enemy_data = enemy_data

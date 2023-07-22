@@ -10,21 +10,21 @@ class NexusTrainer:
 
     def probes_standard(self):
         assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
-        workers = self.ai.workers.amount + assimilators_amount
+        workers_amount = self.ai.workers.amount + assimilators_amount
         nexuses_amount = self.ai.townhalls().amount
 
-        if not self.ai.structures(unit.PYLON).exists and workers == 14:
+        if not self.ai.structures(unit.PYLON).exists and workers_amount == 14:
             return
-        if workers < (16 * nexuses_amount + 3 * assimilators_amount) + 1 and workers < 55:
+        if workers_amount < (16 * nexuses_amount + 3 * assimilators_amount) + 1 and workers_amount < 86:
             for nexus in self.ai.structures(unit.NEXUS).ready:
                 if nexus.is_idle and self.ai.can_afford(unit.PROBE):
                     nexus.train(unit.PROBE)
-        elif 54 < workers < 74:
-            if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
-                if self.ai.structures(unit.NEXUS).idle.amount < nexuses_amount:
-                    return
-                nexus = self.ai.structures(unit.NEXUS).ready.idle.random
-                nexus.train(unit.PROBE)
+        # elif 54 < workers < 74:
+        #     if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
+        #         if self.ai.structures(unit.NEXUS).idle.amount < nexuses_amount:
+        #             return
+        #         nexus = self.ai.structures(unit.NEXUS).ready.idle.random
+        #         nexus.train(unit.PROBE)
 
 
 class GateTrainer:

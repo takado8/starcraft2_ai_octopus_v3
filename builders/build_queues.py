@@ -62,8 +62,8 @@ class BuildQueues:
                      unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
     ONE_BASE_ROBO = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                     unit.GATEWAY, 40, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.ROBOTICSFACILITY, unit.GATEWAY,
-                     unit.GATEWAY, 50,
+                     unit.GATEWAY, 30, unit.NEXUS, unit.TWILIGHTCOUNCIL, unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.GATEWAY, 30,
                     unit.NEXUS, unit.FORGE, unit.SHIELDBATTERY, unit.GATEWAY, unit.FORGE, unit.GATEWAY, unit.GATEWAY,
                 unit.SHIELDBATTERY, unit.GATEWAY, unit.ROBOTICSBAY,
                 unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
@@ -72,6 +72,17 @@ class BuildQueues:
                 unit.NEXUS, unit.GATEWAY, unit.STARGATE,
                 unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
+    TWO_BASE_COLOSSUS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
+                     unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.FORGE, 35, unit.NEXUS, unit.ROBOTICSFACILITY,
+                         unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE, unit.GATEWAY, unit.GATEWAY,
+                         unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.NEXUS,  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,unit.ROBOTICSFACILITY,
+                     unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
                      unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
                      unit.SHIELDBATTERY,
