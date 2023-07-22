@@ -30,7 +30,7 @@ class StalkerBlinkMicro(MicroABS):
         stalkers = division.get_units(self.ai.iteration, unit.STALKER)
         priority_ids = {unit.COLOSSUS, unit.DISRUPTOR, unit.HIGHTEMPLAR, unit.WIDOWMINE, unit.GHOST, unit.VIPER,
                     unit.MEDIVAC, unit.SIEGETANKSIEGED, unit.SIEGETANK, unit.LIBERATOR, unit.INFESTOR, unit.CORRUPTOR,
-                        unit.MUTALISK, unit.VIKING, unit.THOR, unit.BUNKER, unit.QUEEN, unit.IMMORTAL, unit.VOIDRAY,
+                        unit.MUTALISK, unit.VIKING, unit.VIKINGFIGHTER, unit.VIKINGASSAULT, unit.THOR, unit.BUNKER, unit.QUEEN, unit.IMMORTAL, unit.VOIDRAY,
                         unit.RAVEN}
 
         attacking_friends = None
@@ -164,31 +164,31 @@ class StalkerBlinkMicro(MicroABS):
                                 continue
 
                     if self.ai.enemy_race == Race.Terran:
-                        # deal with tanks
-                        tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED}
-                                                       and not x.is_snapshot)
-                        if tanks:
-                            threats = tanks
-                        else:
-                            bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
-                            if bunkers:
-                                closest_bunker = bunkers.closest_to(stalker)
-                                closest_minerals = self.ai.mineral_field.closest_to(closest_bunker)
+                        # # deal with tanks
+                        # tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED}
+                        #                                and not x.is_snapshot)
+                        # if tanks:
+                        #     threats = tanks
+                        # else:
+                        bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
+                        if bunkers:
+                            closest_bunker = bunkers.closest_to(stalker)
+                            closest_minerals = self.ai.mineral_field.closest_to(closest_bunker)
 
-                                if not threats:
-                                    workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
-                                                           x.distance_to(closest_minerals) < 10)
-                                    threats = workers
+                            if not threats:
+                                workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
+                                                       x.distance_to(closest_minerals) < 10)
+                                threats = workers
 
 
-                                elif not threats or not any([t.target_in_range(stalker) for t in threats]):
-                                    workers_near_bunkers = enemy.filter(lambda x: x.type_id == unit.SCV and
-                                                                          any([x.distance_to(building) < 3 for building in
-                                                                               bunkers]))
-                                    if workers_near_bunkers:
-                                        threats = workers_near_bunkers
-                                    else:
-                                        threats = bunkers
+                            elif not threats or not any([t.target_in_range(stalker) for t in threats]):
+                                workers_near_bunkers = enemy.filter(lambda x: x.type_id == unit.SCV and
+                                                                      any([x.distance_to(building) < 3 for building in
+                                                                           bunkers]))
+                                if workers_near_bunkers:
+                                    threats = workers_near_bunkers
+                                else:
+                                    threats = bunkers
                     if not enemy.exists and stalker.distance_to(enemy_main_base) < 12:
                         threats = self.ai.enemy_structures().filter(lambda x: x.type_id in BASES_IDS)
                         if not threats:
@@ -270,8 +270,8 @@ class StalkerBlinkMicro(MicroABS):
                                 if closest_enemy else None
                             if back_out_position is not None:
                                 stalker.move(stalker.position.towards(back_out_position, d))
-                        elif not enemy.in_attack_range_of(stalker).exists and threats.exists:
-                            stalker.move(stalker.position.towards(threats.closest_to(stalker.position)))
+                        # elif not enemy.in_attack_range_of(stalker).exists and threats.exists:
+                        #     stalker.move(stalker.position.towards(threats.closest_to(stalker.position)))
                     elif target:
                         queue = False
                         if upgrade.BLINKTECH in self.ai.state.upgrades and not stalker.target_in_range(target) and\
