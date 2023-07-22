@@ -113,11 +113,8 @@ class OctopusV3(sc2.BotAI):
             self.strategy_manager.update_and_save_enemy_data(score)
             print('done.')
         except Exception as ex:
-            try:
-                await self.chat_send('Error 09')
-            except:
-                pass
-            print(ex)
+            print("Error while saving post game data: {}".format(ex))
+            print(traceback.print_exc())
 
     async def on_step(self, iteration: int):
         if self.iteration == 10:
