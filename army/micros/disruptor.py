@@ -21,9 +21,10 @@ class DisruptorMicro(MicroABS):
                     lambda unit_: unit_.distance_to(disruptor) < 15 and not unit_.is_flying and
                                   unit_.type_id != unit.BROODLING)
                 target = None
-                if spell_target.amount > 2:
+                if spell_target.amount >= 2:
                     tanks = spell_target.filter(lambda x: x.type_id in {unit.SIEGETANKSIEGED, unit.SIEGETANK,
-                                                                        unit.DISRUPTOR})
+                                                                        unit.DISRUPTOR, unit.WIDOWMINE,
+                                                                        unit.WIDOWMINEBURROWED})
                     if tanks.amount > 0:
                         spell_target = tanks
 
@@ -42,7 +43,7 @@ class DisruptorMicro(MicroABS):
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
                             novas_casted += 1
                 elif close_enemy.amount > 3:
-                    disruptor.move(disruptor.position.towards(close_enemy.closest_to(disruptor), 2))
+                    disruptor.move(disruptor.position.towards(close_enemy.closest_to(disruptor), -2))
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
                 division_position = division.get_position(self.ai.iteration)
@@ -79,7 +80,8 @@ class DisruptorMicro(MicroABS):
                 if target is not None and self.ai.army.closer_than(2, target).amount < 1:
                     # if self.ai.army.closer_than(3,target).amount < 2:
                     # print("Steering Purification nova to " + str(maxNeighbours + 1) + " units.")
-                    nova.move(target.position.towards(nova, -1))
+                    if nova.distance_to(target) > 1:
+                        nova.move(nova.position.towards(target, 1))
 
         return units_in_position
 
