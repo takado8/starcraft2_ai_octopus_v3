@@ -57,18 +57,18 @@ class FortressSkyToss(Strategy):
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro], Movements(ai, 0.1))
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
-        self.army.create_division('stalkers', {unit.STALKER: 2}, [StalkerMicro(ai)], Movements(ai))
-        self.army.create_division('immortals', {unit.IMMORTAL: 2}, [ImmortalMicro(ai)], Movements(ai))
-        # self.army.create_division('voidrays1', {unit.VOIDRAY: 3}, [VoidrayMicro(ai)], Movements(ai))
+        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai), lifetime=600)
+        self.army.create_division('stalkers', {unit.STALKER: 5}, [StalkerMicro(ai)], Movements(ai))
+        # self.army.create_division('immortals', {unit.IMMORTAL: 1}, [ImmortalMicro(ai)], Movements(ai))
+        # self.army.create_division('voidrays1', {unit.VOIDRAY: 1}, [VoidrayMicro(ai)], Movements(ai), lifetime=480)
         # self.army.create_division('voidrays2', {unit.VOIDRAY: 5}, [VoidrayMicro(ai)], Movements(ai))
-        self.army.create_division('voidrays3',
-                                  {unit.VOIDRAY: 12, unit.MOTHERSHIP: 1, unit.CARRIER: 4, unit.TEMPEST: 8, unit.OBSERVER: 1},
+        self.army.create_division('main',
+                                  {unit.MOTHERSHIP: 1, unit.CARRIER: 6, unit.TEMPEST: 20, unit.OBSERVER: 2},
                                   [VoidrayCannonDefenseMicro(ai), tempest_micro, ObserverMicro(ai),
                                    carrier_micro], Movements(ai))
 
-        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
-        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-360)
+        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-600)
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-600)
 
         build_queue = BuildQueues.FORTRESS_SKYTOSS
 
@@ -95,8 +95,8 @@ class FortressSkyToss(Strategy):
         await self.wall_builder.execute()
         if self.ai.time > 1200:
             await self.mother_ship_interface.execute()
-        await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=6)
-        await self.cannon_builder.build_cannons(when_minerals_more_than=350, amount=4)
+        await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=4)
+        await self.cannon_builder.build_cannons(when_minerals_more_than=350, amount=2)
 
 
     async def handle_workers(self):
@@ -118,7 +118,7 @@ class FortressSkyToss(Strategy):
         if self.ai.time < 180:
             self.assimilator_builder.one_vespene()
         else:
-            self.assimilator_builder.standard()
+            self.assimilator_builder.standard(1)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):

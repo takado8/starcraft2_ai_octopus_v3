@@ -84,12 +84,14 @@ class BuildQueues:
                      unit.NEXUS, unit.GATEWAY,
                      unit.NEXUS,  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
     FORTRESS_SKYTOSS = [unit.PYLON, unit.FORGE, unit.GATEWAY, unit.PHOTONCANNON,
-                     unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS,
+                     unit.PHOTONCANNON, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,
+                        unit.FLEETBEACON,
                      unit.SHIELDBATTERY,
-                     unit.STARGATE, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
-                     unit.NEXUS, unit.STARGATE, 30, unit.FLEETBEACON,  unit.ROBOTICSFACILITY,
-                     unit.NEXUS,
+                      unit.SHIELDBATTERY, unit.ROBOTICSFACILITY, 60,
+                     unit.NEXUS, unit.STARGATE, 30,
+                     unit.NEXUS, unit.SHIELDBATTERY,
                      unit.NEXUS, unit.STARGATE,
                      unit.NEXUS, unit.STARGATE, unit.NEXUS,
                      unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS]
