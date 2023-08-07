@@ -174,9 +174,11 @@ class OctopusV3(sc2.BotAI):
         except Exception as ex:
             await self.chat_send('Error 05')
             print(ex)
+        lock_spending = await self.lock_spending_condition()
         try:
-            self.strategy.train_probes()
-            self.strategy.build_assimilators()
+            if not lock_spending or self.minerals >= 150:
+                self.strategy.train_probes()
+                self.strategy.build_assimilators()
         except:
             await self.chat_send('Error 06')
             print(traceback.print_exc())
@@ -209,7 +211,7 @@ class OctopusV3(sc2.BotAI):
                     self.army_priority = False
                 else:
                     self.army_priority = True
-            lock_spending = await self.lock_spending_condition()
+
             # print('army priority: {}'.format(self.army_priority))
             if (not self.army_priority or (self.minerals > 400 and self.vespene > 250)) and not lock_spending:
                 # print('build from main.')
