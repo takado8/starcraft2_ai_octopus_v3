@@ -74,7 +74,7 @@ class SkytossCarriers(Strategy):
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.secure_lines.execute()
-        if self.ai.time > 500:
+        if self.ai.time > 1500:
             await self.mother_ship_interface.execute()
         await self.shield_battery_interface.execute()
         if self.interface_time_consumed > 220 and self.ai.iteration % 30 != 0:
@@ -138,10 +138,8 @@ class SkytossCarriers(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        if self.ai.time > 1200:
-            return await self.condition_lock_spending.is_mothership_ready()
-        else:
-            return False
+        return await self.condition_lock_spending.none()
+
 
     async def morphing(self):
         await self.morphing_.morph_gates()
