@@ -9,25 +9,31 @@ class NexusTrainer:
         self.ai = ai
 
     def probes_standard(self):
-        assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
-        workers_amount = self.ai.workers.amount + assimilators_amount
-        nexuses_amount = self.ai.townhalls().amount
+        if self.ai.can_afford(unit.PROBE):
+            assimilators_amount = self.ai.structures(unit.ASSIMILATOR).amount
+            workers_amount = self.ai.workers.amount + assimilators_amount
+            nexuses_amount = self.ai.townhalls().amount
 
-        if not self.ai.structures(unit.PYLON).exists and workers_amount == 14:
-            return
-        correct_workers_amount = (16 * nexuses_amount + 3 * assimilators_amount) + 1
-        if workers_amount < correct_workers_amount and workers_amount < 86:
-            for nexus in self.ai.structures(unit.NEXUS).ready:
-                if nexus.is_idle and self.ai.can_afford(unit.PROBE):
-                    if workers_amount < correct_workers_amount and workers_amount < 86:
-                        nexus.train(unit.PROBE)
-                        workers_amount += 1
-        # elif 54 < workers < 74:
-        #     if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
-        #         if self.ai.structures(unit.NEXUS).idle.amount < nexuses_amount:
-        #             return
-        #         nexus = self.ai.structures(unit.NEXUS).ready.idle.random
-        #         nexus.train(unit.PROBE)
+            if not self.ai.structures(unit.PYLON).exists and workers_amount == 14:
+                return
+
+            correct_workers_amount = (16 * nexuses_amount + 3 * assimilators_amount) + 1
+            if workers_amount < correct_workers_amount and workers_amount < 86:
+                chronoboosted = self.ai.townhalls().filter(lambda x: x.has_buff(buff.CHRONOBOOSTENERGYCOST) and
+                                                                     x.is_idle)
+                for nex in chronoboosted:
+                    nex.train(unit.PROBE)
+                for nexus in self.ai.structures(unit.NEXUS).ready:
+                    if nexus.is_idle:
+                        if workers_amount < correct_workers_amount and workers_amount < 86:
+                            nexus.train(unit.PROBE)
+                            workers_amount += 1
+            # elif 54 < workers < 74:
+            #     if self.ai.can_afford(unit.PROBE) and not self.ai.already_pending(unit.PROBE):
+            #         if self.ai.structures(unit.NEXUS).idle.amount < nexuses_amount:
+            #             return
+            #         nexus = self.ai.structures(unit.NEXUS).ready.idle.random
+            #         nexus.train(unit.PROBE)
 
 
 class GateTrainer:

@@ -87,7 +87,7 @@ class Chronobooster:
                         i += 1
                 if targets_filtered:
                     target = targets_filtered.random
-                    if target.type_id in [unit.NEXUS, unit.GATEWAY]:
+                    if target.type_id in [unit.GATEWAY]:
                         self.standard_chrono_queue.remove(target.type_id)
                     nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target)
                     return
@@ -276,7 +276,7 @@ class Chronobooster:
                         i += 1
                 if targets_filtered:
                     target = targets_filtered.random
-                    if target.type_id in [unit.NEXUS, unit.GATEWAY]:
+                    if target.type_id in [unit.GATEWAY]:
                         self.stalker_proxy_chrono_queue.remove(target.type_id)
                     nexus(ability.EFFECT_CHRONOBOOSTENERGYCOST,target)
                     return
