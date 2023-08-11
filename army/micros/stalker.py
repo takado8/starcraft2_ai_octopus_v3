@@ -51,8 +51,6 @@ class StalkerMicro(MicroABS):
                         bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
                         if bunkers:
                             closest_bunker = bunkers.closest_to(stalker)
-
-                            # try to go pass over it
                             closest_minerals = self.ai.mineral_field.closest_to(closest_bunker)
                             # can_pass = await self.ai._client.query_pathing(stalker.position, closest_minerals.position)
                             # if can_pass:
@@ -80,21 +78,22 @@ class StalkerMicro(MicroABS):
                                     threats = workers_near_bunkers
                                 else:
                                     threats = bunkers
-                        # # get on ramp and kill tanks
-                        # enemy_main_ramp = self.ai.enemy_main_base_ramp
-                        # if stalker.distance_to(enemy_main_ramp.bottom_center) < 14 and enemy.exists:
-                        #     if stalker.distance_to(enemy_main_ramp.top_center) > 4 and threats.closer_than(
-                        #         6, stalker).exists:
-                        #         threats_in_range = threats.in_attack_range_of(stalker)
-                        #         if stalker.weapon_ready and threats_in_range.exists:
-                        #             stalker.attack(self.select_target(threats_in_range, stalker))
-                        #         else:
-                        #             stalker.move(enemy_main_ramp.top_center)
-                        #         continue
 
-                        # deal with terran wall
-                        if not threats or threats.exists and not threats.in_attack_range_of(stalker):
+                        # deal with terran wall and fortress
+                        planetary_fortresses = self.ai.enemy_structures(unit.PLANETARYFORTRESS)
+                        if not threats or threats.exists and not threats.in_attack_range_of(stalker) or\
+                                planetary_fortresses.exists:
                             enemy_main_ramp = self.ai.enemy_main_base_ramp.top_center
+                            if planetary_fortresses.exists and planetary_fortresses.closer_than(8,
+                                          self.ai.enemy_main_base_ramp.bottom_center).exists:
+                                try:
+                                    threats.remove(planetary_fortresses.first)
+                                except:
+                                    pass
+                                if stalker.distance_to(planetary_fortresses.first) <= 8:
+                                    if not stalker.weapon_ready:
+                                        stalker.move(enemy_main_ramp)
+                                        continue
 
                             wall_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in {unit.SUPPLYDEPOT,
                                     unit.BARRACKS,unit.BARRACKSREACTOR} and x.distance_to(enemy_main_ramp) < 5 and

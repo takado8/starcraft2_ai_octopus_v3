@@ -15,8 +15,9 @@ class DisruptorMicro(MicroABS):
         for disruptor in disruptors:
             abilities = await self.ai.get_available_abilities(disruptor)
             close_enemy = enemy.closer_than(20, disruptor)
+            division_position = division.get_position(self.ai.iteration)
             if novas_casted < 2 and ability.EFFECT_PURIFICATIONNOVA in abilities\
-                    and enemy and close_enemy.exists:
+                    and enemy:
                 spell_target = enemy.filter(
                     lambda unit_: unit_.distance_to(disruptor) < 15 and not unit_.is_flying and
                                   unit_.type_id != unit.BROODLING)
@@ -42,8 +43,12 @@ class DisruptorMicro(MicroABS):
                             # self.ai.nova_wait = self.ai.time
                             disruptor(ability.EFFECT_PURIFICATIONNOVA, target.position)
                             novas_casted += 1
-                elif close_enemy.amount > 3:
-                    disruptor.move(disruptor.position.towards(close_enemy.closest_to(disruptor), -2))
+                elif division_position:
+                    if close_enemy.exists:
+                        position = division_position.towards(close_enemy.closest_to(disruptor), 6)
+                    else:
+                        position = division_position
+                    disruptor.move(position)
             else:
                 threat = enemy.filter(lambda x: x.distance_to(disruptor) < 10 and x.can_attack_ground)
                 division_position = division.get_position(self.ai.iteration)
@@ -55,8 +60,6 @@ class DisruptorMicro(MicroABS):
                         retreat_position = self.find_back_out_position(disruptor, threat.closest_to(disruptor))
                         disruptor.move(disruptor.position.towards(retreat_position, 2))
                 # else:
-
-
         # Disruptor purification nova
         # if self.ai.time - self.ai.nova_wait > 0.4:
         for nova in self.ai.units(unit.DISRUPTORPHASED):
@@ -80,8 +83,8 @@ class DisruptorMicro(MicroABS):
                 if target is not None and self.ai.army.closer_than(2, target).amount < 1:
                     # if self.ai.army.closer_than(3,target).amount < 2:
                     # print("Steering Purification nova to " + str(maxNeighbours + 1) + " units.")
-                    if nova.distance_to(target) > 1:
-                        nova.move(nova.position.towards(target, 1))
+                    if nova.distance_to(target) > 0:
+                        nova.move(target.position)
 
         return units_in_position
 

@@ -308,7 +308,7 @@ def botVsComputer(ai, real_time=0):
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

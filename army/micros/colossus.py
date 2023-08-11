@@ -66,8 +66,8 @@ class ColossusMicro(MicroABS):
                         targets = threats
                     targets = targets.sorted(lambda x1: x1.health + x1.shield)
                     target = self.select_target(targets)
-                if colossus.shield_percentage < 0.8:
-                    if colossus.health_percentage < 0.8:
+                if colossus.shield_percentage < 0.6:
+                    if colossus.health_percentage < 0.7:
                         colossus.move(self.find_back_out_position(colossus, closest_enemy.position, division))
                         continue
                     d = 5
