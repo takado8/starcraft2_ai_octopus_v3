@@ -7,6 +7,7 @@ from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.oracle_defense import OracleDefenseUpdated
 # from strategy.skytoss import SkyToss
 from strategy.fortress_toss import FortressToss
+from strategy.one_base_blink import OneBaseBlink
 from strategy.one_base_robo import OneBaseRobo
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
@@ -21,6 +22,7 @@ class StrategyManager:
         if ai.enemy_race == Race.Terran:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
+                'OneBaseBlink': OneBaseBlink,
                 'AirOracle': AirOracle,
                 'FortressSkyToss': FortressSkyToss,
                 'SkytossCarriers': SkytossCarriers,
@@ -59,7 +61,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = OneBaseBlink
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

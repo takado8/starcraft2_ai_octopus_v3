@@ -123,7 +123,7 @@ class StalkerBlinkMicro(MicroABS):
                 if self.ai.attack:
                     threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
-                    if self.ai.time < 900 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
+                    if self.ai.time < 1200 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
                         self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:

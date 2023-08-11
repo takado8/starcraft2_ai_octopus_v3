@@ -146,6 +146,11 @@ class OctopusV3(sc2.BotAI):
             await self.chat_send('Error 01')
             print(ex)
         try:
+            await self.strategy.do_upgrades()
+        except:
+            await self.chat_send('Error 07')
+            print(traceback.print_exc())
+        try:
             start = time.time()
             await self.strategy.army_execute()
             stop = time.time()
@@ -182,11 +187,7 @@ class OctopusV3(sc2.BotAI):
         except:
             await self.chat_send('Error 06')
             print(traceback.print_exc())
-        try:
-            await self.strategy.do_upgrades()
-        except:
-            await self.chat_send('Error 07')
-            print(traceback.print_exc())
+
         if (not self.attack) and (not self.retreat_condition()) and (
                 self.counter_attack_condition() or self.attack_condition()):
             self.first_attack = True
@@ -308,7 +309,7 @@ def botVsComputer(ai, real_time=0):
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[2], difficulty=Difficulty.CheatInsane, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

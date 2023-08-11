@@ -174,8 +174,7 @@ class ConditionLockSpending:
                 abilities = await self.ai.get_available_abilities(twilight_council, ignore_resource_requirements=True)
                 for ab in abilities:
                     if ab == AbilityId.RESEARCH_BLINK:
-                        if not self.ai.can_afford(ab):
-                            return True
+                        return True
         return False
 
     async def twilight_council_charge(self):
