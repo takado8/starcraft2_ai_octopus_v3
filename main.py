@@ -185,6 +185,7 @@ class OctopusV3(sc2.BotAI):
                 self.strategy.train_probes()
                 self.strategy.build_assimilators()
         except:
+
             await self.chat_send('Error 06')
             print(traceback.print_exc())
 

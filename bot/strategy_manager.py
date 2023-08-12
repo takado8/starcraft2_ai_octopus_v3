@@ -61,7 +61,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = OneBaseBlink
+        self.default_strategy = TwoBaseColossusUpdated
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

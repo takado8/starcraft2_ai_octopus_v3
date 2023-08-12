@@ -95,6 +95,11 @@ class Builder:
             # print('cant afford')
             return False
         if validate_location:
+            if self.ai.townhalls.amount < 3:
+                build_only_in_main = True
+            else:
+                build_only_in_main = False
+
             place = None
             max_tries = 60
             loops = 12 if near_pylon else 1
@@ -119,6 +124,15 @@ class Builder:
                     place = self.find_location(near, distance)
 
                     if place:
+                        if build_only_in_main:
+                            closest_minerals = self.ai.mineral_field.closest_to(place)
+                            if closest_minerals.distance_to(place) < 10:
+                                location_height = closest_minerals.position3d.z
+                                main_base_height = self.ai.townhalls.closest_to(self.ai.start_location).position3d.z
+                                on_main_base_lvl = abs(main_base_height - location_height) < 1
+                                if not on_main_base_lvl:
+                                    place = None
+                                    continue
                         too_close = self.ai.structures().filter(lambda x: x.distance_to(place) < x.radius + distance)
                         close_enough = True if i > max_tries / 2 else self.ai.structures().filter(lambda x: x.distance_to(place)
                                      < x.radius + distance * 1.8).amount > 0 if building != unit.PYLON else True
@@ -130,7 +144,12 @@ class Builder:
                 if near_pylon and i == max_tries and k < loops - 1:
                     print('changing pylon...')
                     place = None
-                    pylons = self.ai.structures().filter(lambda x: x.is_ready and x.type_id == unit.PYLON
+                    if build_only_in_main:
+                        main_base_height = self.ai.townhalls.closest_to(self.ai.start_location).position3d.z
+                        pylons = self.ai.structures().filter(lambda x: x.is_ready and x.type_id == unit.PYLON
+                                        and x.tag != near_pylon.tag and main_base_height - x.position3d.z < 1)
+                    else:
+                        pylons = self.ai.structures().filter(lambda x: x.is_ready and x.type_id == unit.PYLON
                                                                    and x.tag != near_pylon.tag)
 
                     pylons = sorted(pylons, key=lambda x: self.ai.structures().filter(lambda y:
