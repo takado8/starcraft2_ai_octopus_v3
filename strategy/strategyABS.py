@@ -15,6 +15,7 @@ from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
 from strategy.interfaces.attack_informator import AttackInformant
 from strategy.interfaces.emergency_expansion import EmergencyExpansion
+from strategy.interfaces.recall_on_retreat import RecallOnRetreat
 from strategy.interfaces.secure_expansion_locations import SecureExpansionLocations
 
 
@@ -52,12 +53,14 @@ class Strategy:
         self.secure_exp_locations = SecureExpansionLocations(ai)
         self.attack_informant = AttackInformant(ai)
         self.emergency_expansion = EmergencyExpansion(ai)
+        self.recall_on_retreat = RecallOnRetreat(ai)
 
 
     async def execute_interfaces(self):
         await self.secure_exp_locations.execute()
         await self.attack_informant.execute()
         await self.emergency_expansion.execute()
+        await self.recall_on_retreat.execute()
 
     async def handle_workers(self):
         raise NotImplementedError
