@@ -9,6 +9,7 @@ from sc2.ids.buff_id import BuffId as buff
 
 class OracleMicro(MicroABS):
     revelation_range = 6
+    locked_oracle_tags = {}
 
     def __init__(self, ai):
         super().__init__('OracleMicro', ai)
@@ -78,13 +79,13 @@ class OracleMicro(MicroABS):
                     #     y2 = 5
                     # self.oracle_first_position = Point2((y2,x2))
                     self.oracle_first_position_visited = False
-                shield_min = 0.75 if threats.amount > 2 else 0.45
-                condition = (oracle.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in abilities) and\
+                shield_min = 0.35 if threats.amount > 7 else 0.15
+                condition = oracle.energy > 45 and\
                             oracle.shield_percentage > shield_min
-                if multiple_oracles:
-                    condition = all([(oracle2.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in
-                                await self.ai.get_available_abilities(oracle2)) and oracle2.shield_percentage > shield_min
-                                     for oracle2 in all_oracles])
+                # if multiple_oracles:
+                #     condition = all([(oracle2.energy > 45 or ability.BEHAVIOR_PULSARBEAMOFF in
+                #                 await self.ai.get_available_abilities(oracle2)) and oracle2.shield_percentage > shield_min
+                #                      for oracle2 in all_oracles])
 
                 if condition:
                     # queens = self.ai.enemy_units(unit.QUEEN).ready
@@ -124,35 +125,54 @@ class OracleMicro(MicroABS):
                                 oracle.move(attack_position)
                     elif workers.amount > 1 and oracle.is_idle:# or queens.amount == 1:
                         self.oracle_first_position_visited = False
-                        target = None
-                        if self.ai.enemy_race == Race.Terran:
-                            anti_air_in_build = self.ai.enemy_structures().filter(
-                            lambda x: x.distance_to(oracle) < 15 and x.type_id in ANTI_AIR_IDS and not x.is_ready)
-                            if anti_air_in_build.exists:
-                                print('anti_air_in_build.exists!')
-                                min_dist = 999
-                                for anti_air in anti_air_in_build:
-                                    closest_worker = workers.closest_to(anti_air)
-                                    dist = closest_worker.distance_to(anti_air)
-                                    if dist < min_dist:
-                                        min_dist = dist
-                                        target = closest_worker
-                                print('target {}'.format(target))
-                        # if queens.amount == 1:
+                        # target = None
+                        # if self.ai.enemy_race == Race.Terran:
+                        #     anti_air_in_build = self.ai.enemy_structures().filter(
+                        #     lambda x: x.distance_to(oracle) < 15 and x.type_id in ANTI_AIR_IDS and not x.is_ready)
+                        #     if anti_air_in_build.exists:
+                        #         print('anti_air_in_build.exists!')
+                        #         min_dist = 999
+                        #         for anti_air in anti_air_in_build:
+                        #             closest_worker = workers.closest_to(anti_air)
+                        #             dist = closest_worker.distance_to(anti_air)
+                        #             if dist < min_dist:
+                        #                 min_dist = dist
+                        #                 target = closest_worker
+                        #         print('target {}'.format(target))
+                        # # if queens.amount == 1:
                         #     target = queens.first
-                        if target is None:
-                            workers_in_range = workers.closer_than(5,oracle.position)
-                            if workers_in_range.exists:
-                                workers_in_range = sorted(workers_in_range,key=lambda x1: x1.health + x1.shield)
-                                target = workers_in_range[0]
-                            else:
-                                target = workers.closest_to(oracle)
-                        # if target.distance_to(oracle) <= 5:
-                        if ability.BEHAVIOR_PULSARBEAMON in abilities:
-                            oracle(ability.BEHAVIOR_PULSARBEAMON)
-                            oracle.attack(target, queue=True)
+                        # if target is None:
+                        workers_in_range = workers.closer_than(7, oracle.position)
+                        if workers_in_range.exists:
+                            max_neighbours = -1
+                            target = None
+                            for worker in workers_in_range:
+                                neighbours = workers.closer_than(4, worker)
+                                if neighbours.amount > max_neighbours:
+                                    max_neighbours = neighbours.amount
+                                    target = worker.position
                         else:
-                            oracle.attack(target)
+                            target = self.mineral_lines[self.enemy_base_idx].towards(self.ai.enemy_start_locations[0], 5)
+                        # if target.distance_to(oracle) <= 5:
+                        if ability.BUILD_STASISTRAP in abilities and oracle.energy >= 50:
+
+                            j = 1
+                            while (workers.closer_than(1.2, target).exists or not self.in_grid(target)) and j < 2:
+                                k = 0
+                                while (workers.closer_than(1.2, target).exists or not self.in_grid(target)) and k < 2500 * j:
+                                    k += 1
+                                    target = target.random_on_distance(j)
+                                j += 1
+                            if workers.closer_than(1.2, target).exists or not self.in_grid(target):
+                                target = self.mineral_lines[self.enemy_base_idx].towards(self.ai.enemy_start_locations[0], 5)
+
+                            # target = self.mineral_lines[self.enemy_base_idx]
+
+                            oracle(ability.BUILD_STASISTRAP, target)
+                            continue
+                        #     oracle.attack(target, queue=True)
+                        # else:
+                        #     oracle.attack(target)
                         # else:
                         #     oracle.move(oracle.position.towards(target, 3))
                         #     oracle.attack(target, queue=True)
@@ -177,7 +197,7 @@ class OracleMicro(MicroABS):
                             else:
                                 y2 = 5
                             self.oracle_first_position = Point2((y2,x2))
-                        if oracle.health_percentage < 0.25:
+                        if oracle.health_percentage < 0.40:
                             self.oracle_on_harassment = False
                         self.oracle_first_position_visited = False
             else:       # end of harassment

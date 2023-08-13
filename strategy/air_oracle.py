@@ -3,6 +3,7 @@ from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle import OracleMicro
+from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.sentry import SentryMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro
@@ -31,10 +32,11 @@ class AirOracle(Strategy):
         zealot_micro = ZealotMicro(ai)
 
         sentry_micro = SentryMicro(ai)
-        self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai))
+        self.army.create_division('stalkers', {unit.STALKER: 2}, [AdeptMicro(ai)], Movements(ai))
 
-        self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=240)
-        self.army.create_division('oracle2', ORACLE_x1, [OracleMicro(ai)], Movements(ai), lifetime=260)
+        self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=260)
+        self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai), lifetime=-240)
         self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))

@@ -47,8 +47,8 @@ class StrategyManager:
                 'StalkerProxy': StalkerProxy,
                 'SkytossCarriers': SkytossCarriers,
                 'OneBaseRobo': OneBaseRobo,
-                'TwoBaseColossusUpdated': TwoBaseColossusUpdated
-
+                'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
+                'AirOracle': AirOracle
             }
         else:
             self.strategy_name_dict = {
@@ -61,7 +61,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = TwoBaseColossusUpdated
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

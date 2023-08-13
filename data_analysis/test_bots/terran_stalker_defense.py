@@ -19,10 +19,10 @@ class TerranStalkerDefense(sc2.BotAI):
         self.depots_pos = [x for x in self.main_base_ramp.corner_depots]
 
     async def on_step(self, iteration):
-        for u in self.workers:
-            u.move(self.game_info.map_center)
+    #     for u in self.workers:
+    #         u.move(self.game_info.map_center)
         # self.train_workers()
-        # await self.distribute_workers()
+        await self.distribute_workers()
         # await self.build_depots()
         # await self.build_barracks()
         # await self.build_factory()
