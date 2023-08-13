@@ -35,7 +35,7 @@ class AirOracle(Strategy):
         self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('stalkers', {unit.STALKER: 2}, [AdeptMicro(ai)], Movements(ai))
 
-        self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=260)
+        self.army.create_division('oracle', ORACLE_x1, [oracle_micro], Movements(ai), lifetime=280)
         self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai), lifetime=-240)
