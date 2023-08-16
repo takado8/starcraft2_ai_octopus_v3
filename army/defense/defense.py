@@ -99,6 +99,8 @@ class Defense:
     def avoid_aoe(self):
         purification_novas = self.ai.enemy_units(unit.DISRUPTORPHASED)
         purification_novas.extend(self.ai.units(unit.DISRUPTORPHASED))
+        autoturrets = self.ai.enemy_units(unit.AUTOTURRET)
+        autoturrets.extend(self.ai.enemy_structures(unit.AUTOTURRET))
         for man in self.ai.army:
             if man.is_flying:
                 aoe_ids = AIR_AOE_IDS
@@ -113,6 +115,9 @@ class Defense:
                     for position in positions:
                         if man.distance_to(position) < eff.radius + 2:
                             man.move(man.position.towards(position, -3))
+            for turret in autoturrets:
+                if man.distance_to(turret) <= 8:
+                    man.move(man.position.towards(turret, -3))
 
     def assign_units_to_defend_scout(self):
         selected_units = self.ai.army.filter(lambda x: x.is_flying and x.can_attack_ground
