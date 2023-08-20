@@ -3,7 +3,8 @@
 Next generation of gaming bot for real time strategy - StarCraft2
 
 [*Checkout previus version*](https://github.com/takado8/StarCraft2_bot_v2/)
-![img1](.idea/zAwSN1u.gif)
+
+![img1](https://github.com/takado8/StarCraft2_bot_v2/blob/master/.idea/zAwSN1u.gif)
 
 ## Achievements
 
