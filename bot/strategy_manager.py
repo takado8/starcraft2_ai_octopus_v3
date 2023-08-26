@@ -7,11 +7,13 @@ from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.oracle_defense import OracleDefenseUpdated
 # from strategy.skytoss import SkyToss
 from strategy.fortress_toss import FortressToss
+from strategy.gateway import Gateway
 from strategy.one_base_blink import OneBaseBlink
 from strategy.one_base_robo import OneBaseRobo
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.stalker_proxy import StalkerProxy
 from strategy.two_base_colossus import TwoBaseColossusUpdated
+from strategy.two_base_skytoss import TwoBaseSkytoss
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
 from sc2 import Race
@@ -42,6 +44,7 @@ class StrategyManager:
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
+                'TwoBaseSkytoss': TwoBaseSkytoss,
                 'ZealotRushDefense': ZealotRushDefense,
                 'FortressSkyToss': FortressSkyToss,
                 'StalkerProxy': StalkerProxy,

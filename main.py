@@ -297,20 +297,20 @@ def botVsComputer(ai, real_time=0):
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
     # computer_builds = [AIBuild.Timing]
-    computer_builds = [AIBuild.Air]
-    # computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Air]
+    computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    a_map = maps_list[3]
-    # a_map = random.choice(maps_list)
+    # a_map = maps_list[3]
+    a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.CheatInsane, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 

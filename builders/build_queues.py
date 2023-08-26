@@ -9,6 +9,13 @@ class BuildQueues:
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
+    GATEWAY = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,  unit.NEXUS, unit.FORGE,
+                    unit.TWILIGHTCOUNCIL, unit.TEMPLARARCHIVE, unit.NEXUS,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
+                    unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
+                    unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
+
     STALKER_DEFENSE = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.GATEWAY,
                     unit.GATEWAY, 24, unit.NEXUS,
                     unit.ROBOTICSBAY, unit.FORGE,unit.TWILIGHTCOUNCIL, 32, unit.NEXUS, unit.ROBOTICSFACILITY,
@@ -36,6 +43,13 @@ class BuildQueues:
                            unit.NEXUS,  unit.STARGATE, unit.ROBOTICSFACILITY, unit.FORGE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                             unit.NEXUS, unit.STARGATE,
                            unit.NEXUS,unit.STARGATE, unit.NEXUS, unit.NEXUS,unit.NEXUS, unit.NEXUS, unit.STARGATE, ]
+
+    TWO_BASE_SKYTOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE, unit.SHIELDBATTERY,
+               unit.FLEETBEACON, unit.STARGATE, unit.GATEWAY, unit.SHIELDBATTERY, unit.SHIELDBATTERY, unit.SHIELDBATTERY,
+                        60, unit.NEXUS, unit.CYBERNETICSCORE,
+               unit.NEXUS, unit.STARGATE, unit.ROBOTICSFACILITY, unit.FORGE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+               unit.NEXUS, unit.STARGATE,
+               unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.STARGATE, ]
 
     FORTRESS_TOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY,
                      unit.SHIELDBATTERY, 16, unit.STARGATE, unit.NEXUS, unit.FLEETBEACON,
