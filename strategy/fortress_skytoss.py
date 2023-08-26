@@ -56,7 +56,7 @@ class FortressSkyToss(Strategy):
         locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro], Movements(ai, 0.1))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 3 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro], Movements(ai, 0.1))
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai), lifetime=600)
         self.army.create_division('stalkers', {unit.STALKER: 5}, [StalkerMicro(ai)], Movements(ai))
         # self.army.create_division('immortals', {unit.IMMORTAL: 1}, [ImmortalMicro(ai)], Movements(ai))
@@ -90,7 +90,13 @@ class FortressSkyToss(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        await self.secure_lines.execute()
+        if self.ai.enemy_race == Race.Zerg and self.ai.time > 360:
+            await self.secure_lines.execute()
+        elif self.ai.enemy_race == Race.Terran and self.ai.time > 240:
+            await self.secure_lines.execute()
+        elif self.ai.enemy_race == Race.Protoss and self.ai.time > 300:
+            await self.secure_lines.execute()
+
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
         if self.ai.time > 1200:
