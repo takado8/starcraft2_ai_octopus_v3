@@ -8,7 +8,7 @@ from bot.constants import ANTI_AIR_IDS, BURROWING_UNITS_IDS
 
 
 class OracleDefenseMicro(MicroABS):
-    revelation_range = 6
+    REVELATION_DIAMETER = 6
 
     def __init__(self, ai):
         # self.ai: OctopusV3 = ai
@@ -29,7 +29,14 @@ class OracleDefenseMicro(MicroABS):
                                                        (x.cloak == 1 or x.type_id in BURROWING_UNITS_IDS))
             anti_air = self.ai.enemy_structures().filter(lambda x: x.type_id in ANTI_AIR_IDS and
                                             x.distance_to(oracle) < x.air_range + x.radius + 4)
-            if anti_air:# or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
+            neural_parasites = self.ai.enemy_units().filter(lambda x: x.has_buff(buff.NEURALPARASITE))
+            if neural_parasites.exists:
+                affected_unit = neural_parasites.closest_to(oracle)
+                infestors = enemy.filter(lambda x: x.type_id == unit.INFESTORBURROWED and
+                                x.distance_to(affected_unit) <= 9 and not x.has_buff(buff.ORACLEREVELATION))
+                if infestors.exists:
+                    self.cast_revelation(oracle, infestors, abilities)
+            elif anti_air:# or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
                 oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -12))
             elif invisible_threats:
                 self.cast_revelation(oracle, invisible_threats, abilities)
@@ -75,8 +82,6 @@ class OracleDefenseMicro(MicroABS):
                 if targets.amount > 3:
                     self.cast_revelation(oracle, targets, abilities, min_units=3)
                 # else:
-
-
         return oracles.amount
 
 
@@ -85,7 +90,7 @@ class OracleDefenseMicro(MicroABS):
             revelation_target = None
             max_neighbours = -1
             for target in targets:
-                neighbours = targets.closer_than(self.revelation_range, target)
+                neighbours = targets.closer_than(self.REVELATION_DIAMETER, target)
                 if neighbours.amount > max_neighbours:
                     max_neighbours = neighbours.amount
                     revelation_target = target

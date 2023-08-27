@@ -32,7 +32,7 @@ class BuildQueues:
                            unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSBAY,
                            unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    AIR_ORACLE_CARRIERS = [unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,
+    AIR_ORACLE_CARRIERS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.STARGATE,
                            10, unit.FLEETBEACON, unit.STARGATE, unit.NEXUS, 40, unit.STARGATE, unit.ROBOTICSFACILITY,
                            unit.NEXUS, unit.FORGE, unit.STARGATE, unit.NEXUS,
                            unit.STARGATE, unit.STARGATE, unit.TWILIGHTCOUNCIL, unit.NEXUS,

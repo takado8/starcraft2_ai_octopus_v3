@@ -1,16 +1,24 @@
+from sc2 import Race
+
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
+from army.micros.carrier_mothership import CarrierMothershipMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle import OracleMicro
 from army.micros.oracle_defense import OracleDefenseMicro
+from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.tempest import TempestMicro
+from army.micros.tempest_mothership import TempestMothershipMicro
 from army.micros.voidray import VoidrayMicro
+from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
+from data_analysis.map_tools.positions_loader import PositionsLoader
+from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from .strategyABS import Strategy
 from builders.expander import Expander
@@ -24,6 +32,19 @@ from army.divisions import ZEALOT_x5, ORACLE_x1, CARRIER_x8, TEMPEST_x5, VOIDRAY
 class AirOracle(Strategy):
     def __init__(self, ai):
         super().__init__(type='air', name='AirOracle', ai=ai)
+        positions_loader = PositionsLoader(ai)
+        if self.ai.enemy_race == Race.Zerg:
+            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+            del locations_dict[unit.FORGE]
+            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
+            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
+            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
+                                      Movements(ai, 0.1))
+            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+        else:
+            locations_dict = None
+            sentry_micro = SentryMicro(ai)
 
         oracle_micro = OracleMicro(ai)
         voidray_micro = VoidrayMicro(ai)
@@ -31,7 +52,6 @@ class AirOracle(Strategy):
         tempest_micro = TempestMicro(ai)
         zealot_micro = ZealotMicro(ai)
 
-        sentry_micro = SentryMicro(ai)
         self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('stalkers', {unit.STALKER: 2}, [AdeptMicro(ai)], Movements(ai))
 
@@ -39,16 +59,24 @@ class AirOracle(Strategy):
         self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', VOIDRAY_x3, [voidray_micro], Movements(ai), lifetime=-240)
-        self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
-        self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
-        self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
+        if self.ai.enemy_race == Race.Zerg:
+            self.army.create_division('main',
+                                      {unit.MOTHERSHIP: 1, unit.CARRIER: 8, unit.TEMPEST: 10, unit.OBSERVER: 2},
+                                      [VoidrayCannonDefenseMicro(ai), TempestMothershipMicro(ai), ObserverMicro(ai),
+                                       CarrierMothershipMicro(ai)], Movements(ai))
+        else:
+            self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
+            self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
+            self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
+            self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
+            self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-340)
         self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro],Movements(ai, 0.2), lifetime=-420)
 
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
-        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai))
+        self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
+                               special_building_locations=[locations_dict])
+
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
 
@@ -59,6 +87,7 @@ class AirOracle(Strategy):
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.secure_lines = SecureMineralLines(ai)
         self.is_secure_lines_enabled = False
+        self.mother_ship_interface = Mothership(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
@@ -67,6 +96,8 @@ class AirOracle(Strategy):
         else:
             if self.ai.enemy_units({unit.BANSHEE, unit.ORACLE}).exists:
                 self.is_secure_lines_enabled = True
+        if self.ai.time > 900 and self.ai.enemy_race == Race.Zerg:
+            await self.mother_ship_interface.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -82,7 +113,10 @@ class AirOracle(Strategy):
         await self.battery_builder.build_batteries()
 
     async def build_pylons(self):
-        await self.pylon_builder.new_standard()
+        if self.ai.enemy_race == Race.Zerg:
+            await self.pylon_builder.new_standard_upper_wall()
+        else:
+            await self.pylon_builder.new_standard()
 
     def build_assimilators(self):
         self.assimilator_builder.max_vespene()
@@ -120,7 +154,11 @@ class AirOracle(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.is_oracle_ready()
+        if self.ai.enemy_race == Race.Zerg:
+            if self.ai.time > 900 and self.condition_attack.army_supply_over(70):
+                return await self.condition_lock_spending.is_mothership_ready() or await self.condition_lock_spending.is_oracle_ready()
+        else:
+            return await self.condition_lock_spending.is_oracle_ready()
 
     async def morphing(self):
         await self.morphing_.morph_gates()

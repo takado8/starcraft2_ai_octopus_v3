@@ -1,6 +1,7 @@
 from army.micros.microABS import MicroABS
 from bot.constants import AIR_PRIORITY_UNITS
 from sc2.unit import UnitTypeId as unit
+from sc2.ids.buff_id import BuffId as buff
 
 
 class CarrierMicro(MicroABS):
@@ -8,7 +9,8 @@ class CarrierMicro(MicroABS):
         super().__init__('CarrierMicro', ai, use_division_backout_position)
 
     async def do_micro(self, division):
-        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
+        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore
+                                                       and not unit.has_buff(buff.NEURALPARASITE))
         carriers = division.get_units(self.ai.iteration, unit.CARRIER)
         units_in_position = 0
         attacking_friends = None

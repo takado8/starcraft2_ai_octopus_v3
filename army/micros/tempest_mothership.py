@@ -1,6 +1,7 @@
 from army.micros.microABS import MicroABS
 from bot.constants import AIR_PRIORITY_UNITS, BASES_IDS
 from sc2.unit import UnitTypeId as unit
+from sc2.ids.buff_id import BuffId as buff
 
 
 class TempestMothershipMicro(MicroABS):
@@ -9,7 +10,8 @@ class TempestMothershipMicro(MicroABS):
         self.targets_dict = {}
 
     async def do_micro(self, division):
-        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore)
+        enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore
+                                                       and not x.has_buff(buff.NEURALPARASITE))
         tempests = division.get_units(self.ai.iteration, unit.TEMPEST)
         units_in_position = 0
         attacking_friends = None

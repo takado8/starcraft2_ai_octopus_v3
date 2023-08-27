@@ -18,7 +18,7 @@ WORKERS_IDS = {unit.SCV, unit.PROBE, unit.DRONE, unit.MULE}
 
 ANTI_AIR_IDS = {unit.MISSILETURRET, unit.PHOTONCANNON, unit.WIDOWMINE, unit.SPORECRAWLER}
 
-AIR_PRIORITY_UNITS = {unit.VOIDRAY, unit.WIDOWMINE, unit.BUNKER, unit.VIKING, unit.PHOENIX, unit.THOR,
+AIR_PRIORITY_UNITS = {unit.VOIDRAY, unit.WIDOWMINE, unit.BUNKER, unit.VIKING, unit.PHOENIX, unit.THOR, unit.INFESTOR,
                       unit.QUEEN, unit.BATTLECRUISER, unit.CARRIER, unit.TEMPEST, unit.CORRUPTOR, unit.MUTALISK,
                       unit.RAVEN, unit.LIBERATOR}
 

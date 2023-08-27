@@ -15,5 +15,7 @@ class RecallOnRetreat(InterfaceABS):
                 abilities = await self.ai.get_available_abilities(nexus)
                 if ability.EFFECT_MASSRECALL_NEXUS in abilities:
                     target = max(self.ai.army, key=lambda x: self.ai.army.closer_than(6.5, x).amount)
+                    if any(townhall.distance_to(target) < 18 for townhall in self.ai.townhalls):
+                        return
                     nexus(ability.EFFECT_MASSRECALL_NEXUS, target.position)
         self.previous_attack_state = self.ai.attack

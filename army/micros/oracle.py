@@ -210,7 +210,15 @@ class OracleMicro(MicroABS):
                 anti_air = self.ai.enemy_structures().filter(lambda x: x.type_id in ANTI_AIR_IDS and
                                                                        x.distance_to(
                                                                            oracle) < x.air_range + x.radius + 4)
-                if anti_air:  # or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
+                neural_parasites = self.ai.enemy_units().filter(lambda x: x.has_buff(buff.NEURALPARASITE))
+                if neural_parasites.exists:
+                    affected_unit = neural_parasites.closest_to(oracle)
+                    infestors = enemy.filter(lambda x: x.type_id == unit.INFESTORBURROWED and
+                                                       x.distance_to(affected_unit) <= 9 and not x.has_buff(
+                        buff.ORACLEREVELATION))
+                    if infestors.exists:
+                        self.cast_revelation(oracle, infestors, abilities)
+                elif anti_air:  # or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
                     oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -6))
                 elif invisible_threats:
                     self.cast_revelation(oracle, invisible_threats, abilities)

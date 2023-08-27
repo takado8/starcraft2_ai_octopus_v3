@@ -10,6 +10,7 @@ from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
 from army.micros.tempest import TempestMicro
+from army.micros.tempest_mothership import TempestMothershipMicro
 from army.micros.voidray import VoidrayMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
@@ -51,6 +52,7 @@ class TwoBaseSkytoss(Strategy):
 
         voidray_micro = VoidrayMicro(ai)
         carrier_micro = CarrierMothershipMicro(ai)
+        tempest_micro = TempestMothershipMicro(ai)
         # tempest_micro = TempestMicro(ai)
         # zealot_micro = ZealotMicro(ai)
         # sentry_micro = SentryMicro(ai)
@@ -62,9 +64,11 @@ class TwoBaseSkytoss(Strategy):
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('voidrays1', {unit.VOIDRAY:1}, [voidray_micro], Movements(ai), lifetime=500)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-900)
+        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-1200)
 
-        self.army.create_division('carriers1', {unit.CARRIER: 20, unit.MOTHERSHIP: 1}, [carrier_micro],
-                                  Movements(ai))
+        self.army.create_division('carriers1', {unit.CARRIER: 20, unit.TEMPEST: 5, unit.MOTHERSHIP: 1},
+                                  [carrier_micro,tempest_micro], Movements(ai))
         # self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
         # self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-640)
@@ -84,19 +88,23 @@ class TwoBaseSkytoss(Strategy):
 
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.mother_ship_interface = Mothership(ai)
-        # self.secure_lines = SecureMineralLines(ai)
+        self.secure_lines = SecureMineralLines(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.interface_time_consumed = 0
         self.wall_builder = SecondWallBuilder(ai)
+        self.mother_ship_interface = Mothership(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.wall_builder.execute()
-        # await self.secure_lines.execute()
+        if self.ai.time > 600:
+            await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
+        if self.ai.time > 600:
+            await self.mother_ship_interface.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -141,7 +149,7 @@ class TwoBaseSkytoss(Strategy):
                self.condition_attack.army_value_n_times_the_enemy(2)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_value_n_times_the_enemy(1)
+        return self.condition_retreat.army_value_n_times_the_enemy(1) and self.condition_retreat.army_supply_less_than(90)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
@@ -152,7 +160,8 @@ class TwoBaseSkytoss(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.none()
+        if self.ai.time > 600 and self.condition_attack.army_supply_over(70):
+            return await self.condition_lock_spending.is_mothership_ready()
 
 
     async def morphing(self):
