@@ -10,7 +10,7 @@ class CarrierMicro(MicroABS):
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units().filter(lambda x: x.type_id not in self.ai.units_to_ignore
-                                                       and not unit.has_buff(buff.NEURALPARASITE))
+                                                       and not x.has_buff(buff.NEURALPARASITE))
         carriers = division.get_units(self.ai.iteration, unit.CARRIER)
         units_in_position = 0
         attacking_friends = None

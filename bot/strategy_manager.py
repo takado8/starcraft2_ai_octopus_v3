@@ -44,7 +44,6 @@ class StrategyManager:
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
-                'TwoBaseSkytoss': TwoBaseSkytoss,
                 'ZealotRushDefense': ZealotRushDefense,
                 'FortressSkyToss': FortressSkyToss,
                 'StalkerProxy': StalkerProxy,
@@ -64,7 +63,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = TwoBaseSkytoss
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
