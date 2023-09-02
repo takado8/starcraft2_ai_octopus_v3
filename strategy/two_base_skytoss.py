@@ -50,7 +50,7 @@ class TwoBaseSkytoss(Strategy):
             locations_dict = None
             sentry_micro = SentryMicro(ai)
 
-        voidray_micro = VoidrayMicro(ai)
+        # voidray_micro = VoidrayMicro(ai)
         carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
         # tempest_micro = TempestMicro(ai)
@@ -62,10 +62,10 @@ class TwoBaseSkytoss(Strategy):
         self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai), lifetime=300)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('voidrays1', {unit.VOIDRAY:1}, [voidray_micro], Movements(ai), lifetime=500)
+        # self.army.create_division('voidrays1', {unit.VOIDRAY:1}, [voidray_micro], Movements(ai), lifetime=500)
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
-        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-900)
-        self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-1200)
+        # self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-900)
+        # self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-1200)
 
         self.army.create_division('carriers1', {unit.CARRIER: 20, unit.TEMPEST: 5, unit.MOTHERSHIP: 1},
                                   [carrier_micro,tempest_micro], Movements(ai))
@@ -78,7 +78,7 @@ class TwoBaseSkytoss(Strategy):
         build_queue = BuildQueues.TWO_BASE_SKYTOSS
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=[locations_dict])
+                               special_building_locations=[locations_dict] if locations_dict else None)
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
 
@@ -103,7 +103,7 @@ class TwoBaseSkytoss(Strategy):
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
-        if self.ai.time > 600:
+        if self.ai.time > 420:
             await self.mother_ship_interface.execute()
 
     async def handle_workers(self):
@@ -160,7 +160,7 @@ class TwoBaseSkytoss(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        if self.ai.time > 600 and self.condition_attack.army_supply_over(70):
+        if self.ai.time > 420 and self.condition_attack.army_supply_over(50):
             return await self.condition_lock_spending.is_mothership_ready()
 
 
