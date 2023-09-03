@@ -6,6 +6,7 @@ from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
+from army.micros.stalker_blink import StalkerBlinkMicro
 from army.micros.warpprism import WarpPrismMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
@@ -46,14 +47,14 @@ class Gateway(Strategy):
             locations_dict = None
             sentry_micro = SentryMicro(ai)
 
-        stalker_micro = StalkerMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=240)
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=240)
+        stalker_micro = StalkerBlinkMicro(ai)
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=300)
+        # self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=240)
 
-        main_army = {unit.STALKER: 10, unit.ZEALOT: 20, unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        main_army = {unit.STALKER: 20, unit.ZEALOT: 10, unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
         self.army.create_division('main_army', main_army, [stalker_micro, sentry_micro, ZealotMicro(ai), ArchonMicro(ai),
                                                            ObserverMicro(ai), WarpPrismMicro(ai)],
-                                  Movements(ai, 0.7), lifetime=-240)
+                                  Movements(ai, 0.7), lifetime=-300)
 
         build_queue = BuildQueues.GATEWAY
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
@@ -68,6 +69,9 @@ class Gateway(Strategy):
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.emergency_expansion.mineral_threshold1 = 1000
+        self.emergency_expansion.mineral_threshold2 = 800
+        self.emergency_expansion.excess_expansion_threshold = 1000
 
 
     async def execute_interfaces(self):
@@ -140,7 +144,7 @@ class Gateway(Strategy):
 
     # ======================================================== Buffs
     async def nexus_abilities(self):
-        await self.chronobooster.stalker_proxy()
+        self.chronobooster.standard()
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):

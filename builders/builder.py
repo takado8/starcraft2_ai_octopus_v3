@@ -21,9 +21,23 @@ class Builder:
         self.build_queue_index = 0
         self.special_building_locations = special_building_locations
         self.structures_max_radius = sorted(STRUCTURES_RADIUS, key=lambda x: STRUCTURES_RADIUS[x], reverse=True)[1]
+        self.last_index_change_time = 0
+        self.last_index = 0
+        self.is_build_stuck = False
 
 
     async def build_from_queue(self):
+        if self.last_index != self.build_queue_index:
+            self.last_index_change_time = self.ai.time
+            self.is_build_stuck = False
+        if self.ai.time - self.last_index_change_time > 60: #build stuck
+            validate = False
+            if not self.is_build_stuck:
+                self.is_build_stuck = True
+                print(f'Tag:Fix build stuck on idx {self.build_queue_index}')
+        else:
+            validate = True
+
         order_dict = {}
         for i in range(self.build_queue_index + 1):
             building = self.build_queue[i]
@@ -45,7 +59,7 @@ class Builder:
                 all_done = False
                 # print('need to build: {}'.format(building))
                 if self.ai.can_afford(building) and self.ai.already_pending(building) < \
-                        (2 if building in {unit.PYLON, unit.GATEWAY, unit.PHOTONCANNON, unit.SHIELDBATTERY} else 1):
+                        (3 if building in {unit.PYLON, unit.GATEWAY, unit.PHOTONCANNON, unit.SHIELDBATTERY} else 1):
                     if building == unit.NEXUS:
                         await self.expander.expand()
                         return
@@ -64,13 +78,13 @@ class Builder:
                                     .closer_than(1, location).exists:
                                 await self.build(building, near=location,
                                                 placement_step=1, max_distance=1,
-                                                random_alternative=False, validate_location=False)
+                                                random_alternative=not validate, validate_location=False)
                                 return
 
                     pylon = self.ai.get_pylon_with_least_neighbours()
                     if pylon:
                         await self.build(building, near=pylon, placement_step=4, max_distance=60,
-                                        random_alternative=True)
+                                        random_alternative=True, validate_location=validate)
                         # else:
                             # print("pylon is none")
         if all_done:
@@ -95,7 +109,7 @@ class Builder:
             # print('cant afford')
             return False
         if validate_location:
-            if self.ai.townhalls.amount < 3:
+            if self.ai.townhalls.amount <= 3:
                 build_only_in_main = True
             else:
                 build_only_in_main = False

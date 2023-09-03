@@ -31,7 +31,8 @@ class StrategyManager:
                 'BlinkersUpdated': BlinkersUpdated,
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
-                'TwoBaseSkytoss': TwoBaseSkytoss
+                'TwoBaseSkytoss': TwoBaseSkytoss,
+                'Gateway': Gateway
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -41,7 +42,8 @@ class StrategyManager:
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
                 'OneBaseRobo': OneBaseRobo,
-                'TwoBaseSkytoss': TwoBaseSkytoss
+                'TwoBaseSkytoss': TwoBaseSkytoss,
+                'Gateway': Gateway
                 # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
             }
         elif ai.enemy_race == Race.Zerg:
@@ -53,7 +55,8 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'AirOracle': AirOracle,
-                'TwoBaseSkytoss': TwoBaseSkytoss
+                'TwoBaseSkytoss': TwoBaseSkytoss,
+                'Gateway': Gateway
             }
         else:
             self.strategy_name_dict = {
@@ -62,7 +65,8 @@ class StrategyManager:
                 'SkytossCarriers': SkytossCarriers,
                 'BlinkersUpdated': BlinkersUpdated,
                 'OneBaseRobo': OneBaseRobo,
-                'TwoBaseSkytoss': TwoBaseSkytoss
+                'TwoBaseSkytoss': TwoBaseSkytoss,
+                'Gateway': Gateway
                 # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
             }
 

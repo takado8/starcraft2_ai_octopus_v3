@@ -37,9 +37,9 @@ class VoidrayCannonDefenseMicro(MicroABS):
                 # if enemy_cannons:
                 #     voidray.move(voidray.position.towards(enemy_cannons.closest_to(voidray), -3))
                 #     continue
-            if voidray.shield_percentage < 0.25:
+            if voidray.shield_percentage < 0.45:
                 batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.energy > 20 and
-                                                        x.distance_to(voidray) < 14)
+                                                        x.distance_to(voidray) < 25)
                 if batteries:
                     voidray.move(batteries.closest_to(voidray).position)
                     continue

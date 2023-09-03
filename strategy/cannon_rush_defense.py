@@ -1,9 +1,11 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.divisions import WARPPRISM_x1, TEMPEST_x5
 from army.micros.carrier import CarrierMicro
+from army.micros.stalker import StalkerMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
 from army.micros.warpprism_elevator import WarpPrismElevatorMicro
+from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
@@ -23,7 +25,8 @@ class CannonRushDefense(Strategy):
         carrier_micro = CarrierMicro(ai)
         tempest_micro = TempestMicro(ai)
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
-        # self.army.create_division('stalker', {unit.ADEPT: 5}, [StalkerMicro(ai)], Movements(ai, 0.1))
+        # self.army.create_division('zealot', {unit.ZEALOT: 1}, [ZealotMicro(ai)], Movements(ai, 0.1))
+        self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai, 0.1))
         self.army.create_division('voidray', {unit.VOIDRAY: 40}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6),
                                   lifetime=2000)
         # self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
@@ -73,7 +76,8 @@ class CannonRushDefense(Strategy):
         await self.battery_builder.build_batteries(when_minerals_more_than=600, amount=4)
 
     def build_assimilators(self):
-        self.assimilator_builder.standard(minerals_to_gas_ratio=1)
+        if self.ai.structures(unit.PHOTONCANNON).exists:
+            self.assimilator_builder.standard(minerals_to_gas_ratio=1)
 
 
     # =======================================================  Upgraders
@@ -96,11 +100,11 @@ class CannonRushDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.army_supply_over(80)
+        return  self.condition_attack.army_value_n_times_the_enemy(3) or self.condition_attack.total_supply_over(195)
 
 
     def retreat_condition(self):
-        return self.condition_retreat.army_count_less_than(7 if self.ai.time < 480 else 15)
+        return self.condition_retreat.army_value_n_times_the_enemy(1)
 
 
     def counter_attack_condition(self):

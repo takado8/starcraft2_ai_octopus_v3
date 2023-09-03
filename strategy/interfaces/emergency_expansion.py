@@ -9,6 +9,9 @@ class EmergencyExpansion(InterfaceABS):
         self.msg_send_on_nexuses_amount = 0
         self.lock_condition_cached = None
         self.excess_expansion_was_created_recently = False
+        self.mineral_threshold1 = 2000
+        self.mineral_threshold2 = 1500
+        self.excess_expansion_threshold = 2000
 
     async def execute(self):
         nexuses = self.ai.structures(unit.NEXUS)
@@ -27,8 +30,9 @@ class EmergencyExpansion(InterfaceABS):
             self.ai.strategy.lock_spending_condition = self.lock_condition_cached
             self.lock_condition_cached = None
             await self.ai.chat_send("End of spending lock for expansion.")
-        elif (self.ai.workers.amount < 80 and (self.ai.minerals > 2000 or self.ai.minerals > 1500 and self.ai.vespene < 50)
-                or self.ai.minerals > 3000) and not self.ai.already_pending(unit.NEXUS):
+        elif (self.ai.workers.amount < 80 and (self.ai.minerals > self.mineral_threshold1 or
+                                               self.ai.minerals > self.mineral_threshold2 and self.ai.vespene < 50)
+                or self.ai.minerals > self.excess_expansion_threshold) and not self.ai.already_pending(unit.NEXUS):
             await self.ai.strategy.builder.expander.expand()
             if self.msg_send_on_nexuses_amount != nexuses.amount:
                 self.excess_expansion_was_created_recently = True
