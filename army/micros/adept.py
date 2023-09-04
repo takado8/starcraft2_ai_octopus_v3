@@ -88,10 +88,15 @@ class AdeptMicro(MicroABS):
                         if self.enemy_base_idx > 2:
                             self.enemy_base_idx = 0
         elif self.ai.enemy_units:
-            enemy = self.ai.enemy_units.closer_than(35, self.ai.start_location)
-            if enemy:
+            enemy = self.ai.enemy_unitsfilter(lambda x: x.distance_to(self.ai.start_location) < 35 and
+                                              not x.is_flying)
+
+            if enemy and enemy.amount <= 2:
                 for adept in adepts:
                     closest_enemy = enemy.closest_to(adept)
+                    bunker = self.ai.enemy_structures(unit.BUNKER)
+                    if bunker and bunker.closer_than(8, closest_enemy):
+                        return 
                     adept.attack(closest_enemy)
                     if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept):
                         adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, closest_enemy.position)
