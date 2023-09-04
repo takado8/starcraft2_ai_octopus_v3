@@ -103,8 +103,8 @@ class TwoBaseSkytoss(Strategy):
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
-        if self.ai.time > 420:
-            await self.mother_ship_interface.execute()
+        # if self.ai.time > 420:
+        #     await self.mother_ship_interface.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -160,8 +160,7 @@ class TwoBaseSkytoss(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        if self.ai.time > 420 and self.condition_attack.army_supply_over(50):
-            return await self.condition_lock_spending.is_mothership_ready()
+        await self.condition_lock_spending.none()
 
 
     async def morphing(self):

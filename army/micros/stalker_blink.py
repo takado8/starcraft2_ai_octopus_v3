@@ -95,7 +95,7 @@ class StalkerBlinkMicro(MicroABS):
             blink_to_location = None
 
         for stalker in stalkers:
-            if self.ai.attack and upgrade.BLINKTECH in self.ai.state.upgrades and\
+            if blink_to_location and self.ai.attack and upgrade.BLINKTECH in self.ai.state.upgrades and\
                     stalker.distance_to(enemy_main_base) < stalker.distance_to(self.ai.defend_position):
                 stalker_on_main_base_lvl = abs(enemy_main_base_height - stalker.position3d.z) < \
                         abs(blink_location_height - stalker.position3d.z)
@@ -123,7 +123,7 @@ class StalkerBlinkMicro(MicroABS):
                 if self.ai.attack:
                     threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
-                    if self.ai.time < 1200 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
+                    if blink_to_location and self.ai.time < 1200 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
                         self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:

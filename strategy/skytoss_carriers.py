@@ -74,8 +74,8 @@ class SkytossCarriers(Strategy):
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.secure_lines.execute()
-        if self.ai.time > 1500:
-            await self.mother_ship_interface.execute()
+        # if self.ai.time > 1500:
+        #     await self.mother_ship_interface.execute()
         await self.shield_battery_interface.execute()
         if self.interface_time_consumed > 220 and self.ai.iteration % 30 != 0:
             return

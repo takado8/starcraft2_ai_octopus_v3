@@ -15,6 +15,7 @@ from builders import CannonBuilder
 from builders.battery_builder import BatteryBuilder
 from builders.proxy_gate_builder import ProxyGateBuilder
 from data_analysis.map_tools.positions_loader import PositionsLoader
+from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
 from .strategyABS import Strategy
@@ -46,14 +47,19 @@ class Gateway(Strategy):
         else:
             locations_dict = None
             sentry_micro = SentryMicro(ai)
+        if self.ai.enemy_race == Race.Terran:
+            blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
+            blink_locations = blink_locations_dict[unit.PYLON]
+        else:
+            blink_locations = None
+        stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
 
-        stalker_micro = StalkerBlinkMicro(ai)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=300)
-        # self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.3), lifetime=240)
-
-        main_army = {unit.STALKER: 20, unit.ZEALOT: 10, unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
-        self.army.create_division('main_army', main_army, [stalker_micro, sentry_micro, ZealotMicro(ai), ArchonMicro(ai),
-                                                           ObserverMicro(ai), WarpPrismMicro(ai)],
+        main_army = {unit.ZEALOT: 10, unit.IMMORTAL: 2
+            , unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        self.army.create_division('main_army', main_army, [sentry_micro, ZealotMicro(ai), ArchonMicro(ai),
+                                        ObserverMicro(ai), ImmortalMicro(ai), WarpPrismMicro(ai)],
                                   Movements(ai, 0.7), lifetime=-300)
 
         build_queue = BuildQueues.GATEWAY
@@ -69,6 +75,8 @@ class Gateway(Strategy):
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.wall_builder = SecondWallBuilder(ai)
+
         self.emergency_expansion.mineral_threshold1 = 1000
         self.emergency_expansion.mineral_threshold2 = 800
         self.emergency_expansion.excess_expansion_threshold = 1000
@@ -76,7 +84,7 @@ class Gateway(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        await self.proxy_gate_builder.build_proxy_gate()
+        await self.wall_builder.execute()
         await self.shield_battery_interface.execute()
         if self.ai.time > 420:
             await self.battery_builder.build_batteries(when_minerals_more_than=400, amount=4)
@@ -107,7 +115,6 @@ class Gateway(Strategy):
             await self.pylon_builder.new_standard_upper_wall()
         else:
             await self.pylon_builder.new_standard()
-        await self.pylon_builder.proxy()
 
 
     def build_assimilators(self):
@@ -133,8 +140,8 @@ class Gateway(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.stalkers_more_than(2) or\
-               self.condition_attack.army_value_n_times_the_enemy(2) or self.condition_attack.total_supply_over(195)
+        return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw()
+                and self.condition_attack.army_value_n_times_the_enemy(2)) or self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
         return self.condition_retreat.army_value_n_times_the_enemy(1)

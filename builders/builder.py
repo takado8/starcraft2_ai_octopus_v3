@@ -30,11 +30,12 @@ class Builder:
         if self.last_index != self.build_queue_index:
             self.last_index_change_time = self.ai.time
             self.is_build_stuck = False
+        self.last_index = self.build_queue_index
         if self.ai.time - self.last_index_change_time > 60: #build stuck
             validate = False
             if not self.is_build_stuck:
                 self.is_build_stuck = True
-                print(f'Tag:Fix build stuck on idx {self.build_queue_index}')
+                await self.ai.chat_send(f'Tag:Fix build stuck on idx {self.build_queue_index}')
         else:
             validate = True
 

@@ -96,8 +96,8 @@ class AirOracle(Strategy):
         else:
             if self.ai.enemy_units({unit.BANSHEE, unit.ORACLE}).exists:
                 self.is_secure_lines_enabled = True
-        if self.ai.time > 900 and self.ai.enemy_race == Race.Zerg:
-            await self.mother_ship_interface.execute()
+        # if self.ai.time > 900 and self.ai.enemy_race == Race.Zerg:
+        #     await self.mother_ship_interface.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -154,10 +154,6 @@ class AirOracle(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        if self.ai.enemy_race == Race.Zerg:
-            if self.ai.time > 900 and self.condition_attack.army_supply_over(70):
-                return await self.condition_lock_spending.is_mothership_ready() or await self.condition_lock_spending.is_oracle_ready()
-        else:
             return await self.condition_lock_spending.is_oracle_ready()
 
     async def morphing(self):

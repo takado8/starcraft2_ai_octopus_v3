@@ -9,8 +9,10 @@ class BuildQueues:
                     unit.ROBOTICSFACILITY,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS]
 
-    GATEWAY = [unit.PYLON, unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
-                    unit.GATEWAY,  unit.FORGE, unit.TWILIGHTCOUNCIL,unit.GATEWAY, unit.TEMPLARARCHIVE, unit.GATEWAY,unit.NEXUS,
+    GATEWAY = [unit.PYLON, unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.GATEWAY,unit.TWILIGHTCOUNCIL,
+               unit.SHIELDBATTERY,unit.GATEWAY,
+               unit.SHIELDBATTERY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.SHIELDBATTERY,
+                unit.FORGE, unit.ROBOTICSFACILITY, unit.SHIELDBATTERY, unit.TEMPLARARCHIVE, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.FORGE,
                     unit.GATEWAY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY, unit.GATEWAY, unit.NEXUS,
                     unit.GATEWAY, unit.GATEWAY, unit.GATEWAY,
