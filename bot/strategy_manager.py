@@ -11,6 +11,7 @@ from strategy.gateway import Gateway
 from strategy.one_base_blink import OneBaseBlink
 from strategy.one_base_robo import OneBaseRobo
 from strategy.skytoss_carriers import SkytossCarriers
+from strategy.skytoss_tempest import SkytossTempest
 from strategy.stalker_proxy import StalkerProxy
 from strategy.two_base_colossus import TwoBaseColossusUpdated
 from strategy.two_base_skytoss import TwoBaseSkytoss
@@ -21,6 +22,9 @@ from sc2 import Race
 
 class StrategyManager:
     def __init__(self, enemy_data: EnemyData, ai):
+        self.follow_up_strategies = {
+            'SkytossTempest': SkytossTempest
+        }
         if ai.enemy_race == Race.Terran:
             self.strategy_name_dict = {
                 'StalkerProxy': StalkerProxy,
