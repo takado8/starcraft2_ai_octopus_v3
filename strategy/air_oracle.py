@@ -18,6 +18,8 @@ from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders.battery_builder import BatteryBuilder
 from data_analysis.map_tools.positions_loader import PositionsLoader
+from economy.workers.workers_micro import WorkersMicro
+from strategy.interfaces.detct_bunker_contain import DetectBunkerContain
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from .strategyABS import Strategy
@@ -88,6 +90,8 @@ class AirOracle(Strategy):
         self.secure_lines = SecureMineralLines(ai)
         self.is_secure_lines_enabled = False
         self.mother_ship_interface = Mothership(ai)
+        self.detect_bunker_contain = DetectBunkerContain(ai)
+        self.workers_micro = WorkersMicro(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
@@ -96,8 +100,9 @@ class AirOracle(Strategy):
         else:
             if self.ai.enemy_units({unit.BANSHEE, unit.ORACLE}).exists:
                 self.is_secure_lines_enabled = True
-        # if self.ai.time > 900 and self.ai.enemy_race == Race.Zerg:
-        #     await self.mother_ship_interface.execute()
+        if self.ai.enemy_race == Race.Terran:
+            await self.detect_bunker_contain.execute()
+
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -106,6 +111,7 @@ class AirOracle(Strategy):
             self.speed_mining.execute(mineral_workers)
         else:
             self.speed_mining.execute(self.workers_distribution.get_mineral_workers_tags())
+        self.workers_micro.execute()
 
     # =======================================================  Builders
     async def build_from_queue(self):
