@@ -29,6 +29,7 @@ from builders import PylonBuilder, CannonBuilder
 from builders.battery_builder import BatteryBuilder
 from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
+from strategy.interfaces.detect_air_units import DetectAirUnits
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
@@ -111,13 +112,12 @@ class OneBaseBlink(Strategy):
         self.robotics_bay_upgrader = RoboticsBayUpgrader(ai)
         self.templar_archive_upgrader = TemplarArchiveUpgrader(ai)
 
-
-
         self.worker_rush_defense = WorkerRushDefense(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.detect_air_units = DetectAirUnits(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
@@ -130,6 +130,8 @@ class OneBaseBlink(Strategy):
         if self.ai.iteration % 10 == 0:
             await self.battery_builder.build_batteries(when_minerals_more_than=410, amount=5)
             await self.cannon_builder.build_cannons(when_minerals_more_than=420, amount=2)
+
+        await self.detect_air_units.execute()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

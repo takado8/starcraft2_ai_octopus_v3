@@ -127,9 +127,10 @@ class StalkerBlinkMicro(MicroABS):
                         self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:
-                            if upgrade.BLINKTECH in self.ai.state.upgrades and (not threats or not threats.in_attack_range_of(stalker)):
-                                stalker.attack(self.blink_locations[0])
-                            # elif not stalker.weapon_ready and sum([t.ground_dps for t in threats]) < 20:
+                            if upgrade.BLINKTECH in self.ai.state.upgrades:
+                                if not stalker.weapon_ready or not threats or threats and not threats.in_attack_range_of(stalker):
+                                    stalker.move(self.blink_locations[0])
+                            # elif not stalker.weapon_ready:
                             #     stalker.move(self.blink_locations[0])
                             #     continue
 
