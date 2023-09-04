@@ -75,7 +75,7 @@ class AirOracle(Strategy):
 
         build_queue = BuildQueues.AIR_ORACLE_CARRIERS
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=[locations_dict])
+                               special_building_locations=[locations_dict] if locations_dict else None)
 
         self.battery_builder = BatteryBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
