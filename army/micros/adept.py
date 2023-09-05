@@ -88,7 +88,7 @@ class AdeptMicro(MicroABS):
                         if self.enemy_base_idx > 2:
                             self.enemy_base_idx = 0
         elif self.ai.enemy_units:
-            enemy = self.ai.enemy_unitsfilter(lambda x: x.distance_to(self.ai.start_location) < 35 and
+            enemy = self.ai.enemy_units().filter(lambda x: x.distance_to(self.ai.start_location) < 35 and
                                               not x.is_flying)
 
             if enemy and enemy.amount <= 2:

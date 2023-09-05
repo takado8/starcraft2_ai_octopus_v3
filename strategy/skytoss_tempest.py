@@ -9,6 +9,7 @@ from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
+from army.micros.stalker_blink import StalkerBlinkMicro
 from army.micros.tempest import TempestMicro
 from army.micros.tempest_mothership import TempestMothershipMicro
 from army.micros.voidray import VoidrayMicro
@@ -51,14 +52,16 @@ class SkytossTempest(Strategy):
             sentry_micro = SentryMicro(ai)
 
         # voidray_micro = VoidrayMicro(ai)
-        carrier_micro = CarrierMothershipMicro(ai)
+        # carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
 
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
+        self.army.create_division('stalkers', {unit.STALKER: 20, unit.SENTRY: 2}, [StalkerBlinkMicro(ai), sentry_micro],
+                                  Movements(ai, units_ratio_before_next_step=0.6, movements_step=15))
 
-        self.army.create_division('main_army', {unit.TEMPEST: 25, unit.CARRIER: 6},
-                                  [carrier_micro, tempest_micro], Movements(ai))
+        self.army.create_division('main_army', {unit.TEMPEST: 25},
+                                  [tempest_micro], Movements(ai))
 
         self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-650)
 
