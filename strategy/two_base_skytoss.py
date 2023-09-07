@@ -23,6 +23,7 @@ from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
+from strategy.interfaces.siege_infrastructure import SiegeInfrastructure
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -87,16 +88,17 @@ class TwoBaseSkytoss(Strategy):
         self.forge_upgrader = ForgeUpgrader(ai)
 
         self.worker_rush_defense = WorkerRushDefense(ai)
-        self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.interface_time_consumed = 0
         self.wall_builder = SecondWallBuilder(ai)
-        self.mother_ship_interface = Mothership(ai)
+        self.siege_infrastructure = SiegeInfrastructure(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
+        await self.siege_infrastructure.execute()
+
         await self.wall_builder.execute()
         if self.ai.time > 600:
             await self.secure_lines.execute()
