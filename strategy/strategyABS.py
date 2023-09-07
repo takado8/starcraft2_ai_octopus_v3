@@ -13,6 +13,7 @@ from economy.info.enemy_economy import EnemyEconomy
 from economy.info.own_economy import OwnEconomy
 from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
+from economy.workers.workers_micro import WorkersMicro
 from strategy.interfaces.attack_informator import AttackInformant
 from strategy.interfaces.emergency_expansion import EmergencyExpansion
 from strategy.interfaces.recall_on_retreat import RecallOnRetreat
@@ -54,6 +55,7 @@ class Strategy:
         self.attack_informant = AttackInformant(ai)
         self.emergency_expansion = EmergencyExpansion(ai)
         self.recall_on_retreat = RecallOnRetreat(ai)
+        self.workers_micro = WorkersMicro(ai)
 
 
     async def execute_interfaces(self):
@@ -61,6 +63,7 @@ class Strategy:
         await self.attack_informant.execute()
         await self.emergency_expansion.execute()
         await self.recall_on_retreat.execute()
+        self.workers_micro.execute()
 
     async def handle_workers(self):
         raise NotImplementedError
