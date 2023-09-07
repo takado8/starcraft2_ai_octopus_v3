@@ -163,13 +163,18 @@ class StalkerBlinkMicro(MicroABS):
                                     stalker.distance_to(enemy_main_base) > 12:
                                 stalker.move(main_base_minerals)
                                 continue
-
+                    tanks = False
                     if self.ai.enemy_race == Race.Terran:
-                        # # deal with tanks
-                        # tanks = enemy.filter(lambda x: x.type_id in {unit.SIEGETANK, unit.SIEGETANKSIEGED}
-                        #                                and not x.is_snapshot)
-                        # if tanks:
-                        #     threats = tanks
+                        # stay away from tanks
+                        tanks = self.ai.enemy_units().filter(lambda x: x.type_id in {unit.SIEGETANKSIEGED})
+                        if tanks:
+                            closest_tank = tanks.closest_to(stalker)
+                            if stalker.distance_to(closest_tank) <= 15:
+                                nearby_stalkers = stalkers.closer_than(7, stalker)
+                                if tanks.amount >= 2 and nearby_stalkers.amount < 12 or \
+                                    tanks.amount == 1 and nearby_stalkers.amount < 6:
+                                        stalker.move(stalker.position.towards(closest_tank, -5))
+                                        tanks = True
                         # else:
                         bunkers = self.ai.enemy_structures().filter(lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)
                         if bunkers:
@@ -190,10 +195,26 @@ class StalkerBlinkMicro(MicroABS):
                                     threats = workers_near_bunkers
                                 else:
                                     threats = bunkers
-                    if not enemy.exists and stalker.distance_to(enemy_main_base) < 12:
+
+                    if (not enemy.exists or tanks) and stalker.distance_to(enemy_main_base) < 14:
                         threats = self.ai.enemy_structures().filter(lambda x: x.type_id in BASES_IDS)
                         if not threats:
                             threats = self.ai.enemy_structures()
+                            if threats:
+
+                                threats = self.ai.enemy_structures().closer_than(20, stalker)
+                                if threats:
+                                    priority_buildings_ids = {unit.FUSIONCORE, unit.STARPORT, unit.STARPORTFLYING,
+                                                              unit.ENGINEERINGBAY, unit.GHOSTACADEMY, unit.FACTORY,
+                                                              unit.FACTORYFLYING, unit.BARRACKS, unit.BARRACKSFLYING}
+                                    for priority_id in priority_buildings_ids:
+                                        targets = threats(priority_id)
+                                        if targets:
+                                            threats = targets
+                                            break
+                                else:
+                                    threats = self.ai.enemy_structures()
+
             else:
                 threats = None
             if threats:
