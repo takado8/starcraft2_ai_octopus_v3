@@ -30,7 +30,13 @@ class CarrierMothershipMicro(MicroABS):
                                                                 (z.can_attack_air or z.type_id == unit.BUNKER)))
             else:
                 threats = None
-
+            if carrier.shield_percentage <= 0.75:
+                batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.is_ready
+                                                                  and x.energy > 20 and x.distance_to(
+                    carrier) < 24)
+                if batteries:
+                    carrier.move(batteries.closest_to(carrier))
+                    continue
             if threats:
                 motherships = self.ai.units(unit.MOTHERSHIP).ready
                 if motherships.exists:
@@ -44,7 +50,12 @@ class CarrierMothershipMicro(MicroABS):
                 if in_range_of.exists:
                     total_dps = sum([x.air_dps for x in in_range_of])
                     if total_dps > 50 and carrier.shield_percentage < 0.85 or\
-                            carrier.shield_percentage < 0.85 and carrier.health_percentage < 0.85:
+                            carrier.shield_percentage < 0.75:
+                        batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.is_ready
+                                                                and x.energy > 20 and x.distance_to(carrier) < 24)
+                        if batteries:
+                            carrier.move(batteries.closest_to(carrier))
+                            continue
                         if self.use_division_backout_position:
                             position = self.find_backout_position(division)
                         else:
