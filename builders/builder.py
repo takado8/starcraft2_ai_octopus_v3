@@ -78,7 +78,7 @@ class Builder:
                             if not self.ai.structures(all_building_types if all_building_types else building)\
                                     .closer_than(1, location).exists:
                                 await self.build(building, near=location,
-                                                placement_step=1, max_distance=1,
+                                                placement_step=1, max_distance=1 if validate else 20,
                                                 random_alternative=not validate, validate_location=False)
                                 return
 
@@ -98,7 +98,7 @@ class Builder:
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 45, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
-                    placement_step: int = 3, validate_location=True, ) -> bool:
+                    placement_step: int = 3, validate_location=True, queue=False) -> bool:
         assert isinstance(near, (Unit, Point2, Point3))
         near_pylon = None
         if isinstance(near, Unit):
@@ -204,7 +204,7 @@ class Builder:
             #     i+=1
             if builder is None:
                 return False
-            builder.build(building, place)
+            builder.build(building, place, queue=queue)
             return True
         else:
             return False
