@@ -54,6 +54,13 @@ class TempestMothershipMicro(MicroABS):
                                         (z.can_attack_air or z.type_id == unit.BUNKER or z.type_id in BASES_IDS)))
             else:
                 threats = None
+            if tempest.shield_percentage <= 0.75:
+                batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.is_ready
+                                                                  and x.energy > 20 and x.distance_to(
+                    tempest) < 24)
+                if batteries:
+                    tempest.move(batteries.closest_to(tempest))
+                    continue
             if threats:
                 motherships = self.ai.units(unit.MOTHERSHIP).ready
                 if motherships.exists:
@@ -80,15 +87,14 @@ class TempestMothershipMicro(MicroABS):
                                 break
                     if target_selected:
                         continue
+
                 closest = threats.closest_to(tempest.position)
                 in_range_of = threats.filter(lambda x: x.can_attack_air and
                                                        x.distance_to(tempest.position) <= x.air_range + x.radius + 4)
-                if in_range_of.exists:
-                    total_dps = sum([x.air_dps for x in in_range_of])
-                    if total_dps > 50 and tempest.shield_percentage < 0.85 or \
-                            tempest.shield_percentage < 0.85 and tempest.health_percentage < 0.85:
-                        tempest.move(tempest.position.towards(closest.position, -4))
-                        continue
+                if in_range_of.exists and tempest.shield_percentage <= 0.75:
+                    # total_dps = sum([x.air_dps for x in in_range_of])
+                    tempest.move(tempest.position.towards(closest.position, -6))
+                    continue
                 if closest.distance_to(tempest) < 12 and tempest.is_moving:
                     continue
 
