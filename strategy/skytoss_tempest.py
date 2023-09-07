@@ -24,6 +24,7 @@ from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
+from strategy.interfaces.siege_infrastructure import SiegeInfrastructure
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -57,7 +58,7 @@ class SkytossTempest(Strategy):
 
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('stalkers', {unit.STALKER: 20, unit.SENTRY: 2}, [StalkerBlinkMicro(ai), sentry_micro],
+        self.army.create_division('stalkers', {unit.STALKER: 25, unit.SENTRY: 2}, [StalkerBlinkMicro(ai), sentry_micro],
                                   Movements(ai, units_ratio_before_next_step=0.6, movements_step=15))
 
         self.army.create_division('main_army', {unit.TEMPEST: 25},
@@ -84,15 +85,17 @@ class SkytossTempest(Strategy):
         self.interface_time_consumed = 0
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
+        self.siege_infrastructure = SiegeInfrastructure(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.wall_builder.execute()
-        if self.ai.time > 360:
+        if self.ai.time > 300:
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
+        await self.siege_infrastructure.execute()
         # if self.ai.time > 420:
         #     await self.mother_ship_interface.execute()
 
