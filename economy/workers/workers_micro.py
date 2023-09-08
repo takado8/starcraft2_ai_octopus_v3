@@ -11,12 +11,12 @@ class WorkersMicro:
         enemy.extend(self.ai.enemy_structures(unit.BUNKER))
         if enemy:
             for worker in workers:
-                close_enemy = enemy.closer_than(12, worker)
+                close_enemy = enemy.closer_than(16, worker)
                 if close_enemy and worker.shield_percentage < 1 or close_enemy.amount >= 3 or \
                         close_enemy.filter(lambda x: x.type_id in {unit.WIDOWMINE, unit.WIDOWMINEBURROWED} and
                                      x.distance_to(worker) <= 6):
                     if self.ai.townhalls.amount == 1:
                         worker.move(worker.position.towards(enemy.closest_to(worker), -6))
                     else:
-                        safe_townhall = self.ai.townhalls.filter(lambda x: not enemy.closer_than(12, x).exists)
+                        safe_townhall = self.ai.townhalls.filter(lambda x: not enemy.closer_than(16, x).exists)
                         worker.gather(self.ai.mineral_field.closest_to(safe_townhall.closest_to(worker)))
