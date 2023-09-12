@@ -2,6 +2,7 @@ from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.blinkers_updated import BlinkersUpdated
 from strategy.cannon_rush_defense import CannonRushDefense
+from strategy.disruptors import Disruptors
 from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.fortress_toss import FortressToss
 # from strategy.oracle_defense import OracleDefenseUpdated
@@ -10,6 +11,7 @@ from strategy.fortress_toss import FortressToss
 from strategy.gateway import Gateway
 from strategy.one_base_blink import OneBaseBlink
 from strategy.one_base_robo import OneBaseRobo
+from strategy.phoenix_stalker import PhoenixStalker
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.skytoss_tempest import SkytossTempest
 from strategy.stalker_proxy import StalkerProxy
@@ -36,7 +38,9 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
-                'Gateway': Gateway
+                'Gateway': Gateway,
+                'PhoenixStalker': PhoenixStalker,
+                'Disruptors': Disruptors
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -47,7 +51,9 @@ class StrategyManager:
                 'BlinkersUpdated': BlinkersUpdated,
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
-                'Gateway': Gateway
+                'Gateway': Gateway,
+                'PhoenixStalker': PhoenixStalker,
+                'Disruptors': Disruptors
                 # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
             }
         elif ai.enemy_race == Race.Zerg:
@@ -60,7 +66,9 @@ class StrategyManager:
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'AirOracle': AirOracle,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
-                'Gateway': Gateway
+                'Gateway': Gateway,
+                'PhoenixStalker': PhoenixStalker,
+                'Disruptors': Disruptors
             }
         else:
             self.strategy_name_dict = {
@@ -70,7 +78,8 @@ class StrategyManager:
                 'BlinkersUpdated': BlinkersUpdated,
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
-                'Gateway': Gateway
+                'Gateway': Gateway,
+                'PhoenixStalker': PhoenixStalker
                 # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
             }
 

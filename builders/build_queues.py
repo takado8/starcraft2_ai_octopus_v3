@@ -53,6 +53,15 @@ class BuildQueues:
                unit.NEXUS, unit.STARGATE,
                unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.STARGATE, ]
 
+    PHOENIX_STALKER = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.STARGATE, unit.NEXUS,
+                       unit.SHIELDBATTERY, unit.STARGATE, unit.STARGATE,
+                       unit.SHIELDBATTERY, unit.SHIELDBATTERY,unit.SHIELDBATTERY,unit.SHIELDBATTERY,
+                        unit.NEXUS, unit.FLEETBEACON, unit.STARGATE,
+                        unit.NEXUS,unit.STARGATE, unit.FORGE, unit.NEXUS,unit.STARGATE,
+                        unit.NEXUS, unit.STARGATE, unit.STARGATE, unit.GATEWAY,unit.ROBOTICSFACILITY,
+                        unit.NEXUS, unit.STARGATE,  unit.GATEWAY,unit.NEXUS,  unit.GATEWAY,unit.NEXUS,
+                       unit.NEXUS, unit.NEXUS, unit.GATEWAY, ]
+
     FORTRESS_TOSS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.NEXUS, unit.ROBOTICSFACILITY,
                      unit.SHIELDBATTERY, 16, unit.STARGATE, unit.NEXUS, unit.FLEETBEACON,
                       36, unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.GATEWAY,
@@ -102,6 +111,17 @@ class BuildQueues:
                 unit.NEXUS, unit.GATEWAY, unit.STARGATE,
                 unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                 unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+
+    DISRUPTORS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.ROBOTICSFACILITY, unit.GATEWAY,unit.ROBOTICSBAY,
+                     unit.GATEWAY, unit.NEXUS,unit.ROBOTICSFACILITY, unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.ROBOTICSFACILITY,
+                     unit.SHIELDBATTERY, unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY, unit.ROBOTICSFACILITY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.GATEWAY,
+                     unit.NEXUS, unit.GATEWAY,
+                     unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
+                     unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
 
     TWO_BASE_COLOSSUS = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.NEXUS, unit.ROBOTICSFACILITY, unit.GATEWAY,
                      unit.ROBOTICSBAY, unit.TWILIGHTCOUNCIL, unit.GATEWAY, 35, unit.NEXUS, unit.FORGE, unit.GATEWAY,
