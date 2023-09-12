@@ -181,7 +181,7 @@ class OctopusV3(sc2.BotAI):
             print(ex)
         lock_spending = await self.lock_spending_condition()
         try:
-            if not lock_spending or self.minerals >= 150:
+            if not lock_spending or self.minerals >= 350:
                 self.strategy.train_probes()
                 self.strategy.build_assimilators()
         except:
@@ -232,10 +232,10 @@ class OctopusV3(sc2.BotAI):
 
     async def build(self, building: unit, near: Union[Unit, Point2, Point3], max_distance: int = 20, block=False,
                     build_worker: Optional[Unit] = None, random_alternative: bool = True,
-                    placement_step: int = 3, validate_location=True, ) -> bool:
+                    placement_step: int = 3, validate_location=True, queue=False) -> bool:
         return await self.strategy.builder.build(building=building, near=near, max_distance=max_distance, block=block,
                                                  build_worker=build_worker, random_alternative=random_alternative,
-                                                 validate_location=validate_location)
+                                                 validate_location=validate_location, queue=False)
 
     def in_pathing_grid(self, pos: Union[Point2, Unit]):
         if isinstance(pos, Unit):
@@ -305,12 +305,12 @@ def botVsComputer(ai, real_time=0):
     # map_index = random.randint(0, 5)
     # race_index = random.randint(0, 2)
     # CheatMoney   VeryHard CheatInsane VeryEasy CheatMoney
-    a_map = maps_list[1]
-    # a_map = random.choice(maps_list)
+    # a_map = maps_list[2]
+    a_map = random.choice(maps_list)
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[2], difficulty=Difficulty.CheatMoney, ai_build=build)
+        Computer(race=races[1], difficulty=Difficulty.CheatMoney, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
