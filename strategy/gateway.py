@@ -53,14 +53,14 @@ class Gateway(Strategy):
         else:
             blink_locations = None
         stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
-        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
-        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
+        # self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
+        # self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
 
-        main_army = {unit.ZEALOT: 10, unit.IMMORTAL: 2
-            , unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        main_army = {unit.ZEALOT: 15, unit.IMMORTAL: 2, unit.STALKER: 20
+            , unit.ARCHON: 10, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
         self.army.create_division('main_army', main_army, [sentry_micro, ZealotMicro(ai), ArchonMicro(ai),
-                                        ObserverMicro(ai), ImmortalMicro(ai), WarpPrismMicro(ai)],
-                                  Movements(ai, 0.7), lifetime=-300)
+                                        ObserverMicro(ai), ImmortalMicro(ai), WarpPrismMicro(ai), stalker_micro],
+                                  Movements(ai, 0.7))
 
         build_queue = BuildQueues.GATEWAY
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
