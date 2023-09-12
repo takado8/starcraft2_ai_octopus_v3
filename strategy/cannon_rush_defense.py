@@ -1,9 +1,15 @@
 from army.defense.worker_rush_defense import WorkerRushDefense
-from army.divisions import WARPPRISM_x1, TEMPEST_x5
+from army.divisions import WARPPRISM_x1, TEMPEST_x5, STALKER_x10
+from army.micros.archon import ArchonMicro
 from army.micros.carrier import CarrierMicro
+from army.micros.immortal import ImmortalMicro
+from army.micros.observer import ObserverMicro
+from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
+from army.micros.stalker_blink import StalkerBlinkMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
+from army.micros.warpprism import WarpPrismMicro
 from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
@@ -22,19 +28,19 @@ from sc2.unit import UnitTypeId as unit
 
 class CannonRushDefense(Strategy):
     def __init__(self, ai):
-        carrier_micro = CarrierMicro(ai)
-        tempest_micro = TempestMicro(ai)
         super().__init__(type='defense', name='CannonRushDefense', ai=ai)
         # self.army.create_division('zealot', {unit.ZEALOT: 1}, [ZealotMicro(ai)], Movements(ai, 0.1))
         self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai, 0.1))
-        self.army.create_division('voidray', {unit.VOIDRAY: 40}, [VoidrayCannonDefenseMicro(ai)], Movements(ai, 0.6),
-                                  lifetime=2000)
-        # self.army.create_division('carriers1', {unit.CARRIER: 20}, [CarrierMicro(ai)], Movements(ai))
-        self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismElevatorMicro(ai)],
-                                  Movements(ai, 0.2), lifetime=-1800)
-        self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai), lifetime=-1800)
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai), lifetime=-1800)
-        self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai), lifetime=-1800)
+        stalker_micro = StalkerBlinkMicro(ai)
+
+        self.army.create_division('stalkers1', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
+        self.army.create_division('stalkers2', STALKER_x10, [stalker_micro], Movements(ai, 0.7))
+
+        main_army = {unit.ZEALOT: 10, unit.IMMORTAL: 2
+            , unit.ARCHON: 10, unit.SENTRY: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1}
+        self.army.create_division('main_army', main_army, [SentryMicro(ai), ZealotMicro(ai), ArchonMicro(ai),
+                                                           ObserverMicro(ai), ImmortalMicro(ai), WarpPrismMicro(ai)],
+                                  Movements(ai, 0.7), lifetime=-300)
 
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('cannon_rush_defense')
