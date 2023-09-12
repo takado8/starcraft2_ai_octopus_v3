@@ -39,8 +39,7 @@ class StrategyManager:
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker,
-                'Disruptors': Disruptors
+                'PhoenixStalker': PhoenixStalker
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -52,9 +51,7 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker,
-                'Disruptors': Disruptors
-                # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
+                'PhoenixStalker': PhoenixStalker
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -67,8 +64,7 @@ class StrategyManager:
                 'AirOracle': AirOracle,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker,
-                'Disruptors': Disruptors
+                'PhoenixStalker': PhoenixStalker
             }
         else:
             self.strategy_name_dict = {
@@ -84,7 +80,7 @@ class StrategyManager:
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = PhoenixStalker
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]
