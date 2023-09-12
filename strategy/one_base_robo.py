@@ -1,20 +1,14 @@
 from sc2 import Race
 
-from army.defense.fortress_defense import FortressDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
-from army.micros.archon import ArchonMicro
 from army.micros.carrier import CarrierMicro
-# from army.micros.carrier_updated import CarrierMicroUpdated
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
-from army.micros.high_templar import HighTemplarMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
-from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
-from army.micros.stalker import StalkerMicro
 from army.micros.stalker_blink import StalkerBlinkMicro
 from army.micros.tempest import TempestMicro
 from army.micros.voidray import VoidrayMicro

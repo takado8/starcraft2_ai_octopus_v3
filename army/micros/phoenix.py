@@ -15,65 +15,38 @@ class PhoenixMicro(MicroABS):
         attacking_friends = None
         division_position = None
         beaming_phoenixes_nb = 0
+        beaming_phoenixes_max_nb = phoenixes.amount * 0.7
         for phoenix in phoenixes:
             if enemy.exists:
-                threats = self.ai.enemy_units().filter(
+                flying_threats = self.ai.enemy_units().filter(
                     lambda z: z.is_flying and z.distance_to(phoenix.position) < 15 and z.type_id not in self.ai.units_to_ignore
                               and not z.is_hallucination and (z.can_attack_air or z.type_id in {unit.MEDIVAC,
                                                                                         unit.RAVEN, unit.VIPER}))
                 # can_attack_air = threats.filter(lambda x: x.can_attack_air)
                 # if can_attack_air.exists:
                 #     threats = can_attack_air
+                excluded_types = {unit.ZERGLING, unit.CHANGELING, unit.MARINE, unit.BROODLING}
                 ground_threats = self.ai.enemy_units().filter(
-                    lambda z: not z.is_flying and z.distance_to(phoenix.position) < 15 and z.type_id not in self.ai.units_to_ignore
-                              and not z.is_hallucination)
-                priority_ground_threats = ground_threats.filter(lambda x: x.type_id not in {unit.ZERGLING,
-                                       unit.CHANGELING, unit.MARINE, unit.BROODLING})
-                if priority_ground_threats:
-                    ground_threats = priority_ground_threats
+                    lambda z: not z.is_flying and z.distance_to(phoenix.position) < 12 and z.type_id not in self.ai.units_to_ignore
+                              and not z.is_hallucination and z.type_id not in excluded_types)
+                # priority_ground_threats = ground_threats.filter(lambda x: x.type_id not in excluded_types)
+                # if priority_ground_threats:
+                #     ground_threats = priority_ground_threats
             else:
                 ground_threats = None
-                threats = None
+                flying_threats = None
 
-            if threats:
-                beamed_units = threats.filter(lambda x: x.has_buff(buff.GRAVITONBEAM))
-                if phoenix.shield_percentage < 0.80:
-                    batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and
-                                                            x.energy > 10 and x.distance_to(phoenix)<=24)
-                    if batteries:
-                        phoenix.move(batteries.closest_to(phoenix))
-                    else:
-                        phoenix.move(phoenix.position.towards(threats.closest_to(phoenix), -9))
-                    continue
-                if beamed_units:
-                    threats = beamed_units
-                else:
-                    close_threats = threats.closer_than(6, phoenix)
-                    if close_threats.exists:
-                        threats = close_threats
+            abilities = await self.ai.get_available_abilities(phoenix)
+            if ground_threats and beaming_phoenixes_nb < beaming_phoenixes_max_nb:
 
-                priority = threats.filter(lambda z: z.can_attack_air or z.type_id == unit.MEDIVAC) \
-                    .sorted(lambda z: z.health + z.shield)
-                if priority.exists:
-                    target2 = priority[0]
-                else:
-                    target2 = threats.sorted(lambda z: z.health + z.shield)[0]
-
-                if target2 is not None:
-                    attack_position = target2.position.towards(phoenix, 5)
-                    if enemy.filter(lambda x: x.can_attack_air and x.distance_to(attack_position) <= 5).amount \
-                        < self.ai.units.filter(lambda x: x.distance_to(attack_position) <= 9).amount/2:
-                        phoenix.attack(target2)
-            elif ground_threats:
-                abilities = await self.ai.get_available_abilities(phoenix)
-                if ability.GRAVITONBEAM_GRAVITONBEAM in abilities and beaming_phoenixes_nb <= phoenixes.amount/2:
+                if ability.GRAVITONBEAM_GRAVITONBEAM in abilities:
                     priority_ids = {unit.SIEGETANKSIEGED, unit.CYCLONE, unit.QUEEN, unit.WIDOWMINE, unit.GHOST,
                                     unit.INFESTOR, unit.WIDOWMINEBURROWED, unit.INFESTORBURROWED}
-                    ground_priority = threats.filter(lambda x: x.type_id in priority_ids)
+                    ground_priority = ground_threats.filter(lambda x: x.type_id in priority_ids)
                     if ground_priority:
                         targets = ground_priority
                     else:
-                        can_attack_air = threats.filter(lambda x: x.can_attack_air)
+                        can_attack_air = ground_threats.filter(lambda x: x.can_attack_air)
                         if can_attack_air.exists:
                             targets = can_attack_air
                         else:
@@ -86,8 +59,41 @@ class PhoenixMicro(MicroABS):
                         if close_own_units.amount > close_enemy.amount / 1.5 and close_own_units.amount >= 3:
                             phoenix(ability.GRAVITONBEAM_GRAVITONBEAM, target)
                             beaming_phoenixes_nb += 1
+            elif flying_threats:
+                beamed_units = flying_threats.filter(lambda x: x.has_buff(buff.GRAVITONBEAM))
+                if phoenix.shield_percentage < 0.80:
+                    batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and
+                                                            x.energy > 10 and x.distance_to(phoenix)<=24)
+                    if batteries:
+                        phoenix.move(batteries.closest_to(phoenix))
+                    else:
+                        phoenix.move(phoenix.position.towards(flying_threats.closest_to(phoenix), -9))
+                    continue
+                if beamed_units:
+                    flying_threats = beamed_units
                 else:
-                    phoenix.move(phoenix.position.towards(ground_threats.closest_to(phoenix), -7))
+                    close_threats = flying_threats.closer_than(6, phoenix)
+                    if close_threats.exists:
+                        flying_threats = close_threats
+
+                priority = flying_threats.filter(lambda z: z.can_attack_air or z.type_id == unit.MEDIVAC) \
+                    .sorted(lambda z: z.health + z.shield)
+                if priority.exists:
+                    target2 = priority[0]
+                else:
+                    target2 = flying_threats.sorted(lambda z: z.health + z.shield)[0]
+
+                if target2 is not None:
+                    attack_position = target2.position.towards(phoenix, 5)
+                    if enemy.filter(lambda x: x.can_attack_air and x.distance_to(attack_position) <= 5).amount \
+                        < self.ai.units.filter(lambda x: x.distance_to(attack_position) <= 6).amount/2:
+                        phoenix.attack(target2)
+            elif ability.GRAVITONBEAM_GRAVITONBEAM not in abilities and (ground_threats or flying_threats):
+                if ground_threats:
+                    closest_enemy = ground_threats.closest_to(phoenix)
+                else:
+                    closest_enemy = flying_threats.closest_to(phoenix)
+                phoenix.move(phoenix.position.towards(closest_enemy, -7))
             else:
                 if attacking_friends is None:
                     attacking_friends = division.get_attacking_units(self.ai.iteration)

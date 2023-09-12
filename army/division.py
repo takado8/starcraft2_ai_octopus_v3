@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+from army.attack.target_selector_attack import TargetSelectorAttack
 from army.movements import Movements
 from army.soldier import Soldier
 from sc2.unit import UnitTypeId
@@ -7,7 +8,8 @@ from sc2.units import Units
 
 
 class Division:
-    def __init__(self, ai, name, units_ids_dict, micros: List, movements: Movements, max_units_distance=10,
+    def __init__(self, ai, name, units_ids_dict, micros: List, movements: Movements, target_selector=None,
+                 max_units_distance=10,
                  lifetime=None):
         self.ai = ai
         self.name = name
@@ -26,8 +28,10 @@ class Division:
         self.units_last_fetch = -1
         self.safety_backout_position = None
         self.safety_backout_position_last_fetch = -1
+        self.target_selector = target_selector if target_selector else TargetSelectorAttack(ai)
 
-    async def do_micro(self, destination):
+    async def do_micro(self):
+        destination = self.target_selector.select_target()
         units_in_position = 0
         for micro in self.micros:
             units_in_position += await micro.do_micro(self)

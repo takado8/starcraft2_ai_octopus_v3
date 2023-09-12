@@ -1,3 +1,4 @@
+from army.attack.target_selector_attack import TargetSelectorAttack
 from army.movements import Movements
 from army.status.army_status import ArmyStatus
 from army.training.training import Training
@@ -6,12 +7,11 @@ from typing import Dict, List
 
 
 class Army:
-    def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer, defense, attack):
+    def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer, defense):
         self.divisions: Dict[str, Division] = {}
         self.ai = ai_object
         self.scouting = scouting
         self.defense = defense
-        self.attack = attack
         self.army_status = ArmyStatus(ai_object)
         self.training = Training(ai_object, trainer, self.divisions)
         self.enemy_economy = enemy_economy
@@ -34,18 +34,15 @@ class Army:
             self.training.order_units_training(training_order)
             await self.training.train()
 
-            destination = None
             self.defense.assign_defend_position()
             if self.army_status.status == ArmyStatus.ATTACKING:
-                destination = self.attack.select_targets_to_attack()
-                await self.execute_micro(destination)
+                await self.execute_micro()
             else:
-                await self.execute_micro(destination)
+                await self.execute_micro()
                 self.defense.defend(self.army_status)
 
-
             self.defense.avoid_aoe()
-            if self.attack.enemy_main_base_down:
+            if self.scouting.enemy_main_base_down:
                 self.scouting.scan_on_end()
             else:
                 await self.scouting.scan_middle_game()
@@ -54,15 +51,17 @@ class Army:
             self.training.debug()
             raise ex
 
-    async def execute_micro(self, destination):
+    async def execute_micro(self):
         for division in self.divisions:
-            await self.divisions[division].do_micro(destination)
+            await self.divisions[division].do_micro()
 
-    def create_division(self, division_name, units_ids_dict, micros: List, movements: Movements, lifetime=None):
+    def create_division(self, division_name, units_ids_dict, micros: List, movements: Movements,
+                        target_selector=None, lifetime=None):
         if division_name in self.divisions:
             print('Division "{}" already exists.'.format(division_name))
         else:
-            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements, lifetime=lifetime)
+            new_division = Division(self.ai, division_name, units_ids_dict, micros, movements,
+                                    target_selector=target_selector, lifetime=lifetime)
             self.divisions[division_name] = new_division
             print("division created: {}".format(new_division))
             return new_division

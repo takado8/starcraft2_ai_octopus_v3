@@ -1,5 +1,6 @@
 from sc2 import Race
 
+from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
@@ -34,6 +35,7 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
 from army.divisions import VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
 import time
+from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
 class PhoenixStalker(Strategy):
@@ -57,18 +59,28 @@ class PhoenixStalker(Strategy):
         stalker_micro = StalkerBlinkMicro(ai)
         zealot_micro = ZealotMicro(ai)
 
-        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
+        target_selectior_defense = TargetSelectorDefense(ai)
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai),
+                                  target_selector=target_selectior_defense)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('phoienix1', {unit.PHOENIX: 10}, [phoenix_micro], Movements(ai))
-        self.army.create_division('phoienix2', {unit.PHOENIX: 10}, [phoenix_micro], Movements(ai))
-        self.army.create_division('stalkers1', {unit.STALKER: 10, unit.ZEALOT: 7}, [stalker_micro, zealot_micro], Movements(ai))
-        self.army.create_division('stalkers2', {unit.STALKER: 10, unit.ZEALOT: 7}, [stalker_micro, zealot_micro], Movements(ai))
+        self.army.create_division('phoienix1', {unit.PHOENIX: 6}, [phoenix_micro], Movements(ai))
+        self.army.create_division('phoienix3', {unit.PHOENIX: 2}, [phoenix_micro], Movements(ai),
+                                  target_selector=target_selectior_defense)
+        self.army.create_division('phoienix2', {unit.PHOENIX: 6}, [phoenix_micro], Movements(ai))
+        self.army.create_division('phoienix4', {unit.PHOENIX: 3}, [phoenix_micro], Movements(ai),
+                                  target_selector=target_selectior_defense)
+        self.army.create_division('stalkers1', {unit.STALKER: 10, unit.ZEALOT: 3}, [stalker_micro, zealot_micro], Movements(ai))
+        self.army.create_division('stalkers3', {unit.STALKER: 3}, [stalker_micro], Movements(ai),
+                                  target_selector=target_selectior_defense)
+        self.army.create_division('stalkers2', {unit.STALKER: 10, unit.ZEALOT: 3}, [stalker_micro, zealot_micro], Movements(ai))
+
         self.army.create_division('main', {unit.CARRIER: 20, unit.TEMPEST: 5},
                                   [stalker_micro, carrier_micro, tempest_micro,phoenix_micro], Movements(ai))
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
 
         self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-650)
+        self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
 
         build_queue = BuildQueues.PHOENIX_STALKER
 
@@ -120,7 +132,8 @@ class PhoenixStalker(Strategy):
     # =======================================================  Upgraders
     async def do_upgrades(self):
         await self.twilight_upgrader.blink()
-
+        if upgrade.BLINKTECH in self.ai.state.upgrades:
+            await self.twilight_upgrader.charge()
         self.cybernetics_upgrader.warpgate()
         self.cybernetics_upgrader.air_dmg()
         self.forge_upgrader.shield()

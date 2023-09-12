@@ -1,5 +1,5 @@
 from army.army import Army
-from army.attack.attack import Attack
+from army.attack.target_selector_attack import TargetSelectorAttack
 from army.defense.defense import Defense
 from army.scouting.scouting import Scouting
 from bot.conditions import ConditionAttack, ConditionCounterAttack, ConditionRetreat, ConditionLockSpending
@@ -30,10 +30,9 @@ class Strategy:
         self.enemy_economy = EnemyEconomy(ai)
         self.scouting = Scouting(ai, self.enemy_economy)
         self.trainer = Trainer(ai)
-        self.attack = Attack(ai)
         self.defense = defense if defense else Defense(ai)
         self.army = Army(ai, self.scouting, self.enemy_economy, self.own_economy, self.trainer,
-                         self.defense, self.attack)
+                         self.defense)
 
         self.pylon_builder = PylonBuilder(ai)
         self.assimilator_builder = AssimilatorBuilder(ai)

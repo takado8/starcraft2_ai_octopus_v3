@@ -20,6 +20,7 @@ class Scouting:
         self.scouting_active_after_s = 0
         self.enemy_value_lost_cached = 0
         self.killed_units_diff_cached = 0
+        self.enemy_main_base_down = False
 
     async def scan_middle_game(self):
         self.gather_enemy_info()
@@ -100,6 +101,14 @@ class Scouting:
                                                                       and x.type_id not in excluded and x.is_visible
                                                             and not x.is_snapshot and not x.is_hallucination)
         self.enemy_economy.add_units_to_enemy_info(MILITARY, enemy_military_units)
+
+        if self.enemy_main_base_down or (
+                self.ai.army.closer_than(17, self.ai.enemy_start_locations[0]).amount > 7 and
+                (not self.ai.enemy_structures().exists or self.ai.enemy_structures().closer_than(20,
+                                                                    self.ai.enemy_start_locations[0]).amount < 3)):
+            if not self.enemy_main_base_down:
+                print('enemy main base down.')
+                self.enemy_main_base_down = True
 
     async def create_scouting_positions_list(self):
         scouting_positions = []
