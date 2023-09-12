@@ -123,7 +123,7 @@ class StalkerBlinkMicro(MicroABS):
                 if self.ai.attack:
                     threats.extend(self.ai.enemy_structures().filter(lambda x: x.can_attack_ground and not x.is_snapshot
                                                                                and x.distance_to(stalker) < dist))
-                    if blink_to_location and self.ai.time < 1200 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
+                    if blink_to_location and self.ai.time < 900 and stalker.distance_to(enemy_main_base) < stalker.distance_to(
                         self.ai.defend_position):
                         # blink to main base
                         if self.blink_locations and not stalker_on_main_base_lvl:
@@ -197,7 +197,12 @@ class StalkerBlinkMicro(MicroABS):
                                     threats = bunkers
 
                     if (not enemy.exists or tanks) and stalker.distance_to(enemy_main_base) < 14:
-                        threats = self.ai.enemy_structures().filter(lambda x: x.type_id in BASES_IDS)
+                        workers = enemy.filter(lambda x: x.type_id in {unit.SCV, unit.MULE} and
+                                                         x.distance_to(closest_minerals) < 10)
+                        if workers:
+                            threats = workers
+                        else:
+                            threats = self.ai.enemy_structures().filter(lambda x: x.type_id in BASES_IDS)
                         if not threats:
                             threats = self.ai.enemy_structures()
                             if threats:

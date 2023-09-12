@@ -16,6 +16,7 @@ class ImmortalMicro(MicroABS):
         attacking_friends = None
         division_position = None
         for immortal in immortals:
+
             if enemy.exists:
                 threats = enemy.filter(
                     lambda unit_: unit_.can_attack_ground and unit_.distance_to(immortal.position) <= dist and
@@ -43,6 +44,16 @@ class ImmortalMicro(MicroABS):
                         threats.extend(workers_near_bunkers)
             else:
                 threats = None
+            if immortal.shield_percentage < 0.5:
+                batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and
+                                                                  x.energy_percentage >= 0.2 and x.is_ready)
+                if threats:
+                    immortal.move(self.find_back_out_position(immortal,
+                                                              threats.closest_to(immortal).position, division))
+                elif batteries:
+                    immortal.move(batteries.closest_to(immortal))
+
+                continue
             if threats:
                 close_threats = threats.closer_than(4, immortal)
                 if close_threats.amount > 0:

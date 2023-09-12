@@ -24,6 +24,14 @@ class ArchonMicro(MicroABS):
                         lambda _x:(_x.can_attack_ground or _x.type_id == unit.BUNKER) and _x.distance_to(archon) <= dist))
             else:
                 threats = None
+            if archon.shield_percentage < 0.5:
+                batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and
+                                                                  x.energy_percentage >= 0.2 and x.is_ready)
+                if threats:
+                    archon.move(self.find_back_out_position(archon, threats.closest_to(archon).position))
+                elif batteries:
+                    archon.move(batteries.closest_to(archon))
+                continue
             if threats:
                 close_threats = threats.closer_than(3, archon)
                 if close_threats.amount > 0:
@@ -41,9 +49,7 @@ class ArchonMicro(MicroABS):
                     targets = targets.sorted(lambda x1: x1.health + x1.shield)
                     target = self.select_target(targets)
 
-                if archon.shield_percentage < 0.25:
-                    archon.move(self.find_back_out_position(archon, closest_enemy.position))
-                    continue
+
 
                 if target is None:
                     target = closest_enemy
