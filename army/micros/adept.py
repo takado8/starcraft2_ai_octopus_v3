@@ -96,7 +96,7 @@ class AdeptMicro(MicroABS):
                     closest_enemy = enemy.closest_to(adept)
                     bunker = self.ai.enemy_structures(unit.BUNKER)
                     if bunker and bunker.closer_than(8, closest_enemy):
-                        return 
+                        return adepts.amount
                     adept.attack(closest_enemy)
                     if ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT in await self.ai.get_available_abilities(adept):
                         adept(ability.ADEPTPHASESHIFT_ADEPTPHASESHIFT, closest_enemy.position)
