@@ -59,20 +59,20 @@ class PhoenixStalker(Strategy):
         stalker_micro = StalkerBlinkMicro(ai)
         zealot_micro = ZealotMicro(ai)
 
-        target_selectior_defense = TargetSelectorDefense(ai)
+        target_selector_defense = TargetSelectorDefense(ai)
         self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai),
-                                  target_selector=target_selectior_defense)
+                                  target_selector=target_selector_defense)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('phoienix1', {unit.PHOENIX: 6}, [phoenix_micro], Movements(ai))
         self.army.create_division('phoienix3', {unit.PHOENIX: 2}, [phoenix_micro], Movements(ai),
-                                  target_selector=target_selectior_defense)
+                                  target_selector=target_selector_defense)
         self.army.create_division('phoienix2', {unit.PHOENIX: 6}, [phoenix_micro], Movements(ai))
         self.army.create_division('phoienix4', {unit.PHOENIX: 3}, [phoenix_micro], Movements(ai),
-                                  target_selector=target_selectior_defense)
+                                  target_selector=target_selector_defense)
         self.army.create_division('stalkers1', {unit.STALKER: 10, unit.ZEALOT: 3}, [stalker_micro, zealot_micro], Movements(ai))
         self.army.create_division('stalkers3', {unit.STALKER: 3}, [stalker_micro], Movements(ai),
-                                  target_selector=target_selectior_defense)
+                                  target_selector=target_selector_defense)
         self.army.create_division('stalkers2', {unit.STALKER: 10, unit.ZEALOT: 3}, [stalker_micro, zealot_micro], Movements(ai))
 
         self.army.create_division('main', {unit.CARRIER: 20, unit.TEMPEST: 5},
@@ -103,9 +103,9 @@ class PhoenixStalker(Strategy):
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        # await self.siege_infrastructure.execute()
+        await self.siege_infrastructure.execute()
         await self.wall_builder.execute()
-        if self.ai.time > 360:
+        if self.ai.time > 300:
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)

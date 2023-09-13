@@ -1,11 +1,13 @@
 from sc2 import Race
 
+from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.carrier_mothership import CarrierMothershipMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle_defense import OracleDefenseMicro
+from army.micros.phoenix import PhoenixMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker import StalkerMicro
@@ -38,43 +40,37 @@ class TwoBaseSkytoss(Strategy):
     def __init__(self, ai):
         super().__init__(type='air', name='TwoBaseSkytoss', ai=ai)
         positions_loader = PositionsLoader(ai)
-        if self.ai.enemy_race == Race.Zerg:
-            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-            del locations_dict[unit.FORGE]
-            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
-            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-                                      Movements(ai, 0.1))
-            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
-        else:
-            locations_dict = None
-            sentry_micro = SentryMicro(ai)
 
-        # voidray_micro = VoidrayMicro(ai)
+        locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
+        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+        del locations_dict[unit.FORGE]
+        sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
+        wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [wall_guard_zealot_micro],
+                                  Movements(ai, 0.1))
+        self.pylon_builder.special_locations = locations_dict[unit.PYLON]
+
         carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
-        # tempest_micro = TempestMicro(ai)
-        # zealot_micro = ZealotMicro(ai)
-        # sentry_micro = SentryMicro(ai)
+        target_selector_defense = TargetSelectorDefense(ai)
+        phoenix_micro = PhoenixMicro(ai)
 
 
-        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
-        self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai), lifetime=300)
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai),
+                                  target_selector=TargetSelectorDefense(ai))
+        self.army.create_division('stalker', {unit.STALKER: 3}, [StalkerMicro(ai)], Movements(ai),
+                                  target_selector=TargetSelectorDefense(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        # self.army.create_division('voidrays1', {unit.VOIDRAY:1}, [voidray_micro], Movements(ai), lifetime=500)
+        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai),
+                                  target_selector=TargetSelectorDefense(ai))
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
-        # self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-900)
-        # self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-1200)
-
         self.army.create_division('carriers1', {unit.CARRIER: 20, unit.TEMPEST: 5, unit.MOTHERSHIP: 1},
-                                  [carrier_micro,tempest_micro], Movements(ai))
-        # self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
-        # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
-        # self.army.create_division('zealot1', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-640)
-        # self.army.create_division('zealot2', ZEALOT_x5, [zealot_micro], Movements(ai), lifetime=-40)
-        self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-650)
+                                  [carrier_micro, tempest_micro], Movements(ai))
+        self.army.create_division('phoienix4', {unit.PHOENIX: 3}, [phoenix_micro], Movements(ai),
+                                  target_selector=target_selector_defense)
+        self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-420,
+                                  target_selector=target_selector_defense
+                                  )
 
         build_queue = BuildQueues.TWO_BASE_SKYTOSS
 
@@ -98,9 +94,8 @@ class TwoBaseSkytoss(Strategy):
     async def execute_interfaces(self):
         await super().execute_interfaces()
         await self.siege_infrastructure.execute()
-
         await self.wall_builder.execute()
-        if self.ai.time > 600:
+        if self.ai.time > 300:
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
@@ -121,10 +116,7 @@ class TwoBaseSkytoss(Strategy):
         await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        if self.ai.enemy_race == Race.Zerg:
-            await self.pylon_builder.new_standard_upper_wall()
-        else:
-            await self.pylon_builder.new_standard()
+        await self.pylon_builder.new_standard_upper_wall()
 
     def build_assimilators(self):
         self.assimilator_builder.max_vespene()
@@ -151,7 +143,8 @@ class TwoBaseSkytoss(Strategy):
                self.condition_attack.army_value_n_times_the_enemy(2)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_value_n_times_the_enemy(1) and self.condition_retreat.army_supply_less_than(90)
+        return self.condition_retreat.army_value_n_times_the_enemy(1) and self.condition_retreat.army_supply_less_than(
+            90)
 
     def counter_attack_condition(self):
         return self.condition_counter_attack.counter_attack()
@@ -163,7 +156,6 @@ class TwoBaseSkytoss(Strategy):
 
     async def lock_spending_condition(self):
         await self.condition_lock_spending.none()
-
 
     async def morphing(self):
         await self.morphing_.morph_gates()
