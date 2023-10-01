@@ -108,7 +108,6 @@ class Gateway(Strategy):
     # =======================================================  Builders
     async def build_from_queue(self):
         await self.builder.build_from_queue()
-        await self.battery_builder.build_batteries()
 
     async def build_pylons(self):
         if self.ai.enemy_race == Race.Zerg:

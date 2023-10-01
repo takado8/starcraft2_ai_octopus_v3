@@ -35,7 +35,7 @@ class Builder:
             validate = False
             if not self.is_build_stuck:
                 self.is_build_stuck = True
-                await self.ai.chat_send(f'Tag:Fix build stuck on idx {self.build_queue_index}')
+                await self.ai.chat_send(f'Fix build stuck on idx {self.build_queue_index}')
         else:
             validate = True
 

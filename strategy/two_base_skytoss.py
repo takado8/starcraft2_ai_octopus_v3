@@ -57,17 +57,17 @@ class TwoBaseSkytoss(Strategy):
 
 
         self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai),
-                                  target_selector=TargetSelectorDefense(ai))
-        self.army.create_division('stalker', {unit.STALKER: 3}, [StalkerMicro(ai)], Movements(ai),
-                                  target_selector=TargetSelectorDefense(ai))
+                                  target_selector=TargetSelectorDefense(ai), lifetime=300)
+        self.army.create_division('stalker', {unit.STALKER: 1}, [StalkerMicro(ai)], Movements(ai),
+                                  target_selector=TargetSelectorDefense(ai), lifetime=300)
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai),
                                   target_selector=TargetSelectorDefense(ai))
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai))
         self.army.create_division('carriers1', {unit.CARRIER: 20, unit.TEMPEST: 5, unit.MOTHERSHIP: 1},
                                   [carrier_micro, tempest_micro], Movements(ai))
-        self.army.create_division('phoienix4', {unit.PHOENIX: 3}, [phoenix_micro], Movements(ai),
-                                  target_selector=target_selector_defense)
+        self.army.create_division('phoienix4', {unit.PHOENIX: 2}, [phoenix_micro], Movements(ai),
+                                  target_selector=target_selector_defense, lifetime=-600)
         self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-420,
                                   target_selector=target_selector_defense
                                   )
@@ -95,7 +95,7 @@ class TwoBaseSkytoss(Strategy):
         await super().execute_interfaces()
         await self.siege_infrastructure.execute()
         await self.wall_builder.execute()
-        if self.ai.time > 300:
+        if self.ai.time > 360:
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)

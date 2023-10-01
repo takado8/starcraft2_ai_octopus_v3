@@ -1,6 +1,6 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2 import AbilityId
-from economy.info.enemy_economy import BASES, MILITARY, EnemyEconomy
+from economy.info.enemy_economy import *
 from sc2.position import Point2
 
 
@@ -93,6 +93,11 @@ class Scouting:
         # bases
         enemy_bases = self.ai.enemy_structures().filter(lambda x: x.type_id in self.ai.bases_ids and x.is_visible)
         self.enemy_economy.add_units_to_enemy_info(BASES, enemy_bases)
+        # production (only terran for now)
+        terran_production_ids = {unit.BARRACKS, unit.FACTORY, unit.STARPORT}
+        terran_production_buildings = self.ai.enemy_structures().filter(lambda x: x.type_id in terran_production_ids and
+                                                                                  x.is_visible and not x.is_snapshot)
+        self.enemy_economy.add_units_to_enemy_info(PRODUCTION, terran_production_buildings)
         # military units
         excluded = {unit.BROODLING, unit.OVERLORD, unit.OVERSEER, unit.ADEPTPHASESHIFT, unit.OVERLORDCOCOON,
                     unit.OVERLORDTRANSPORT, unit.WARPPRISM, unit.WARPPRISMPHASING, unit.OBSERVER}

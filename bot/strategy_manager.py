@@ -1,6 +1,7 @@
 from bot.enemy_data import EnemyData
 from strategy.air_oracle import AirOracle
 from strategy.blinkers_updated import BlinkersUpdated
+from strategy.cannon_defense import CannonDefense
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.disruptors import Disruptors
 from strategy.fortress_skytoss import FortressSkyToss
@@ -16,6 +17,7 @@ from strategy.skytoss_carriers import SkytossCarriers
 from strategy.skytoss_tempest import SkytossTempest
 from strategy.stalker_proxy import StalkerProxy
 from strategy.two_base_colossus import TwoBaseColossusUpdated
+from strategy.two_base_robo import TwoBaseRobo
 from strategy.two_base_skytoss import TwoBaseSkytoss
 from strategy.worker_rush_defense import WorkerRushDefenseStrategy
 from strategy.zealot_rush_defense import ZealotRushDefense
@@ -39,7 +41,7 @@ class StrategyManager:
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker
+                'TwoBaseRobo': TwoBaseRobo
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -51,7 +53,7 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker
+                'TwoBaseRobo': TwoBaseRobo
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -64,7 +66,8 @@ class StrategyManager:
                 'AirOracle': AirOracle,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker
+                'PhoenixStalker': PhoenixStalker,
+                'TwoBaseRobo': TwoBaseRobo
             }
         else:
             self.strategy_name_dict = {
@@ -75,8 +78,7 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'PhoenixStalker': PhoenixStalker
-                # 'TwoBaseColossusUpdated': TwoBaseColossusUpdated
+                'TwoBaseRobo': TwoBaseRobo
             }
 
         self.enemy_data = enemy_data

@@ -77,15 +77,10 @@ class SkytossCarriers(Strategy):
         # if self.ai.time > 1500:
         #     await self.mother_ship_interface.execute()
         await self.shield_battery_interface.execute()
-        if self.interface_time_consumed > 220 and self.ai.iteration % 30 != 0:
-            return
-
-        start = time.time()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420,
                                                    amount=3 if self.interface_time_consumed > 500 else 5)
-        end = time.time()
-        self.interface_time_consumed += end - start
+
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

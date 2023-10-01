@@ -13,6 +13,7 @@ class OracleDefenseMicro(MicroABS):
     def __init__(self, ai):
         # self.ai: OctopusV3 = ai
         super().__init__('OracleDefenseMicro', ai)
+        self.invisible_units_detected = False
 
     async def do_micro(self, division):
         enemy = self.ai.enemy_units()
@@ -39,6 +40,8 @@ class OracleDefenseMicro(MicroABS):
             elif anti_air:# or (oracle.health_percentage < 0.5 and oracle.shield_percentage < 0.35):
                 oracle.move(oracle.position.towards(anti_air.closest_to(oracle), -12))
             elif invisible_threats:
+                if not self.invisible_units_detected:
+                    self.invisible_units_detected = True
                 self.cast_revelation(oracle, invisible_threats, abilities)
             elif threats:
                 if threats.amount > 5 and sum([threat.air_dps for threat in threats]) > 15 or\
@@ -47,14 +50,14 @@ class OracleDefenseMicro(MicroABS):
                     if ability.BEHAVIOR_PULSARBEAMOFF in abilities:
                         oracle(ability.BEHAVIOR_PULSARBEAMOFF)
                         queue_command = True
-                    if self.cast_revelation(oracle, threats, abilities, queue_command):
+                    if (not self.invisible_units_detected or oracle.energy >= 75) and self.cast_revelation(oracle, threats, abilities, queue_command):
                         queue_command = True
                     oracle.move(oracle.position.towards(threats.closest_to(oracle), -6), queue=queue_command)
                 elif oracle.energy > 45 and ability.BEHAVIOR_PULSARBEAMON in abilities:
                     oracle(ability.BEHAVIOR_PULSARBEAMON)
                     oracle.attack(threats.closest_to(oracle), queue=True)
 
-            elif not self.ai.attack and oracle.energy >= 75 and ability.BUILD_STASISTRAP in abilities:
+            elif not self.ai.attack and not self.invisible_units_detected and oracle.energy >= 75 and ability.BUILD_STASISTRAP in abilities:
                 ramps = sorted(self.ai.game_info.map_ramps, key=lambda x: x.top_center.distance_to(self.ai.defend_position))
                 for ramp in ramps:
                     if self.ai.townhalls.amount > 1 and (ramp.top_center == self.ai.main_base_ramp.top_center or
@@ -81,8 +84,7 @@ class OracleDefenseMicro(MicroABS):
                 targets = enemy.filter(lambda x: x.can_attack_air and not x.has_buff(buff.ORACLEREVELATION))
                 if targets.amount > 3:
                     self.cast_revelation(oracle, targets, abilities, min_units=3)
-                # else:
-        return oracles.amount
+        return 0
 
 
     def cast_revelation(self, oracle, targets, abilities, queue=False, min_units=None):

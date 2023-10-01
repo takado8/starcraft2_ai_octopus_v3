@@ -2,6 +2,7 @@ from bot.constants import GAS_VALUE
 
 BASES = 'bases'
 MILITARY = 'military'
+PRODUCTION = 'production'
 
 
 class EnemyEconomy:
@@ -89,11 +90,11 @@ class EnemyEconomy:
     def print_enemy_info(self):
         print('-------------------- enemy info -----------------------------')
         self.calculate_enemy_units_report()
-        # for category in self.enemy_info:
-        #     print("{}:".format(category))
-        #     # for item in self.enemy_info[category]:
-        #     #     print("   {}, {}".format(item, self.enemy_info[category][item]))
-        #     print(" total: {}".format(len(self.enemy_info[category])))
+        for category in self.enemy_info:
+            print("{}:".format(category))
+            for item in self.enemy_info[category]:
+                print("   {}, {}".format(item, self.enemy_info[category][item]))
+            print(" total: {}".format(len(self.enemy_info[category])))
         print('army value: {}'.format(self.enemy_army_value))
         # print('army supply: {}'.format(self.enemy_army_supply))
         # print('\ntotal dps: {}\ntotal hp: {}'.format(self.total_enemy_ground_dps, self.total_enemy_hp))

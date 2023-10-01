@@ -16,8 +16,8 @@ class PositionsSetup(BotAI):
         self.builder: Builder = None
 
     async def on_start(self):
-        # self.start_on_specific_location(undesired_location="(76.5, 154.5)")
-        self.map_service = MapPositionsService(self, "cannon_rush_defense")
+        self.start_on_specific_location(undesired_location="(128.5, 143.5)")
+        self.map_service = MapPositionsService(self, "cannon_defense")
         try:
             locations_dict = self.map_service.positions_dict[self.map_service.start_location]
         except:
@@ -82,6 +82,6 @@ def run(real_time=0):
 
 
 if __name__ == '__main__':
-    real_time = 1
+    real_time = 0
     for i in range(15):
         run(real_time=real_time)

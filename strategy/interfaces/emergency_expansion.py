@@ -15,11 +15,11 @@ class EmergencyExpansion(InterfaceABS):
 
     async def execute(self):
         nexuses = self.ai.structures(unit.NEXUS)
-        if len(self.ai.strategy.workers_distribution.distant_mining_workers) >= 10 and not \
-                nexuses.filter(lambda x: not x.is_ready) and not self.ai.already_pending(unit.NEXUS) and not self.ai.attack\
+        if len(self.ai.strategy.workers_distribution.distant_mining_workers) >= (16 if self.ai.attack else 9) and not \
+                nexuses.filter(lambda x: not x.is_ready) and not self.ai.already_pending(unit.NEXUS)\
                 and (not self.ai.enemy_units() or not self.ai.enemy_units().closer_than(20, self.ai.defend_position)):
             if self.msg_send_on_nexuses_amount != nexuses.amount and not self.excess_expansion_was_created_recently:
-                await self.ai.chat_send("Tag:Spending lock for expansion.")
+                await self.ai.chat_send("Spending lock for expansion.")
                 self.msg_send_on_nexuses_amount = nexuses.amount
                 self.lock_condition_cached = self.ai.strategy.lock_spending_condition
                 self.ai.strategy.lock_spending_condition = self.lock_condition_overwrite
@@ -36,7 +36,7 @@ class EmergencyExpansion(InterfaceABS):
             await self.ai.strategy.builder.expander.expand()
             if self.msg_send_on_nexuses_amount != nexuses.amount:
                 self.excess_expansion_was_created_recently = True
-                await self.ai.chat_send("Tag:Excess expansion.")
+                await self.ai.chat_send("Excess expansion.")
                 self.msg_send_on_nexuses_amount = nexuses.amount
 
     async def lock_condition_overwrite(self):

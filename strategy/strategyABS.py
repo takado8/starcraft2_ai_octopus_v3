@@ -62,7 +62,9 @@ class Strategy:
         await self.attack_informant.execute()
         await self.emergency_expansion.execute()
         await self.recall_on_retreat.execute()
-        self.workers_micro.execute()
+        if 'defending_with_workers' not in self.ai.global_variables or not \
+                self.ai.global_variables['defending_with_workers']:
+            self.workers_micro.execute()
 
     async def handle_workers(self):
         raise NotImplementedError
