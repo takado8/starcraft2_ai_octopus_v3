@@ -4,6 +4,7 @@ from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
 from army.micros.carrier_mothership import CarrierMothershipMicro
+from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
 from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
@@ -13,6 +14,7 @@ from army.micros.stalker_blink import StalkerBlinkMicro
 from army.micros.tempest import TempestMicro
 from army.micros.tempest_mothership import TempestMothershipMicro
 from army.micros.voidray import VoidrayMicro
+from army.micros.warpprism import WarpPrismMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
@@ -31,7 +33,7 @@ from builders.build_queues import BuildQueues
 from builders.builder import Builder
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader
-from army.divisions import VOIDRAY_x3, OBSERVER_x1, ORACLE_x1
+from army.divisions import VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1
 import time
 
 
@@ -55,17 +57,25 @@ class SkytossTempest(Strategy):
         # voidray_micro = VoidrayMicro(ai)
         # carrier_micro = CarrierMothershipMicro(ai)
         tempest_micro = TempestMothershipMicro(ai)
+        blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
+        blink_locations = blink_locations_dict[unit.PYLON]
+        stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
 
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('stalkers', {unit.STALKER: 25, unit.SENTRY: 2}, [StalkerBlinkMicro(ai), sentry_micro],
+        self.army.create_division('stalkers', {unit.STALKER: 25, unit.SENTRY: 2}, [sentry_micro, stalker_micro],
                                   Movements(ai, units_ratio_before_next_step=0.6, movements_step=15))
 
         self.army.create_division('main_army', {unit.TEMPEST: 25},
                                   [tempest_micro], Movements(ai))
+        self.army.create_division('warpprism', WARPPRISM_x1, [WarpPrismMicro(ai)], Movements(ai, 0.2))
 
         self.army.create_division('sentry', {unit.SENTRY: 1}, [sentry_micro], Movements(ai, 0.2), lifetime=-650)
-
+        self.army.create_division('chargelots', {unit.ZEALOT: 10}, [ZealotMicro(ai)], Movements(ai, 0.1), lifetime=-600)
+        self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [ZealotMicro(ai)], Movements(ai, 0.1),
+                                  lifetime=False)
+        self.army.create_division('immortals', {unit.IMMORTAL:  4},
+                                  [ImmortalMicro(ai)], Movements(ai))
         build_queue = BuildQueues.TWO_BASE_SKYTOSS
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),

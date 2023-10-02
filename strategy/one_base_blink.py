@@ -82,12 +82,11 @@ class OneBaseBlink(Strategy):
         self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
 
-        self.army.create_division('stalkers', {unit.STALKER: 30, unit.SENTRY: 4}, [stalker_micro, sentry_micro],
+        self.army.create_division('stalkers', {unit.STALKER: 30, unit.SENTRY: 2}, [stalker_micro, sentry_micro],
                                   Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
 
         self.army.create_division('main', {unit.IMMORTAL: 3, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
-                                  [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro],
-                                  Movements(ai))
+                                  [immortal_micro, colossus_micro, disruptor_micro], Movements(ai))
 
         self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
         self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))

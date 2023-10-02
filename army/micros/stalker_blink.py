@@ -73,7 +73,10 @@ class StalkerBlinkMicro(MicroABS):
                             (stalkers.closer_than(30, self.blink_locations[0]).amount >= 3 or
                              stalkers.closer_than(30, self.blink_locations[1]).amount >= 3):
                         sentry(ability.HALLUCINATION_WARPPRISM)
-                    elif division_position and sentry.distance_to(division_position) > 7:
+                    elif enemy and (enemy.closer_than(8, sentry).amount > 1 or
+                            enemy.filter(lambda x: x.type_id == unit.SIEGETANKSIEGED and x.distance_to(sentry) <= 17)):
+                        self.find_back_out_position(sentry, enemy.closest_to(sentry).position, division)
+                    elif division_position and sentry.distance_to(division_position) > 12:
                         sentry.move(division_position)
                     elif not division_position:
                         if stalkers:
@@ -98,23 +101,46 @@ class StalkerBlinkMicro(MicroABS):
             blink_to_location = None
 
         for stalker in stalkers:
-            if blink_to_location and self.ai.attack and upgrade.BLINKTECH in self.ai.state.upgrades and \
-                    stalker.distance_to(enemy_main_base) < stalker.distance_to(self.ai.defend_position):
+            if blink_to_location:
                 stalker_on_main_base_lvl = abs(enemy_main_base_height - stalker.position3d.z) < \
                                            abs(blink_location_height - stalker.position3d.z)
-                if self.blink_locations and not stalker_on_main_base_lvl:
-                    stalker_dist_to_blink = stalker.distance_to(self.blink_locations[0])
-                    stalker_dist_to_wait_spot = stalker.distance_to(self.blink_locations[1])
-                    if stalker_dist_to_wait_spot < 3 and stalkers.closer_than(6, self.blink_locations[1]).amount >= 3 \
-                            and await self.is_blink_available(stalker) and flying_units and \
-                            flying_units.closer_than(5, self.blink_locations[0]):
-                        stalker.attack(self.blink_locations[0])
-                    elif stalker_dist_to_blink < 5 and await self.is_blink_available(stalker):
-                        await self.blink(stalker, blink_to_location)
-                        continue
-                    elif stalker_dist_to_blink > 3 and stalker_dist_to_wait_spot > 45:
-                        stalker.attack(self.blink_locations[1])
-                        units_in_position -= 1
+                if self.ai.attack and upgrade.BLINKTECH in self.ai.state.upgrades and \
+                    stalker.distance_to(enemy_main_base) < stalker.distance_to(self.ai.defend_position):
+                    if self.blink_locations and not stalker_on_main_base_lvl:
+                        stalker_dist_to_blink = stalker.distance_to(self.blink_locations[0])
+                        stalker_dist_to_wait_spot = stalker.distance_to(self.blink_locations[1])
+                        if stalker_dist_to_wait_spot < 3 and stalkers.closer_than(6, self.blink_locations[1]).amount >= 5 \
+                                and await self.is_blink_available(stalker) and flying_units and \
+                                flying_units.closer_than(5, self.blink_locations[0]):
+                            threats = []
+                            if stalker.weapon_ready and enemy.exists:
+                                threats = enemy.filter(
+                                    lambda unit_: not unit_.has_buff(buff.IMMORTALOVERLOAD) and (unit_.can_attack_ground or
+                                        unit_.type_id in priority_ids) and stalker.target_in_range(unit_)
+                                        and not unit_.is_hallucination and unit_.is_visible and unit_.cloak != 1)
+                            if threats:
+                                stalker.attack(self.blink_locations[0])
+                            else:
+                                stalker.move(self.blink_locations[0])
+                        elif stalker_dist_to_blink < 5 and await self.is_blink_available(stalker):
+                            await self.blink(stalker, blink_to_location)
+                            continue
+                        elif stalker_dist_to_blink > 3 and stalker_dist_to_wait_spot > 45:
+                            stalker.attack(self.blink_locations[1])
+                            units_in_position -= 1
+                elif not self.ai.attack and stalker_on_main_base_lvl and stalker.distance_to(blink_to_location) < 30:
+                    if stalker.weapon_ready and enemy.exists:
+                        threats = enemy.filter(
+                            lambda unit_: not unit_.has_buff(buff.IMMORTALOVERLOAD) and (unit_.can_attack_ground or
+                                        unit_.type_id in priority_ids) and stalker.target_in_range(unit_)
+                                          and not unit_.is_hallucination and unit_.is_visible and unit_.cloak != 1)
+                        if threats:
+                            stalker.attack(threats.closest_to(stalker))
+                            continue
+                    if stalker.distance_to(blink_to_location) < 5 and self.is_blink_available(stalker):
+                        await self.blink(stalker, self.blink_locations[0])
+                    else:
+                        stalker.move(blink_to_location)
             else:
                 stalker_on_main_base_lvl = False
             if enemy.exists:
@@ -177,11 +203,12 @@ class StalkerBlinkMicro(MicroABS):
                         if tanks:
                             closest_tank = tanks.closest_to(stalker)
                             if stalker.distance_to(closest_tank) <= 17:
-                                nearby_stalkers = stalkers.closer_than(7, stalker)
+                                nearby_stalkers = stalkers.closer_than(9, stalker)
                                 if tanks.amount >= 2 and nearby_stalkers.amount < 12 or \
                                         tanks.amount == 1 and nearby_stalkers.amount < 9:
                                     stalker.move(stalker.position.towards(closest_tank, -6))
                                     tanks = True
+                                    continue
                         # else:
                         bunkers = self.ai.enemy_structures().filter(
                             lambda x: x.type_id == unit.BUNKER and x.distance_to(stalker) < dist)

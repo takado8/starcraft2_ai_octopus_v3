@@ -118,7 +118,7 @@ class OctopusV3(sc2.BotAI):
 
     async def on_step(self, iteration: int):
         if self.iteration == 10:
-            strategy_tag = 'Tag:1.' + ''.join([a for a in self.strategy.name if a.isupper()])
+            strategy_tag = 'Tag:1_' + ''.join([a for a in self.strategy.name if a.isupper()])
             await self.chat_send(strategy_tag)
         if iteration % 1000 == 0:
             print('\ninterfaces: {}\narmy: {}\nworkers: {}\nbuild: {}\n'.format(
@@ -310,7 +310,7 @@ def botVsComputer(ai, real_time=0):
     result = run_game(map_settings=maps.get(a_map), players=[
         Bot(race=Race.Protoss, ai=ai, name='Octopus'),
         # Bot(race=Race.Terran, ai=TerranStalkerDefense(), name='TerranStalkerDefense')
-        Computer(race=races[0], difficulty=Difficulty.VeryHard, ai_build=build)
+        Computer(race=races[2], difficulty=Difficulty.VeryHard, ai_build=build)
     ], realtime=real_time)
     return result, ai  # , build, races[race_index]
 
