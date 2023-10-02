@@ -17,6 +17,7 @@ from builders.battery_builder import BatteryBuilder
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
+from .interfaces.siege_infrastructure import SiegeInfrastructure
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -38,7 +39,7 @@ class CannonDefense(Strategy):
                                   target_selector=TargetSelectorDefense(ai))
         self.army.create_division('observer', {unit.OBSERVER: 1}, [observer_micro], Movements(ai),
                                   target_selector=TargetSelectorDefense(ai))
-        main_army = {unit.ZEALOT: 12, unit.STALKER: 12,  unit.IMMORTAL: 4,
+        main_army = {unit.ZEALOT: 12, unit.STALKER: 20,  unit.IMMORTAL: 3,
                      unit.ARCHON: 10, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
         self.army.create_division('main_army', main_army, [SentryMicro(ai), ZealotMicro(ai), ArchonMicro(ai),
                                     stalker_micro, observer_micro, ImmortalMicro(ai), WarpPrismMicro(ai)],
@@ -63,6 +64,7 @@ class CannonDefense(Strategy):
         self.shield_battery_interface = ShieldBatteryHealBuildings(ai)
         self.secure_lines = SecureMineralLines(ai)
         self.cannon_builder = CannonBuilder(ai)
+        self.siege_infrastructure = SiegeInfrastructure(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
@@ -75,6 +77,7 @@ class CannonDefense(Strategy):
             await self.secure_lines.execute()
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
+        await self.siege_infrastructure.execute()
 
 
     async def handle_workers(self):
@@ -116,7 +119,7 @@ class CannonDefense(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return (self.condition_attack.army_supply_over(80) and not self.ai.after_first_attack) or\
+        return (self.condition_attack.ground_weapons_and_armor_lvl2() and not self.ai.after_first_attack) or\
                self.condition_attack.total_supply_over(195)
 
 
@@ -125,7 +128,8 @@ class CannonDefense(Strategy):
 
 
     def counter_attack_condition(self):
-        return self.condition_counter_attack.counter_attack()
+        return self.condition_counter_attack.counter_attack() and self.condition_attack.army_value_n_times_the_enemy(2)
+
 
     # ======================================================== Buffs
     async def nexus_abilities(self):

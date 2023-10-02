@@ -72,7 +72,7 @@ def run(real_time=0):
     maps_list = ["AncientCisternAIE", "DragonScalesAIE", "GoldenauraAIE", "InfestationStationAIE", "RoyalBloodAIE",
                  "GresvanAIE"]
 
-    MAP = 0
+    MAP = 5
 
     run_game(map_settings=maps.get(maps_list[MAP]), players=[
         Bot(race=Race.Protoss, ai=PositionsSetup(), name='PositionsSetup'),
@@ -82,6 +82,6 @@ def run(real_time=0):
 
 
 if __name__ == '__main__':
-    real_time = 0
+    real_time = 1
     for i in range(15):
         run(real_time=real_time)

@@ -41,7 +41,8 @@ class StrategyManager:
                 'TwoBaseColossusUpdated': TwoBaseColossusUpdated,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'TwoBaseRobo': TwoBaseRobo
+                'TwoBaseRobo': TwoBaseRobo,
+                'CannonDefense': CannonDefense
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -53,7 +54,8 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'TwoBaseRobo': TwoBaseRobo
+                'TwoBaseRobo': TwoBaseRobo,
+                'CannonDefense': CannonDefense
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -67,7 +69,8 @@ class StrategyManager:
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
                 'PhoenixStalker': PhoenixStalker,
-                'TwoBaseRobo': TwoBaseRobo
+                'TwoBaseRobo': TwoBaseRobo,
+                'CannonDefense': CannonDefense
             }
         else:
             self.strategy_name_dict = {
@@ -78,7 +81,8 @@ class StrategyManager:
                 'OneBaseRobo': OneBaseRobo,
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
-                'TwoBaseRobo': TwoBaseRobo
+                'TwoBaseRobo': TwoBaseRobo,
+                'CannonDefense': CannonDefense
             }
 
         self.enemy_data = enemy_data
