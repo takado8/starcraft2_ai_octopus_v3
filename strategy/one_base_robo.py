@@ -1,5 +1,6 @@
 from sc2 import Race
 
+from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
@@ -27,6 +28,7 @@ from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
+from .interfaces.emergency_detection import EmergencyDetection
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -57,18 +59,14 @@ class OneBaseRobo(Strategy):
             locations_dict = None
             sentry_micro = SentryMicro(ai)
 
-        blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
-        blink_locations = blink_locations_dict[unit.PYLON]
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
-        stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
+        stalker_micro = StalkerBlinkMicro(ai)
         colossus_micro = ColossusMicro(ai)
-        carrier_micro = CarrierMicro(ai)
-        tempest_micro = TempestMicro(ai)
-        # archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
-        # ht_micro = HighTemplarMicro(ai)
+
+        target_selector_defense = TargetSelectorDefense(ai)
 
         self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
                                   [AdeptMicro(ai)], Movements(ai), lifetime=300)
@@ -78,20 +76,15 @@ class OneBaseRobo(Strategy):
                                   Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
 
         self.army.create_division('main', {unit.STALKER: 20, unit.SENTRY: 1, unit.IMMORTAL: 5, unit.COLOSSUS: 3,
-                                           unit.DISRUPTOR: 4, unit.OBSERVER: 1},
+                                           unit.DISRUPTOR: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1},
                                   [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro,
-                                   ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-480)
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2))
+                                   warpprism_micro,ObserverMicro(ai)], Movements(ai))
+        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-480,
+                                  target_selector=target_selector_defense)
 
-        self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
-
-        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
         self.army.create_division('chargelots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1), lifetime=-600)
         self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
-
 
         build_queue = BuildQueues.ONE_BASE_ROBO
 
@@ -114,9 +107,11 @@ class OneBaseRobo(Strategy):
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.emergency_detection = EmergencyDetection(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
+        await self.emergency_detection.execute()
         if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
             await self.secure_lines.execute()
         elif self.ai.enemy_race == Race.Zerg:

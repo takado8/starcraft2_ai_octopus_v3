@@ -1,3 +1,4 @@
+from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.carrier import CarrierMicro
@@ -30,7 +31,7 @@ class SkyTossDefense(Strategy):
         super().__init__(type='air', name='SkyTossDefense', ai=ai)
         tempest_micro = TempestMicro(ai)
         zealot_micro = ZealotMicro(ai)
-
+        target_selector_defense = TargetSelectorDefense(self.ai)
         self.army.create_division('adepts', {unit.ADEPT: 2}, [AdeptMicro(ai)], Movements(ai))
         self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 1}, [WallGuardZealotMicro(ai)], Movements(ai))
         self.army.create_division('main_army', {unit.ZEALOT: 12, unit.STALKER: 15, unit.IMMORTAL: 3, unit.DISRUPTOR: 4,
@@ -39,7 +40,8 @@ class SkyTossDefense(Strategy):
                                    DisruptorMicro(ai), tempest_micro], Movements(ai))
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
         self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-300)
-        self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-300)
+        self.army.create_division('oracle2', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-300,
+                                  target_selector=target_selector_defense)
         # # self.army.create_division('carriers1', {unit.CARRIER: 10}, [carrier_micro], Movements(ai))
         # self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
         # self.army.create_division('tempests2', TEMPEST_x5, [tempest_micro], Movements(ai))
