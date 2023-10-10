@@ -4,10 +4,12 @@ from sc2.unit import UnitTypeId as unit
 
 class SiegeInfrastructure(InterfaceABS):
 
-    def __init__(self, ai):
+    def __init__(self, ai, min_minerals=500, min_army_supply=60):
         self.ai = ai
         self.previous_attack_state = False
         self.siege_location = None
+        self.min_minerals = min_minerals
+        self.min_army_supply = min_army_supply
 
     async def execute(self):
         if self.ai.attack:
@@ -31,7 +33,7 @@ class SiegeInfrastructure(InterfaceABS):
                     builder.move(self.siege_location)
                 elif isinstance(builder.order_target, int):
                     builder.move(self.siege_location)
-                if self.ai.supply_army >= 60 and builder.is_moving and self.ai.minerals > 500 and (not self.ai.enemy_units() or
+                if self.ai.supply_army >= self.min_army_supply and builder.is_moving and self.ai.minerals > self.min_minerals and (not self.ai.enemy_units() or
                         not self.ai.enemy_units().closer_than(10, self.siege_location).exists):
                     pylons = self.ai.structures().filter(lambda x: x.type_id == unit.PYLON
                                                                  and x.distance_to(self.siege_location) <= 14)
@@ -44,6 +46,6 @@ class SiegeInfrastructure(InterfaceABS):
                             await self.ai.build(unit.SHIELDBATTERY, near=pylons_rdy.closest_to(self.siege_location),
                                                 build_worker=builder, queue=True)
                         if self.ai.structures().filter(lambda x: x.type_id == unit.PHOTONCANNON and x.distance_to(
-                                self.siege_location) < 16).amount < 4 and self.ai.already_pending(unit.PHOTONCANNON) < 2:
+                                self.siege_location) < 16).amount < 3 and self.ai.already_pending(unit.PHOTONCANNON) < 2:
                             await self.ai.build(unit.PHOTONCANNON, near=pylons_rdy.closest_to(self.siege_location),
                                                 build_worker=builder, queue=True)
