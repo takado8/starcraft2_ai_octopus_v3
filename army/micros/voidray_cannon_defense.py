@@ -39,7 +39,7 @@ class VoidrayCannonDefenseMicro(MicroABS):
                 #     continue
             if voidray.shield_percentage < 0.45:
                 batteries = self.ai.structures().filter(lambda x: x.type_id == unit.SHIELDBATTERY and x.energy > 20 and
-                                                        x.distance_to(voidray) < 25)
+                                                        x.distance_to(voidray) < 35)
                 if batteries:
                     voidray.move(batteries.closest_to(voidray).position)
                     continue
@@ -92,8 +92,7 @@ class VoidrayCannonDefenseMicro(MicroABS):
                 if attacking_friends is None:
                     attacking_friends = division.get_attacking_units(self.ai.iteration)
                     division_position = division.get_position(self.ai.iteration)
-                if division_position and voidray.distance_to(division_position) > division.max_units_distance \
-                        and not self.ai.strategy.attack.enemy_main_base_down:
+                if division_position and voidray.distance_to(division_position) > division.max_units_distance:
                     voidray.attack(division_position)
                 elif attacking_friends.exists and enemy.exists:
                     voidray.attack(enemy.closest_to(attacking_friends.closest_to(voidray)))
