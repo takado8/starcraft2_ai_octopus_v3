@@ -3,6 +3,7 @@ from strategy.air_oracle import AirOracle
 from strategy.blinkers_updated import BlinkersUpdated
 from strategy.cannon_defense import CannonDefense
 from strategy.cannon_rush_defense import CannonRushDefense
+from strategy.charge_a_lot import ChargeALotUpdated
 from strategy.disruptors import Disruptors
 from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.fortress_toss import FortressToss
@@ -16,6 +17,7 @@ from strategy.phoenix_stalker import PhoenixStalker
 from strategy.skytoss_carriers import SkytossCarriers
 from strategy.skytoss_tempest import SkytossTempest
 from strategy.stalker_proxy import StalkerProxy
+from strategy.stalkers_shield import StalkersShield
 from strategy.two_base_colossus import TwoBaseColossusUpdated
 from strategy.two_base_robo import TwoBaseRobo
 from strategy.two_base_skytoss import TwoBaseSkytoss
@@ -42,7 +44,8 @@ class StrategyManager:
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
-                'CannonDefense': CannonDefense
+                'CannonDefense': CannonDefense,
+                'ChargeALotUpdated': ChargeALotUpdated
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -55,7 +58,8 @@ class StrategyManager:
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
-                'CannonDefense': CannonDefense
+                'CannonDefense': CannonDefense,
+                'ChargeALotUpdated': ChargeALotUpdated
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -70,7 +74,8 @@ class StrategyManager:
                 'Gateway': Gateway,
                 'PhoenixStalker': PhoenixStalker,
                 'TwoBaseRobo': TwoBaseRobo,
-                'CannonDefense': CannonDefense
+                'CannonDefense': CannonDefense,
+                'ChargeALotUpdated': ChargeALotUpdated
             }
         else:
             self.strategy_name_dict = {
@@ -82,11 +87,12 @@ class StrategyManager:
                 'TwoBaseSkytoss': TwoBaseSkytoss,
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
-                'CannonDefense': CannonDefense
+                'CannonDefense': CannonDefense,
+                'ChargeALotUpdated': ChargeALotUpdated
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = StalkerProxy
+        self.default_strategy = OneBaseRobo
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

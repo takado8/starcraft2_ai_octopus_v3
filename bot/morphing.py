@@ -25,27 +25,16 @@ class Morphing:
                 #     if ht.tag == ht1.tag or ht.tag == ht2.tag:
                 #         self.ai.army.remove(ht)
                 # queue_merge = False
-                if ht1.distance_to(ht2) > 4:
-                    if self.ai.townhalls.ready.amount < 2:
-                        position = self.ai.main_base_ramp.bottom_center.towards(
-                            self.ai.main_base_ramp.top_center, -3)
-                        ht1.move(position)
-                        ht2.move(position)
-                        # queue_merge = True
+                if ht1.distance_to(ht2) > 5:
+                    if self.ai.attack:
+                        position = await self.ai.find_placement(unit.PYLON, self.ai.game_info.map_center)
+
                     else:
-                        if self.ai.attack:
-                            if ht1.distance_to(self.ai.main_base_ramp.top_center) > 30:
-                                # ht1.move(ht2)
-                                ht2.move(ht1.position)
-                                # queue_merge = True
-                            else:
-                                ht1.move(self.ai.defend_position)
-                                ht2.move(self.ai.defend_position)
-                        else:
-                            position = self.ai.defend_position
-                            ht1.move(position)
-                            ht2.move(position)
-                            # queue_merge = True
+                        position = self.ai.main_base_ramp.bottom_center.towards(
+                            self.ai.main_base_ramp.top_center, -8).towards(self.ai.game_info.map_center, 20)
+                    ht1.move(position)
+                    ht2.move(position)
+
                 else:
                     # print('morphing!')
                     from s2clientprotocol import raw_pb2 as raw_pb
