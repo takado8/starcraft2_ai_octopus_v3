@@ -1,37 +1,31 @@
 from sc2 import Race
 
 from army.defense.fortress_defense import FortressDefense
+from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
 from army.micros.archon import ArchonMicro
-from army.micros.carrier import CarrierMicro
-# from army.micros.carrier_updated import CarrierMicroUpdated
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
-from army.micros.high_templar import HighTemplarMicro
 from army.micros.immortal import ImmortalMicro
 from army.micros.observer import ObserverMicro
-from army.micros.oracle_defense import OracleDefenseMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
-from army.micros.stalker import StalkerMicro
-from army.micros.tempest import TempestMicro
-from army.micros.voidray import VoidrayMicro
-from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
-from army.micros.wall_guard_zealot import WallGuardZealotMicro
+from army.micros.stalker_blink import StalkerBlinkMicro
+from army.micros.stalker_shield import StalkerShieldMicro
 from army.micros.warpprism import WarpPrismMicro
-from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.micros.zealot import ZealotMicro
+from army.micros.zealot_shield import ZealotShieldMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
-from builders import PylonBuilder, CannonBuilder
+from builders import CannonBuilder
 from builders.battery_builder import BatteryBuilder
-from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
+from .interfaces.siege_infrastructure import SiegeInfrastructure
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -39,60 +33,53 @@ from builders.builder import Builder
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader, \
     TemplarArchiveUpgrader
-from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1
+from army.divisions import OBSERVER_x1
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
 class FortressToss(Strategy):
     def __init__(self, ai):
         super().__init__(type='macro', name='FortressToss', ai=ai, defense=FortressDefense(ai))
-
-        # voidray_micro = VoidrayMicro(ai)
-        carrier_micro = CarrierMicro(ai)
         # tempest_micro = TempestMicro(ai)
         sentry_micro = SentryMicro(ai)
         immortal_micro = ImmortalMicro(ai)
-        zealot_micro = ZealotMicro(ai)
+        zealot_micro = ZealotShieldMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
-        stalker_micro = StalkerMicro(ai)
+        stalker_micro = StalkerShieldMicro(ai)
         colossus_micro = ColossusMicro(ai)
         archon_micro = ArchonMicro(ai)
         disruptor_micro = DisruptorMicro(ai)
-        ht_micro = HighTemplarMicro(ai)
-
+        target_selector_defense = TargetSelectorDefense(ai)
         positions_loader = PositionsLoader(ai)
         locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-        locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-        del locations_dict[unit.FORGE]
+        # locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
+        # del locations_dict[unit.FORGE]
         wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
 
-        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1}, [wall_guard_zealot_micro],
-                                  Movements(ai, 0.1))
+        self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2 if self.ai.enemy_race == Race.Zerg else 1},
+                                  [wall_guard_zealot_micro],
+                                  Movements(ai, 0.1), lifetime=-180)
 
-        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
-        self.army.create_division('stalkers', {unit.STALKER: 5}, [StalkerMicro(ai)], Movements(ai), lifetime=360)
-        self.high_templars_amount = 0
-        main_army = {unit.SENTRY: 2, unit.COLOSSUS: 2, unit.IMMORTAL: 2, unit.DISRUPTOR: 2,
-                     unit.MOTHERSHIP: 1, unit.CARRIER: 8, unit.TEMPEST: 6, unit.VOIDRAY: 1}
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300,
+                                  target_selector=target_selector_defense)
+        self.army.create_division('stalkers_home', {unit.STALKER: 3}, [stalker_micro], Movements(ai),
+                                  target_selector=target_selector_defense)
+        self.army.create_division('observer_home', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai),
+                                  target_selector=target_selector_defense)
 
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
+        main_army = {unit.ZEALOT: 17, unit.STALKER: 25, unit.SENTRY: 2, unit.COLOSSUS: 3, unit.IMMORTAL: 6,
+                     unit.OBSERVER: 1,
+                     unit.DISRUPTOR: 3, unit.ARCHON: 8, unit.WARPPRISM: 1}
 
-        self.army.create_division('main_army', main_army, [zealot_micro, sentry_micro,
-            stalker_micro, immortal_micro, colossus_micro, archon_micro, ht_micro, TempestMicro(ai),
-                                                           VoidrayCannonDefenseMicro(ai),
-                                                           disruptor_micro, carrier_micro], Movements(ai),
-                                                                                             lifetime=-200)
-        self.army.create_division('stalkers2', {unit.STALKER: 15}, [StalkerMicro(ai)], Movements(ai), lifetime=-600)
-
-        self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-460)
-        # self.army.create_division('oracle', ORACLE_x1, [OracleDefenseMicro(ai)], Movements(ai), lifetime=-360)
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro],Movements(ai, 0.2), lifetime=-360)
-        self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1),
+        self.army.create_division('main_army', main_army, [zealot_micro, sentry_micro, warpprism_micro,
+                                                           stalker_micro, immortal_micro, colossus_micro, archon_micro,
+                                                           disruptor_micro], Movements(ai, movements_step=20,
+                                                                                 units_ratio_before_next_step=0.75),
+                                                                                                        lifetime=-200)
+        self.army.create_division('chargelots', {unit.ZEALOT: 20}, [zealot_micro],
+                                  Movements(ai, 0.1),
                                   lifetime=False)
-
-
         build_queue = BuildQueues.FORTRESS_TOSS
-        # upper_wall = UpperWall(ai)
 
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
                                special_building_locations=[locations_dict])
@@ -112,20 +99,19 @@ class FortressToss(Strategy):
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
+        self.siege_infrastructure = SiegeInfrastructure(ai, min_minerals=0, min_army_supply=30)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        if self.ai.enemy_race == Race.Terran:
+        await self.siege_infrastructure.execute()
+        if self.ai.time > 300:
             await self.secure_lines.execute()
         await self.shield_battery_interface.execute()
         await self.wall_builder.execute()
 
-        # await self.mother_ship_interface.execute()
         if self.ai.iteration % 10 == 0:
-            # await self.battery_builder.build_batteries(when_minerals_more_than=170, amount=2)
-            await self.battery_builder.build_batteries(when_minerals_more_than=250, amount=5)
-            # await self.cannon_builder.build_cannons(when_minerals_more_than=150, amount=2)
-            await self.cannon_builder.build_cannons(when_minerals_more_than=270, amount=2)
+            await self.battery_builder.build_batteries(when_minerals_more_than=0, amount=6)
+            await self.cannon_builder.build_cannons(when_minerals_more_than=150, amount=3)
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -143,26 +129,21 @@ class FortressToss(Strategy):
         await self.pylon_builder.new_standard_upper_wall()
 
     def build_assimilators(self):
-        # if self.ai.time < 90:
-        #     self.assimilator_builder.one_vespene()
-        # else:
-        self.assimilator_builder.standard(minerals_to_gas_ratio=2)
+        if self.ai.time < 160:
+            self.assimilator_builder.one_vespene()
+        else:
+            self.assimilator_builder.standard(minerals_to_gas_ratio=2)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
-        # await self.templar_archive_upgrader.storm()
         if self.ai.army(unit.ADEPT).exists or self.ai.already_pending(unit.ADEPT):
             self.cybernetics_upgrader.warpgate()
-        if self.ai.structures(unit.STARGATE).exists:
-            self.cybernetics_upgrader.air_dmg()
         if self.ai.time > 300:
             self.forge_upgrader.standard()
         await self.robotics_bay_upgrader.thermal_lances()
-        await self.twilight_upgrader.blink()
-        if upgrade.BLINKTECH in self.ai.state.upgrades:
-            await self.twilight_upgrader.charge()
-
-
+        await self.twilight_upgrader.charge()
+        if upgrade.CHARGE in self.ai.state.upgrades:
+            await self.twilight_upgrader.blink()
 
     # =======================================================  Trainers
 
@@ -176,13 +157,13 @@ class FortressToss(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.air_dmg_lvl2_full_supply()
+        return self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
-        return self.condition_retreat.army_supply_less_than(40 if self.ai.time < 600 else 60)
+        return self.condition_retreat.army_value_n_times_the_enemy(1) and self.condition_retreat.army_supply_less_than(90)
 
     def counter_attack_condition(self):
-        return self.condition_counter_attack.counter_attack()
+        return self.condition_counter_attack.counter_attack() and self.condition_attack.army_value_n_times_the_enemy(2)
 
     # ======================================================== Buffs
     async def nexus_abilities(self):
@@ -191,10 +172,11 @@ class FortressToss(Strategy):
 
     async def lock_spending_condition(self):
         return self.condition_lock_spending.thermal_lances() \
-    or (await self.condition_lock_spending.forge() if self.ai.time > 360 else False) or \
-               await self.condition_lock_spending.twilight_council_blink()
+            or (await self.condition_lock_spending.forge() if self.ai.time > 360 else False) or \
+            await self.condition_lock_spending.twilight_council_blink() or\
+            await self.condition_lock_spending.twilight_council_charge()
 
     async def morphing(self):
         await self.morphing_.morph_gates()
         await self.morphing_.set_second_wall_gates_resp_inside_base()
-        await self.morphing_.morph_Archons(self.high_templars_amount)
+        await self.morphing_.morph_Archons()
