@@ -115,6 +115,9 @@ class BuildQueues:
                      unit.NEXUS, unit.GATEWAY,
                      unit.NEXUS,  unit.GATEWAY, unit.NEXUS, unit.GATEWAY, unit.GATEWAY,
                      unit.GATEWAY, unit.NEXUS, unit.NEXUS, unit.NEXUS]
+    CHARGE_ALL_IN = [unit.PYLON, unit.NEXUS, unit.GATEWAY, unit.CYBERNETICSCORE, unit.TWILIGHTCOUNCIL, unit.FORGE,
+                    unit.GATEWAY,unit.GATEWAY,unit.GATEWAY, unit.GATEWAY,unit.GATEWAY,unit.GATEWAY,unit.GATEWAY,
+                     unit.GATEWAY,unit.GATEWAY,unit.GATEWAY]
     ONE_BASE_BLINK = [unit.PYLON, unit.GATEWAY, unit.CYBERNETICSCORE, unit.GATEWAY, unit.TWILIGHTCOUNCIL,
                       unit.GATEWAY, unit.GATEWAY, 30, unit.NEXUS,
                 unit.ROBOTICSFACILITY,unit.FORGE, unit.ROBOTICSBAY, unit.GATEWAY, 35, unit.NEXUS, unit.FORGE, unit.GATEWAY,

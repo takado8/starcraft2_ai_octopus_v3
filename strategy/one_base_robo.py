@@ -3,7 +3,6 @@ from sc2 import Race
 from army.defense.target_selector_defense import TargetSelectorDefense
 from army.defense.worker_rush_defense import WorkerRushDefense
 from army.micros.adept import AdeptMicro
-from army.micros.carrier import CarrierMicro
 from army.micros.colossus import ColossusMicro
 from army.micros.disruptor import DisruptorMicro
 from army.micros.immortal import ImmortalMicro
@@ -11,24 +10,18 @@ from army.micros.observer import ObserverMicro
 from army.micros.second_wall_guard_zealot import SecondWallGuardZealotMicro
 from army.micros.sentry import SentryMicro
 from army.micros.stalker_blink import StalkerBlinkMicro
-from army.micros.tempest import TempestMicro
-from army.micros.voidray import VoidrayMicro
-from army.micros.voidray_cannon_defense import VoidrayCannonDefenseMicro
-from army.micros.wall_guard_zealot import WallGuardZealotMicro
+
 from army.micros.warpprism import WarpPrismMicro
-from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.micros.zealot import ZealotMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
-from builders import PylonBuilder, CannonBuilder
+from builders import CannonBuilder
 from builders.battery_builder import BatteryBuilder
-from builders.special_building_locations import UpperWall
 from data_analysis.map_tools.positions_loader import PositionsLoader
 from strategy.interfaces.mothership import Mothership
 from strategy.interfaces.second_wall_builder import SecondWallBuilder
 from strategy.interfaces.secure_mineral_lines import SecureMineralLines
 from strategy.interfaces.shield_battery_heal_buildings import ShieldBatteryHealBuildings
-from .interfaces.emergency_detection import EmergencyDetection
 from .strategyABS import Strategy
 from builders.expander import Expander
 from builders.build_queues import BuildQueues
@@ -36,7 +29,7 @@ from builders.builder import Builder
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from bot.upgraders import CyberneticsUpgrader, TwilightUpgrader, ForgeUpgrader, RoboticsBayUpgrader, \
     TemplarArchiveUpgrader
-from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPPRISM_x1, CARRIER_x8
+from army.divisions import OBSERVER_x1
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
@@ -69,16 +62,14 @@ class OneBaseRobo(Strategy):
         target_selector_defense = TargetSelectorDefense(ai)
 
         self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
-                                  [AdeptMicro(ai)], Movements(ai), lifetime=300)
+                                  [AdeptMicro(ai)], Movements(ai), target_selector=target_selector_defense)
 
-
-        self.army.create_division('stalkers', {}, [stalker_micro, sentry_micro],
-                                  Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
 
         self.army.create_division('main', {unit.STALKER: 20, unit.SENTRY: 1, unit.IMMORTAL: 5, unit.COLOSSUS: 3,
                                            unit.DISRUPTOR: 4, unit.OBSERVER: 1, unit.WARPPRISM: 1},
                                   [stalker_micro, immortal_micro, sentry_micro, colossus_micro, disruptor_micro,
-                                   warpprism_micro,ObserverMicro(ai)], Movements(ai))
+                                   warpprism_micro, ObserverMicro(ai)], Movements(ai))
+
         self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai), lifetime=-480,
                                   target_selector=target_selector_defense)
 
@@ -107,11 +98,9 @@ class OneBaseRobo(Strategy):
         self.wall_builder = SecondWallBuilder(ai)
         self.mother_ship_interface = Mothership(ai)
         self.secure_lines = SecureMineralLines(ai)
-        self.emergency_detection = EmergencyDetection(ai)
 
     async def execute_interfaces(self):
         await super().execute_interfaces()
-        await self.emergency_detection.execute()
         if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
             await self.secure_lines.execute()
         elif self.ai.enemy_race == Race.Zerg:

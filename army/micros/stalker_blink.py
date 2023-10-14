@@ -203,9 +203,12 @@ class StalkerBlinkMicro(MicroABS):
                         if tanks:
                             closest_tank = tanks.closest_to(stalker)
                             if stalker.distance_to(closest_tank) <= 17:
-                                nearby_stalkers = stalkers.closer_than(9, stalker)
-                                if tanks.amount >= 2 and nearby_stalkers.amount < 12 or \
-                                        tanks.amount == 1 and nearby_stalkers.amount < 9:
+                                nearby_stalkers = stalkers.closer_than(12, stalker)
+                                nearby_zealots = self.ai.army.filter(lambda x: x.type_id == unit.ZEALOT and
+                                x.distance_to(closest_tank) <= 5)
+
+                                if not nearby_zealots and (tanks.amount >= 2 and nearby_stalkers.amount < 12 or
+                                        tanks.amount == 1 and nearby_stalkers.amount < 7):
                                     stalker.move(stalker.position.towards(closest_tank, -6))
                                     tanks = True
                                     continue

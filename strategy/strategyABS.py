@@ -15,7 +15,9 @@ from economy.workers.distribute_workers import DistributeWorkers
 from economy.workers.speed_mining import SpeedMining
 from economy.workers.workers_micro import WorkersMicro
 from strategy.interfaces.attack_informator import AttackInformant
+from strategy.interfaces.emergency_detection import EmergencyDetection
 from strategy.interfaces.emergency_expansion import EmergencyExpansion
+from strategy.interfaces.handle_proxy import HandleProxy
 from strategy.interfaces.recall_on_retreat import RecallOnRetreat
 from strategy.interfaces.secure_expansion_locations import SecureExpansionLocations
 
@@ -55,6 +57,8 @@ class Strategy:
         self.emergency_expansion = EmergencyExpansion(ai)
         self.recall_on_retreat = RecallOnRetreat(ai)
         self.workers_micro = WorkersMicro(ai)
+        self.emergency_detection = EmergencyDetection(ai)
+        self.handle_proxy = HandleProxy(ai)
 
 
     async def execute_interfaces(self):
@@ -62,9 +66,12 @@ class Strategy:
         await self.attack_informant.execute()
         await self.emergency_expansion.execute()
         await self.recall_on_retreat.execute()
+        await self.emergency_detection.execute()
         if 'defending_with_workers' not in self.ai.global_variables or not \
                 self.ai.global_variables['defending_with_workers']:
             self.workers_micro.execute()
+        await self.handle_proxy.execute()
+
 
     async def handle_workers(self):
         raise NotImplementedError

@@ -23,6 +23,7 @@ from army.micros.wall_guard_zealot import WallGuardZealotMicro
 from army.micros.warpprism import WarpPrismMicro
 from army.micros.warpprism_elevator import WarpPrismElevatorMicro
 from army.micros.zealot import ZealotMicro
+from army.micros.zealot_shield import ZealotShieldMicro
 from army.movements import Movements
 from bot.nexus_abilities import ShieldOvercharge
 from builders import PylonBuilder, CannonBuilder
@@ -45,62 +46,37 @@ from army.divisions import TEMPEST_x5, VOIDRAY_x3, OBSERVER_x1, ORACLE_x1, WARPP
 from sc2.ids.upgrade_id import UpgradeId as upgrade
 
 
-class OneBaseBlink(Strategy):
+class ChargeAllIn(Strategy):
     def __init__(self, ai):
-        super().__init__(type='rush', name='OneBaseBlink', ai=ai)
+        super().__init__(type='rush', name='ChargeAllIn', ai=ai)
         self.scouting.scouting_active_after_s = 500
-
-        positions_loader = PositionsLoader(ai)
-        if self.ai.enemy_race == Race.Zerg:
-            locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
-            locations_dict[unit.GATEWAY].append(locations_dict[unit.FORGE][0])
-            del locations_dict[unit.FORGE]
-            sentry_micro = SentryMicro(ai, locations_dict[unit.ZEALOT][0])
-            wall_guard_zealot_micro = SecondWallGuardZealotMicro(ai, locations_dict[unit.ZEALOT][0])
-            self.army.create_division('wall_guard_zealots', {unit.ZEALOT: 2}, [wall_guard_zealot_micro],
-                                      Movements(ai, 0.1))
-            self.pylon_builder.special_locations = locations_dict[unit.PYLON]
-        else:
-            locations_dict = None
-            sentry_micro = SentryMicro(ai)
-
-        blink_locations_dict = positions_loader.load_positions_dict('blink_to_main')
-        blink_locations = blink_locations_dict[unit.PYLON]
         immortal_micro = ImmortalMicro(ai)
         zealot_micro = ZealotMicro(ai)
         warpprism_micro = WarpPrismMicro(ai)
-        stalker_micro = StalkerBlinkMicro(ai, blink_locations=blink_locations)
-        colossus_micro = ColossusMicro(ai)
-        carrier_micro = CarrierMicro(ai)
-        tempest_micro = TempestMicro(ai)
-        # archon_micro = ArchonMicro(ai)
-        disruptor_micro = DisruptorMicro(ai)
+        stalker_micro = StalkerBlinkMicro(ai)
+        # colossus_micro = ColossusMicro(ai)
+        # carrier_micro = CarrierMicro(ai)
+        # tempest_micro = TempestMicro(ai)
+        archon_micro = ArchonMicro(ai)
+        # disruptor_micro = DisruptorMicro(ai)
         # ht_micro = HighTemplarMicro(ai)
+        sentry_micro = SentryMicro(ai)
+        observer_micro = ObserverMicro(ai)
 
-        self.army.create_division('adepts', {unit.ADEPT: 2 if self.ai.enemy_race == Race.Protoss else 1},
-                                  [AdeptMicro(ai)], Movements(ai), lifetime=300)
-        self.army.create_division('warpprism', WARPPRISM_x1, [warpprism_micro], Movements(ai, 0.2))
-        self.army.create_division('observer', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
+        self.army.create_division('adepts', {unit.ADEPT: 1}, [AdeptMicro(ai)], Movements(ai), lifetime=300)
 
-        self.army.create_division('stalkers', {unit.STALKER: 30, unit.SENTRY: 2}, [stalker_micro, sentry_micro],
-                                  Movements(ai, units_ratio_before_next_step=0.6, movements_step=10))
+        self.army.create_division('main', {unit.ZEALOT: 60, unit.SENTRY: 2, unit.STALKER: 5, unit.IMMORTAL: 3,
+                                           unit.OBSERVER: 1, unit.ARCHON: 8, unit.WARPPRISM: 1},
+                                  [stalker_micro, zealot_micro, immortal_micro, sentry_micro, observer_micro,
+                                   archon_micro, warpprism_micro],
+                                  Movements(ai, 0.75, movements_step=16))
 
-        self.army.create_division('main', {unit.IMMORTAL: 3, unit.COLOSSUS: 3, unit.DISRUPTOR: 4},
-                                  [immortal_micro, colossus_micro, disruptor_micro], Movements(ai))
+        build_queue = BuildQueues.CHARGE_ALL_IN
 
-        self.army.create_division('carriers1', CARRIER_x8, [carrier_micro], Movements(ai))
-        self.army.create_division('tempests1', TEMPEST_x5, [tempest_micro], Movements(ai))
-
-        # self.army.create_division('observer2', OBSERVER_x1, [ObserverMicro(ai)], Movements(ai))
-        self.army.create_division('sentry', {unit.SENTRY: 2}, [sentry_micro],Movements(ai, 0.2), lifetime=-600)
-        self.army.create_division('chargelots', {unit.ZEALOT: 10}, [zealot_micro], Movements(ai, 0.1), lifetime=-600)
-        self.army.create_division('chargelots_summon', {unit.ZEALOT: 20}, [zealot_micro], Movements(ai, 0.1), lifetime=False)
-
-
-        build_queue = BuildQueues.ONE_BASE_BLINK
-
+        positions_loader = PositionsLoader(ai)
+        locations_dict = positions_loader.load_positions_dict('second_wall_cannon')
         self.builder = Builder(ai, build_queue=build_queue, expander=Expander(ai),
-                               special_building_locations=[locations_dict] if locations_dict else None)
+                               special_building_locations=[locations_dict])
         self.battery_builder = BatteryBuilder(ai)
         self.cannon_builder = CannonBuilder(ai)
         self.shield_overcharge = ShieldOvercharge(ai)
@@ -119,18 +95,11 @@ class OneBaseBlink(Strategy):
         self.detect_air_units = DetectAirUnits(ai)
 
     async def execute_interfaces(self):
-        if self.ai.enemy_race == Race.Terran and self.ai.time > 380:
-            await self.secure_lines.execute()
-        elif self.ai.enemy_race == Race.Zerg:
-            await self.wall_builder.execute()
+        await super().execute_interfaces()
+        await self.wall_builder.execute()
         await self.shield_battery_interface.execute()
 
-        if self.ai.iteration % 10 == 0:
-            await self.battery_builder.build_batteries(when_minerals_more_than=410, amount=5)
-            await self.cannon_builder.build_cannons(when_minerals_more_than=420, amount=2)
-
         await self.detect_air_units.execute()
-        await super().execute_interfaces()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()
@@ -145,25 +114,20 @@ class OneBaseBlink(Strategy):
         await self.builder.build_from_queue()
 
     async def build_pylons(self):
-        if self.ai.enemy_race == Race.Zerg:
-            await self.pylon_builder.new_standard_upper_wall()
-        else:
-            await self.pylon_builder.new_standard()
+        await self.pylon_builder.new_standard_upper_wall()
+
 
     def build_assimilators(self):
-        # if self.ai.time < 90:
-        #     self.assimilator_builder.one_vespene()
-        # else:
-        self.assimilator_builder.standard(minerals_to_gas_ratio=1)
+        if self.ai.time > 90:
+            self.assimilator_builder.standard(minerals_to_gas_ratio=2)
 
     # =======================================================  Upgraders
     async def do_upgrades(self):
-        if self.ai.army(unit.ADEPT).exists or self.ai.already_pending(unit.ADEPT):
-            self.cybernetics_upgrader.warpgate()
+        self.cybernetics_upgrader.warpgate()
         self.forge_upgrader.standard()
-        await self.twilight_upgrader.blink()
-        if upgrade.BLINKTECH in self.ai.state.upgrades:
-            await self.twilight_upgrader.charge()
+        await self.twilight_upgrader.charge()
+        if upgrade.CHARGE in self.ai.state.upgrades:
+            await self.twilight_upgrader.blink()
 
     # =======================================================  Trainers
 
@@ -177,8 +141,7 @@ class OneBaseBlink(Strategy):
 
     # ======================================================= Conditions
     def attack_condition(self):
-        return self.condition_attack.blink_research_ready() or (self.condition_attack.blink_research_ready_raw()
-            and self.condition_attack.army_value_n_times_the_enemy(2)) or self.condition_attack.total_supply_over(195)
+        return self.condition_attack.army_supply_over(40) and not self.ai.first_attack or self.condition_attack.total_supply_over(195)
 
     def retreat_condition(self):
         return self.condition_retreat.army_value_n_times_the_enemy(1)
@@ -192,9 +155,11 @@ class OneBaseBlink(Strategy):
         await self.shield_overcharge.shield_overcharge()
 
     async def lock_spending_condition(self):
-        return await self.condition_lock_spending.forge() or \
-               await self.condition_lock_spending.twilight_council_blink()
+        if self.ai.minerals < 300 and self.ai.vespene > 150:
+            return await self.condition_lock_spending.forge() or await self.condition_lock_spending.twilight_council_charge()\
+        or await self.condition_lock_spending.twilight_council_blink()
 
     async def morphing(self):
         await self.morphing_.morph_gates()
         await self.morphing_.set_second_wall_gates_resp_inside_base()
+        await self.morphing_.morph_Archons()

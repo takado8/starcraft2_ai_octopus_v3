@@ -4,6 +4,7 @@ from strategy.blinkers_updated import BlinkersUpdated
 from strategy.cannon_defense import CannonDefense
 from strategy.cannon_rush_defense import CannonRushDefense
 from strategy.charge_a_lot import ChargeALotUpdated
+from strategy.charge_all_in import ChargeAllIn
 from strategy.disruptors import Disruptors
 from strategy.fortress_skytoss import FortressSkyToss
 # from strategy.fortress_toss import FortressToss
@@ -45,7 +46,7 @@ class StrategyManager:
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
                 'CannonDefense': CannonDefense,
-                'ChargeALotUpdated': ChargeALotUpdated
+                'ChargeAllIn': ChargeAllIn
             }
         elif ai.enemy_race == Race.Protoss:
             self.strategy_name_dict = {
@@ -59,7 +60,7 @@ class StrategyManager:
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
                 'CannonDefense': CannonDefense,
-                'ChargeALotUpdated': ChargeALotUpdated
+                'ChargeAllIn': ChargeAllIn
             }
         elif ai.enemy_race == Race.Zerg:
             self.strategy_name_dict = {
@@ -75,7 +76,7 @@ class StrategyManager:
                 'PhoenixStalker': PhoenixStalker,
                 'TwoBaseRobo': TwoBaseRobo,
                 'CannonDefense': CannonDefense,
-                'ChargeALotUpdated': ChargeALotUpdated
+                'ChargeAllIn': ChargeAllIn
             }
         else:
             self.strategy_name_dict = {
@@ -88,11 +89,11 @@ class StrategyManager:
                 'Gateway': Gateway,
                 'TwoBaseRobo': TwoBaseRobo,
                 'CannonDefense': CannonDefense,
-                'ChargeALotUpdated': ChargeALotUpdated
+                'ChargeAllIn': ChargeAllIn
             }
 
         self.enemy_data = enemy_data
-        self.default_strategy = OneBaseRobo
+        self.default_strategy = StalkerProxy
 
     def get_strategy(self, strategy_name):
         return self.strategy_name_dict[strategy_name]

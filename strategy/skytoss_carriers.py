@@ -72,7 +72,6 @@ class SkytossCarriers(Strategy):
         self.interface_time_consumed = 0
 
     async def execute_interfaces(self):
-        await super().execute_interfaces()
         await self.secure_lines.execute()
         # if self.ai.time > 1500:
         #     await self.mother_ship_interface.execute()
@@ -80,7 +79,7 @@ class SkytossCarriers(Strategy):
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420,
                                                    amount=3 if self.interface_time_consumed > 500 else 5)
-
+        await super().execute_interfaces()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

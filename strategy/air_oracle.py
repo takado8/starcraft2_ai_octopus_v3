@@ -81,19 +81,20 @@ class AirOracle(Strategy):
         self.secure_lines = SecureMineralLines(ai)
         self.is_secure_lines_enabled = False
         self.mother_ship_interface = Mothership(ai)
-        self.detect_bunker_contain = DetectBunkerContain(ai)
+        # self.detect_bunker_contain = DetectBunkerContain(ai)
         self.siege_infrastructure = SiegeInfrastructure(ai)
 
+
     async def execute_interfaces(self):
-        await super().execute_interfaces()
         if self.is_secure_lines_enabled:
             await self.secure_lines.execute()
         else:
             if self.ai.enemy_units({unit.BANSHEE, unit.ORACLE}).exists:
                 self.is_secure_lines_enabled = True
-        if self.ai.enemy_race == Race.Terran:
-            await self.detect_bunker_contain.execute()
+        # if self.ai.enemy_race == Race.Terran:
+        #     await self.detect_bunker_contain.execute()
         await self.siege_infrastructure.execute()
+        await super().execute_interfaces()
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

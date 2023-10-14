@@ -92,7 +92,6 @@ class TwoBaseSkytoss(Strategy):
         self.siege_infrastructure = SiegeInfrastructure(ai)
 
     async def execute_interfaces(self):
-        await super().execute_interfaces()
         await self.siege_infrastructure.execute()
         await self.wall_builder.execute()
         if self.ai.time > 360:
@@ -102,6 +101,8 @@ class TwoBaseSkytoss(Strategy):
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
         # if self.ai.time > 420:
         #     await self.mother_ship_interface.execute()
+        await super().execute_interfaces()
+
 
     async def handle_workers(self):
         mineral_workers = await self.worker_rush_defense.worker_rush_defense()

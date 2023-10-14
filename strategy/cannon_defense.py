@@ -39,7 +39,7 @@ class CannonDefense(Strategy):
                                   target_selector=TargetSelectorDefense(ai))
         self.army.create_division('observer', {unit.OBSERVER: 1}, [observer_micro], Movements(ai),
                                   target_selector=TargetSelectorDefense(ai))
-        main_army = {unit.ZEALOT: 12, unit.STALKER: 20,  unit.IMMORTAL: 3,
+        main_army = {unit.ZEALOT: 14, unit.STALKER: 20,  unit.IMMORTAL: 7,
                      unit.ARCHON: 10, unit.SENTRY: 3, unit.OBSERVER: 1, unit.WARPPRISM: 1}
         self.army.create_division('main_army', main_army, [SentryMicro(ai), ZealotMicro(ai), ArchonMicro(ai),
                                     stalker_micro, observer_micro, ImmortalMicro(ai), WarpPrismMicro(ai)],
@@ -67,7 +67,6 @@ class CannonDefense(Strategy):
         self.siege_infrastructure = SiegeInfrastructure(ai)
 
     async def execute_interfaces(self):
-        await super().execute_interfaces()
         await self.shield_battery_interface.execute()
         if self.ai.enemy_race == Race.Zerg and self.ai.time > 360:
             await self.secure_lines.execute()
@@ -78,6 +77,8 @@ class CannonDefense(Strategy):
         await self.cannon_builder.build_cannons(when_minerals_more_than=410, amount=2)
         await self.battery_builder.build_batteries(when_minerals_more_than=420, amount=4)
         await self.siege_infrastructure.execute()
+        await super().execute_interfaces()
+
 
 
     async def handle_workers(self):
