@@ -7,12 +7,14 @@ from sc2.ids.unit_typeid import UnitTypeId as unit
 class HandleProxy(InterfaceABS):
     def __init__(self, ai):
         self.ai = ai
-        self.last_scout_time = -10
-        self.scout_every_n_seconds = 20
+        self.last_scout_time = -30
+        self.scout_every_n_seconds = 45
         self.workers_amount = 5 #if self.ai.enemy_race == Race.Protoss else 3
         self.is_reported = False
         self.is_active = True
         self.proxy_position = None
+        self.nearby_expansions = self.get_segregated_expansions()
+
 
 
     async def execute(self):
@@ -28,12 +30,9 @@ class HandleProxy(InterfaceABS):
                     workers = self.ai.units(unit.PROBE)
                 close_workers = workers.closer_than(50, self.ai.start_location)
                 if close_workers:
-                    scout = close_workers.furthest_to(self.ai.start_location)
-                
-                    nearby_expansions = sorted(self.ai.expansion_locations_list,
-                                               key=lambda x: self.ai.start_location.distance_to(x))[1:5]
+                    scout = close_workers.closest_to(self.ai.start_location)
                     scout.stop()
-                    for exp in nearby_expansions:
+                    for exp in self.nearby_expansions:
                         scout.move(exp, queue=True)
                     self.last_scout_time = self.ai.time
 
@@ -88,3 +87,17 @@ class HandleProxy(InterfaceABS):
             nexus = self.ai.townhalls.first
             if nexus.is_idle:
                 nexus.train(unit.PROBE)
+
+    def get_segregated_expansions(self):
+        expansions = sorted(self.ai.expansion_locations_list,
+               key=lambda x: self.ai.start_location.distance_to(x))[1:5]
+        segregated_expansions = []
+        natural_location = expansions[0]
+        segregated_expansions.append(natural_location)
+        for _ in range(len(expansions) - 1):
+            closest_to_previous = min([exp for exp in expansions
+                                       if exp not in segregated_expansions],
+                                      key=lambda x: x.distance_to(natural_location))
+            segregated_expansions.append(closest_to_previous)
+        assert len(segregated_expansions) == len(expansions)
+        return segregated_expansions

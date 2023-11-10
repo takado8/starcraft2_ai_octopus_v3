@@ -296,9 +296,9 @@ def botVsComputer(ai, real_time=0):
 
     # computer_builds = [AIBuild.Rush]
     # computer_builds = [AIBuild.Timing, AIBuild.Rush, AIBuild.Power, AIBuild.Macro]
-    # computer_builds = [AIBuild.Timing]
+    computer_builds = [AIBuild.Timing]
     # computer_builds = [AIBuild.Air]
-    computer_builds = [AIBuild.Power]
+    # computer_builds = [AIBuild.Power]
     # computer_builds = [AIBuild.Macro]
     build = random.choice(computer_builds)
 
@@ -315,7 +315,7 @@ def botVsComputer(ai, real_time=0):
     return result, ai  # , build, races[race_index]
 
 
-def test(real_time=0):
+def test(real_time=1):
     ai = OctopusV3()
     result = None
     try:

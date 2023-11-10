@@ -5,6 +5,8 @@ from army.training.training import Training
 from .division import Division
 from typing import Dict, List
 
+# from .scouting.probe_scouting import ProbeScouting
+
 
 class Army:
     def __init__(self, ai_object, scouting, enemy_economy, own_economy, trainer, defense):
@@ -17,7 +19,7 @@ class Army:
         self.enemy_economy = enemy_economy
         self.own_economy = own_economy
         self.defense.assign_defend_position()
-
+        # self.probe_scouting = ProbeScouting(ai_object)
         self.last_print_time = 0
 
     async def execute(self):
@@ -45,6 +47,7 @@ class Army:
             if self.scouting.enemy_main_base_down:
                 self.scouting.scan_on_end()
             else:
+                # self.probe_scouting.scout()
                 await self.scouting.scan_middle_game()
             # self.debug()
         except Exception as ex:

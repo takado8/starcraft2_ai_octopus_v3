@@ -5,20 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="867706e1-9f98-4720-b9a9-31ddf5fe0686" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/strategy/charge_all_in.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy/interfaces/handle_proxy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/army/micros/stalker_blink.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/micros/stalker_blink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/strategy_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/Army.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/Army.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/army/scouting/probe_scouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/army/scouting/probe_scouting.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builders/build_queues.py" beforeDir="false" afterPath="$PROJECT_DIR$/builders/build_queues.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/air_oracle.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/air_oracle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/cannon_defense.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/cannon_defense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/one_base_blink.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/one_base_blink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/one_base_robo.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/one_base_robo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/skytoss_carriers.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/skytoss_carriers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/strategyABS.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/strategyABS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/two_base_skytoss.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/two_base_skytoss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/interfaces/handle_proxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/interfaces/handle_proxy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,7 +294,7 @@
       <recent name="C:\Users\korne\Desktop\sc2 AI\starcraft2_ai_octopus_v3\bot" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.packit ">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Evo" type="PythonConfigurationType" factoryName="Python">
       <module name="starcraft2_ai_octopus_v3" />
       <option name="INTERPRETER_OPTIONS" value="" />

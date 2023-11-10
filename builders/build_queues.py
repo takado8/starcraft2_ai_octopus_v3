@@ -51,6 +51,12 @@ class BuildQueues:
                         60, unit.NEXUS, unit.CYBERNETICSCORE,
                unit.NEXUS, unit.STARGATE, unit.ROBOTICSFACILITY, unit.FORGE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
                unit.NEXUS, unit.STARGATE,
+               unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.STARGATE]
+
+    ONE_BASE_CARRIERS = [unit.PYLON, unit.GATEWAY, unit.NEXUS, unit.CYBERNETICSCORE, unit.STARGATE, unit.SHIELDBATTERY,
+               unit.FLEETBEACON, unit.SHIELDBATTERY, 40, unit.NEXUS,unit.STARGATE, unit.CYBERNETICSCORE,
+               unit.NEXUS, unit.STARGATE, unit.ROBOTICSFACILITY, unit.FORGE, unit.TWILIGHTCOUNCIL, unit.NEXUS,
+               unit.NEXUS, unit.STARGATE,
                unit.NEXUS, unit.STARGATE, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.NEXUS, unit.STARGATE, ]
 
     PHOENIX_STALKER = [unit.PYLON, unit.GATEWAY, unit.NEXUS, unit.CYBERNETICSCORE, unit.GATEWAY, unit.STARGATE,
