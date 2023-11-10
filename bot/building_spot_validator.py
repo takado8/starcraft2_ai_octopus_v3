@@ -1,77 +1,81 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2 import BotAI
+from sc2.position import Point2
 
 
 class BuildingSpotValidator:
     def __init__(self, ai: BotAI):
         self.ai = ai
-        # linear function coefficients for build spot validation
-        self.coe_a1 = None
-        self.coe_a2 = None
-        self.coe_b1 = None
-        self.coe_b2 = None
-        self.n = None
-        self.g1 = None
-        self.g2 = None
-        self.r = None
-        self.linear_func = None
+
         self.building_pylon_max_dist = 25
         self.building_pylon_max_dist_increment = 5
 
+        # linear function coefficients for build spot validation
+        self.validation_coefficients = {}
+
     def is_valid_location(self, x, y):
         """
-        :return: True if location is outside of minerals and gas transport area in main base, False otherwise.
+        :return: True if location is outside of minerals and gas transport area in the closest base, False otherwise.
         """
-        if self.linear_func is None:
-            self.compute_coefficients_for_building_validation()
+        point = Point2((x,y))
+        expansion_location = min(self.ai.expansion_locations_list, key=lambda x: x.distance_to(point))
+        if expansion_location in self.validation_coefficients:
+            coe_a1, coe_b1, coe_a2, coe_b2, r, linear_function = self.validation_coefficients[expansion_location]
+        else:
+            coe_a1, coe_b1, coe_a2, coe_b2, r, linear_function = self.compute_coefficients(expansion_location)
+            self.validation_coefficients[expansion_location] = coe_a1, coe_b1, coe_a2, coe_b2, r, linear_function
 
-        condition1 = self.in_circle(x, y)
+        condition1 = self.in_circle(x, y, expansion_location, r)
         if not condition1:
             return True  # outside of circle is a valid location for sure
-        condition2 = self.linear_func(x, y, self.coe_a1, self.coe_b1)
+        condition2 = linear_function(x, y, coe_a1, coe_b1)
         if not condition2:
             return True
-        condition3 = self.linear_func(x, y, self.coe_a2, self.coe_b2)
+        condition3 = linear_function(x, y, coe_a2, coe_b2)
         if not condition3:
             return True
         return False
 
-    def compute_coefficients_for_building_validation(self):
-        self.n = self.ai.structures(unit.NEXUS).closest_to(self.ai.start_location).position
-        vespenes = self.ai.vespene_geyser.closer_than(9, self.n)
-        self.g1 = vespenes.pop(0).position
-        self.g2 = vespenes.pop(0).position
+    def compute_coefficients(self, expansion_location):
+        n = expansion_location
+        vespenes = self.ai.vespene_geyser.closer_than(9, n)
+        g1 = vespenes.pop(0).position
+        g2 = vespenes.pop(0).position
 
-        delta1 = (self.g1.x - self.n.x)
+        delta1 = (g1.x - n.x)
         if delta1 == 0:
             print('delta == 0 !')
             delta1 = 1
-        self.coe_a1 = (self.g1.y - self.n.y) / delta1
-        self.coe_b1 = self.n.y - self.coe_a1 * self.n.x
+        coe_a1 = (g1.y - n.y) / delta1
+        coe_b1 = n.y - coe_a1 * n.x
 
-        delta2 = (self.g2.x - self.n.x)
+        delta2 = (g2.x - n.x)
         if delta2 == 0:
             print('delta == 0 !')
             delta2 = 1
-        self.coe_a2 = (self.g2.y - self.n.y) / delta2
-        self.coe_b2 = self.n.y - self.coe_a2 * self.n.x
+        coe_a2 = (g2.y - n.y) / delta2
+        coe_b2 = n.y - coe_a2 * n.x
 
         max_ = 0
-        minerals = self.ai.mineral_field.closer_than(9, self.n)
-        minerals.append(self.g1)
-        minerals.append(self.g2)
+        minerals = self.ai.mineral_field.closer_than(9, n)
+        minerals.append(g1)
+        minerals.append(g2)
         for field in minerals:
-            d = self.n.distance_to(field)
+            d = n.distance_to(field)
             if d > max_:
                 max_ = d
-        self.r = int(max_) ** 2
-        if self.ai.start_location.position.y < self.ai.enemy_start_locations[0].position.y:
-            self.linear_func = self.line_less_than
-        else:
-            self.linear_func = self.line_bigger_than
+        r = int(max_) ** 2
 
-    def in_circle(self, x, y):
-        return (x - self.n.x) ** 2 + (y - self.n.y) ** 2 < self.r
+        if self.line_less_than(minerals[0].position.x, minerals[0].position.y, coe_a1, coe_b1):
+            linear_function = self.line_less_than
+        else:
+            linear_function = self.line_bigger_than
+
+        return coe_a1, coe_b1, coe_a2, coe_b2, r, linear_function
+
+    @staticmethod
+    def in_circle(x, y, n, r):
+        return (x - n.x) ** 2 + (y - n.y) ** 2 < r
 
     @staticmethod
     def line_less_than(x, y, a, b):
