@@ -1,6 +1,9 @@
 from sc2.ids.unit_typeid import UnitTypeId as unit
 from sc2.position import Point2
 
+from bot.building_spot_validator import BuildingSpotValidator
+from builders.pylon_builder_future import PylonBuilderFuture
+
 
 class PylonBuilder:
     def __init__(self, ai, special_locations=None):
@@ -9,6 +12,7 @@ class PylonBuilder:
         self.special_locations = special_locations
         self.enemy_expansions = sorted(self.ai.expansion_locations_list,
                                        key=lambda x: self.ai.enemy_start_locations[0].distance_to(x))
+        self.pylon_builder_future = PylonBuilderFuture(ai, BuildingSpotValidator(ai))
 
     async def none(self):
         pass
@@ -88,18 +92,12 @@ class PylonBuilder:
             #         await self.ai.build(unit.PYLON, near=placement, placement_step=0, max_distance=0,
             #                             random_alternative=False)
             # else:
-            if self.ai.supply_cap < 60:
-                pos = self.ai.start_location.position
-                max_d = 25
-                pending = 2 if self.ai.time > 180 else 1
-                left = 7
-                step = 10
-            elif self.ai.supply_cap < 120:
-                pos = self.ai.start_location.position
-                max_d = 40
-                pending = 2
-                left = 10
-                step = 8
+            if self.ai.supply_cap < 120:
+                if self.ai.supply_left < 5 and self.ai.already_pending(unit.PYLON) < 2:
+                    position = await self.pylon_builder_future.get_next_pylon_position()
+                    if position:
+                        await self.ai.build(unit.PYLON, near=position)
+                return
             else:
                 pos = self.ai.structures(unit.NEXUS).ready
                 if pos.exists:
@@ -125,15 +123,14 @@ class PylonBuilder:
 
     async def new_standard_upper_wall(self):
         if self.ai.supply_cap < 200 and self.ai.structures(unit.PYLON).exists and self.ai.can_afford(unit.PYLON):
-
             if self.ai.supply_cap < 80:
-                pos = self.ai.start_location.position
+                pos = await self.pylon_builder_future.get_next_pylon_position()
                 max_d = 20
                 pending = 2 if self.ai.time > 180 else 1
                 left = 7
                 step = 8
             elif self.ai.supply_cap < 120:
-                pos = self.ai.start_location.position
+                pos = await self.pylon_builder_future.get_next_pylon_position()
                 max_d = 30
                 pending = 2
                 left = 10
